@@ -17,4 +17,19 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
       },
     },
   },
+
+  header: {
+    backgroundColor: theme.colors.gray[2],
+    display: "flex",
+    flexDirection: "row-reverse"
+  },
+
+  placeholder: {
+    text: 'white'
+  },
+
+  childrenSpacing: {
+    marginLeft: 15,
+    marginRight: 15
+  }
 }));
