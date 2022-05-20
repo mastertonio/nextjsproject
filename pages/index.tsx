@@ -19,8 +19,8 @@ import { useRouter } from "next/router";
 const Home: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -35,18 +35,28 @@ const Home: React.FC = () => {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    const payload = {
-      email: values.email,
-      password: values.password,
-    };
+    try {
+      const payload = {
+        email: values.email,
+        password: values.password,
+      };
 
-    console.log(values);
-    const res = await axios.post("http://54.159.8.194/v1/auth/login", payload);
-    if (res) {
-      console.log(res)
-      router.push('https://www.facebook.com/')
+      console.log(values);
+
+      const res = await axios.post(
+        "http://54.159.8.194/v1/auth/login",
+        payload
+      );
+
+      if (res) {
+        console.log(res);
+        router.push("/dashboard");
+      }
+
+      router.push('/')
+    } catch (error) {
+      return error;
     }
-    return res
   };
 
   return (
