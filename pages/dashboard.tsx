@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { AppShell, Text, useMantineTheme, Container } from "@mantine/core";
+import React, { useEffect } from "react";
+import { AppShell, useMantineTheme } from "@mantine/core";
 import { useStyles } from "../styles/dashboardStyle";
 
 import RoiNavbar from "../app/core/components/navbar/Navbar";
@@ -12,8 +12,8 @@ import RoiRanking from "../app/dashboard/components/RoiRanking";
 
 const Dashboard: React.FC = () => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
   const { classes } = useStyles();
+
 
   return (
     <AppShell
