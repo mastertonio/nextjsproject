@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AppShell, useMantineTheme } from "@mantine/core";
 import { useStyles } from "../styles/dashboardStyle";
+import axios from "axios";
 
 import RoiNavbar from "../app/core/components/navbar/Navbar";
 import RoiFooter from "../app/core/components/footer/Footer";
@@ -13,7 +14,30 @@ import RoiRanking from "../app/dashboard/components/RoiRanking";
 const Dashboard: React.FC = () => {
   const theme = useMantineTheme();
   const { classes } = useStyles();
+  const [data, setData] = useState<any>();
 
+  useEffect(() => {
+    const getDashboardData = async () => {
+      try {
+        const res = await axios.get(
+          "http://54.159.8.194/v1/dashboard/628247b19e2a1d3a5ef8b9ad",
+          {
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM0NzM0MjAsImV4cCI6MTY1MzQ3NTIyMCwidHlwZSI6ImFjY2VzcyJ9.F5atndCqU7Q-E5u90kOlwQVeFTo5iaShivR7jjHCwMA`,
+            },
+          }
+        );
+
+        setData(res?.data)
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getDashboardData()
+    console.log(data,"datatatata")
+  },[]);
 
   return (
     <AppShell
@@ -34,7 +58,7 @@ const Dashboard: React.FC = () => {
     >
       <div className={classes.body}>
         <div className={classes.welcome}>
-          <Welcome />
+          <Welcome name={data?.welcome.account_name} active_roi={data?.welcome.active_roi} current_roi={data?.welcome.current_roi}/>
           <ViewCount />
         </div>
         <div className={classes.button}>

@@ -2,15 +2,21 @@ import { useMantineTheme, Text } from "@mantine/core";
 import React from "react";
 import { useRouter } from "next/router";
 
-const Welcome: React.FC = () => {
-  const theme = useMantineTheme();
-  const router = useRouter();
+type iWelcomeProps = {
+  name?: string;
+  active_roi?: number;
+  current_roi?: number;
+};
 
-
+const Welcome: React.FC<iWelcomeProps> = ({
+  name,
+  active_roi,
+  current_roi,
+}) => {
   return (
-    <div style={{ width: "100%"}}>
-      <Text>Welcome Jason</Text>
-      <Text size="xs">You have 307 Current ROIs and 307 Active ROIs</Text>
+    <div style={{ width: "100%" }}>
+      <Text>Welcome {name ? name : "User"}</Text>
+      <Text size="xs">You have {current_roi ? current_roi : 0} Current ROIs and {active_roi ? active_roi : 0} Active ROIs</Text>
     </div>
   );
 };
