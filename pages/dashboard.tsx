@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
           "http://54.159.8.194/v1/dashboard/628247b19e2a1d3a5ef8b9ad",
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM1MDQwNTMsImV4cCI6MTY1MzUwNTg1MywidHlwZSI6ImFjY2VzcyJ9.UBpVtkqE3ML0yw_ei6qOfmy3JCoBoL9d1xniIqoRWcM`,
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM1MDYyMjgsImV4cCI6MTY1MzUwODAyOCwidHlwZSI6ImFjY2VzcyJ9.Px8mAOn1UCguHhV2OioQLslyzoQMesK5GkjIuObTyts`,
             },
           }
         );
@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
           <ViewCount rankings={data?.ranking}/>
         </div>
         <div className={classes.button}>
-          <DashboardGraph />
+          <DashboardGraph chartData={data?.chart} />
         </div>
         <div className={classes.welcome}>
           <CreateNewRoi />
