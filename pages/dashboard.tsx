@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
       asideOffsetBreakpoint="sm"
       className={classes.body}
       fixed
-      header={<RoiNavbar admin={data?.admin_list} />}
+      header={<RoiNavbar admin={data?.admin_list} actions={data?.template_list}/>}
       footer={<RoiFooter />}
     >
       <div className={classes.body}>

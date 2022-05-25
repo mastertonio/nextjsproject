@@ -13,7 +13,7 @@ import AdminList, { IAdminListProps } from "./components/AdminList";
 import PoweredByRoi from "./components/PoweredByRoi";
 import ActionList from "./components/ActionList"
 
-const RoiNavbar: React.FC<IAdminListProps> = ({ admin }) => {
+const RoiNavbar: React.FC<IAdminListProps> = ({ admin, actions }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -38,7 +38,7 @@ const RoiNavbar: React.FC<IAdminListProps> = ({ admin }) => {
 
         <AdminList admin={admin} />
         <PoweredByRoi />
-        <ActionList />
+        <ActionList actions={actions}/>
       </div>
     </Header>
   );

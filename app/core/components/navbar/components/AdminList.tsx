@@ -5,10 +5,12 @@ import { useStyles } from "../navStyle";
 type iAdminData = {
   uid?: string,
   name: string
+  id?: string
 }
 
 export interface IAdminListProps {
   admin?: iAdminData[]
+  actions?: iAdminData[]
 }
 
 const AdminList: React.FC<IAdminListProps> = ({ admin }) => {

@@ -1,11 +1,12 @@
 import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useStyles } from "../navStyle";
+import { IAdminListProps } from "./AdminList";
 
-const ActionList: React.FC = () => {
+const ActionList: React.FC<IAdminListProps> = ({ actions }) => {
   const { classes } = useStyles();
-  const actionList = ["Action 1", "Action 2", "Action 3", "Action 4", "Action 5"];
-  const [values, setValues] = useState<any>(actionList[0]);
+  const actionList = actions?.map((a)=> a.name);
+  const [values, setValues] = useState<any>('');
 
   const handleChange = (event: any) => {
     setValues(event);
@@ -21,7 +22,7 @@ const ActionList: React.FC = () => {
       searchable
       nothingFound="No options"
       variant="default"
-      data={actionList}
+      data={actionList ? actionList : []}
       onChange={(event) => handleChange(event)}
       className={classes.childrenSpacing}
     />
