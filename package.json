@@ -18,7 +18,6 @@
     "@mantine/next": "^4.2.4",
     "@mantine/notifications": "^4.2.4",
     "@mantine/prism": "^4.2.4",
-    "@mantine/rte": "^4.2.4",
     "@mantine/spotlight": "^4.2.4",
     "axios": "^0.27.2",
     "chart.js": "^3.7.1",
