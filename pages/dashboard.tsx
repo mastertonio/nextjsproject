@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
           "http://54.159.8.194/v1/dashboard/628247b19e2a1d3a5ef8b9ad",
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM0NzM0MjAsImV4cCI6MTY1MzQ3NTIyMCwidHlwZSI6ImFjY2VzcyJ9.F5atndCqU7Q-E5u90kOlwQVeFTo5iaShivR7jjHCwMA`,
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM0NzU2NTMsImV4cCI6MTY1MzQ3NzQ1MywidHlwZSI6ImFjY2VzcyJ9.ZFZuV8GsP8scrFMf8pvUi38rvN7OhkkJSsMdxITdNzo`,
             },
           }
         );
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
       className={classes.body}
       fixed
       footer={<RoiFooter />}
-      header={<RoiNavbar />}
+      header={<RoiNavbar admin={data?.admin_list} />}
     >
       <div className={classes.body}>
         <div className={classes.welcome}>

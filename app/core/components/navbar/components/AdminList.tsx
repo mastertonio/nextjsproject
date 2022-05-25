@@ -2,10 +2,20 @@ import { AutocompleteItem, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useStyles } from "../navStyle";
 
-const AdminList: React.FC = () => {
+type iAdminData = {
+  uid?: string,
+  name: string
+}
+
+export interface iAdminListProps {
+  admin?: iAdminData[]
+}
+
+const AdminList: React.FC<iAdminListProps> = ({ admin }) => {
   const { classes } = useStyles();
-  const adminList = ["Admin", "React", "Angular", "Svelte", "Vue"];
-  const [values, setValues] = useState<any>("Admin");
+  const adminList = admin?.map((a)=> a.name);
+  adminList?.unshift('Admin')
+  const [values, setValues] = useState<any>('Admin');
 
   const handleChange = (event: any) => {
     setValues(event);
@@ -20,7 +30,7 @@ const AdminList: React.FC = () => {
       searchable
       nothingFound="No options"
       variant="filled"
-      data={adminList}
+      data={adminList ? adminList : []}
       styles={{
         wrapper: { color: "white" },
         dropdown: { color: "white" },

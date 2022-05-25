@@ -9,11 +9,11 @@ import {
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useStyles } from "./navStyle"
-import AdminList from "./components/AdminList";
+import AdminList, { iAdminListProps } from "./components/AdminList";
 import PoweredByRoi from "./components/PoweredByRoi";
 import ActionList from "./components/ActionList"
 
-const RoiNavbar: React.FC = () => {
+const RoiNavbar: React.FC<iAdminListProps> = ({ admin }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -36,7 +36,7 @@ const RoiNavbar: React.FC = () => {
           />
         </MediaQuery>
 
-        <AdminList />
+        <AdminList admin={admin} />
         <PoweredByRoi />
         <ActionList />
       </div>
