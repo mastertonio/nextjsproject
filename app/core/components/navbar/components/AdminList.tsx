@@ -7,11 +7,11 @@ type iAdminData = {
   name: string
 }
 
-export interface iAdminListProps {
+export interface IAdminListProps {
   admin?: iAdminData[]
 }
 
-const AdminList: React.FC<iAdminListProps> = ({ admin }) => {
+const AdminList: React.FC<IAdminListProps> = ({ admin }) => {
   const { classes } = useStyles();
   const adminList = admin?.map((a)=> a.name);
   adminList?.unshift('Admin')

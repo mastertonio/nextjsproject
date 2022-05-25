@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
           "http://54.159.8.194/v1/dashboard/628247b19e2a1d3a5ef8b9ad",
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM0NzU2NTMsImV4cCI6MTY1MzQ3NzQ1MywidHlwZSI6ImFjY2VzcyJ9.ZFZuV8GsP8scrFMf8pvUi38rvN7OhkkJSsMdxITdNzo`,
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjgyNDdiMTllMmExZDNhNWVmOGI5YWQiLCJpYXQiOjE2NTM1MDQwNTMsImV4cCI6MTY1MzUwNTg1MywidHlwZSI6ImFjY2VzcyJ9.UBpVtkqE3ML0yw_ei6qOfmy3JCoBoL9d1xniIqoRWcM`,
             },
           }
         );
@@ -53,13 +53,13 @@ const Dashboard: React.FC = () => {
       asideOffsetBreakpoint="sm"
       className={classes.body}
       fixed
-      footer={<RoiFooter />}
       header={<RoiNavbar admin={data?.admin_list} />}
+      footer={<RoiFooter />}
     >
       <div className={classes.body}>
         <div className={classes.welcome}>
           <Welcome name={data?.welcome.account_name} active_roi={data?.welcome.active_roi} current_roi={data?.welcome.current_roi}/>
-          <ViewCount />
+          <ViewCount rankings={data?.ranking}/>
         </div>
         <div className={classes.button}>
           <DashboardGraph />

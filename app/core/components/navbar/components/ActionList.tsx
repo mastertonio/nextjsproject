@@ -4,8 +4,8 @@ import { useStyles } from "../navStyle";
 
 const ActionList: React.FC = () => {
   const { classes } = useStyles();
-  const adminList = ["Stand", "Run", "Walk", "Sit", "Roll"];
-  const [values, setValues] = useState<any>(adminList[0]);
+  const actionList = ["Action 1", "Action 2", "Action 3", "Action 4", "Action 5"];
+  const [values, setValues] = useState<any>(actionList[0]);
 
   const handleChange = (event: any) => {
     setValues(event);
@@ -21,7 +21,7 @@ const ActionList: React.FC = () => {
       searchable
       nothingFound="No options"
       variant="default"
-      data={adminList}
+      data={actionList}
       onChange={(event) => handleChange(event)}
       className={classes.childrenSpacing}
     />
