@@ -69,6 +69,9 @@ const Dashboard: React.FC = () => {
           <RoiRanking />
         </div>
       </div>
+      <div>
+        
+      </div>
     </AppShell>
   );
 };
