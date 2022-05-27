@@ -39,16 +39,30 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   body: {
     display: "grid",
     gridAutoFlow: 'column',
-    gap: 20
+    gap: 20,
+    paddingBottom: '24px'
   },
 
-  button: {
-      height: 400,
-      width: 1304
+  dashboard_graph: {
+    placeSelf: "center",
+    height: 450,
+    width: 900
   },
 
   welcome: {
     display: "flex",
     flexDirection: "column",
   },
+
+  bar_graph_wrapper: {
+    margin: 10
+  },
+
+  table: {
+    padding: 10
+  },
+
+  bar: {
+    position: "relative"
+  }
 }));
