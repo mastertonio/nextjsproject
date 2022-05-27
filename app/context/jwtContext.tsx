@@ -1,15 +1,5 @@
-import { AnyObject } from "chart.js/types/basic";
-import React, { FC, useMemo } from "react";
-
-interface State {
-    user: AnyObject,
-    tokens: AnyObject,
-}
-
-const initialState = {
-    user: {},
-    tokens: {}
-};
+import { AnyObject } from 'chart.js/types/basic'
+import * as React from 'react'
 
 type Action =
   | {
@@ -21,54 +11,55 @@ type Action =
       token: string;
     };
 
-export const UserContext = React.createContext<State | AnyObject>(initialState);
+type Dispatch = (action: Action) => void
 
-UserContext.displayName = "UserContext";
+type State = {
+    token: string
+}
+type CountProviderProps = {children: React.ReactNode}
 
-function userReducer(state: State | AnyObject, action: Action) {
-  switch (action.type) {
-    case "LOAD_TOKEN": {
-      return {
-        ...state,
-      };
-    }
-    case "UPDATE_TOKEN": {
-      return {
-        ...state,
-        token: action.token,
-      };
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action}`);
+const CountStateContext = React.createContext<
+  {state: State; dispatch: Dispatch} | undefined
+>(undefined)
+
+function userReducer(state: State , action: Action) {
+    switch (action.type) {
+      case "LOAD_TOKEN": {
+        return {
+          ...state,
+          token: action.token
+        };
+      }
+      case "UPDATE_TOKEN": {
+        return {
+          ...state,
+          token: action.token,
+        };
+      }
+      default: {
+        throw new Error(`Unhandled action type: ${action}`);
+      }
     }
   }
+
+function UserProvider({children}: CountProviderProps) {
+  const [state, dispatch] = React.useReducer(userReducer, { token: ''})
+  // NOTE: you *might* need to memoize this value
+  // Learn more in http://kcd.im/optimize-context
+  const value = {state, dispatch}
+  return (
+    <CountStateContext.Provider value={value}>
+      {children}
+    </CountStateContext.Provider>
+  )
 }
 
-export const UserProvider: FC<any> = ({children}) => {
-  const [state, dispatch] = React.useReducer(userReducer, initialState);
-  const setToken = (token: string) => {
-    dispatch({ type: "UPDATE_TOKEN", token });
-  };
-
-  const loadToken = async (token: string) => {
-    dispatch({ type: "LOAD_TOKEN", token });
-  };
-  const value = useMemo(
-    () => ({
-      ...state,
-      setToken,
-      loadToken,
-    }),
-    [state]
-  );
-
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-};
-
-export const useUser = () => {
-  const context = React.useContext(UserContext);
+function useUser() {
+  const context = React.useContext(CountStateContext)
   if (context === undefined) {
-    throw new Error(`useUser must be used within a UserProvider`);
+    throw new Error('useCount must be used within a CountProvider')
   }
-  return context;
-};
+  return context
+}
+
+export {UserProvider, useUser}
