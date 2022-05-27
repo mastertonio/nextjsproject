@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { useStyles } from "../../../styles/dashboardStyle";
 
 ChartJS.register(
   CategoryScale,
@@ -37,6 +38,8 @@ interface IDashboardGraphData {
   chartData: IDashboardData;
 }
 const DashboardGraph: React.FC<IDashboardGraphData> = ({ chartData }) => {
+  const { classes } = useStyles();
+
   const options = {
     responsive: true,
     plugins: {
@@ -62,12 +65,12 @@ const DashboardGraph: React.FC<IDashboardGraphData> = ({ chartData }) => {
         data: chartData
           ? chartData.series[0].data
           : [400, 450, 550, 450, 650, 600, 730, 300],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)"
       },
     ],
   };
 
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} className={classes.bar} />;
 };
 
 export default DashboardGraph;
