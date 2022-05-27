@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { Table } from "@mantine/core";
 
-const RoiRanking: React.FC = () => {
+interface IRankCount {
+  account_name: string;
+  rois: number;
+}
 
-  const elements = [
-    { position: 1,  name: "Swimming sammy" , count: 500 },
-    { position: 2,  name: "Fitness Gym", count: 400 },
-    { position: 3,  name: "Real Estate Phil", count: 300 },
-    { position: 4,  name: "Car dealers", count: 200 },
-    { position: 5,  name: "Booking barry", count: 100 },
-  ];
+export interface IRankCountProps {
+  rankings?: IRankCount[];
+}
 
-  const rows = elements.map((element) => (
-    <tr key={element.position}>
-      <td>{element.position}</td>
-      <td>{element.name}</td>
-      <td>{element.count}</td>
+const RoiRanking: React.FC<IRankCountProps> = ({ rankings }) => {
+  const elements = rankings?.sort((a,b)=> b.rois - a.rois)
+
+  const rows = elements?.map((element) => (
+    <tr key={element.account_name}>
+      <td>{element.account_name}</td>
+      <td>{element.rois}</td>
     </tr>
   ));
 
