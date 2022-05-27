@@ -104,14 +104,14 @@ const Dashboard: React.FC = () => {
             active_roi={data?.welcome.active_roi}
             current_roi={data?.welcome.current_roi}
           />
-          <ViewCount rankings={data?.ranking} />
+          <ViewCount viewcount={data?.viewcount}/>
         </div>
         <div className={classes.dashboard_graph}>
           <DashboardGraph chartData={data?.chart} />
         </div>
         <div className={classes.welcome}>
           <CreateNewRoi />
-          <RoiRanking />
+          <RoiRanking rankings={data?.ranking}/>
         </div>
       </div>
       <div className={classes.bar_graph_wrapper}>
