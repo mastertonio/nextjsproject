@@ -24,7 +24,7 @@ const ViewCount: React.FC<IViewCountProps> = ({ rankings }) => {
   return (
     <>
       <Button onClick={() => setOpen((o) => !o)}>
-        Toggle with linear transition
+        Viewed
       </Button>
 
       <Collapse
