@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { AppShell, useMantineTheme, LoadingOverlay, Table, Button, Select } from "@mantine/core";
+import {
+  AppShell,
+  useMantineTheme,
+  LoadingOverlay,
+  Table,
+  Button,
+  Select,
+  Text,
+} from "@mantine/core";
 import { useStyles } from "../styles/dashboardStyle";
 import axios from "axios";
 
@@ -12,6 +20,7 @@ import CreateNewRoi from "../app/dashboard/components/CreateNewRoi";
 import RoiRanking from "../app/dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
 import { AiOutlineStar } from "react-icons/ai";
+import { showNotification } from "@mantine/notifications";
 
 const Dashboard: React.FC = () => {
   const theme = useMantineTheme();
@@ -44,43 +53,125 @@ const Dashboard: React.FC = () => {
     getDashboardData();
   }, []);
 
-  const button = <Button size="xs" onClick={() => setOpen((o) => !o)}>Open</Button>
+  const button = (
+    <Button
+      size="xs"
+      onClick={() =>
+        showNotification({
+          title: "You clicked Open button",
+          message: "Hey there, your code is awesome! 🤥",
+          autoClose: 1000,
+          disallowClose: true,
+          color: "blue",
+        })
+      }
+    >
+      Open
+    </Button>
+  );
 
-  const dropdown = ( 
-  <Select
-    style={{ width: 150}}
-    placeholder="Active"
-    data={[
-      { value: 'Active', label: 'Active' },
-      { value: 'Inactive', label: 'Inactive' }
-    ]}
-  />
-  )
+  const dropdown = (
+    <Select
+      style={{ width: 150 }}
+      placeholder="Active"
+      data={[
+        { value: "Active", label: "Active" },
+        { value: "Inactive", label: "Inactive" },
+      ]}
+    />
+  );
 
   const stars = (
     <div>
-       <AiOutlineStar />
-       <AiOutlineStar />
-       <AiOutlineStar />
-       <AiOutlineStar />
-       <AiOutlineStar />
+      <AiOutlineStar />
+      <AiOutlineStar />
+      <AiOutlineStar />
+      <AiOutlineStar />
+      <AiOutlineStar />
     </div>
-  )
+  );
 
   const threeButtons = (
-    <div >
-      <Button size="xs">Edit</Button>
-      <Button size="xs" color='teal' style={{ marginLeft: 2, marginRight: 2}}>Clone</Button>
-      <Button size="xs" color='red'>Delete</Button>
+    <div>
+      <Button
+        size="xs"
+        onClick={() =>
+          showNotification({
+            title: "You clicked Edit button",
+            message: "Hey there, your code is awesome! 🤥",
+            autoClose: 1000,
+            disallowClose: true,
+            color: "gray",
+          })
+        }
+      >
+        Edit
+      </Button>
+      <Button
+        size="xs"
+        color="teal"
+        style={{ marginLeft: 2, marginRight: 2 }}
+        onClick={() =>
+          showNotification({
+            title: "You clicked Clone button",
+            message: "Hey there, your code is awesome! 🤥",
+            autoClose: 1000,
+            disallowClose: true,
+            color: "teal",
+          })
+        }
+      >
+        Clone
+      </Button>
+      <Button
+        size="xs"
+        color="red"
+        onClick={() =>
+          showNotification({
+            title: "You clicked Delete button",
+            message: "Hey there, your code is awesome! 🤥",
+            autoClose: 1000,
+            disallowClose: true,
+            color: "red",
+          })
+        }
+      >
+        Delete
+      </Button>
     </div>
-  )
+  );
 
   const elements = [
-    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 1', dates: '2022-05-05T09:32:24.605+00:00', views: 0, uniqueViews: 0, actions: threeButtons },
-    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 2', dates: '2022-05-05T10:32:24.605+00:00', views: 1, uniqueViews: 1, actions: threeButtons },
-    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 3', dates: '2022-05-05T10:32:24.605+00:00', views: 2, uniqueViews: 2, actions: threeButtons },
-    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 4', dates: '2022-05-05T10:32:24.605+00:00', views: 3, uniqueViews: 3, actions: threeButtons },
-    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 5', dates: '2022-05-05T10:32:24.605+00:00', views: 4, uniqueViews: 4, actions: threeButtons }
+    {
+      button: button,
+      status: dropdown,
+      importance: stars,
+      roiname: "Sample template 1",
+      dates: "2022-05-05T09:32:24.605+00:00",
+      views: 0,
+      uniqueViews: 0,
+      actions: threeButtons,
+    },
+    {
+      button: button,
+      status: dropdown,
+      importance: stars,
+      roiname: "Sample template 2",
+      dates: "2022-05-05T10:32:24.605+00:00",
+      views: 1,
+      uniqueViews: 1,
+      actions: threeButtons,
+    },
+    {
+      button: button,
+      status: dropdown,
+      importance: stars,
+      roiname: "Sample template 3",
+      dates: "2022-05-05T10:32:24.605+00:00",
+      views: 2,
+      uniqueViews: 2,
+      actions: threeButtons,
+    }
   ];
 
   const rows = elements.map((element) => (
@@ -124,18 +215,36 @@ const Dashboard: React.FC = () => {
             active_roi={data?.welcome.active_roi}
             current_roi={data?.welcome.current_roi}
           />
-          <ViewCount viewcount={data?.viewcount}/>
+          <ViewCount viewcount={data?.viewcount} />
         </div>
         <div className={classes.dashboard_graph}>
           <DashboardGraph chartData={data?.chart} />
         </div>
         <div className={classes.welcome}>
           <CreateNewRoi />
-          <RoiRanking rankings={data?.ranking}/>
+          <RoiRanking rankings={data?.ranking} />
         </div>
       </div>
       <div className={classes.bar_graph_wrapper}>
-        <Table className={classes.table} horizontalSpacing="xl" verticalSpacing="xs" highlightOnHover>
+        <Text size="lg">My ROIs</Text>
+        <Select
+          style={{ width: 150 }}
+          placeholder="Template"
+          data={[
+            { value: "Template 1", label: "Template 1" },
+            { value: "Template 2", label: "Template 2" },
+            { value: "Template 3", label: "Template 3" },
+            { value: "Template 4", label: "Template 4" },
+            { value: "Template 5", label: "Template 5" },
+            { value: "Template 6", label: "Template 6" },
+          ]}
+        />
+        <Table
+          className={classes.table}
+          horizontalSpacing="xl"
+          verticalSpacing="xs"
+          highlightOnHover
+        >
           <thead>
             <tr>
               <th> </th>
