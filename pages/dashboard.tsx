@@ -11,6 +11,7 @@ import ViewCount from "../app/dashboard/components/ViewCount";
 import CreateNewRoi from "../app/dashboard/components/CreateNewRoi";
 import RoiRanking from "../app/dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
+import { AiOutlineStar } from "react-icons/ai";
 
 const Dashboard: React.FC = () => {
   const theme = useMantineTheme();
@@ -43,10 +44,11 @@ const Dashboard: React.FC = () => {
     getDashboardData();
   }, []);
 
-  const button = <Button onClick={() => setOpen((o) => !o)}>Open</Button>
+  const button = <Button size="xs" onClick={() => setOpen((o) => !o)}>Open</Button>
 
   const dropdown = ( 
   <Select
+    style={{ width: 150}}
     placeholder="Active"
     data={[
       { value: 'Active', label: 'Active' },
@@ -55,12 +57,30 @@ const Dashboard: React.FC = () => {
   />
   )
 
+  const stars = (
+    <div>
+       <AiOutlineStar />
+       <AiOutlineStar />
+       <AiOutlineStar />
+       <AiOutlineStar />
+       <AiOutlineStar />
+    </div>
+  )
+
+  const threeButtons = (
+    <div >
+      <Button size="xs">Edit</Button>
+      <Button size="xs" color='teal' style={{ marginLeft: 2, marginRight: 2}}>Clone</Button>
+      <Button size="xs" color='red'>Delete</Button>
+    </div>
+  )
+
   const elements = [
-    { button: button, status: dropdown, importance: 4, roiname: 'Name', dates: '2022-06-01T12:00:00-04:00', views: 4, uniqueViews: 2, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name1', dates: '2022-06-01T12:00:00-04:00', views: 3, uniqueViews: 1, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name2', dates: '2022-06-01T12:00:00-04:00', views: 1, uniqueViews: 3, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name3', dates: '2022-06-01T12:00:00-04:00', views: 3, uniqueViews: 4, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name4', dates: '2022-06-01T12:00:00-04:00', views: 3, uniqueViews: 5, actions: '3 buttons' },
+    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 1', dates: '2022-05-05T09:32:24.605+00:00', views: 0, uniqueViews: 0, actions: threeButtons },
+    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 2', dates: '2022-05-05T10:32:24.605+00:00', views: 1, uniqueViews: 1, actions: threeButtons },
+    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 3', dates: '2022-05-05T10:32:24.605+00:00', views: 2, uniqueViews: 2, actions: threeButtons },
+    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 4', dates: '2022-05-05T10:32:24.605+00:00', views: 3, uniqueViews: 3, actions: threeButtons },
+    { button: button, status: dropdown, importance: stars, roiname: 'Sample template 5', dates: '2022-05-05T10:32:24.605+00:00', views: 4, uniqueViews: 4, actions: threeButtons }
   ];
 
   const rows = elements.map((element) => (
@@ -115,7 +135,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className={classes.bar_graph_wrapper}>
-        <Table className={classes.table}>
+        <Table className={classes.table} horizontalSpacing="xl" verticalSpacing="xs" highlightOnHover>
           <thead>
             <tr>
               <th> </th>
