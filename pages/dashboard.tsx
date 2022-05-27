@@ -56,11 +56,11 @@ const Dashboard: React.FC = () => {
   )
 
   const elements = [
-    { button: button, status: dropdown, importance: 4, roiname: 'Name', dates: 'C', views: 4, uniqueViews: 2, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name1', dates: 'N', views: 3, uniqueViews: 1, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name2', dates: 'Y', views: 1, uniqueViews: 3, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name3', dates: 'Ba', views: 3, uniqueViews: 4, actions: '3 buttons' },
-    { button: button, status: dropdown, importance: 4, roiname: 'Name4', dates: 'Ce', views: 3, uniqueViews: 5, actions: '3 buttons' },
+    { button: button, status: dropdown, importance: 4, roiname: 'Name', dates: '2022-06-01T12:00:00-04:00', views: 4, uniqueViews: 2, actions: '3 buttons' },
+    { button: button, status: dropdown, importance: 4, roiname: 'Name1', dates: '2022-06-01T12:00:00-04:00', views: 3, uniqueViews: 1, actions: '3 buttons' },
+    { button: button, status: dropdown, importance: 4, roiname: 'Name2', dates: '2022-06-01T12:00:00-04:00', views: 1, uniqueViews: 3, actions: '3 buttons' },
+    { button: button, status: dropdown, importance: 4, roiname: 'Name3', dates: '2022-06-01T12:00:00-04:00', views: 3, uniqueViews: 4, actions: '3 buttons' },
+    { button: button, status: dropdown, importance: 4, roiname: 'Name4', dates: '2022-06-01T12:00:00-04:00', views: 3, uniqueViews: 5, actions: '3 buttons' },
   ];
 
   const rows = elements.map((element) => (
