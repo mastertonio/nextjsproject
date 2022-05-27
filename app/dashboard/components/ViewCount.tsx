@@ -2,22 +2,23 @@ import { useState } from "react";
 import { Button, Collapse, Table } from "@mantine/core";
 
 interface iViewCount {
-  account_name: string;
-  rois: number;
+  roi_name: string;
+  count: number;
 }
 
 export interface IViewCountProps {
-  rankings?: iViewCount[];
+  viewcount?: iViewCount[];
 }
 
-const ViewCount: React.FC<IViewCountProps> = ({ rankings }) => {
+const ViewCount: React.FC<IViewCountProps> = ({ viewcount}) => {
   const [opened, setOpen] = useState(false);
-  const elements = rankings?.sort((a,b)=> b.rois - a.rois)
+  
+  const elements = viewcount?.sort((a,b)=> b.count - a.count)
 
   const rows = elements?.map((element) => (
-    <tr key={element.account_name}>
-      <td>{element.account_name}</td>
-      <td>{element.rois}</td>
+    <tr key={element.roi_name}>
+      <td>{element.roi_name}</td>
+      <td>{element.count}</td>
     </tr>
   ));
 
