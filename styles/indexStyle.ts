@@ -59,7 +59,10 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     marginBottom: 40
   },
 
-  login_footer: {
+  forgot_password: {
+    display:"flex",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingBottom: 20,
     marginBottom: 20
   }

@@ -16,14 +16,14 @@ import { useStyles } from "../styles/indexStyle";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "../app/context/jwtContext";
-import { useLocalStorage } from '@mantine/hooks';
+import { useLocalStorage } from "@mantine/hooks";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const router = useRouter();
   const { state, dispatch } = useUser();
-  const [value, setValue] = useLocalStorage({ key: 'auth-token' });
+  const [value, setValue] = useLocalStorage({ key: "auth-token" });
 
   const form = useForm({
     initialValues: {
@@ -51,8 +51,11 @@ const Home: React.FC = () => {
       );
       if (res) {
         console.log(res);
-        console.log(res.data.tokens.access.token,"res.data.tokens.access.token");
-        setValue(res.data.tokens.access.token)
+        console.log(
+          res.data.tokens.access.token,
+          "res.data.tokens.access.token"
+        );
+        setValue(res.data.tokens.access.token);
         dispatch({
           type: "LOAD_TOKEN",
           token: value,
@@ -103,7 +106,7 @@ const Home: React.FC = () => {
               {...form.getInputProps("rememberMe", { type: "checkbox" })}
             />
 
-            <Group position="right" mt="md">
+            <Group position="right" mt="xs">
               <Button
                 type="submit"
                 style={{ background: theme.fn.radialGradient("#00acac") }}
@@ -114,7 +117,12 @@ const Home: React.FC = () => {
             </Group>
           </form>
         </Box>
-        <Text className={classes.login_footer}>© The ROI Shop</Text>
+        <div className={classes.forgot_password}>
+          <Text>© The ROI Shop</Text>
+          <Button variant="subtle" radius="lg" onClick={()=>(router.push('/forgot_password'))}>
+            Forgot Password
+          </Button>
+        </div>
       </Container>
     </div>
   );
