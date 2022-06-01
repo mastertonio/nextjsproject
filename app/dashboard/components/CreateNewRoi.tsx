@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Modal, Button, Group } from '@mantine/core';
+import { useState } from "react";
+import { Modal, Button, Group } from "@mantine/core";
 
 const CreateNewRoi: React.FC = () => {
   const [opened, setOpened] = useState(false);
@@ -19,6 +19,6 @@ const CreateNewRoi: React.FC = () => {
       </Group>
     </>
   );
-}
+};
 
-export default CreateNewRoi
+export default CreateNewRoi;

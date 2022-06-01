@@ -11,7 +11,7 @@ export interface IRankCountProps {
 }
 
 const RoiRanking: React.FC<IRankCountProps> = ({ rankings }) => {
-  const elements = rankings?.sort((a,b)=> b.rois - a.rois)
+  const elements = rankings?.sort((a, b) => b.rois - a.rois);
 
   const rows = elements?.map((element) => (
     <tr key={element.account_name}>
@@ -22,9 +22,9 @@ const RoiRanking: React.FC<IRankCountProps> = ({ rankings }) => {
 
   return (
     <>
-        <Table>
-          <tbody>{rows}</tbody>
-        </Table>
+      <Table>
+        <tbody>{rows}</tbody>
+      </Table>
     </>
   );
 };
