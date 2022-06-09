@@ -1,4 +1,4 @@
-import { useState } from "react";
+import short from "short-uuid"
 import { Table } from "@mantine/core";
 
 interface IRankCount {
@@ -14,7 +14,7 @@ const RoiRanking: React.FC<IRankCountProps> = ({ rankings }) => {
   const elements = rankings?.sort((a, b) => b.rois - a.rois);
 
   const rows = elements?.map((element) => (
-    <tr key={element.account_name}>
+    <tr key={short.generate()}>
       <td>{element.account_name}</td>
       <td>{element.rois}</td>
     </tr>
