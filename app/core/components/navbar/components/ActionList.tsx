@@ -8,7 +8,7 @@ const ActionList: React.FC<IAdminListProps> = ({ actions }) => {
   const actionList = actions?.map((a)=> a.name);
   const [values, setValues] = useState<any>('');
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.SetStateAction<string | null>) => {
     setValues(event);
   };
 
