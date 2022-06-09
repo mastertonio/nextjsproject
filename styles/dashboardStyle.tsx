@@ -54,10 +54,6 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     flexDirection: "column",
   },
 
-  bar_graph_wrapper: {
-    margin: 10
-  },
-
   table: {
     padding: 10
   },

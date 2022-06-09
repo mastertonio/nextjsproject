@@ -7,8 +7,13 @@ import {
   Button,
   Select,
   Text,
+  TextInput,
+  Kbd,
+  Grid,
+  Modal,
 } from "@mantine/core";
 import { useStyles } from "../styles/dashboardStyle";
+import { AiOutlineSearch } from "react-icons/ai";
 import axios from "axios";
 
 import RoiNavbar from "../app/core/components/navbar/Navbar";
@@ -21,6 +26,7 @@ import RoiRanking from "../app/dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
 import { AiOutlineStar } from "react-icons/ai";
 import { showNotification } from "@mantine/notifications";
+import { Rating } from 'react-simple-star-rating'
 
 const Dashboard: React.FC = () => {
   const theme = useMantineTheme();
@@ -29,12 +35,15 @@ const Dashboard: React.FC = () => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const [visible, setVisible] = useState(true);
   const [opened, setOpen] = useState(false);
+  const [values, setValues] = useState<string | null>("");
+  const [search, setSearch] = useState<string>("");
+  const [rating, setRating] = useState<number>(0)
 
   useEffect(() => {
     const getDashboardData = async () => {
       try {
         const res = await axios.get(
-          "http://54.159.8.194/v1/dashboard/628247b19e2a1d3a5ef8b9ad",
+          "http://54.159.8.194/v1/dashboard/6298548c95e432514d017b3b",
           {
             headers: {
               Authorization: `Bearer ${value}`,
@@ -53,6 +62,12 @@ const Dashboard: React.FC = () => {
     getDashboardData();
   }, []);
 
+  const handleSearch = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setSearch(event.target.value);
+  };
+
   const button = (
     <Button
       size="xs"
@@ -70,14 +85,32 @@ const Dashboard: React.FC = () => {
     </Button>
   );
 
+  const handleChange = (event: React.SetStateAction<string | null>) => {
+    if (event === "Closed Won") {
+      setOpen(true);
+    }
+    setValues(event);
+    console.log(event, "eveeent");
+  };
+
+  const handleRating = (rate: number) => {
+    setRating(rate)
+  }
+
+  useEffect(() => {
+    console.log("the value has changed", values);
+  }, [values]);
+
   const dropdown = (
     <Select
       style={{ width: 150 }}
-      placeholder="Active"
+      defaultValue="Active"
       data={[
         { value: "Active", label: "Active" },
-        { value: "Inactive", label: "Inactive" },
+        { value: "Closed Won", label: "Closed Won" },
+        { value: "Closed Lost", label: "Closed Lost" },
       ]}
+      onChange={(event) => handleChange(event)}
     />
   );
 
@@ -171,10 +204,14 @@ const Dashboard: React.FC = () => {
       views: 2,
       uniqueViews: 2,
       actions: threeButtons,
-    }
+    },
   ];
 
-  const rows = elements.map((element) => (
+  const filterSearch = {
+    nodes: elements.filter((item) => item.roiname.includes(search)),
+  };
+
+  const rows = filterSearch.nodes.map((element) => (
     <tr key={element.roiname}>
       <td>{element.button}</td>
       <td>{element.status}</td>
@@ -186,6 +223,14 @@ const Dashboard: React.FC = () => {
       <td>{element.actions}</td>
     </tr>
   ));
+
+  const rightSection = (
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Kbd>Ctrl</Kbd>
+      <span style={{ margin: "0 5px" }}>+</span>
+      <Kbd>K</Kbd>
+    </div>
+  );
 
   return visible ? (
     <LoadingOverlay visible={visible} />
@@ -208,37 +253,55 @@ const Dashboard: React.FC = () => {
       }
       footer={<RoiFooter />}
     >
-      <div className={classes.body}>
-        <div className={classes.welcome}>
+      <Modal
+        opened={opened}
+        onClose={() => {
+          setOpen((prev) => !prev);
+          setRating(0)
+        }}
+        title="Importance Modal"
+      >
+        <Rating onClick={handleRating} ratingValue={rating} /* Available Props */ />
+      </Modal>
+      <Grid justify="space-between">
+        <Grid.Col span={2}>
           <Welcome
             name={data?.welcome.account_name}
             active_roi={data?.welcome.active_roi}
             current_roi={data?.welcome.current_roi}
           />
           <ViewCount viewcount={data?.viewcount} />
-        </div>
-        <div className={classes.dashboard_graph}>
+        </Grid.Col>
+        <Grid.Col span={6}>
           <DashboardGraph chartData={data?.chart} />
-        </div>
-        <div className={classes.welcome}>
+        </Grid.Col>
+        <Grid.Col span={3}>
           <CreateNewRoi />
           <RoiRanking rankings={data?.ranking} />
-        </div>
-      </div>
-      <div className={classes.bar_graph_wrapper}>
+        </Grid.Col>
+      </Grid>
+      <div className={classes.table}>
         <Text size="lg">My ROIs</Text>
-        <Select
-          style={{ width: 150 }}
-          placeholder="Template"
-          data={[
-            { value: "Template 1", label: "Template 1" },
-            { value: "Template 2", label: "Template 2" },
-            { value: "Template 3", label: "Template 3" },
-            { value: "Template 4", label: "Template 4" },
-            { value: "Template 5", label: "Template 5" },
-            { value: "Template 6", label: "Template 6" },
-          ]}
-        />
+        <Grid justify="space-between" align="center">
+          <Select
+            style={{ width: 150 }}
+            placeholder="Template"
+            data={[
+              { value: "Template 1", label: "Template 1" },
+              { value: "Template 2", label: "Template 2" },
+              { value: "Template 3", label: "Template 3" },
+              { value: "Template 4", label: "Template 4" },
+              { value: "Template 5", label: "Template 5" },
+              { value: "Template 6", label: "Template 6" },
+            ]}
+          />
+          <TextInput
+            placeholder="Search"
+            icon={<AiOutlineSearch size={16} />}
+            rightSectionWidth={90}
+            styles={{ rightSection: { pointerEvents: "none" } }}
+          />
+        </Grid>
         <Table
           className={classes.table}
           horizontalSpacing="xl"
