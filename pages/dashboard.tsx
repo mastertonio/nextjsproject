@@ -3,10 +3,10 @@ import {
   AppShell,
   useMantineTheme,
   LoadingOverlay,
-  Table,
-  Button,
   Select,
   Text,
+  TextInput,
+  Grid
 } from "@mantine/core";
 import { useStyles } from "../styles/dashboardStyle";
 import axios from "axios";
@@ -19,8 +19,8 @@ import ViewCount from "../app/dashboard/components/ViewCount";
 import CreateNewRoi from "../app/dashboard/components/CreateNewRoi";
 import RoiRanking from "../app/dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
-import { AiOutlineStar } from "react-icons/ai";
-import { showNotification } from "@mantine/notifications";
+import Row from "../app/core/components/data-grid/Row";
+import DataGrid from "../app/core/components/data-grid/DataGrid";
 
 const Dashboard: React.FC = () => {
   const theme = useMantineTheme();
@@ -28,7 +28,6 @@ const Dashboard: React.FC = () => {
   const [data, setData] = useState<any>();
   const [value] = useLocalStorage({ key: "auth-token" });
   const [visible, setVisible] = useState(true);
-  const [opened, setOpen] = useState(false);
 
   useEffect(() => {
     const getDashboardData = async () => {
@@ -46,146 +45,11 @@ const Dashboard: React.FC = () => {
           setVisible(false);
         }
       } catch (error) {
-        console.log(error);
+        console.log(error,'rarara');
       }
     };
-
     getDashboardData();
   }, []);
-
-  const button = (
-    <Button
-      size="xs"
-      onClick={() =>
-        showNotification({
-          title: "You clicked Open button",
-          message: "Hey there, your code is awesome! 🤥",
-          autoClose: 1000,
-          disallowClose: true,
-          color: "blue",
-        })
-      }
-    >
-      Open
-    </Button>
-  );
-
-  const dropdown = (
-    <Select
-      style={{ width: 150 }}
-      placeholder="Active"
-      data={[
-        { value: "Active", label: "Active" },
-        { value: "Inactive", label: "Inactive" },
-      ]}
-    />
-  );
-
-  const stars = (
-    <div>
-      <AiOutlineStar />
-      <AiOutlineStar />
-      <AiOutlineStar />
-      <AiOutlineStar />
-      <AiOutlineStar />
-    </div>
-  );
-
-  const threeButtons = (
-    <div>
-      <Button
-        size="xs"
-        onClick={() =>
-          showNotification({
-            title: "You clicked Edit button",
-            message: "Hey there, your code is awesome! 🤥",
-            autoClose: 1000,
-            disallowClose: true,
-            color: "gray",
-          })
-        }
-      >
-        Edit
-      </Button>
-      <Button
-        size="xs"
-        color="teal"
-        style={{ marginLeft: 2, marginRight: 2 }}
-        onClick={() =>
-          showNotification({
-            title: "You clicked Clone button",
-            message: "Hey there, your code is awesome! 🤥",
-            autoClose: 1000,
-            disallowClose: true,
-            color: "teal",
-          })
-        }
-      >
-        Clone
-      </Button>
-      <Button
-        size="xs"
-        color="red"
-        onClick={() =>
-          showNotification({
-            title: "You clicked Delete button",
-            message: "Hey there, your code is awesome! 🤥",
-            autoClose: 1000,
-            disallowClose: true,
-            color: "red",
-          })
-        }
-      >
-        Delete
-      </Button>
-    </div>
-  );
-
-  const elements = [
-    {
-      button: button,
-      status: dropdown,
-      importance: stars,
-      roiname: "Sample template 1",
-      dates: "2022-05-05T09:32:24.605+00:00",
-      views: 0,
-      uniqueViews: 0,
-      actions: threeButtons,
-    },
-    {
-      button: button,
-      status: dropdown,
-      importance: stars,
-      roiname: "Sample template 2",
-      dates: "2022-05-05T10:32:24.605+00:00",
-      views: 1,
-      uniqueViews: 1,
-      actions: threeButtons,
-    },
-    {
-      button: button,
-      status: dropdown,
-      importance: stars,
-      roiname: "Sample template 3",
-      dates: "2022-05-05T10:32:24.605+00:00",
-      views: 2,
-      uniqueViews: 2,
-      actions: threeButtons,
-    }
-  ];
-
-  const rows = elements.map((element) => (
-    <tr key={element.roiname}>
-      <td>{element.button}</td>
-      <td>{element.status}</td>
-      <td>{element.importance}</td>
-      <td>{element.roiname}</td>
-      <td>{element.dates}</td>
-      <td>{element.views}</td>
-      <td>{element.uniqueViews}</td>
-      <td>{element.actions}</td>
-    </tr>
-  ));
 
   return visible ? (
     <LoadingOverlay visible={visible} />
@@ -210,13 +74,16 @@ const Dashboard: React.FC = () => {
     >
       <div className={classes.body}>
         <div className={classes.welcome}>
+      <Grid justify="space-between">
+        <Grid.Col span={2}>
           <Welcome
             name={data?.welcome.account_name}
             active_roi={data?.welcome.active_roi}
             current_roi={data?.welcome.current_roi}
           />
           <ViewCount viewcount={data?.viewcount} />
-        </div>
+        </Grid.Col>
+        </Grid>
         <div className={classes.dashboard_graph}>
           <DashboardGraph chartData={data?.chart} />
         </div>
@@ -225,40 +92,26 @@ const Dashboard: React.FC = () => {
           <RoiRanking rankings={data?.ranking} />
         </div>
       </div>
-      <div className={classes.bar_graph_wrapper}>
+      <div>
         <Text size="lg">My ROIs</Text>
         <Select
           style={{ width: 150 }}
           placeholder="Template"
-          data={[
-            { value: "Template 1", label: "Template 1" },
-            { value: "Template 2", label: "Template 2" },
-            { value: "Template 3", label: "Template 3" },
-            { value: "Template 4", label: "Template 4" },
-            { value: "Template 5", label: "Template 5" },
-            { value: "Template 6", label: "Template 6" },
-          ]}
+          data={[]}
         />
-        <Table
-          className={classes.table}
-          horizontalSpacing="xl"
-          verticalSpacing="xs"
-          highlightOnHover
-        >
-          <thead>
-            <tr>
-              <th> </th>
-              <th>Status</th>
-              <th>Importance</th>
-              <th>ROI name</th>
-              <th>Dates</th>
-              <th>Views</th>
-              <th>Unique Views</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
+        <Grid justify="space-between" align="center">
+          <Select
+              style={{ width: 150 }}
+              placeholder="Template" data={[]}          />
+          <TextInput
+            placeholder="Search"
+            rightSectionWidth={90}
+            styles={{ rightSection: { pointerEvents: "none" } }}
+          />
+        </Grid>
+        {/* <DataGrid /> */}
+        <Row />
+      </div>
       </div>
     </AppShell>
   );

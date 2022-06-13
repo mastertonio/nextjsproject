@@ -20,6 +20,6 @@
       "@components": ["./app/core/components"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "app/core/components/data-grid/DataGrid.js", "app/core/components/data-grid/components/ReactTable/index.js", "app/core/components/data-grid/components/ReactTable/filterTypes.js"],
   "exclude": ["node_modules"]
 }
