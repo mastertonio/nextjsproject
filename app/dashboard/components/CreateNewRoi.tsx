@@ -1,18 +1,19 @@
 import { useState } from "react";
-import { Modal, Button, Group } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
+import NewRoiModal from "./NewRoiModal";
 
 const CreateNewRoi: React.FC = () => {
   const [opened, setOpened] = useState(false);
 
   return (
     <>
-      <Modal
+      <NewRoiModal
+        ModalTitle="Fill up form here"
+        onClose={() => {
+          setOpened((prev) => !prev);
+        }}
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="Fill up form here"
-      >
-        {/* Modal content */}
-      </Modal>
+      ></NewRoiModal>
 
       <Group position="center">
         <Button onClick={() => setOpened(true)}>Create New ROI</Button>
