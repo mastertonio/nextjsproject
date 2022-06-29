@@ -14,12 +14,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
     "paths": {
-      "@": ["./app"],
-      "@/*": ["./app/*"],
-      "@components": ["./app/core/components"]
+      "@redux/*": ["app/redux/*"],
+      "@dashboard/*": ["app/dashboard/*"],
+      "@core/*": ["app/core/*"],
+      "@styles/*": ["styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "app/core/components/data-grid/DataGrid.js", "app/core/components/data-grid/components/ReactTable/index.js", "app/core/components/data-grid/components/ReactTable/filterTypes.js"],
   "exclude": ["node_modules"]
 }

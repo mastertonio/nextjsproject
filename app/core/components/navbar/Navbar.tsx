@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { useStyles } from "./navStyle"
+import { useStyles } from "@styles/navStyle"
 import AdminList, { IAdminListProps } from "./components/AdminList";
 import PoweredByRoi from "./components/PoweredByRoi";
 import ActionList from "./components/ActionList"
