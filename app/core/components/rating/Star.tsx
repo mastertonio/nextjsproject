@@ -1,4 +1,4 @@
-import { Modal } from "@mantine/core";
+import { Modal, Text } from "@mantine/core";
 import { useState } from "react";
 import { Rating } from 'react-simple-star-rating'
 
@@ -19,6 +19,7 @@ const StarRating: React.FC = () => {
         }}
         title="Importance Modal"
       >
+        
           <Rating onClick={handleRating} ratingValue={rating} /* Available Props */ />
       </Modal>
     )
