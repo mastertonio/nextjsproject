@@ -1,6 +1,6 @@
 import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useStyles } from "../navStyle";
+import { useStyles } from "@styles/navStyle";
 
 type iAdminData = {
   uid?: string,
