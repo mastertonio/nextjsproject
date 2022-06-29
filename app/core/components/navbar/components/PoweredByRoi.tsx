@@ -1,5 +1,5 @@
 import { Text } from "@mantine/core";
-import { useStyles } from "../navStyle";
+import { useStyles } from "@styles/navStyle";
 
 const PoweredByRoi: React.FC = () => {
   const { classes } = useStyles();

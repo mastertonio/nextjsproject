@@ -1,6 +1,6 @@
-import { AutocompleteItem, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useStyles } from "../navStyle";
+import { useStyles } from "@styles/navStyle";
 
 type iAdminData = {
   uid?: string,
@@ -22,10 +22,6 @@ const AdminList: React.FC<IAdminListProps> = ({ admin }) => {
   const handleChange = (event: any) => {
     setValues(event);
   };
-
-  useEffect(() => {
-    console.log("the value has changed", values);
-  }, [values]);
 
   return (
     <Select

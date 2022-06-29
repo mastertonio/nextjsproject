@@ -15,15 +15,18 @@ import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "../app/context/jwtContext";
 import { useLocalStorage } from "@mantine/hooks";
+import { loginAsync, login, selectUser } from "@redux/reducers/user/userSlice"
+import { useAppDispatch, useAppSelector} from "@redux/store"
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const router = useRouter();
-  const { state, dispatch } = useUser();
+  // const { state, dispatch } = useUser();
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
+  const dispatch = useAppDispatch()
+  const user = useAppSelector(selectUser)
 
   const form = useForm({
     initialValues: {
@@ -44,34 +47,26 @@ const Home: React.FC = () => {
         email: values.email,
         password: values.password,
       };
-
       const res = await axios.post(
         "http://54.159.8.194/v1/auth/login",
         payload
       );
       if (res) {
-        console.log(res);
-        console.log(
-          res.data.tokens.access.token,
-          "res.data.tokens.access.token"
-        );
         setValue(res.data.tokens.access.token);
-        dispatch({
-          type: "LOAD_TOKEN",
-          token: value,
-        });
-        router.push("/dashboard");
+        dispatch(login(res.data.user));
+        router.push(`/dashboard/${res.data.user.id}`);
       }
-
       // router.push("/awdwa");
     } catch (error) {
+      console.log(error)
       return error;
     }
   };
 
   useEffect(() => {
-    console.log(state, "test1");
-  }, [state]);
+    console.log(user.user, "test1")
+    console.log(user, "test1")
+  }, [user]);
 
   return (
     <div

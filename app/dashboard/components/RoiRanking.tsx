@@ -1,9 +1,11 @@
-import { useState } from "react";
+import short from "short-uuid";
 import { Table } from "@mantine/core";
+import { useState } from "react";
 
 interface IRankCount {
-  account_name: string;
-  rois: number;
+  _id: string;
+  name: string;
+  totalROIS: number;
 }
 
 export interface IRankCountProps {
@@ -11,18 +13,26 @@ export interface IRankCountProps {
 }
 
 const RoiRanking: React.FC<IRankCountProps> = ({ rankings }) => {
-  const elements = rankings?.sort((a, b) => b.rois - a.rois);
-
-  const rows = elements?.map((element) => (
-    <tr key={element.account_name}>
-      <td>{element.account_name}</td>
-      <td>{element.rois}</td>
+  const elements = rankings?.sort((a, b) => b.totalROIS - a.totalROIS);
+  const [rank, setRank] = useState<number>(0)
+  const rows = elements?.map((element, index) => (
+    <tr key={element._id}>
+      <td>{index + 1}</td>
+      <td>{element.name}</td>
+      <td>{element.totalROIS}</td>
     </tr>
   ));
 
   return (
     <>
       <Table>
+        <thead>
+          <tr>
+            <th>Ranking</th>
+            <th>Name</th>
+            <th>ROIS</th>
+          </tr>
+        </thead>
         <tbody>{rows}</tbody>
       </Table>
     </>

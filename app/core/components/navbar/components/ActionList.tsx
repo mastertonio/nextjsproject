@@ -1,11 +1,12 @@
 import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useStyles } from "../navStyle";
+import short from "short-uuid";
+import { useStyles } from "@styles/navStyle";
 import { IAdminListProps } from "./AdminList";
 
 const ActionList: React.FC<IAdminListProps> = ({ actions }) => {
   const { classes } = useStyles();
-  const actionList = actions?.map((a)=> a.name);
+  const actionList = actions?.map((a)=> ({key: short.generate(),value: a.name, label: a.name}));
   const [values, setValues] = useState<any>('');
 
   const handleChange = (event: any) => {
