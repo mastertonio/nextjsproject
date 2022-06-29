@@ -45,11 +45,17 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
 
   dashboard_graph: {
     placeSelf: "center",
-    height: 450,
-    width: 900
+    height: 350,
+    width: 750
   },
 
   welcome: {
+    display: "flex",
+    flexDirection: "column",
+    width: "3/12"
+  },
+
+  roi_ranking: {
     display: "flex",
     flexDirection: "column",
   },
