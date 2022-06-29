@@ -64,7 +64,6 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(user.user, "test1")
     console.log(user, "test1")
   }, [user]);
 

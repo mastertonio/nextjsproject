@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import counterReducer from './reducers/counter/counterSlice'
-import userReducer from './reducers/user/userSlice'
+import userReducer from '@redux/reducers/user/userSlice'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export const makeStore = () => {

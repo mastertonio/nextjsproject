@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useStyles } from "@styles/dashboardStyle";
 import { useRouter } from "next/router";
 import EditButton from "./buttons/EditButton";
-import DeleteButton from "./buttons/CloneButton";
-import CloneButton from "./buttons/DeleteButton";
+import DeleteButton from "./buttons/DeleteButton";
+import CloneButton from "./buttons/CloneButton";
 import { AiOutlineFolderOpen } from "react-icons/ai";
 
 export interface iDashRowProp {
@@ -43,7 +43,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
 
   useEffect(()=> {
     
-  },[fetching])
+  },[my_roi])
 
   const myroi = my_roi?.map(
     ({
@@ -83,8 +83,8 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
       actions: (
         <>
           <EditButton id={id} setFetching={setFetching}/>
-          <DeleteButton />
           <CloneButton />
+          <DeleteButton id={id} setFetching={setFetching}/>
         </>
       ),
       source,

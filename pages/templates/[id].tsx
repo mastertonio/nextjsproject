@@ -65,7 +65,7 @@ const Templates: React.FC = () => {
         </Header>
       }
     >
-      <Text>Welcome {user.user?.name} your template id is {p.id}</Text>
+      <Text>Welcome! your template id is {p.id}</Text>
     </AppShell>
   );
 }

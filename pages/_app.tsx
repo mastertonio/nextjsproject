@@ -5,15 +5,22 @@ import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { Provider } from "react-redux";
 import store from "@redux/store";
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <Provider store={store}>
       <MantineProvider>
         <NotificationsProvider>
-          {/* <UserProvider> */}
-            <Component {...pageProps} />
-          {/* </UserProvider> */}
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              {/* <UserProvider> */}
+              <Component {...pageProps} />
+              {/* </UserProvider> */}
+            </Hydrate>
+          </QueryClientProvider>
         </NotificationsProvider>
       </MantineProvider>
     </Provider>

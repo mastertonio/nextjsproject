@@ -6,12 +6,12 @@ import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 
-interface IEditRoiNameProps {
+export interface IButtonRoiNameProps {
   id: string;
   setFetching: (fetch: boolean)=> void
 }
 
-const EditButton: React.FC<IEditRoiNameProps> = ({ id , setFetching}) => {
+const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
