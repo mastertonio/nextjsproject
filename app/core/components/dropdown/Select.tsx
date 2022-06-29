@@ -1,4 +1,4 @@
-import { Modal, Select } from "@mantine/core";
+import { Modal, Select, Text } from "@mantine/core";
 import { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
@@ -25,8 +25,9 @@ const SelectDropdown: React.FC = () => {
           setOpen((prev) => !prev);
           setRating(0);
         }}
-        title="Importance Modal"
+        title="Please Rate how useful this tool was in the process"
       >
+        <Text> </Text>
         <Rating
           onClick={handleRating}
           ratingValue={rating} /* Available Props */

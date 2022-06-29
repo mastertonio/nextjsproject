@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { useStyles } from "../../../styles/dashboardStyle";
+import { useStyles } from "@styles/dashboardStyle";
 
 ChartJS.register(
   CategoryScale,
@@ -55,7 +55,20 @@ const DashboardGraph: React.FC<IDashboardGraphData> = ({ chartData }) => {
 
   const labels = chartData
     ? chartData.xAxis.categories
-    : ["January", "February", "March", "April", "May", "June", "July"];
+    : [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
 
   const data = {
     labels,
@@ -64,8 +77,11 @@ const DashboardGraph: React.FC<IDashboardGraphData> = ({ chartData }) => {
         label: chartData ? chartData.series[0].name : "ROI Created",
         data: chartData
           ? chartData.series[0].data
-          : [400, 450, 550, 450, 650, 600, 730, 300],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+          : [
+              49.9, 71.5, 106.4, 129.2, 144, 176, 135.6, 148.5, 216.4, 194.1,
+              95.6, 54.4,
+            ],
+        backgroundColor: "rgba(53, 162, 235, 0.5)"
       },
     ],
   };
