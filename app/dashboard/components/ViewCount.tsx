@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Collapse, Table } from "@mantine/core";
+import short from "short-uuid"
 
 interface iViewCount {
   roi_name: string;
@@ -16,7 +17,7 @@ const ViewCount: React.FC<IViewCountProps> = ({ viewcount}) => {
   const elements = viewcount?.sort((a,b)=> b.count - a.count)
 
   const rows = elements?.map((element) => (
-    <tr key={element.roi_name}>
+    <tr key={short.generate()}>
       <td>{element.roi_name}</td>
       <td>{element.count}</td>
     </tr>
