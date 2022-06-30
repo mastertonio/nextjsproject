@@ -15,14 +15,12 @@ import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "../app/context/jwtContext";
 import { useLocalStorage } from "@mantine/hooks";
 
 const ForgotPassword: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const router = useRouter();
-  const { state, dispatch } = useUser();
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
 
   const form = useForm({
@@ -47,10 +45,6 @@ const ForgotPassword: React.FC = () => {
       if (res) {
         console.log(res);
         setValue(res.data.tokens.access.token);
-        dispatch({
-          type: "LOAD_TOKEN",
-          token: value,
-        });
         router.push("/");
       }
 
@@ -60,9 +54,6 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(state, "test1");
-  }, [state]);
 
   return (
     <div

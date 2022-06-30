@@ -1,7 +1,7 @@
 import { Button, Table } from "@mantine/core";
 import SelectDropdown from "@core/components/dropdown/Select";
 import { Rating } from "react-simple-star-rating";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useStyles } from "@styles/dashboardStyle";
 import { useRouter } from "next/router";
 import EditButton from "./buttons/EditButton";
@@ -22,9 +22,10 @@ export interface iDashRowProp {
 
 export interface iDashboardRowProps {
   my_roi: iDashRowProp[] | null;
+  setData?: (prevState: SetStateAction<any>) => any
 }
 
-const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
+const Row: React.FC<iDashboardRowProps> = ({ my_roi , setData}) => {
   const [rating, setRating] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [fetching, setFetching] = useState<boolean>(false)

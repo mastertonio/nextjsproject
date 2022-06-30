@@ -1,6 +1,5 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { UserProvider } from "../app/context/jwtContext";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 import { Provider } from "react-redux";
@@ -8,8 +7,9 @@ import store from "@redux/store";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
 
+const queryClient = new QueryClient()
+
 function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient());
   return (
     <Provider store={store}>
       <MantineProvider>

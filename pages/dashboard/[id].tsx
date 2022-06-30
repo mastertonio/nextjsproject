@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
-import short from "short-uuid";
+import { useQuery } from "react-query"
 
 import RoiNavbar from "@core/components/navbar/Navbar";
 import RoiFooter from "@core/components/footer/Footer";
@@ -29,45 +29,47 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const [data, setData] = useState<any>();
   const [value] = useLocalStorage({ key: "auth-token" });
-  const [visible, setVisible] = useState(true);
   const user = useAppSelector(selectUser);
-
-  useEffect(() => {
-    if (router.isReady) {
-      const p = router.query;
-      const getDashboardData = async () => {
-        try {
-          const res = await axios.get(
-            `http://54.159.8.194/v1/dashboard/${p.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${value}`,
-              },
-            }
-          );
-          if (res) {
-            setData(res?.data);
-            setVisible(false);
-          }
-        } catch (error) {
-          console.log(error, "rarara");
+  const p = router.query;
+  
+  const getDashboardData = async () => {
+    try {
+      const res = await axios.get(
+        `http://54.159.8.194/v1/dashboard/${p.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
         }
-      };
-      getDashboardData();
+      );
+
+      return res.data
+    } catch (error) {
+      console.log(error, "rarara");
     }
-  }, [user, router.isReady]);
+  };
+
+
+  const { isLoading, error, data, isFetching} = useQuery("dashboardData", getDashboardData)
+  // useEffect(() => {
+  //   if (router.isReady) {
+      
+  //     getDashboardData();
+  //   }
+  // }, [user, router.isReady]);
 
   const dataTemp = data?.my_roi?.map((element: { id: any; name: string }) => ({
-    key: short.generate(),
+    key: element.id,
     value: element.id,
     label: element.name,
   }));
 
-  return visible ? (
-    <LoadingOverlay visible={visible} />
-  ) : (
+  if (isLoading) return (<LoadingOverlay visible={isLoading} />);
+
+  // if (error) return "An error has occurred: " + error;
+
+  return (
     <AppShell
       styles={{
         main: {
