@@ -23,15 +23,19 @@ export interface iDashRowProp {
 export interface iDashboardRowProps {
   my_roi: iDashRowProp[] | null;
   setData?: (prevState: SetStateAction<any>) => any
+  fetching: boolean
 }
 
-const Row: React.FC<iDashboardRowProps> = ({ my_roi , setData}) => {
+const Row: React.FC<iDashboardRowProps> = ({ my_roi , setData, fetching}) => {
   const [rating, setRating] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
-  const [fetching, setFetching] = useState<boolean>(false)
+  const [status, setStatus] = useState<boolean>(false)
   const { classes } = useStyles();
   const router = useRouter();
 
+  useEffect(()=>{
+    console.log(status, 'status')
+  },[status])
   const handleRating = (rate: number) => {
     setRating(rate);
   };
@@ -41,10 +45,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi , setData}) => {
   }) => {
     setSearch(event.target.value);
   };
-
-  useEffect(()=> {
-    
-  },[my_roi])
 
   const myroi = my_roi?.map(
     ({
@@ -62,30 +62,31 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi , setData}) => {
       button: (
         <Button
           leftIcon={<AiOutlineFolderOpen />}
-          children="Open"
           color="blue"
           onClick={() => {
             router.push(`/templates/${id}`);
           }}
-        />
+        >Open</Button>
       ),
-      status: <SelectDropdown />,
-      importance: (
+      status: <SelectDropdown status={status} setStatus={setStatus} rating={rating} setRating={setRating} id={id}/>,
+      importance: status ? (
         <Rating
           initialValue={importance}
-          onClick={handleRating}
+          size={20}
+          allowHover={status}
+          onClick={setRating}
           ratingValue={rating} /* Available Props */
         />
-      ),
+      ) : <Rating ratingValue={0} size={20}/>,
       roiname: name,
       dates: dateCreated,
       views,
       uniqueViews,
       actions: (
         <>
-          <EditButton id={id} setFetching={setFetching}/>
-          <CloneButton />
-          <DeleteButton id={id} setFetching={setFetching}/>
+          <EditButton id={id} />
+          <CloneButton id={id} name={name}/>
+          <DeleteButton id={id} />
         </>
       ),
       source,
