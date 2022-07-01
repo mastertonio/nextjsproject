@@ -8,7 +8,8 @@ import { useRouter } from "next/router";
 
 export interface IButtonRoiNameProps {
   id: string;
-  setFetching: (fetch: boolean)=> void
+  setFetching?: (fetch: boolean)=> void
+  name?: string
 }
 
 const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
@@ -25,11 +26,9 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      setFetching(true)
       const response = await axios.patch(
         `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, { title: values.title }, { headers: { Authorization: `Bearer ${value}` }}
       );
-      setFetching(false)
       // router.push("/awdwa");
     } catch (error) {
       console.log(error);
