@@ -25,6 +25,8 @@ const Home: React.FC = () => {
   const router = useRouter();
   // const { state, dispatch } = useUser();
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
+  const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
 
@@ -53,6 +55,9 @@ const Home: React.FC = () => {
       );
       if (res) {
         setValue(res.data.tokens.access.token);
+        setRefresh(res.data.tokens.refresh.token)
+        sessionStorage.setItem('auth-token', value)
+        setCurrent(res.data.user.id)
         dispatch(login(res.data.user));
         router.push(`/dashboard/${res.data.user.id}`);
       }
