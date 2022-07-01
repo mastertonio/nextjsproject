@@ -2,15 +2,23 @@ import { Modal, Select, Text } from "@mantine/core";
 import { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
-const SelectDropdown: React.FC = () => {
+export interface IStarProps {
+  status: boolean;
+  setStatus: (status: boolean) => void;
+  rating: number;
+  setRating: (rating: number) => void;
+  id: string
+}
+
+const SelectDropdown: React.FC<IStarProps> = ({ status, setStatus, rating, setRating}) => {
   const [opened, setOpen] = useState(false);
-  const [rating, setRating] = useState<number>(0);
 
   const handleChange = (event: React.SetStateAction<string | null>) => {
-    if (event === "Closed Won") {
+    if (event == "1") {
       setOpen(true);
+      setStatus(true);
     }
-    console.log(event, "eveeent");
+    console.log(status, "eveeent");
   };
 
   const handleRating = (rate: number) => {
@@ -23,7 +31,6 @@ const SelectDropdown: React.FC = () => {
         opened={opened}
         onClose={() => {
           setOpen((prev) => !prev);
-          setRating(0);
         }}
         title="Please Rate how useful this tool was in the process"
       >
@@ -35,11 +42,11 @@ const SelectDropdown: React.FC = () => {
       </Modal>
       <Select
         style={{ width: 150 }}
-        defaultValue="Active"
+        defaultValue="0"
         data={[
-          { value: "Active", label: "Active" },
-          { value: "Closed Won", label: "Closed Won" },
-          { value: "Closed Lost", label: "Closed Lost" },
+          { value: "0", label: "Active" },
+          { value: "1", label: "Closed Won" },
+          { value: "2", label: "Closed Lost" },
         ]}
         onChange={(event) => handleChange(event)}
       />

@@ -1,8 +1,9 @@
 import { Modal, Text } from "@mantine/core";
 import { useState } from "react";
 import { Rating } from 'react-simple-star-rating'
+import { IStarProps } from "../dropdown/Select";
 
-const StarRating: React.FC = () => {
+const StarRating: React.FC<IStarProps> = ({ setStatus, status }) => {
   const [rating, setRating] = useState<number>(0)
   const [opened, setOpen] = useState(false);
 
@@ -20,7 +21,7 @@ const StarRating: React.FC = () => {
         title="Importance Modal"
       >
         
-          <Rating onClick={handleRating} ratingValue={rating} /* Available Props */ />
+          <Rating readonly={true} onClick={handleRating} ratingValue={rating} size={10}/* Available Props */ />
       </Modal>
     )
 }
