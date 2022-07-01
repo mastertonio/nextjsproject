@@ -9,11 +9,11 @@ import {
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
-// import {
-//   GetServerSideProps,
-//   GetServerSidePropsContext,
-//   InferGetServerSidePropsType,
-// } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
 import RoiFooter from "@core/components/footer/Footer";
@@ -25,18 +25,19 @@ import RoiRanking from "@dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
-// {dta}: InferGetServerSidePropsType<typeof getServerSideProps>
-const Dashboard: React.FC = () => {
+//
+const Dashboard: React.FC = ({
+  dta,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
   const [intervalMs, setIntervalMs] = useState(1000);
-  const p = router.query;
 
   const getDashboardData = async () => {
     try {
-      const res = await axios.get(`http://54.159.8.194/v1/dashboard/${p.id}`, {
+      const res = await axios.get(`http://54.159.8.194/v1/dashboard/${dta}`, {
         headers: {
           Authorization: `Bearer ${value}`,
         },
@@ -106,29 +107,35 @@ const Dashboard: React.FC = () => {
       </div>
       <div className={classes.bar_graph_wrapper}>
         <Text size="lg">My ROIs</Text>
-        <Select style={{ width: 150 }} placeholder="Filter" searchable defaultValue={''} clearable data={dataTemp} />
+        <Select
+          style={{ width: 150 }}
+          placeholder="Filter"
+          searchable
+          defaultValue={""}
+          clearable
+          data={dataTemp}
+        />
         <Row my_roi={data?.my_roi} fetching={isFetching} />
       </div>
     </AppShell>
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-//   // console.log(context, "qqqq");
-//   // const user = sessionStorage.getItem('auth-token')
-//   // const res = await axios.get(`http://54.159.8.194/v1/dashboard/${context.query.id}`, {
-//   //   headers: {
-//   //     Authorization: `Bearer ${user}`,
-//   //   },
-//   // });
+const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const user = context.query.id
+  // const res = await axios.get(`http://54.159.8.194/v1/dashboard/${context.query.id}`, {
+  //   headers: {
+  //     Authorization: `Bearer ${user}`,
+  //   },
+  // });
 
-//   return {
-//     props: {
-//       dta: 'res.data',
-//     },
-//   };
-// };
+  return {
+    props: {
+      dta: user,
+    },
+  };
+};
 
 export default Dashboard;
