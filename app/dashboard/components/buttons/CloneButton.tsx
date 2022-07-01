@@ -14,7 +14,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name}) => {
   const handleSubmit = async () => {
     try {
       await axios.post(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, { title: name }, { headers: { Authorization: `Bearer ${value}` }}
+        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, { title: name+" cloned" }, { headers: { Authorization: `Bearer ${value}` }}
       );
       // router.push("/awdwa");
     } catch (error) {
