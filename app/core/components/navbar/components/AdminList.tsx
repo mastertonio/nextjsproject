@@ -5,7 +5,7 @@ import { useStyles } from "@styles/navStyle";
 type iAdminData = {
   uid?: string,
   name: string
-  id?: string
+  id: string
 }
 
 export interface IAdminListProps {
