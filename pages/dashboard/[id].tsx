@@ -5,12 +5,15 @@ import {
   LoadingOverlay,
   Select,
   Text,
-  TextInput,
-  Grid,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
-import { useQuery } from "react-query"
+import { useQuery } from "react-query";
+// import {
+//   GetServerSideProps,
+//   GetServerSidePropsContext,
+//   InferGetServerSidePropsType,
+// } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
 import RoiFooter from "@core/components/footer/Footer";
@@ -21,43 +24,38 @@ import CreateNewRoi from "@dashboard/components/CreateNewRoi";
 import RoiRanking from "@dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
-import { selectUser } from "@redux/reducers/user/userSlice";
-import { useAppSelector } from "@redux/store";
 import { useRouter } from "next/router";
-
+// {dta}: InferGetServerSidePropsType<typeof getServerSideProps>
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
-  const user = useAppSelector(selectUser);
+  const [intervalMs, setIntervalMs] = useState(1000);
   const p = router.query;
-  
+
   const getDashboardData = async () => {
     try {
-      const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/${p.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
+      const res = await axios.get(`http://54.159.8.194/v1/dashboard/${p.id}`, {
+        headers: {
+          Authorization: `Bearer ${value}`,
+        },
+      });
 
-      return res.data
+      return res.data;
     } catch (error) {
       console.log(error, "rarara");
     }
   };
 
-
-  const { isLoading, error, data, isFetching} = useQuery("dashboardData", getDashboardData)
-  // useEffect(() => {
-  //   if (router.isReady) {
-      
-  //     getDashboardData();
-  //   }
-  // }, [user, router.isReady]);
+  const { isLoading, status, data, isFetching } = useQuery(
+    "dashboardData",
+    getDashboardData,
+    {
+      // Refetch the data every second
+      refetchInterval: intervalMs,
+    }
+  );
 
   const dataTemp = data?.my_roi?.map((element: { id: any; name: string }) => ({
     key: element.id,
@@ -65,7 +63,8 @@ const Dashboard: React.FC = () => {
     label: element.name,
   }));
 
-  if (isLoading) return (<LoadingOverlay visible={isLoading} />);
+  if (isLoading)
+    return <LoadingOverlay visible={router.isReady && isLoading} />;
 
   // if (error) return "An error has occurred: " + error;
 
@@ -101,17 +100,35 @@ const Dashboard: React.FC = () => {
           <DashboardGraph chartData={data?.chart} />
         </div>
         <div className={classes.roi_ranking}>
-          <CreateNewRoi my_roi={dataTemp} />
+          <CreateNewRoi actions={data?.template_list} />
           <RoiRanking rankings={data?.ranking} />
         </div>
       </div>
       <div className={classes.bar_graph_wrapper}>
         <Text size="lg">My ROIs</Text>
-        <Select style={{ width: 150 }} placeholder="Template" data={dataTemp} />
-        <Row my_roi={data?.my_roi} />
+        <Select style={{ width: 150 }} placeholder="Filter" searchable defaultValue={''} clearable data={dataTemp} />
+        <Row my_roi={data?.my_roi} fetching={isFetching} />
       </div>
     </AppShell>
   );
 };
+
+// export const getServerSideProps: GetServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   // console.log(context, "qqqq");
+//   // const user = sessionStorage.getItem('auth-token')
+//   // const res = await axios.get(`http://54.159.8.194/v1/dashboard/${context.query.id}`, {
+//   //   headers: {
+//   //     Authorization: `Bearer ${user}`,
+//   //   },
+//   // });
+
+//   return {
+//     props: {
+//       dta: 'res.data',
+//     },
+//   };
+// };
 
 export default Dashboard;
