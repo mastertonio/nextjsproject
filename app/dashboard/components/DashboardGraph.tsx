@@ -43,6 +43,16 @@ const DashboardGraph: React.FC<IDashboardGraphData> = ({ chartData }) => {
   const chartOptions: Highcharts.Options = {
     chart: {
       type: "column",
+      width: 900,
+      height: null,
+    },
+    plotOptions: {
+      column: {
+        pointWidth: 20 //change column width -  the bars
+      },
+      area: {
+
+      }
     },
     title: {
       text: chartData ? chartData.title.text : "ROIs Created Past Year",
