@@ -37,27 +37,31 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   },
 
   body: {
-    display: "grid",
-    gridAutoFlow: 'column',
-    gap: 20,
-    paddingBottom: '24px'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: 'stretch',
+    justifyContent: "space-between",
+    height: '400px',
+    marginRight: 10,
+    marginLeft: 10
   },
 
   dashboard_graph: {
-    placeSelf: "center",
-    height: 350,
-    width: 750
+    placeSelf: "start",
+    height: "400px",
+    width: 900
   },
 
   welcome: {
     display: "flex",
     flexDirection: "column",
-    width: "3/12"
+    width: "400px"
   },
 
   roi_ranking: {
     display: "flex",
     flexDirection: "column",
+    width: "400px"
   },
 
   bar_graph_wrapper: {
