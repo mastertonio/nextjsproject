@@ -1,29 +1,40 @@
 import { Modal, Text } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import { Rating } from 'react-simple-star-rating'
+import { Rating } from "react-simple-star-rating";
 import { IStarProps } from "../dropdown/Select";
 
-const StarRating: React.FC<IStarProps> = ({ setStatus, status }) => {
-  const [rating, setRating] = useState<number>(0)
-  const [opened, setOpen] = useState(false);
+const StarRating: React.FC<IStarProps> = ({ id, refetch, importance, readOnly, rating, setStar, setRating, opened, cur_status, setOpened, size }) => {
+  const [value] = useLocalStorage({ key: "auth-token" });
+  const router = useRouter();
+  const p = router.query;
 
-  const handleRating = (rate: number) => {
-    setRating(rate)
-  }
+  const handleRate = async (rate: number) => {
+    try {
+      setOpened?.(false)
+      await axios.patch(
+        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
+        { importance: rate },
+        { headers: { Authorization: `Bearer ${value}` } }
+      );
+      refetch();
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+  return (
+    <Rating
+      readonly={readOnly}
+      fillColor="#000000"
+      initialValue={importance}
+      onClick={handleRate}
+      ratingValue={importance}
+      size={size ? size : 16} /* Available Props */
+    />
+  );
+};
 
-    return (
-        <Modal
-        opened={opened}
-        onClose={() => {
-          setOpen((prev) => !prev);
-          setRating(0)
-        }}
-        title="Importance Modal"
-      >
-        
-          <Rating readonly={true} onClick={handleRating} ratingValue={rating} size={10}/* Available Props */ />
-      </Modal>
-    )
-}
-
-export default StarRating
+export default StarRating;
