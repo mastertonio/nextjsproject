@@ -6,20 +6,15 @@ import { IAdminListProps } from "./AdminList";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
+import { ImProfile } from "react-icons/im";
+import { AiFillCaretDown } from "react-icons/ai";
 
-const ActionList: React.FC<IAdminListProps> = ({ actions }) => {
-  const { classes } = useStyles();
+const ActionList: React.FC<IAdminListProps> = () => {
   const router = useRouter();
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
   const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" })
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
-
-  const actionList = actions?.map((a) => ({
-    key: short.generate(),
-    value: a.name,
-    label: a.name,
-  }));
   const [values, setValues] = useState<any>("");
 
   const handleChange = (event: any) => {
@@ -47,25 +42,10 @@ const ActionList: React.FC<IAdminListProps> = ({ actions }) => {
   }, [values]);
 
   return (
-    <Menu control={<Button> Account </Button>} style={{ marginLeft: 10, marginRight: 5 }}>
-      <Menu.Label>Application</Menu.Label>
-      <Menu.Item onClick={()=> { router.push(`/user/${p.id}`)}}>Profile</Menu.Item>
-      {/* <Menu.Item></Menu.Item> */}
-      {/* <Menu.Item>Gallery</Menu.Item> */}
-      {/* <Menu.Item
-        rightSection={
-          <Text size="xs" color="dimmed">
-            ⌘K
-          </Text>
-        }
-      >
-        Search
-      </Menu.Item> */}
-
+    <Menu control={<Button leftIcon={<ImProfile />} rightIcon={<AiFillCaretDown />} variant="subtle" color="gray" size="lg" compact> Profile </Button>} style={{ marginLeft: 10, marginRight: 5 }}>
+      <Menu.Label>User Actions</Menu.Label>
+      <Menu.Item icon={<ImProfile />} onClick={()=> { router.push(`/user/${p.id}`)}}>Profile</Menu.Item>
       <Divider />
-
-      <Menu.Label>Danger zone</Menu.Label>
-      {/* <Menu.Item>Transfer my data</Menu.Item> */}
       <Menu.Item onClick={handleLogout} color="red">Logout</Menu.Item>
     </Menu>
   );
