@@ -31,5 +31,10 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   childrenSpacing: {
     marginLeft: 15,
     marginRight: 15
+  },
+
+  powered_by: {
+    display: "flex",
+    flexDirection: "row"
   }
 }));
