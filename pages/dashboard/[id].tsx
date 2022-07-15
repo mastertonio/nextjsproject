@@ -5,6 +5,9 @@ import {
   LoadingOverlay,
   Select,
   Text,
+  Input,
+  Grid,
+  MultiSelect,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
@@ -13,6 +16,8 @@ import {
   GetServerSideProps,
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
+  GetStaticPaths,
+  GetStaticPathsContext,
 } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
@@ -33,41 +38,48 @@ const Dashboard: React.FC = ({
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
-  const [intervalMs, setIntervalMs] = useState(1000);
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<string[]>([])
+  const p = router.query;
+
+  useEffect(() => {
+    console.log(dta);
+  }, [dta]);
 
   const getDashboardData = async () => {
     try {
-      const res = await axios.get(`http://54.159.8.194/v1/dashboard/${dta}`, {
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      });
-
+      const res = await axios.get(
+        `http://54.159.8.194/v1/dashboard/${current}`,
+        {
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
+        }
+      );
       return res.data;
     } catch (error) {
       console.log(error, "rarara");
     }
   };
 
-  const { isLoading, status, data, isFetching } = useQuery(
+  const { isLoading, status, data, isFetching, refetch } = useQuery(
     "dashboardData",
-    getDashboardData,
-    {
-      // Refetch the data every second
-      refetchInterval: intervalMs,
-    }
+    getDashboardData
   );
 
   const dataTemp = data?.my_roi?.map((element: { id: any; name: string }) => ({
     key: element.id,
-    value: element.id,
+    value: element.name,
     label: element.name,
   }));
 
+  useEffect(()=>{
+    console.log(filter)
+  },[filter])
+
   if (isLoading)
     return <LoadingOverlay visible={router.isReady && isLoading} />;
-
-  // if (error) return "An error has occurred: " + error;
 
   return (
     <AppShell
@@ -81,10 +93,10 @@ const Dashboard: React.FC = ({
       }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      className={classes.body}
+      className=""
       fixed
       header={
-        <RoiNavbar admin={data?.admin_list} actions={data?.template_list} />
+        <RoiNavbar admin={data?.admin_list} actions={data?.template_list}  refetch={refetch}/>
       }
       footer={<RoiFooter />}
     >
@@ -101,30 +113,59 @@ const Dashboard: React.FC = ({
           <DashboardGraph chartData={data?.chart} />
         </div>
         <div className={classes.roi_ranking}>
-          <CreateNewRoi actions={data?.template_list} />
+          <CreateNewRoi actions={data?.template_list} refetch={refetch} />
           <RoiRanking rankings={data?.ranking} />
         </div>
       </div>
       <div className={classes.bar_graph_wrapper}>
         <Text size="lg">My ROIs</Text>
-        <Select
-          style={{ width: 150 }}
-          placeholder="Filter"
-          searchable
-          defaultValue={""}
-          clearable
-          data={dataTemp}
+        <Grid style={{ margin: 20}}>
+          <MultiSelect
+            style={{ width: 450 }}
+            placeholder="Filter"
+            searchable
+            clearable
+            data={dataTemp ? dataTemp : []}
+            onChange={(event)=>{
+              setFilter(event)
+            }}
+          />
+          <Input
+            variant="default"
+            placeholder="Search for ROI"
+            style={{ marginLeft: 'auto'}}
+            onChange={(event: {
+              target: { value: React.SetStateAction<string> };
+            }) => {
+              setSearch(event.target.value);
+            }}
+          />
+        </Grid>
+        <Row
+          my_roi={data.my_roi}
+          refetch={refetch}
+          search={search}
+          filters={filter}
         />
-        <Row my_roi={data?.my_roi} fetching={isFetching} />
       </div>
     </AppShell>
   );
 };
 
+// const getStaticPaths: GetStaticPaths = async(context: GetStaticPathsContext)=> {
+//   return {
+//     paths: [
+//       { params: { id: 1 } }
+//     ],
+//     fallback: false
+//   };
+// }
+
 const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const user = context.query.id
+  console.log(context.req, "qqqq");
+  const user = context.query;
   // const res = await axios.get(`http://54.159.8.194/v1/dashboard/${context.query.id}`, {
   //   headers: {
   //     Authorization: `Bearer ${user}`,
