@@ -1,6 +1,7 @@
 import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useStyles } from "@styles/navStyle";
+import { AiFillCaretDown } from "react-icons/ai";
 
 type iAdminData = {
   uid?: string,
@@ -11,6 +12,7 @@ type iAdminData = {
 export interface IAdminListProps {
   admin?: iAdminData[]
   actions?: iAdminData[]
+  refetch: ()=> void
 }
 
 const AdminList: React.FC<IAdminListProps> = ({ admin }) => {
@@ -29,6 +31,7 @@ const AdminList: React.FC<IAdminListProps> = ({ admin }) => {
       nothingFound="No options"
       variant="filled"
       data={adminList ? adminList : []}
+      rightSection={<AiFillCaretDown />}
       styles={{
         wrapper: { color: "white" },
         dropdown: { color: "white" },
