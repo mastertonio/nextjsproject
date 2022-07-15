@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Button, Group, TextInput } from "@mantine/core";
+import { Modal, Button, Text, TextInput, Grid } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
@@ -8,11 +8,11 @@ import { useRouter } from "next/router";
 
 export interface IButtonRoiNameProps {
   id: string;
-  setFetching?: (fetch: boolean)=> void
-  name?: string
+  refetch: () => void;
+  name: string;
 }
 
-const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
+const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
@@ -27,9 +27,11 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
   const handleSubmit = async (values: typeof form.values) => {
     try {
       const response = await axios.patch(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, { title: values.title }, { headers: { Authorization: `Bearer ${value}` }}
+        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
+        { title: values.title },
+        { headers: { Authorization: `Bearer ${value}` } }
       );
-      // router.push("/awdwa");
+      refetch();
     } catch (error) {
       console.log(error);
       return error;
@@ -41,24 +43,49 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Fill up form here"
+        withCloseButton={false}
+        size="lg"
+        padding={0}
       >
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
-            required
-            label="Title"
-            placeholder="New Title Name"
-            {...form.getInputProps("title")}
-          />
-
-          <Button
-            type="submit"
-            radius="sm"
-            size="xs"
-            onClick={() => setOpened(false)}
+        <Text
+            weight={700}
+            color="gray"
+            style={{ padding: 30, marginBottom: 80, fontSize: 30, backgroundColor: "#073e52", color: "white" }}
+            align="center"
           >
-            Submit
-          </Button>
+            {name}
+          </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Grid style={{ margin: 30, marginBottom: 80}}>
+            <Text>Change ROI Name to: </Text>
+            <TextInput
+              required
+              style={{ width: 250, marginLeft: "auto" }}
+              placeholder="New Title Name"
+              {...form.getInputProps("title")}
+            />
+          </Grid>
+
+          <Grid justify="flex-end" style={{ margin: 20}}>
+            <Button
+              type="submit"
+              radius="sm"
+              size="sm"
+              color="teal"
+              style={{ marginRight: 10 }}
+              onClick={() => setOpened(false)}
+            >
+              Change ROI Name
+            </Button>
+            <Button
+              radius="sm"
+              size="sm"
+              onClick={() => setOpened(false)}
+              style={{backgroundColor: "white", color: "black", borderColor: 'gray'}}
+            >
+              Close
+            </Button>
+          </Grid>
         </form>
       </Modal>
 
@@ -67,6 +94,8 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id , setFetching}) => {
         radius="sm"
         size="xs"
         onClick={() => setOpened(true)}
+        style={{ marginRight: 1 , backgroundColor: "white", color: "black", borderColor: 'gray'}}
+        
       >
         Edit
       </Button>
