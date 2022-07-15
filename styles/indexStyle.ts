@@ -4,7 +4,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   wrapper: {
     // subscribe to color scheme changes right in your styles
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
-    maxWidth: 700,
+    maxWidth: 600,
     width: '100%',
     height: 450,
     display: 'flex',
