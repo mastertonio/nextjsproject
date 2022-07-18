@@ -115,7 +115,7 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
               radius="sm"
               size="md"
               onClick={() => setOpened(false)}
-              color="#FFFFFF"
+              color="red"
             >
               Close
             </Button>
@@ -127,7 +127,7 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
         <Button
           fullWidth
           leftIcon={<FaPlusSquare />}
-          radius="md"
+          radius="sm"
           size="xl"
           style={{ height: 100, marginRight: 0, fontSize: 25 }}
           uppercase

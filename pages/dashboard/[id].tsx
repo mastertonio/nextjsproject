@@ -121,7 +121,7 @@ const Dashboard: React.FC = ({
         <Text size="lg">My ROIs</Text>
         <Grid style={{ margin: 20}}>
           <MultiSelect
-            style={{ width: 450 }}
+            style={{ width: 150 }}
             placeholder="Filter"
             searchable
             clearable

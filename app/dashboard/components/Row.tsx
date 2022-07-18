@@ -187,7 +187,7 @@ const Row: React.FC<iDashboardRowProps> = ({
           </tr>
         </thead>
       </Table>
-      <ScrollArea style={{ height: 550 }}>
+      <ScrollArea style={{ height: 580 }}>
         <Table className={classes.table} highlightOnHover verticalSpacing="xs">
           {isLoading ? (
             <>

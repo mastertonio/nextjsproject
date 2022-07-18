@@ -12,12 +12,13 @@ export interface IViewCountProps {
 }
 
 const ViewCount: React.FC<IViewCountProps> = ({ viewcount}) => {
-  const [opened, setOpen] = useState(false);
+  const [opened, setOpen] = useState(true);
   
   const elements = viewcount?.sort((a,b)=> b.count - a.count)
 
-  const rows = elements?.map((element) => (
+  const rows = elements?.map((element, index) => (
     <tr key={short.generate()}>
+      <td style={{width: 10}}><span style={{ backgroundColor: '#1ab394', paddingTop: 3, paddingBottom: 3, paddingLeft: 8, paddingRight: 8, margin: 15, color: "white", borderRadius: 4}}>{index + 1}</span></td>
       <td>{element.roi_name}</td>
       <td>{element.count}</td>
     </tr>
