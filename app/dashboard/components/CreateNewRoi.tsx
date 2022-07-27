@@ -48,7 +48,7 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
         { name: values.name, template_id: values.template },
         { headers: { Authorization: `Bearer ${value}` } }
       );
-      refetch()
+      refetch?.()
       if (res && checked) {
         console.log(res.data.id);
         router.push(`/templates/${res.data.id}`);
