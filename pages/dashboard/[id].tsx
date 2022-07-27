@@ -39,8 +39,6 @@ const Dashboard: React.FC = ({
   const { classes } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<string[]>([])
   const p = router.query;
 
   useEffect(() => {
@@ -74,9 +72,6 @@ const Dashboard: React.FC = ({
     label: element.name,
   }));
 
-  useEffect(()=>{
-    console.log(filter)
-  },[filter])
 
   if (isLoading)
     return <LoadingOverlay visible={router.isReady && isLoading} />;
@@ -96,7 +91,7 @@ const Dashboard: React.FC = ({
       className=""
       fixed
       header={
-        <RoiNavbar admin={data?.admin_list} actions={data?.template_list}  refetch={refetch}/>
+        <RoiNavbar/>
       }
       footer={<RoiFooter />}
     >
@@ -119,47 +114,14 @@ const Dashboard: React.FC = ({
       </div>
       <div className={classes.bar_graph_wrapper}>
         <Text size="lg">My ROIs</Text>
-        <Grid style={{ margin: 20}}>
-          <MultiSelect
-            style={{ width: 150 }}
-            placeholder="Filter"
-            searchable
-            clearable
-            data={dataTemp ? dataTemp : []}
-            onChange={(event)=>{
-              setFilter(event)
-            }}
-          />
-          <Input
-            variant="default"
-            placeholder="Search for ROI"
-            style={{ marginLeft: 'auto'}}
-            onChange={(event: {
-              target: { value: React.SetStateAction<string> };
-            }) => {
-              setSearch(event.target.value);
-            }}
-          />
-        </Grid>
         <Row
           my_roi={data.my_roi}
           refetch={refetch}
-          search={search}
-          filters={filter}
         />
       </div>
     </AppShell>
   );
 };
-
-// const getStaticPaths: GetStaticPaths = async(context: GetStaticPathsContext)=> {
-//   return {
-//     paths: [
-//       { params: { id: 1 } }
-//     ],
-//     fallback: false
-//   };
-// }
 
 const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
