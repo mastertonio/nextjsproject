@@ -30,7 +30,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import StarRating from "@core/components/rating/Star";
 import { useQuery } from "react-query";
 import Paginate from "./table/paginate";
-import { sortData } from "./table/utils/tableMethods";
+import { sortData, sortFilterData } from "./table/utils/tableMethods";
 import Th from "./table/Thead";
 import SkeletonLoader from "@core/components/loader/SkeletonLoader";
 
@@ -116,10 +116,14 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [activePage, setPage] = useState<number>(1);
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<string[]>([""]);
+  const [filter, setFilter] = useState<string[]>([]);
   const [sortedData, setSortedData] = useState(data?.results);
   const [sortBy, setSortBy] = useState<keyof iDashRowProp | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+
+  useEffect(()=> {
+    console.log(filter)
+  },[filter])
 
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
@@ -137,6 +141,19 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
      setSortedData(sortData(data?.results, { sortBy, reversed: reverseSortDirection, search: event }))
      console.log(sortedData)
   };
+
+  const handleFilterChange = (event: SetStateAction<string[]>) => {
+    setFilter(event)
+    console.log(filter)
+    setSortedData(sortFilterData(data?.results, { sortBy, reversed: reverseSortDirection, search: event }))
+    console.log(sortedData)
+ };
+
+ const dataTemp = my_roi?.map((element: { id: any; name: string }) => ({
+  key: element.id,
+  value: element.name,
+  label: element.name,
+}));
 
   const myroi = currentPosts?.map((item: any) => ({
     id: item.id,
@@ -206,14 +223,13 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     <div>
       <Grid style={{ margin: 20 }}>
         <MultiSelect
-          style={{ width: 150 }}
+          style={{ width: 450 }}
           placeholder="Filter"
           searchable
           clearable
-          data={ []}
-          onChange={(event) => {
-            setFilter(event);
-          }}
+          data={dataTemp ? dataTemp : []}
+          value={filter} 
+          onChange={handleFilterChange}
         />
         <Input
           variant="default"

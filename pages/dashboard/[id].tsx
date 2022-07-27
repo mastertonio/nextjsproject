@@ -66,12 +66,6 @@ const Dashboard: React.FC = ({
     getDashboardData
   );
 
-  const dataTemp = data?.my_roi?.map((element: { id: any; name: string }) => ({
-    key: element.id,
-    value: element.name,
-    label: element.name,
-  }));
-
 
   if (isLoading)
     return <LoadingOverlay visible={router.isReady && isLoading} />;
@@ -115,7 +109,7 @@ const Dashboard: React.FC = ({
       <div className={classes.bar_graph_wrapper}>
         <Text size="lg">My ROIs</Text>
         <Row
-          my_roi={data.my_roi}
+          my_roi={data?.my_roi}
           refetch={refetch}
         />
       </div>

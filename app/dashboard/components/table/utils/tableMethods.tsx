@@ -7,15 +7,52 @@ interface RowData {
   company: string;
 }
 
+export const filterMultipleData = (data: iDashRowProp2[], search: string[]) => {
+  const query = search;
+  return data.filter(item => query.length>0 ? query.includes(item.name) : item.name.toLowerCase().includes(''));
+};
+
+export const sortFilterData = (
+  data: iDashRowProp2[],
+  payload: {
+    sortBy: keyof iDashRowProp2 | null;
+    reversed: boolean;
+    search: any;
+  }
+) => {
+  const { sortBy } = payload;
+
+  if (!sortBy) {
+    return filterMultipleData(data, payload.search);
+  }
+
+  return filterMultipleData(
+    [...data].sort((a, b) => {
+      if (payload.reversed) {
+        return b[sortBy].toString().localeCompare(a[sortBy]);
+      }
+
+      return a[sortBy].toString().localeCompare(b[sortBy]);
+    }),
+    payload.search
+  );
+};
+
 export const filterData = (data: iDashRowProp2[], search: string) => {
   const query = search.toLowerCase().trim();
-  return data.filter((item) => item.name.toLowerCase().includes(query)
-  );
+  return data.filter((item) => {
+    console.log(item.name.toLowerCase().includes(query),'dawdawdawdaw')
+    return item.name.toLowerCase().includes(query)
+  });
 };
 
 export const sortData = (
   data: iDashRowProp2[],
-  payload: { sortBy: keyof iDashRowProp2 | null; reversed: boolean; search: any }
+  payload: {
+    sortBy: keyof iDashRowProp2 | null;
+    reversed: boolean;
+    search: any;
+  }
 ) => {
   const { sortBy } = payload;
 
@@ -25,7 +62,6 @@ export const sortData = (
 
   return filterData(
     [...data].sort((a, b) => {
-      console.log(sortBy,'ab')
       if (payload.reversed) {
         return b[sortBy].toString().localeCompare(a[sortBy]);
       }
@@ -34,4 +70,4 @@ export const sortData = (
     }),
     payload.search
   );
-}
+};
