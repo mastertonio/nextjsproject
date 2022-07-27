@@ -50,7 +50,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   button:{
       height: 44,
       width: '100%',
-      marginTop: 40,
+      marginTop: 40
   },
 
 

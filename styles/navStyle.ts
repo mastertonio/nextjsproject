@@ -21,7 +21,8 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   header: {
     backgroundColor: theme.colors.gray[2],
     display: "flex",
-    flexDirection: "row-reverse"
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
 
   placeholder: {
