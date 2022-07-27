@@ -13,20 +13,21 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import { loginAsync, login, selectUser } from "@redux/reducers/user/userSlice"
 import { useAppDispatch, useAppSelector} from "@redux/store"
+import  { UserContext } from "@context/user.context"
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const router = useRouter();
-  // const { state, dispatch } = useUser();
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
   const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
 
@@ -57,6 +58,7 @@ const Home: React.FC = () => {
         setValue(res.data.tokens.access.token);
         setRefresh(res.data.tokens.refresh.token)
         sessionStorage.setItem('auth-token', value)
+        setUserInfo(res.data.user)
         setCurrent(res.data.user.id)
         dispatch(login(res.data.user));
         router.push(`/dashboard/${res.data.user.id}`);
@@ -88,7 +90,7 @@ const Home: React.FC = () => {
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
               required
-              label="Email"
+              label="Email Address"
               placeholder="your@email.com"
               {...form.getInputProps("email")}
             />
