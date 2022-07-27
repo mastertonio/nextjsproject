@@ -107,14 +107,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery("get_all_roi", getRoiListAll);
 
-  // const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
-  //   ["roi_list_with_query", activePage],
-  //   () => getRoiList(limit, activePage),
-  //   {
-  //     keepPreviousData: true,
-  //   }
-  // );
-
   
   useEffect(() => {
     setSortedData(data?.results);
