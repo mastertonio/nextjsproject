@@ -1,27 +1,27 @@
 import { Skeleton } from "@mantine/core";
 
-const skeletonLoader = () => {
+const SkeletonLoader: React.FC = () => {
   return (
     <>
-      <Skeleton height={20} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-      <Skeleton height={20} mt={12} radius="xl" />
-    </>
+    <Skeleton height={20} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+    <Skeleton height={20} mt={12} radius="xl" />
+  </>
   );
 };
 
-export default skeletonLoader;
+export default SkeletonLoader;
