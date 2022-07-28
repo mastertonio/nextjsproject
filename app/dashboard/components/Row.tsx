@@ -44,6 +44,7 @@ export interface iDashRowProp {
   views: number;
   uniqueViews: number;
   status: number;
+  source_name: string;
 }
 
 export interface iDashRowProp2 {
@@ -56,6 +57,7 @@ export interface iDashRowProp2 {
   views: string;
   uniqueViews: string;
   status: string;
+  source_name: string;
 }
 
 export interface ISearchableDashProp {
@@ -105,11 +107,14 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     }
   };
 
-  const { isLoading, isError, error, data, refetch, isFetching } = useQuery("get_all_roi", getRoiListAll);
+  const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
+    "get_all_roi",
+    getRoiListAll
+  );
 
-  
   useEffect(() => {
-    setSortedData(data?.results);
+    console.log(data)
+    setSortedData(data);
   }, [data]);
 
   const [limit, setLimit] = useState<number>(10);
@@ -117,13 +122,13 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data?.results);
+  const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof iDashRowProp | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-  useEffect(()=> {
-    console.log(filter)
-  },[filter])
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
 
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
@@ -133,27 +138,39 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(data?.results, { sortBy: field, reversed, search }));
+    setSortedData(sortData(data, { sortBy: field, reversed, search }));
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
-     setSearch(event)
-     setSortedData(sortData(data?.results, { sortBy, reversed: reverseSortDirection, search: event }))
-     console.log(sortedData)
+    setSearch(event);
+    setSortedData(
+      sortData(data, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search: event,
+      })
+    );
+    console.log(sortedData);
   };
 
   const handleFilterChange = (event: SetStateAction<string[]>) => {
-    setFilter(event)
-    console.log(filter)
-    setSortedData(sortFilterData(data?.results, { sortBy, reversed: reverseSortDirection, search: event }))
-    console.log(sortedData)
- };
+    setFilter(event);
+    console.log(filter);
+    setSortedData(
+      sortFilterData(data, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search: event,
+      })
+    );
+    console.log(sortedData);
+  };
 
- const dataTemp = my_roi?.map((element: { id: any; name: string }) => ({
-  key: element.id,
-  value: element.name,
-  label: element.name,
-}));
+  const dataTemp = my_roi?.map((element: { id: any; name: string }) => ({
+    key: element.id,
+    value: element.name,
+    label: element.name,
+  }));
 
   const myroi = currentPosts?.map((item: any) => ({
     id: item.id,
@@ -205,6 +222,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         />
       ),
     roiname: item.name,
+    source_name: item.source_name,
     dates: item.dateCreated,
     views: item.views,
     uniqueViews: item.uniqueViews,
@@ -218,7 +236,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     source: item.source,
   }));
 
-
   return (
     <div>
       <Grid style={{ margin: 20 }}>
@@ -228,7 +245,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
           searchable
           clearable
           data={dataTemp ? dataTemp : []}
-          value={filter} 
+          value={filter}
           onChange={handleFilterChange}
         />
         <Input
@@ -250,22 +267,30 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
       >
         <thead>
           <tr>
-            <th style={{ width: 110 }}></th>
-            <th style={{ width: 170 }}>Status</th>
-            <th style={{ width: 120 }}>Importance</th>
+            <th style={{ width: 100 }}></th>
+            <th style={{ width: 150 }}>Status</th>
+            <th style={{ width: 105 }}>Importance</th>
             <Th
               sorted={sortBy === "name"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}
-              style={{ width: 420 }}
+              style={{ width: 270 }}
             >
               ROI name
+            </Th>
+            <Th
+              sorted={sortBy === "source_name"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("name")}
+              style={{ width: 250 }}
+            >
+              Template Name
             </Th>
             <Th
               sorted={sortBy === "dateCreated"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("dateCreated")}
-              style={{ width: 270 }}
+              style={{ width: 240 }}
             >
               Dates
             </Th>
@@ -291,111 +316,123 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
       </Table>
       <ScrollArea style={{ height: 580 }}>
         <Table className={classes.table} highlightOnHover verticalSpacing="xs">
-          {isLoading ? ( <SkeletonLoader />) : (
+          {isLoading ? (
+            <SkeletonLoader />
+          ) : (
             <tbody>
               {myroi?.map(
-                  (element: {
-                    id: Key | null | undefined;
-                    button:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    status:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    importance:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    roiname:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    dates:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    views:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    uniqueViews:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                    actions:
-                      | string
-                      | number
-                      | boolean
-                      | ReactElement<any, string | JSXElementConstructor<any>>
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined;
-                  }) => (
-                    <tr key={element.id} style={{ height: 20 }}>
-                      <td style={{ width: 10 }}>{element.button}</td>
-                      <td style={{ width: 180 }}>{element.status}</td>
-                      <td style={{ width: 140 }}>{element.importance}</td>
-                      <td
-                        style={{ cursor: "pointer", width: 420 }}
-                        onClick={() => {
-                          router.push(`/templates/${element.id}`);
-                        }}
-                      >
-                        {element.roiname}
-                      </td>
-                      <td style={{ width: 270 }}>{element.dates}</td>
-                      <td style={{ width: 170 }}>{element.views}</td>
-                      <td style={{ width: 190 }}>{element.uniqueViews}</td>
-                      <td
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          height: 57,
-                        }}
-                      >
-                        {element.actions}
-                      </td>
-                    </tr>
-                  )
-                )}
+                (element: {
+                  id: Key | null | undefined;
+                  button:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  status:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  importance:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  roiname:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  source_name:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  dates:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  views:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  uniqueViews:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                  actions:
+                    | string
+                    | number
+                    | boolean
+                    | ReactElement<any, string | JSXElementConstructor<any>>
+                    | ReactFragment
+                    | ReactPortal
+                    | null
+                    | undefined;
+                }) => (
+                  <tr key={element.id} style={{ height: 20 }}>
+                    <td style={{ width: 10 }}>{element.button}</td>
+                    <td style={{ width: 145 }}>{element.status}</td>
+                    <td style={{ width: 140 }}>{element.importance}</td>
+                    <td
+                      style={{ cursor: "pointer", width: 310 }}
+                      onClick={() => {
+                        router.push(`/templates/${element.id}`);
+                      }}
+                    >
+                      {element.roiname}
+                    </td>
+                    <td style={{ width: 290 }}>{element.source_name}</td>
+                    <td style={{ width: 285 }}>{element.dates}</td>
+                    <td style={{ width: 170, paddingLeft: 20 }}>{element.views}</td>
+                    <td style={{ width: 190, textAlign: 'center', paddingRight: 40  }}>{element.uniqueViews}</td>
+                    <td
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        height: 57,
+                      }}
+                    >
+                      {element.actions}
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           )}
         </Table>
