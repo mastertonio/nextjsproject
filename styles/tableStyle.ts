@@ -6,7 +6,7 @@ export const useStyles = createStyles((theme) => ({
 
   control: {
     width: "100%",
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+    padding: `${theme.spacing.xs}px ${theme.spacing.xs}px`,
 
     "&:hover": {
       backgroundColor:
