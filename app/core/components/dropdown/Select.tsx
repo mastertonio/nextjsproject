@@ -32,6 +32,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
 }) => {
   const [opened, setOpen] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
+  const [values, setValues] = useState("");
   const router = useRouter();
   const p = router.query;
 
@@ -129,8 +130,8 @@ const SelectDropdown: React.FC<IStarProps> = ({
         </Grid>
       </Modal>
       <Select
-        style={{ width: 150 }}
-        defaultValue={handleDefault(cur_status)}
+        style={{ width: 130 }}
+        value={handleDefault(cur_status)}
         data={[
           { value: "0", label: "Active" },
           { value: "1", label: "Closed Won" },
