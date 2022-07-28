@@ -84,7 +84,7 @@ const Templates: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar name={user?.name} user={user} />}
+      navbar={<Sidebar name={user?.name} user={user} refetch={refetch} />}
       // footer={
       //   <RoiFooter />
       // }
