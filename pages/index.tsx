@@ -70,10 +70,6 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(user, "test1")
-  }, [user]);
-
   return (
     <div
       className={classes.body}
