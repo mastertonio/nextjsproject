@@ -5,6 +5,8 @@ import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
 
 export interface IButtonRoiNameProps {
   id: string;
@@ -26,14 +28,39 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
+      showNotification({
+        id: "edit-row",
+        loading: true,
+        title: `Updating ${name}`,
+        message: "Please wait, updating edited row",
+        autoClose: false,
+        disallowClose: true,
+        color: "teal",
+      });
       const response = await axios.patch(
         `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
         { title: values.title },
         { headers: { Authorization: `Bearer ${value}` } }
       );
-      refetch();
+      if (response) {
+        refetch();
+        updateNotification({
+          id: "edit-row",
+          color: "teal",
+          title: `${name} row was updated to ${values.title}`,
+          message: "A row was updated! and renamed",
+          icon: <IconCheck size={16} />,
+          autoClose: 2500,
+        });
+      }
     } catch (error) {
-      console.log(error);
+      updateNotification({
+        id: "edit-row",
+        color: "red",
+        title: "Updating a table row failed",
+        message: "Something went wrong, Please try again",
+        autoClose: false,
+      });
       return error;
     }
   };
@@ -48,15 +75,21 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         padding={0}
       >
         <Text
-            weight={700}
-            color="gray"
-            style={{ padding: 30, marginBottom: 80, fontSize: 30, backgroundColor: "#073e52", color: "white" }}
-            align="center"
-          >
-            {name}
-          </Text>
+          weight={700}
+          color="gray"
+          style={{
+            padding: 30,
+            marginBottom: 80,
+            fontSize: 30,
+            backgroundColor: "#073e52",
+            color: "white",
+          }}
+          align="center"
+        >
+          {name}
+        </Text>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Grid style={{ margin: 30, marginBottom: 80}}>
+          <Grid style={{ margin: 30, marginBottom: 80 }}>
             <Text>Change ROI Name to: </Text>
             <TextInput
               required
@@ -66,7 +99,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
             />
           </Grid>
 
-          <Grid justify="flex-end" style={{ margin: 20}}>
+          <Grid justify="flex-end" style={{ margin: 20 }}>
             <Button
               type="submit"
               radius="sm"
@@ -81,7 +114,11 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{backgroundColor: "white", color: "black", borderColor: 'gray'}}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                borderColor: "gray",
+              }}
             >
               Close
             </Button>
@@ -94,8 +131,12 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         radius="sm"
         size="xs"
         onClick={() => setOpened(true)}
-        style={{ marginRight: 1 , backgroundColor: "white", color: "black", borderColor: 'gray'}}
-        
+        style={{
+          marginRight: 1,
+          backgroundColor: "white",
+          color: "black",
+          borderColor: "gray",
+        }}
       >
         Edit
       </Button>
