@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <MantineProvider>
-        <NotificationsProvider>
+        <NotificationsProvider position="bottom-right" zIndex={2077}>
           <UserContextProvider>
             <DashboardContextProvider>
               <QueryClientProvider client={queryClient}>
