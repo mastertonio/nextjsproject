@@ -19,30 +19,30 @@ import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { BsFolderSymlinkFill } from "react-icons/bs";
 import ChangePass from "@core/components/forms/changepassword";
+import { useAppDispatch, useAppSelector } from "@redux/store";
+import { login } from "@redux/reducers/user/userSlice";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from '@tabler/icons'
 
 const UserProfile: React.FC = () => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
   const [user, setUser] = useState<any>({});
-  const [user2, setUser2] = useState<any>({});
+  const users = useAppSelector((state) => state.user);
+  const [userCred, setUserCred] = useState<any>({
+    first_name: users.user?.first_name,
+    last_name: users.user?.last_name,
+    email: users.user?.email,
+    phone_number: users.user?.phone,
+  });
   const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
-
-  const { register, handleSubmit } = useForm({
-    mode: "onBlur",
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone_number: "",
-    },
-  });
+  const dispatch = useAppDispatch();
 
   const getCurrentUser = async () => {
     try {
@@ -51,6 +51,7 @@ const UserProfile: React.FC = () => {
           Authorization: `Bearer ${value}`,
         },
       });
+      dispatch(login(res.data));
       return res.data;
     } catch (error) {
       return error;
@@ -62,65 +63,69 @@ const UserProfile: React.FC = () => {
     getCurrentUser
   );
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (e: { preventDefault: () => void }) => {
     try {
-      switch (data) {
-        case !!data.email:
-          await axios.patch(
-            `http://54.159.8.194/v1/users/${current}`,
-            { email: data.email },
-            { headers: { Authorization: `Bearer ${value}` } }
-          );
-          refetch();
-          break;
-        case !!data.first_name:
-          await axios.patch(
-            `http://54.159.8.194/v1/users/${current}`,
-            { first_name: data.first_name },
-            { headers: { Authorization: `Bearer ${value}` } }
-          );
-          refetch();
-          break;
-        case !!data.last_name:
-          await axios.patch(
-            `http://54.159.8.194/v1/users/${current}`,
-            { last_name: data.last_name },
-            { headers: { Authorization: `Bearer ${value}` } }
-          );
-          refetch();
-          break;
-        case !!data.phone:
-          await axios.patch(
-            `http://54.159.8.194/v1/users/${current}`,
-            { last_name: data.last_name },
-            { headers: { Authorization: `Bearer ${value}` } }
-          );
-          refetch();
-          break;
-        default:
-          await axios.patch(
-            `http://54.159.8.194/v1/users/${current}`,
-            {
-              email: data.email,
-              first_name: data.first_name,
-              last_name: data.last_name,
-              phone: data.phone,
-            },
-            { headers: { Authorization: `Bearer ${value}` } }
-          );
-          refetch();
-          break;
+      e.preventDefault();
+      console.log(userCred);
+      showNotification({
+        id: 'load-data',
+        loading: true,
+        title: 'Updating your data',
+        message: 'Data will be loaded within seconds',
+        autoClose: false,
+        disallowClose: true,
+        color: 'teal'
+      })
+      const res = await axios.patch(
+        `http://54.159.8.194/v1/users/${current}`,
+        {
+          email: userCred.email,
+          first_name: userCred.first_name,
+          last_name: userCred.last_name,
+          phone: userCred.phone_number,
+        },
+        { headers: { Authorization: `Bearer ${value}` } }
+      );
+      if(res){
+        updateNotification({
+          id: 'load-data',
+          color: 'teal',
+          title: 'Data was updated!',
+          message: 'User Information updated!',
+          icon: <IconCheck size={16} />,
+          autoClose: 2500,
+        })
       }
+      refetch();
     } catch (error) {
-      console.log(error);
+      updateNotification({
+        id: 'load-data',
+        title: 'Error in Saving Data',
+        message: 'Please reload the page or try again later',
+        autoClose: 2500,
+        disallowClose: true,
+        color: 'red'
+      })
       return error;
     }
   };
 
+  const handleChange = (e: {
+    preventDefault: () => void;
+    target: { name: any; value: any };
+  }) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setUserCred({
+      ...userCred,
+      [name]: value,
+    });
+  };
+
   useEffect(() => {
-    setUser2(userInfo);
+    console.log(users.user);
     setUser(data);
-  }, [data, userInfo]);
+  }, [data, userInfo, users]);
 
   if (isLoading)
     return <LoadingOverlay visible={router.isReady && isLoading} />;
@@ -138,13 +143,13 @@ const UserProfile: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar name={user?.name} user={user} />}
+      navbar={<Sidebar name={user?.name} user={user} refetch={refetch} />}
       // footer={
       //   <RoiFooter />
       // }
       header={<RoiNavbar />}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <div
           style={{
             margin: 5,
@@ -162,29 +167,35 @@ const UserProfile: React.FC = () => {
               <TextInput
                 placeholder="Your Email Address"
                 label="Email"
-                defaultValue={user?.email}
-                {...register("email")}
+                name="email"
+                defaultValue={users.user?.email}
                 style={{ width: 950, marginTop: "auto" }}
+                onChange={handleChange}
+                description="Your email address will also be your username and is the email address that all notifications will be sent to."
+                inputWrapperOrder={['label', 'error', 'input', 'description']}
               />
             </Group>
 
             <TextInput
               placeholder="Your First Name"
               label="First Name"
-              defaultValue={user?.first_name}
-              {...register("first_name")}
+              name="first_name"
+              defaultValue={users.user?.first_name}
+              onChange={handleChange}
             />
             <TextInput
               placeholder="Your Last Name"
               label="Last Name"
-              defaultValue={user?.last_name}
-              {...register("last_name")}
+              name="last_name"
+              defaultValue={users.user?.last_name}
+              onChange={handleChange}
             />
             <TextInput
               placeholder="Enter Phone Number "
               label="Phone number"
-              defaultValue={user?.phone}
-              {...register("phone_number")}
+              name="phone_number"
+              defaultValue={users.user?.phone}
+              onChange={handleChange}
             />
             <Group>
               <Button
