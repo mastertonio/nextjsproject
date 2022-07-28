@@ -16,6 +16,8 @@ import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { FaPlusSquare } from "react-icons/fa";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
 
 const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
   const [opened, setOpened] = useState(false);
@@ -43,6 +45,14 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
+      showNotification({
+        id: "create-row",
+        loading: true,
+        title: `Creating ${values.name}`,
+        message: "Please wait ...",
+        autoClose: false,
+        disallowClose: true
+      });
       const res = await axios.post(
         `http://54.159.8.194/v1/dashboard/${current}`,
         { name: values.name, template_id: values.template },
@@ -50,11 +60,24 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
       );
       refetch()
       if (res && checked) {
-        console.log(res.data.id);
+        updateNotification({
+          id: "create-row",
+          color: "teal",
+          title: `${values.name} created`,
+          message: "Redirecting shortly ...",
+          icon: <IconCheck size={16} />,
+          autoClose: 2500,
+        });
         router.push(`/templates/${res.data.id}`);
       }
     } catch (error) {
-      console.log(error);
+      updateNotification({
+        id: "create-row",
+        color: "red",
+        title: "Creating an ROI failed",
+        message: "Something went wrong, Please try again",
+        autoClose: false,
+      });
       return error;
     }
   };
