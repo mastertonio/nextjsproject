@@ -274,7 +274,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
               sorted={sortBy === "name"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}
-              style={{ width: 270 }}
+              style={{ width: 300 }}
             >
               ROI name
             </Th>
@@ -417,7 +417,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                     >
                       {element.roiname}
                     </td>
-                    <td style={{ width: 290 }}>{element.source_name}</td>
+                    <td style={{ width: 240 }}>{element.source_name}</td>
                     <td style={{ width: 285 }}>{element.dates}</td>
                     <td style={{ width: 170, paddingLeft: 20 }}>{element.views}</td>
                     <td style={{ width: 190, textAlign: 'center', paddingRight: 40  }}>{element.uniqueViews}</td>
