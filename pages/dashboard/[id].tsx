@@ -99,7 +99,7 @@ const Dashboard: React.FC = ({
           <ViewCount viewcount={data?.viewcount} />
         </div>
         <div className={classes.dashboard_graph}>
-          <DashboardGraph chartData={data?.chart} />
+          <DashboardGraph />
         </div>
         <div className={classes.roi_ranking}>
           <CreateNewRoi actions={data?.template_list} refetch={refetch} />
