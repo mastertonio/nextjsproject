@@ -6,6 +6,8 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { IButtonRoiNameProps } from "./EditButton";
 import { useForm } from "@mantine/form";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
 
 const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
   const [opened, setOpened] = useState(false);
@@ -21,29 +23,54 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      await axios.post(
+      showNotification({
+        id: "clone-row",
+        loading: true,
+        title: `Cloning ${name}`,
+        message: "Please wait, cloning a row",
+        autoClose: false,
+        disallowClose: true,
+        color: "teal",
+      });
+
+      const res = await axios.post(
         `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
         { title: values.title },
         { headers: { Authorization: `Bearer ${value}` } }
       );
-      router.push(`/templates/${id}`)
-      refetch();
+      if (res) {
+        updateNotification({
+          id: "clone-row",
+          color: "teal",
+          title: `${name} was cloned to ${values.title}`,
+          message: "Redirecting shortly ...",
+          icon: <IconCheck size={16} />,
+          autoClose: 3000,
+        });
+        router.push(`/templates/${id}`);
+      }
     } catch (error) {
-      console.log(error);
+      updateNotification({
+        id: "clone-row",
+        color: "red",
+        title: "Cloning a table row failed",
+        message: "Something went wrong, Please try again",
+        autoClose: false,
+      });
       return error;
     }
   };
 
   return (
     <>
-       <Modal
+      <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         withCloseButton={false}
         size="50%"
         padding={0}
       >
-         <Text
+        <Text
           weight={300}
           color="gray"
           style={{
@@ -70,10 +97,11 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
             color: "white",
           }}
         >
-          Cloning this calculator will create an identical copy using the last saved set of values.
+          Cloning this calculator will create an identical copy using the last
+          saved set of values.
         </Text>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Grid style={{ margin: 30, marginBottom: 80}}>
+          <Grid style={{ margin: 30, marginBottom: 80 }}>
             <Text>Name </Text>
             <TextInput
               required
@@ -83,7 +111,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
             />
           </Grid>
 
-          <Grid justify="flex-end" style={{ margin: 20}}>
+          <Grid justify="flex-end" style={{ margin: 20 }}>
             <Button
               type="submit"
               radius="sm"
@@ -98,7 +126,11 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{backgroundColor: "white", color: "black", borderColor: 'gray'}}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                borderColor: "gray",
+              }}
             >
               Close
             </Button>
@@ -112,7 +144,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
         color="teal"
         size="xs"
         onClick={() => setOpened(true)}
-        style={{ marginRight: 1}}
+        style={{ marginRight: 1 }}
       >
         Clone
       </Button>
