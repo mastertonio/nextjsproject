@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { IButtonRoiNameProps } from "./EditButton";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
 
 const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   const [opened, setOpened] = useState(false);
@@ -23,12 +25,37 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   const handleSubmit = async () => {
     try {
       setOpened(false)
-      await axios.delete(`http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, {
+      showNotification({
+        id: "delete-row",
+        loading: true,
+        title: `Deleting ${name}`,
+        message: "Please wait ...",
+        autoClose: false,
+        disallowClose: true,
+        color: "teal",
+      });
+      const res = await axios.delete(`http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, {
         headers: { Authorization: `Bearer ${value}` },
       });
+      if(res){
+        updateNotification({
+          id: "delete-row",
+          color: "teal",
+          title: `${name} was deleted`,
+          message: "Refreshing shortly ...",
+          icon: <IconCheck size={16} />,
+          autoClose: 2500,
+        });
+      }
       refetch();
     } catch (error) {
-      console.log(error);
+      updateNotification({
+        id: "delete-row",
+        color: "red",
+        title: "Deleting a table row failed",
+        message: "Something went wrong, Please try again",
+        autoClose: false,
+      });
       return error;
     }
   };
