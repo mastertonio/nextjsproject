@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,9 @@ import { Bar } from "react-chartjs-2";
 import { useStyles } from "@styles/dashboardStyle";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
+import { useLocalStorage } from "@mantine/hooks";
+import axios from "axios";
+import { useQuery } from "react-query";
 
 ChartJS.register(
   CategoryScale,
@@ -22,12 +25,12 @@ ChartJS.register(
   Legend
 );
 
-interface iSeriesData {
+export interface iSeriesData {
   name: string;
   data: number[];
 }
 
-interface IDashboardData {
+export interface IDashboardData {
   chart: { type: string };
   title: { text: string };
   subtitle: { text: string };
@@ -36,58 +39,81 @@ interface IDashboardData {
   series: iSeriesData[];
 }
 
-interface IDashboardGraphData {
+export interface IDashboardGraphData {
   chartData: IDashboardData;
 }
-const DashboardGraph: React.FC<IDashboardGraphData> = ({ chartData }) => {
+const DashboardGraph: React.FC = () => {
+  const [value] = useLocalStorage({ key: "auth-token" });
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [graphData, setGraphData] = useState<IDashboardData>();
+
+  const getGraphData = async () => {
+    try {
+      const res = await axios.get(
+        `http://54.159.8.194/v1/dashboard/data/graph`,
+        {
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const { isLoading, status, data, isFetching, refetch } = useQuery(
+    "graphData",
+    getGraphData
+  );
+
+  useEffect(() => {
+    setGraphData(data);
+  }, [data]);
+
   const chartOptions: Highcharts.Options = {
     chart: {
-      type: "column",
+      type: graphData?.chart.type,
       width: 900,
       height: null,
     },
     plotOptions: {
       column: {
-        pointWidth: 20 //change column width -  the bars
+        pointWidth: 20, //change column width -  the bars
       },
-      area: {
-
-      }
+      area: {},
     },
     title: {
-      text: chartData ? chartData.title.text : "ROIs Created Past Year",
+      text: graphData?.title.text ?? "ROIs Created Past Year",
     },
     xAxis: {
-      categories: chartData
-        ? chartData.xAxis.categories
-        : [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ],
+      categories: graphData?.xAxis.categories ?? [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
     },
     yAxis: {
-      title: { text: "" },
+      title: { text: graphData?.yAxis.title.text },
     },
     series: [
       {
         type: "column",
-        name: "ROIs Created",
-        data: chartData
-          ? chartData.series[0].data
-          : [
-              49.9, 71.5, 106.4, 129.2, 144, 176, 135.6, 148.5, 216.4, 194.1,
-              95.6, 54.4,
-            ],
+        name: graphData?.series[0].name,
+        data: graphData?.series[0].data ?? [
+          49.9, 71.5, 106.4, 129.2, 144, 176, 135.6, 148.5, 216.4, 194.1, 95.6,
+          54.4,
+        ],
       },
     ],
   };
