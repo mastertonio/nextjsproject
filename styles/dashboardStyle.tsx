@@ -42,10 +42,12 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     alignItems: 'stretch',
     justifyContent: "space-between",
     height: '450px',
+    margin: `0 auto`,
     marginBottom: 20,
     paddingBottom: 40,
     backgroundColor: "white",
-    padding: 10
+    padding: 10,
+    maxWidth: 1920
   },
 
   dashboard_graph: {
@@ -67,10 +69,11 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   },
 
   bar_graph_wrapper: {
-    margin: 30,
+    margin: `30px auto`,
     backgroundColor: "white",
     padding: 20,
-    borderColor: "gray"
+    borderColor: "gray",
+    maxWidth: 1920
   },
 
   table: {

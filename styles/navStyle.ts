@@ -22,7 +22,9 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     backgroundColor: theme.colors.gray[2],
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    maxWidth: 1920,
+    margin: "0 auto"
   },
 
   placeholder: {
