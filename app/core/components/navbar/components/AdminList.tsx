@@ -27,7 +27,7 @@ type iAdminData = {
 export interface IAdminListProps {
   admin?: iAdminData[];
   actions?: iAdminData[];
-  refetch?: () => void;
+  refetch: () => void;
   name?: string;
   user?: iAdminData;
 }
