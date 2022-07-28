@@ -9,7 +9,7 @@ interface RowData {
 
 export const filterMultipleData = (data: iDashRowProp2[], search: string[]) => {
   const query = search;
-  return data.filter(item => query.length>0 ? query.includes(item.name) : item.name.toLowerCase().includes(''));
+  return data.filter(item => query.length>0 ? query.includes(item.source_name) : item.source_name.toLowerCase().includes(''));
 };
 
 export const sortFilterData = (
