@@ -106,15 +106,11 @@ const ChangePass: React.FC = () => {
         disallowClose: true,
         color: "teal",
       });
-      const res = await axios.post(
-        "http://54.159.8.194/v1/auth/reset-password",
+      const res = await axios.patch(
+        `http://54.159.8.194/v1/users/${current}`,
         { password: values.confirmPassword },
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
+        { headers: { Authorization: `Bearer ${value}` } }
+      )
 
       if (res) {
         updateNotification({
