@@ -24,7 +24,7 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
 
   const handleSubmit = async () => {
     try {
-      setOpened(false)
+      setOpened(false);
       showNotification({
         id: "delete-row",
         loading: true,
@@ -34,10 +34,13 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         disallowClose: true,
         color: "teal",
       });
-      const res = await axios.delete(`http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`, {
-        headers: { Authorization: `Bearer ${value}` },
-      });
-      if(res){
+      const res = await axios.delete(
+        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
+        {
+          headers: { Authorization: `Bearer ${value}` },
+        }
+      );
+      if (res) {
         updateNotification({
           id: "delete-row",
           color: "teal",
@@ -46,6 +49,8 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });
+
+        refetch();
       }
       refetch();
     } catch (error) {
@@ -102,7 +107,11 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
           }}
           align="center"
         >
-          You will not be able to recover <Text weight={700} style={{ display: "inline-block", fontSize: 20}}>{name}</Text>!
+          You will not be able to recover{" "}
+          <Text weight={700} style={{ display: "inline-block", fontSize: 20 }}>
+            {name}
+          </Text>
+          !
         </Text>
         <Grid justify="flex-end" style={{ margin: 20 }}>
           <Button
