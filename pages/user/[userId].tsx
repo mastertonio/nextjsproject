@@ -66,7 +66,6 @@ const UserProfile: React.FC = () => {
   const onSubmit = async (e: { preventDefault: () => void }) => {
     try {
       e.preventDefault();
-      console.log(userCred);
       showNotification({
         id: 'load-data',
         loading: true,
@@ -123,7 +122,6 @@ const UserProfile: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(users.user);
     setUser(data);
   }, [data, userInfo, users]);
 
@@ -173,6 +171,7 @@ const UserProfile: React.FC = () => {
                 onChange={handleChange}
                 description="Your email address will also be your username and is the email address that all notifications will be sent to."
                 inputWrapperOrder={['label', 'error', 'input', 'description']}
+                onBlur={onSubmit}
               />
             </Group>
 
@@ -182,6 +181,7 @@ const UserProfile: React.FC = () => {
               name="first_name"
               defaultValue={users.user?.first_name}
               onChange={handleChange}
+              onBlur={onSubmit}
             />
             <TextInput
               placeholder="Your Last Name"
@@ -189,6 +189,7 @@ const UserProfile: React.FC = () => {
               name="last_name"
               defaultValue={users.user?.last_name}
               onChange={handleChange}
+              onBlur={onSubmit}
             />
             <TextInput
               placeholder="Enter Phone Number "
@@ -196,6 +197,7 @@ const UserProfile: React.FC = () => {
               name="phone_number"
               defaultValue={users.user?.phone}
               onChange={handleChange}
+              onBlur={onSubmit}
             />
             <Group>
               <Button
