@@ -9,6 +9,8 @@ interface IPaginateProps {
   activePage: number;
   setPage: (num: number) => void;
   refetch: () => void;
+  firstIndex: number
+  lastIndex: number
 }
 
 const Paginate: React.FC<IPaginateProps> = ({
@@ -19,6 +21,8 @@ const Paginate: React.FC<IPaginateProps> = ({
   activePage,
   setPage,
   refetch,
+  firstIndex,
+  lastIndex
 }) => {
   const [defaultlimit, setDefaultLimit] = useState<string>(`${limit}`);
   // const pagination = usePagination({ total: page, initialPage: activePage });
@@ -33,7 +37,7 @@ const Paginate: React.FC<IPaginateProps> = ({
       }}
     >
       <Text style={{ marginRight: 5 }}>
-        Showing {} of {} ROIs{" "}
+        Showing {firstIndex+1} to {lastIndex>totalResults ? totalResults : lastIndex} of {totalResults} ROIs{" "}
       </Text>
       <Select
         style={{ width: 70 }}

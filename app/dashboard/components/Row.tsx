@@ -440,6 +440,8 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
           setLimit={setLimit}
           activePage={activePage}
           setPage={setPage}
+          firstIndex={indexOfFirstPost}
+          lastIndex={indexOfLastPost}
         />
       </div>
     </div>
