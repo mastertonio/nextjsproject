@@ -1,15 +1,17 @@
 import { Grid, Modal, Select, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Rating } from "react-simple-star-rating";
 import StarRating from "../rating/Star";
 
 export interface IStarProps {
   cur_status: number;
   setStatus?: (status: boolean) => void;
-  setRating?: (rate: number) => void;
+  setRating: (rate: number) => void;
   setStar: (star: boolean) => void;
   readOnly?: boolean;
   rating: number;
@@ -32,28 +34,67 @@ const SelectDropdown: React.FC<IStarProps> = ({
 }) => {
   const [opened, setOpen] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
-  const [values, setValues] = useState("");
+  const [values, setValues] = useState<any>(`${cur_status}`);
   const router = useRouter();
   const p = router.query;
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (data?: string) => {
     try {
-      await axios.patch(
+      showNotification({
+        id: "status-row",
+        loading: true,
+        title: `Updating status`,
+        message: "Please wait ...",
+        autoClose: false,
+        disallowClose: true,
+        color: "teal",
+      });
+      const res = await axios.patch(
         `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-        { status: "1" },
+        { status: data ?? values },
         { headers: { Authorization: `Bearer ${value}` } }
       );
+      if (res) {
+        updateNotification({
+          id: "status-row",
+          color: "teal",
+          title: `Status updated!`,
+          message: "Refreshing shortly ...",
+          icon: <IconCheck size={16} />,
+          autoClose: 2500,
+        });
+        refetch();
+      }
       refetch();
     } catch (error) {
-      console.log(error);
+      updateNotification({
+        id: "status-row",
+        color: "red",
+        title: "Updating status failed",
+        message: "Something went wrong, Please try again",
+        autoClose: 2500,
+      });
       return error;
     }
   };
 
-  const handleChange = (event: React.SetStateAction<string | null>) => {
+  const handleChange = (event: SetStateAction<string> | null | undefined) => {
     if (event == "1") {
       setOpen(true);
-      handleSubmit();
+      setValues(event);
+      handleSubmit(event);
+      refetch();
+    }
+
+    if (event == "0") {
+      setValues(event);
+      handleSubmit(event);
+      refetch();
+    }
+
+    if (event == "2") {
+      setValues(event);
+      handleSubmit(event);
       refetch();
     }
     refetch();
@@ -131,7 +172,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
       </Modal>
       <Select
         style={{ width: 130 }}
-        value={handleDefault(cur_status)}
+        value={values}
         data={[
           { value: "0", label: "Active" },
           { value: "1", label: "Closed Won" },
