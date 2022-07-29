@@ -28,6 +28,7 @@ const Home: React.FC = () => {
   const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
+  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
 
@@ -60,6 +61,7 @@ const Home: React.FC = () => {
         sessionStorage.setItem('auth-token', value)
         setUserInfo(res.data.user)
         setCurrent(res.data.user.id)
+        setCompany(res.data.user.company_id)
         dispatch(login(res.data.user));
         router.push(`/dashboard/${res.data.user.id}`);
       }

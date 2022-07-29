@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const TemplatesList: React.FC = () => {
+const CompanyDashboard: React.FC = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -84,15 +84,15 @@ const TemplatesList: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar name={user?.name} user={user} refetch={refetch} />}
+      navbar={<Sidebar name={user?.name} user={user} refetch={refetch}/>}
       // footer={
       //   <RoiFooter />
       // }
       header={<RoiNavbar />}
     >
-      Welcome {user?.name} to your Templates Page
+      Welcome {user?.name} to your Company Dashboard
     </AppShell>
   );
 };
 
-export default TemplatesList;
+export default CompanyDashboard;

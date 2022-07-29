@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const TemplatesList: React.FC = () => {
+const Company: React.FC = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -90,9 +90,9 @@ const TemplatesList: React.FC = () => {
       // }
       header={<RoiNavbar />}
     >
-      Welcome {user?.name} to your Templates Page
+      Welcome {user?.name} to your Company
     </AppShell>
   );
 };
 
-export default TemplatesList;
+export default Company;

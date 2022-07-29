@@ -5,12 +5,13 @@ import router from "next/router";
 import React, { useState } from "react";
 import { MdCalculate, MdKeyboardArrowDown, MdKeyboardArrowRight, MdLineWeight, MdAccessTimeFilled } from "react-icons/md";
 
-const DashboardDrawer = () => {
+const DashboardDrawer = ({ user }: any) => {
 
   
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [company, setCompany] = useLocalStorage({ key: "my-company" });
 
   return (
     <>
@@ -45,8 +46,9 @@ const DashboardDrawer = () => {
                 fullWidth
                 style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
                 leftIcon={<MdLineWeight />}
+                onClick={() => router.push(`/company`)}
               >
-                Create Company
+                Manage Company
               </Button>
               <Button
                 variant="subtle"
@@ -54,8 +56,9 @@ const DashboardDrawer = () => {
                 fullWidth
                 style={{ marginTop: 5, color: "lightgray" }}
                 leftIcon={<MdLineWeight />}
+                onClick={() => router.push(`/company/${company}`)}
               >
-                Company List
+                Company Users
               </Button>
             </Collapse>
           </div>

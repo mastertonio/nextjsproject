@@ -6,6 +6,7 @@ import {
   useMantineTheme,
   Text,
 } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import {
@@ -22,6 +23,7 @@ const Sidebar: React.FC<IAdminListProps> = ({ name, user }) => {
   const router = useRouter();
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
+  const [company, setCompany] = useLocalStorage({ key: "my-company" });
 
   return (
     <Navbar
@@ -77,8 +79,9 @@ const Sidebar: React.FC<IAdminListProps> = ({ name, user }) => {
             fullWidth
             style={{ marginTop: 5, marginLeft: 17, color: "lightgray" }}
             leftIcon={<MdLineWeight />}
+            onClick={() => router.push(`/company`)}
           >
-            Create Company
+            Manage Company
           </Button>
           <Button
             variant="subtle"
@@ -86,8 +89,9 @@ const Sidebar: React.FC<IAdminListProps> = ({ name, user }) => {
             fullWidth
             style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
             leftIcon={<MdLineWeight />}
+            onClick={() => router.push(`/company/${company}`)}
           >
-            Company List
+            Company Users
           </Button>
         </Collapse>
       </Navbar.Section>

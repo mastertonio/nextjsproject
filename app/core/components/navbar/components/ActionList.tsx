@@ -39,10 +39,6 @@ const ActionList: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(router.route.includes("dashboard") ? true : false);
-  }, [router]);
-
   return (
     <Menu trigger="hover" openDelay={100} closeDelay={400} >
       <Menu.Target>
