@@ -33,6 +33,7 @@ import Paginate from "./table/paginate";
 import { sortData, sortFilterData } from "./table/utils/tableMethods";
 import Th from "./table/Thead";
 import SkeletonLoader from "@core/components/loader/SkeletonLoader";
+import TempList from "@core/components/dropdown/TemplateTags";
 
 export interface iDashRowProp {
   id: string;
@@ -155,7 +156,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
 
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
-    console.log(filter);
     setSortedData(
       sortFilterData(data, {
         sortBy,
@@ -163,14 +163,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         search: event,
       })
     );
-    console.log(sortedData);
   };
-
-  const dataTemp = my_roi?.map((element: { id: any; name: string }) => ({
-    key: element.id,
-    value: element.name,
-    label: element.name,
-  }));
 
   const myroi = currentPosts?.map((item: any) => ({
     id: item.id,
@@ -239,15 +232,16 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   return (
     <div>
       <Grid style={{ margin: 20 }}>
-        <MultiSelect
+        <TempList filter={filter} handleFilter={handleFilterChange}/>
+        {/* <MultiSelect
           style={{ width: 450 }}
           placeholder="Filter"
           searchable
           clearable
-          data={dataTemp ? dataTemp : []}
+          data={[{ value: 'The ROI Shop', label: 'The ROI Shop' }]}
           value={filter}
           onChange={handleFilterChange}
-        />
+        /> */}
         <Input
           variant="default"
           placeholder="Search for ROI"
@@ -282,7 +276,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
               sorted={sortBy === "source_name"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}
-              style={{ width: 250 }}
+              style={{ width: 225 }}
             >
               Template Name
             </Th>
@@ -290,7 +284,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
               sorted={sortBy === "dateCreated"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("dateCreated")}
-              style={{ width: 240 }}
+              style={{ width: 250 }}
             >
               Dates
             </Th>
@@ -298,7 +292,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
               sorted={sortBy === "views"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("views")}
-              style={{ width: 170 }}
+              style={{ width: 190 }}
             >
               Views
             </Th>

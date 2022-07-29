@@ -92,7 +92,7 @@ const UserProfile: React.FC = () => {
           title: 'Data was updated!',
           message: 'User Information updated!',
           icon: <IconCheck size={16} />,
-          autoClose: 2500,
+          autoClose: 1000,
         })
       }
       refetch();
@@ -101,7 +101,7 @@ const UserProfile: React.FC = () => {
         id: 'load-data',
         title: 'Error in Saving Data',
         message: 'Please reload the page or try again later',
-        autoClose: 2500,
+        autoClose: 1000,
         disallowClose: true,
         color: 'red'
       })

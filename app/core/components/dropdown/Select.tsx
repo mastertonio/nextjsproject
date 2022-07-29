@@ -21,6 +21,7 @@ export interface IStarProps {
   opened?: boolean;
   setOpened?: (open: boolean) => void;
   size?: number;
+  disabled?: boolean
 }
 
 const SelectDropdown: React.FC<IStarProps> = ({
@@ -81,6 +82,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
   const handleChange = (event: SetStateAction<string> | null | undefined) => {
     if (event == "1") {
       setOpen(true);
+      setStar(false)
       setValues(event);
       handleSubmit(event);
       refetch();

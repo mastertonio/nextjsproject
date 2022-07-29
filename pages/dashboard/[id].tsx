@@ -31,9 +31,9 @@ import { useLocalStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
 //
-const Dashboard: React.FC = ({
-  dta,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Dashboard: React.FC = (
+  // message
+  ) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
@@ -41,9 +41,9 @@ const Dashboard: React.FC = ({
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
 
-  useEffect(() => {
-    console.log(dta);
-  }, [dta]);
+  // useEffect(() => {
+  //   console.log(message, value,'dta');
+  // }, [message, value]);
 
   const getDashboardData = async () => {
     try {
@@ -117,22 +117,14 @@ const Dashboard: React.FC = ({
   );
 };
 
-const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  console.log(context.req, "qqqq");
-  const user = context.query;
-  // const res = await axios.get(`http://54.159.8.194/v1/dashboard/${context.query.id}`, {
-  //   headers: {
-  //     Authorization: `Bearer ${user}`,
-  //   },
-  // });
+// export async function getServerSideProps(ctx: any) {
+//   // Fetch data from external API
+//   console.log(ctx.req.cookies)
+//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
+//   const data = await res.json()
 
-  return {
-    props: {
-      dta: user,
-    },
-  };
-};
+//   // Pass data to the page via props
+//   return { props: { data } }
+// }
 
 export default Dashboard;
