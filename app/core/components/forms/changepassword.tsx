@@ -71,7 +71,7 @@ const ChangePass: React.FC = () => {
     />
   ));
 
-  const bars = Array(4)
+  const bars = Array(5)
     .fill(0)
     .map((_, index) => (
       <Progress
@@ -79,7 +79,7 @@ const ChangePass: React.FC = () => {
         value={
           values.length > 0 && index === 0
             ? 100
-            : strength >= ((index + 1) / 4) * 100
+            : strength >= ((index + 1) / 5) * 100
             ? 100
             : 0
         }
@@ -110,7 +110,7 @@ const ChangePass: React.FC = () => {
         `http://54.159.8.194/v1/users/${current}`,
         { password: values.confirmPassword },
         { headers: { Authorization: `Bearer ${value}` } }
-      )
+      );
 
       if (res) {
         updateNotification({
@@ -121,13 +121,16 @@ const ChangePass: React.FC = () => {
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });
+
+        setValues("");
+        form.reset();
       }
 
       form.reset();
       // router.push("/awdwa");
     } catch (error) {
       form.reset();
-      setValues('')
+      setValues("");
       updateNotification({
         id: "load-pass",
         color: "red",
