@@ -79,22 +79,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
 
-  const getRoiList = async (limitpost: number, page: number) => {
-    try {
-      const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/roi/list?limit=${limitpost}&page=${page}`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
-  };
-
   const getRoiListAll = async () => {
     try {
       const res = await axios.get(`http://54.159.8.194/v1/dashboard/roi/list`, {
@@ -163,6 +147,8 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         search: event,
       })
     );
+
+    console.log(sortedData)
   };
 
   const myroi = currentPosts?.map((item: any) => ({
