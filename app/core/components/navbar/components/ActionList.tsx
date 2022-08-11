@@ -60,7 +60,7 @@ const ActionList: React.FC = () => {
         <Menu.Item
           icon={<ImProfile />}
           onClick={() => {
-            router.push(`/user/${current}`);
+            router.push(`/users/profile`);
           }}
           style={{ width: 150}}
         >
