@@ -147,7 +147,7 @@ const CreateNewRoi: React.FC = () => {
               placeholder="Template"
               searchable
               clearable
-              data={actionList ? actionList : ["No template Detected"]}
+              data={actionList.length > 0 ? actionList : ["No template Detected"]}
               {...form.getInputProps("template")}
             />
           </Grid>
