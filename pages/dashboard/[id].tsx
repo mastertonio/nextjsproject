@@ -102,7 +102,7 @@ const Dashboard: React.FC = (
           <DashboardGraph />
         </div>
         <div className={classes.roi_ranking}>
-          <CreateNewRoi actions={data?.template_list} refetch={refetch} />
+          <CreateNewRoi />
           <RoiRanking rankings={data?.ranking} />
         </div>
       </div>
