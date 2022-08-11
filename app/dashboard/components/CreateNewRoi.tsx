@@ -18,8 +18,9 @@ import { useRouter } from "next/router";
 import { FaPlusSquare } from "react-icons/fa";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
+import { useQuery } from "react-query";
 
-const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
+const CreateNewRoi: React.FC = () => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
   const [value] = useLocalStorage({ key: "auth-token" });
@@ -30,7 +31,28 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
   const router = useRouter();
   const p = router.query;
 
-  const actionList = actions?.map((a) => ({
+  const getTemplateList = async () => {
+    try {
+      const res = await axios.get(
+        `http://54.159.8.194/v1/dashboard/template/list`,
+        {
+          headers: {
+            Authorization: `Bearer ${value}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const { isLoading, status, data, isFetching } = useQuery(
+    "template_List",
+    getTemplateList
+  );
+
+  const actionList = data?.map((a: { id: string; name: string }) => ({
     key: a.id,
     value: a.id,
     label: a.name,
@@ -51,14 +73,13 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
         title: `Creating ${values.name}`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true
+        disallowClose: true,
       });
       const res = await axios.post(
         `http://54.159.8.194/v1/dashboard/${current}`,
         { name: values.name, template_id: values.template },
         { headers: { Authorization: `Bearer ${value}` } }
       );
-      refetch()
       if (res && checked) {
         updateNotification({
           id: "create-row",
@@ -68,8 +89,17 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });
+
         router.push(`/templates/${res.data.id}`);
       }
+      updateNotification({
+        id: "create-row",
+        color: "teal",
+        title: `${values.name} created`,
+        message: "Redirecting shortly ...",
+        icon: <IconCheck size={16} />,
+        autoClose: 2500,
+      });
     } catch (error) {
       updateNotification({
         id: "create-row",
@@ -121,8 +151,15 @@ const CreateNewRoi: React.FC<IAdminListProps> = ({ actions, refetch }) => {
               {...form.getInputProps("template")}
             />
           </Grid>
-          <Grid justify="flex-end" style={{ marginRight: 20, marginBottom: 140}}>
-            <Checkbox checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)} label="Open the Created ROI" />
+          <Grid
+            justify="flex-end"
+            style={{ marginRight: 20, marginBottom: 140 }}
+          >
+            <Checkbox
+              checked={checked}
+              onChange={(event) => setChecked(event.currentTarget.checked)}
+              label="Open the Created ROI"
+            />
           </Grid>
           <Grid justify="flex-end">
             <Button
