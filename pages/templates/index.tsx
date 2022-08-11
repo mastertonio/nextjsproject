@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import {
   AppShell,
-  Button,
-  Group,
   LoadingOverlay,
-  Navbar,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
   useMantineTheme,
 } from "@mantine/core";
-import RoiFooter from "@core/components/footer/Footer";
 import { useRouter } from "next/router";
 import RoiNavbar from "@core/components/navbar/Navbar";
 import Sidebar from "@core/components/sidebar/Sidebar";
@@ -19,7 +11,6 @@ import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 
 const Templates: React.FC = () => {
   const theme = useMantineTheme();
@@ -27,21 +18,6 @@ const Templates: React.FC = () => {
   const router = useRouter();
   const [user, setUser] = useState<any>({});
   const p = router.query;
-
-  const { register, handleSubmit } = useForm({
-    mode: "onBlur",
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      avatar: "",
-      email: "",
-      phone_number: "",
-    },
-  });
-
-  const onSubmit = (data: any) => {
-    alert(data.first_name);
-  };
 
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
@@ -84,7 +60,7 @@ const Templates: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar name={user?.name} user={user} refetch={refetch}/>}
+      navbar={<Sidebar />}
       // footer={
       //   <RoiFooter />
       // }
