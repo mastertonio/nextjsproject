@@ -38,6 +38,12 @@ const SelectDropdown: React.FC<IStarProps> = ({
   const [values, setValues] = useState<any>(`${cur_status}`);
   const router = useRouter();
   const p = router.query;
+  
+  // useEffect(()=>{
+  //   if(cur_status==null){
+  //     setValues('0')
+  //   }
+  // },[cur_status])
 
   const handleSubmit = async (data?: string) => {
     try {
