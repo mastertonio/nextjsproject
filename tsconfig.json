@@ -16,14 +16,16 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@app/*": ["app/*"],
       "@redux/*": ["app/redux/*"],
       "@dashboard/*": ["app/dashboard/*"],
       "@core/*": ["app/core/*"],
       "@styles/*": ["styles/*"],
       "@public/*": ["public/*"],
       "@context/*": ["app/context/*"],
+      "@company/*": ["app/company"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "app/core/components/data-grid/DataGrid.js", "app/core/components/data-grid/components/ReactTable/index.js", "app/core/components/data-grid/components/ReactTable/filterTypes.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
