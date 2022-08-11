@@ -84,7 +84,7 @@ const Company: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar name={user?.name} user={user} refetch={refetch} />}
+      navbar={<Sidebar  />}
       // footer={
       //   <RoiFooter />
       // }
