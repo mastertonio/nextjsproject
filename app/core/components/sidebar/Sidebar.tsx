@@ -7,8 +7,9 @@ import {
   Text,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MdSpaceDashboard,
   MdCalculate,
@@ -17,13 +18,39 @@ import {
   MdAccessTimeFilled,
   MdLineWeight,
 } from "react-icons/md";
+import { useQuery } from "react-query";
 import { IAdminListProps } from "../navbar/components/AdminList";
 
-const Sidebar: React.FC<IAdminListProps> = ({ name, user }) => {
+const Sidebar: React.FC = () => {
   const router = useRouter();
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
+  const [value] = useLocalStorage({ key: "auth-token" });
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [user, setUser] = useState<any>({});
+
+  const getCurrentUser = async () => {
+    try {
+      const res = await axios.get(`http://54.159.8.194/v1/users/${current}`, {
+        headers: {
+          Authorization: `Bearer ${value}`,
+        },
+      });
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const { isLoading, status, data, isFetching, refetch } = useQuery(
+    "userList",
+    getCurrentUser
+  );
+
+  useEffect(() => {
+    setUser(data);
+  }, [data]);
 
   return (
     <Navbar
@@ -43,7 +70,7 @@ const Sidebar: React.FC<IAdminListProps> = ({ name, user }) => {
     >
       <Image style={{ marginTop: 35 }} src="/logo.png" alt="random" />
       <Text style={{ marginBottom: 150, marginLeft: 35, width: "full" }}>
-        Welcome {name}
+        Welcome {user?.name}
       </Text>
       <Navbar.Section>
         <Button
@@ -89,7 +116,7 @@ const Sidebar: React.FC<IAdminListProps> = ({ name, user }) => {
             fullWidth
             style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
             leftIcon={<MdLineWeight />}
-            onClick={() => router.push(`/company/${company}`)}
+            onClick={() => router.push(`/users`)}
           >
             Company Users
           </Button>
