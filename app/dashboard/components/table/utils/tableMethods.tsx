@@ -83,6 +83,10 @@ export interface ICompanyProps {
   name: string;
   alias: string;
   licenses: string;
+  contact_fname: string;
+  contact_lname: string;
+  contact_email: string;
+  contact_phone: string;
   templates: string;
   default_active_value: string;
   active: string;

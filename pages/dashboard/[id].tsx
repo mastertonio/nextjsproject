@@ -48,7 +48,7 @@ const Dashboard: React.FC = (
   const getDashboardData = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/${current}`,
+        `http://54.159.8.194/v1/dashboard`,
         {
           headers: {
             Authorization: `Bearer ${value}`,
@@ -87,7 +87,7 @@ const Dashboard: React.FC = (
       header={
         <RoiNavbar/>
       }
-      footer={<RoiFooter />}
+      // footer={<RoiFooter />}
     >
       <div className={classes.body}>
         <div className={classes.welcome}>
@@ -103,7 +103,7 @@ const Dashboard: React.FC = (
         </div>
         <div className={classes.roi_ranking}>
           <CreateNewRoi />
-          <RoiRanking rankings={data?.ranking} />
+          <RoiRanking />
         </div>
       </div>
       <div className={classes.bar_graph_wrapper}>

@@ -12,6 +12,7 @@ import {
   ScrollArea,
   Table,
   Center,
+  Badge,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
@@ -123,7 +124,7 @@ interface ICompanyUsersElements {
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
@@ -160,6 +161,7 @@ const Dashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<keyof ICompanyUsersProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     console.log(filter);
@@ -272,73 +274,69 @@ const Dashboard: React.FC = () => {
             }}
           />
         </Grid>
-        <Table
-          className={classes.table}
-          horizontalSpacing="xl"
-          highlightOnHover
-          verticalSpacing="xs"
-        >
-          <thead>
-            <tr>
-              <Th
-                sorted={sortBy === "email"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("email")}
-                style={{ width: 220 }}
-              >
-                User Name
-              </Th>
-              <Th
-                sorted={sortBy === "created_rois"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("created_rois")}
-                style={{ width: 170 }}
-              >
-                Created Rois
-              </Th>
-              <Th
-                sorted={sortBy === "role"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("role")}
-                style={{ width: 160 }}
-              >
-                Role
-              </Th>
-              <Th
-                sorted={sortBy === "manager"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("manager")}
-                style={{ width: 170 }}
-              >
-                Manager
-              </Th>
-              <Th
-                sorted={sortBy === "currency"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("currency")}
-                style={{ width: 220 }}
-              >
-                Currency
-              </Th>
-              <Th
-                sorted={sortBy === "status"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("status")}
-                style={{ width: 220 }}
-              >
-                Status
-              </Th>
-              <th></th>
-            </tr>
-          </thead>
-        </Table>
-        <ScrollArea style={{ height: 620 }}>
+        <ScrollArea style={{ height: 620 }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
           <Table
             className={classes.table}
             highlightOnHover
             verticalSpacing="xs"
             horizontalSpacing="xl"
           >
+            <thead
+              className={cx(classes.header, { [classes.scrolled]: scrolled })}
+              style={{ zIndex: 50 }}
+            >
+              <tr>
+                <Th
+                  sorted={sortBy === "email"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("email")}
+                  style={{ width: 300 }}
+                >
+                  User Name
+                </Th>
+                <Th
+                  sorted={sortBy === "created_rois"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("created_rois")}
+                  style={{ width: 170 }}
+                >
+                  Created Rois
+                </Th>
+                <Th
+                  sorted={sortBy === "role"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("role")}
+                  style={{ width: 170 }}
+                >
+                  Role
+                </Th>
+                <Th
+                  sorted={sortBy === "manager"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("manager")}
+                  style={{ width: 250 }}
+                >
+                  Manager
+                </Th>
+                <Th
+                  sorted={sortBy === "currency"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("currency")}
+                  style={{ width: 110 }}
+                >
+                  Currency
+                </Th>
+                <Th
+                  sorted={sortBy === "status"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("status")}
+                  style={{ width: 130 }}
+                >
+                  Status
+                </Th>
+                <th></th>
+              </tr>
+            </thead>
             {isLoading ? (
               <SkeletonLoader />
             ) : (
@@ -346,24 +344,28 @@ const Dashboard: React.FC = () => {
                 {companies?.map((element: ICompanyUsersElements) => (
                   <tr key={element.id} style={{ height: 20 }}>
                     <td style={{ width: 10 }}>{element.username}</td>
-                    <td style={{ cursor: "pointer", width: 140, textAlign: 'center' }}>
+                    <td
+                      style={{
+                        cursor: "pointer",
+                        width: 140,
+                        paddingLeft: 30
+                      }}
+                    >
                       {element.created_rois}
                     </td>
-                    <td style={{ width: 240 }}>{element.role}</td>
-                    <td style={{ width: 155 }}>
+                    <td>{element.role}</td>
+                    <td>
                       {!!element.manager ? element.manager : "Unassigned"}
                     </td>
-                    <td style={{ width: 145, paddingLeft: 20 }}>
+                    <td style={{ width: 145, paddingLeft: 30 }}>
                       {element.currency}
                     </td>
                     <td
                       style={{
-                        width: 190,
-                        textAlign: "center",
-                        paddingRight: 40,
+                        width: 110,
                       }}
                     >
-                      {element.status}
+                      <Badge color="green" variant="outline">{element.status}</Badge>
                     </td>
                     <td
                       style={{

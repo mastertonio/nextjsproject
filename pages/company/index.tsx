@@ -38,6 +38,7 @@ import EditCompanyButton from "@app/company/components/buttons/EditCompanyButton
 import Sidebar from "@app/core/components/sidebar/Sidebar";
 import RoiNavbar from "@app/core/components/navbar/Navbar";
 import Segmented from "@app/core/components/buttons/Segmented";
+import AddCompanyButton from "@app/company/components/buttons/AddCompanyButton";
 
 export interface iDashRowProp {
   id: string;
@@ -145,8 +146,9 @@ export interface iDashboardRowProps {
 
 const CompanyList: React.FC<iDashboardRowProps> = () => {
   const theme = useMantineTheme();
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
+  const [subComp, setSubComp] = useLocalStorage({ key: "sub-comp" });
   const router = useRouter();
 
   const getCompanies = async () => {
@@ -175,7 +177,8 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof ICompanyProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     console.log(filter);
@@ -253,12 +256,18 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           size="xs"
           color="cyan"
           onClick={() => {
-            router.push(`/users`);
+            setSubComp(item._id);
+            router.push(`/company/users/${item._id}`);
           }}
         >
           Users
         </Button>
-        <EditCompanyButton id={item._id} refetch={refetch} name={item.name} myCompany={item} />
+        <EditCompanyButton
+          id={item._id}
+          refetch={refetch}
+          name={item.name}
+          myCompany={item}
+        />
       </>
     ),
   }));
@@ -267,13 +276,16 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+          backgroundColor: "white",
         },
       }}
-      style={{ marginLeft: 50, marginRight: 50 }}
+      style={{
+        marginLeft: 50,
+        marginRight: 50,
+        marginTop: "auto",
+        marginBottom: "auto",
+        maxWidth: 1780,
+      }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
@@ -283,8 +295,16 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
       // }
       header={<RoiNavbar />}
     >
-      <Grid style={{ margin: 20 }}>
+      <Grid
+        style={{
+          marginTop: 20,
+          marginBottom: 20,
+          marginLeft: 10,
+          marginRight: 10,
+        }}
+      >
         {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
+        <AddCompanyButton refetch={refetch} />
         <Input
           variant="default"
           placeholder="Search for ROI"
@@ -296,61 +316,60 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           }}
         />
       </Grid>
-      <Table
-        className={classes.table}
-        horizontalSpacing="xl"
-        highlightOnHover
-        verticalSpacing="xs"
+      <ScrollArea
+        style={{ height: 690 }}
+        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
-        <thead>
-          <tr>
-            <th style={{ width: 85 }}></th>
-            <Th
-              sorted={sortBy === "name"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("name")}
-              style={{ width: 310 }}
-            >
-              Company Name
-            </Th>
-            <Th
-              sorted={sortBy === "alias"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("alias")}
-              style={{ width: 225 }}
-            >
-              Alias
-            </Th>
-            <Th
-              sorted={sortBy === "licenses"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("licenses")}
-              style={{ width: 160 }}
-            >
-              Licenses
-            </Th>
-            <Th
-              sorted={sortBy === "templates"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("templates")}
-              style={{ width: 170 }}
-            >
-              Templates
-            </Th>
-            <Th
-              sorted={sortBy === "active"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("active")}
-              style={{ width: 220 }}
-            >
-              Status
-            </Th>
-            <th></th>
-          </tr>
-        </thead>
-      </Table>
-      <ScrollArea style={{ height: 620 }}>
         <Table className={classes.table} highlightOnHover verticalSpacing="xs">
+          <thead
+            className={cx(classes.header, { [classes.scrolled]: scrolled })}
+            style={{ zIndex: 50 }}
+          >
+            <tr>
+              <th style={{ width: 85 }}></th>
+              <Th
+                sorted={sortBy === "name"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("name")}
+                style={{ width: 310 }}
+              >
+                Company Name
+              </Th>
+              <Th
+                sorted={sortBy === "alias"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("alias")}
+                style={{ width: 225 }}
+              >
+                Alias
+              </Th>
+              <Th
+                sorted={sortBy === "licenses"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("licenses")}
+                style={{ width: 160 }}
+              >
+                Licenses
+              </Th>
+              <Th
+                sorted={sortBy === "templates"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("templates")}
+                style={{ width: 170 }}
+              >
+                Templates
+              </Th>
+              <Th
+                sorted={sortBy === "active"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("active")}
+                style={{ width: 220 }}
+              >
+                Status
+              </Th>
+              <th></th>
+            </tr>
+          </thead>
           {isLoading ? (
             <SkeletonLoader />
           ) : (
@@ -374,8 +393,6 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                   <td
                     style={{
                       width: 190,
-                      textAlign: "center",
-                      paddingRight: 40,
                     }}
                   >
                     {element.active}

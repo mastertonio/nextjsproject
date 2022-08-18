@@ -19,7 +19,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useStyles } from "@styles/dashboardStyle";
+import { useStyles } from "@styles/tableStyle";
 import { useRouter } from "next/router";
 import EditButton from "./buttons/EditButton";
 import DeleteButton from "./buttons/DeleteButton";
@@ -75,9 +75,10 @@ export interface iDashboardRowProps {
 const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [rating, setRating] = useState<number>(0);
   const [star, setStar] = useState<boolean>(true);
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
 
   const getRoiListAll = async () => {
     try {
@@ -239,13 +240,9 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
           }}
         />
       </Grid>
-      <Table
-        className={classes.table}
-        horizontalSpacing="xl"
-        highlightOnHover
-        verticalSpacing="xs"
-      >
-        <thead>
+      <ScrollArea style={{ height: 640 }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+        <Table className={classes.table} highlightOnHover verticalSpacing="xs" >
+        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })} style={{ zIndex: 50}}>
           <tr>
             <th style={{ width: 100 }}></th>
             <th style={{ width: 150 }}>Status</th>
@@ -286,16 +283,13 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
               sorted={sortBy === "uniqueViews"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("uniqueViews")}
-              style={{ width: 220 }}
+              style={{ width: 200 }}
             >
               Unique Views
             </Th>
             <th></th>
           </tr>
         </thead>
-      </Table>
-      <ScrollArea style={{ height: 580 }}>
-        <Table className={classes.table} highlightOnHover verticalSpacing="xs">
           {isLoading ? (
             <SkeletonLoader />
           ) : (
@@ -399,8 +393,8 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                     </td>
                     <td style={{ width: 240 }}>{element.source_name}</td>
                     <td style={{ width: 285 }}>{element.dates}</td>
-                    <td style={{ width: 170, paddingLeft: 20 }}>{element.views}</td>
-                    <td style={{ width: 190, textAlign: 'center', paddingRight: 40  }}>{element.uniqueViews}</td>
+                    <td style={{ width: 150, paddingLeft: 20 }}>{element.views}</td>
+                    <td style={{ width: 190, paddingLeft: 40 }}>{element.uniqueViews}</td>
                     <td
                       style={{
                         display: "flex",
