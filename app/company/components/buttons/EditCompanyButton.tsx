@@ -32,51 +32,63 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
       company: myCompany.name,
       alias: myCompany.alias,
       licenses: myCompany.licenses,
-      first_name: "Jason",
-      last_name: "Ronda",
-      email: "jason.ronda003@gmail.com",
-      phone: "09269666992",
+      first_name: !!myCompany.contact_fname
+        ? myCompany.contact_fname
+        : "Unassigned",
+      last_name: !!myCompany.contact_lname
+        ? myCompany.contact_lname
+        : "Unassigned",
+      email: !!myCompany.contact_email ? myCompany.contact_email : "Unassigned",
+      phone: !!myCompany.contact_phone ? myCompany.contact_phone : "Unassigned",
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values, 'rarara')
-    // try {
-    //   showNotification({
-    //     id: "edit-row",
-    //     loading: true,
-    //     title: `Updating ${name}`,
-    //     message: "Please wait, updating edited row",
-    //     autoClose: false,
-    //     disallowClose: true,
-    //     color: "teal",
-    //   });
-    //   const response = await axios.patch(
-    //     `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-    //     { title: values.company },
-    //     { headers: { Authorization: `Bearer ${value}` } }
-    //   );
-    //   if (response) {
-    //     refetch();
-    //     updateNotification({
-    //       id: "edit-row",
-    //       color: "teal",
-    //       title: `${name} row was updated to ${values.company}`,
-    //       message: "A row was updated! and renamed",
-    //       icon: <IconCheck size={16} />,
-    //       autoClose: 2500,
-    //     });
-    //   }
-    // } catch (error) {
-    //   updateNotification({
-    //     id: "edit-row",
-    //     color: "red",
-    //     title: "Updating a table row failed",
-    //     message: "Something went wrong, Please try again",
-    //     autoClose: false,
-    //   });
-    //   return error;
-    // }
+    console.log(values);
+    try {
+      showNotification({
+        id: "edit-comp",
+        loading: true,
+        title: `Updating ...`,
+        message: "Please wait, updating edited row",
+        autoClose: false,
+        disallowClose: true,
+        color: "teal",
+      });
+      const response = await axios.patch(
+        `http://54.159.8.194/v1/company/${id}`,
+        {
+          name: values.company,
+          alias: values.alias,
+          licenses: parseInt(values.licenses),
+          contact_fname: values.first_name,
+          contact_lname: values.last_name,
+          contact_email: values.email,
+          contact_phone: values.phone,
+        },
+        { headers: { Authorization: `Bearer ${value}` } }
+      );
+      if (response) {
+        refetch();
+        updateNotification({
+          id: "edit-comp",
+          color: "teal",
+          title: `Row updated!`,
+          message: "A row was edited! ",
+          icon: <IconCheck size={16} />,
+          autoClose: 2500,
+        });
+      }
+    } catch (error) {
+      updateNotification({
+        id: "edit-comp",
+        color: "red",
+        title: "Updating a table row failed",
+        message: "Something went wrong, Please try again",
+        autoClose: false,
+      });
+      return error;
+    }
   };
 
   return (
@@ -128,7 +140,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
                   style={{ width: 350, marginLeft: "auto" }}
                   // defaultValue={myCompany.name}
                   placeholder="New Title Name"
-                  {...form.getInputProps('company')}
+                  {...form.getInputProps("company")}
                 />
               </div>
               <div style={{ marginLeft: "auto" }}>
@@ -211,7 +223,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
               style={{ marginRight: 10 }}
               onClick={() => setOpened(false)}
             >
-              Change ROI Name
+              Edit Company
             </Button>
             <Button
               radius="sm"
