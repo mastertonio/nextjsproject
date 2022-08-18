@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -52,11 +52,26 @@ const CreateNewRoi: React.FC = () => {
     getTemplateList
   );
 
-  const actionList = data?.map((a: { id: string; name: string }) => ({
-    key: a.id,
-    value: a.id,
-    label: a.name,
-  }));
+  const [mapp, setMapp] = useState<Array<object>>([])
+
+  const actionList = data?.map((a: { name: string; build: any }) => {return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+    key: b._id,
+    value: b._id,
+    label: b.name,
+    group: a.name
+  }))
+}).flat();
+
+  // a.build.map((b: { id: any; name: any; }) => ({
+  //   key: b.id,
+  //   value: b.id,
+  //   label: b.name,
+  //   group: a.name
+  // }))
+
+  useEffect(() => {
+    console.log(actionList);
+  }, [actionList]);
 
   const form = useForm({
     initialValues: {
@@ -147,8 +162,17 @@ const CreateNewRoi: React.FC = () => {
               placeholder="Template"
               searchable
               clearable
-              data={actionList?.length > 0 ? actionList : [
-                { value: '', label: 'No Template Detected', disabled: true }]}
+              data={
+                actionList?.length > 0
+                  ? actionList
+                  : [
+                      {
+                        value: "",
+                        label: "No Template Detected",
+                        disabled: true,
+                      },
+                    ]
+              }
               {...form.getInputProps("template")}
             />
           </Grid>

@@ -39,7 +39,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
         ? myCompany.contact_lname
         : "Unassigned",
       email: !!myCompany.contact_email ? myCompany.contact_email : "Unassigned",
-      phone: !!myCompany.contact_phone ? myCompany.contact_phone : "Unassigned",
+      phone: !!myCompany.contact_phone ? myCompany.contact_phone : "9269996669",
     },
   });
 
