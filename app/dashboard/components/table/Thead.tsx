@@ -27,7 +27,7 @@ const Th: React.FC<ThProps> = ({ children, reversed, sorted, onSort, style }) =>
       <th style={style}>
         <UnstyledButton onClick={onSort} className={classes.control}>
           <Group position="apart">
-            <Text weight={500} size="sm">
+            <Text weight={700} size="xs">
               {children}
             </Text>
             <Center className={classes.icon}>

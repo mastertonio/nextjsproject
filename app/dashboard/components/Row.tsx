@@ -99,7 +99,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   );
 
   useEffect(() => {
-    console.log(data)
+    console.log(data);
     setSortedData(data);
   }, [data]);
 
@@ -149,7 +149,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
       })
     );
 
-    console.log(sortedData)
+    console.log(sortedData);
   };
 
   const myroi = currentPosts?.map((item: any) => ({
@@ -207,11 +207,17 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     views: item.views,
     uniqueViews: item.uniqueViews,
     actions: (
-      <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: 'center'
+        }}
+      >
         <EditButton id={item.id} refetch={refetch} name={item.name} />
         <CloneButton id={item.id} refetch={refetch} name={item.name} />
         <DeleteButton id={item.id} refetch={refetch} name={item.name} />
-      </>
+      </div>
     ),
     source: item.source,
   }));
@@ -219,7 +225,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   return (
     <div>
       <Grid style={{ margin: 20 }}>
-        <TempList filter={filter} handleFilter={handleFilterChange}/>
+        <TempList filter={filter} handleFilter={handleFilterChange} />
         {/* <MultiSelect
           style={{ width: 450 }}
           placeholder="Filter"
@@ -240,56 +246,62 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
           }}
         />
       </Grid>
-      <ScrollArea style={{ height: 640 }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-        <Table className={classes.table} highlightOnHover verticalSpacing="xs" >
-        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })} style={{ zIndex: 50}}>
-          <tr>
-            <th style={{ width: 100 }}></th>
-            <th style={{ width: 150 }}>Status</th>
-            <th style={{ width: 105 }}>Importance</th>
-            <Th
-              sorted={sortBy === "name"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("name")}
-              style={{ width: 300 }}
-            >
-              ROI name
-            </Th>
-            <Th
-              sorted={sortBy === "source_name"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("name")}
-              style={{ width: 225 }}
-            >
-              Template Name
-            </Th>
-            <Th
-              sorted={sortBy === "dateCreated"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("dateCreated")}
-              style={{ width: 250 }}
-            >
-              Dates
-            </Th>
-            <Th
-              sorted={sortBy === "views"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("views")}
-              style={{ width: 190 }}
-            >
-              Views
-            </Th>
-            <Th
-              sorted={sortBy === "uniqueViews"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("uniqueViews")}
-              style={{ width: 200 }}
-            >
-              Unique Views
-            </Th>
-            <th></th>
-          </tr>
-        </thead>
+      <ScrollArea
+        style={{ height: 640 }}
+        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+      >
+        <Table className={classes.table} highlightOnHover verticalSpacing="xs">
+          <thead
+            className={cx(classes.header, { [classes.scrolled]: scrolled })}
+            style={{ zIndex: 50 }}
+          >
+            <tr>
+              <th style={{ width: 100 }}></th>
+              <th style={{ width: 150 }}>Status</th>
+              <th style={{ width: 105 }}>Importance</th>
+              <Th
+                sorted={sortBy === "name"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("name")}
+                style={{ width: 300 }}
+              >
+                ROI name
+              </Th>
+              <Th
+                sorted={sortBy === "source_name"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("name")}
+                style={{ width: 225 }}
+              >
+                Template Name
+              </Th>
+              <Th
+                sorted={sortBy === "dateCreated"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("dateCreated")}
+                style={{ width: 250 }}
+              >
+                Dates
+              </Th>
+              <Th
+                sorted={sortBy === "views"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("views")}
+                style={{ width: 190 }}
+              >
+                Views
+              </Th>
+              <Th
+                sorted={sortBy === "uniqueViews"}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting("uniqueViews")}
+                style={{ width: 200 }}
+              >
+                Unique Views
+              </Th>
+              <th></th>
+            </tr>
+          </thead>
           {isLoading ? (
             <SkeletonLoader />
           ) : (
@@ -393,17 +405,13 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                     </td>
                     <td style={{ width: 240 }}>{element.source_name}</td>
                     <td style={{ width: 285 }}>{element.dates}</td>
-                    <td style={{ width: 150, paddingLeft: 20 }}>{element.views}</td>
-                    <td style={{ width: 190, paddingLeft: 40 }}>{element.uniqueViews}</td>
-                    <td
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        height: 57,
-                      }}
-                    >
-                      {element.actions}
+                    <td style={{ width: 150, paddingLeft: 20 }}>
+                      {element.views}
                     </td>
+                    <td style={{ width: 190, paddingLeft: 40 }}>
+                      {element.uniqueViews}
+                    </td>
+                    <td>{element.actions}</td>
                   </tr>
                 )
               )}

@@ -9,9 +9,10 @@ const Segmented: React.FC<ISegmentedProps> = ({ val }) => {
   const [value, setValue] = useState(val);
   return (
     <SegmentedControl
+      size="xs"
       value={value}
       onChange={setValue}
-      color={value=="active" ? "teal" : "gray"}
+      color={value == "active" ? "teal" : "gray"}
       data={[
         { label: "Inactive", value: "inactive" },
         { label: "Active", value: "active" },

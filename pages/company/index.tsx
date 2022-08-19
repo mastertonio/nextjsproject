@@ -240,7 +240,13 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     templates: item.templates,
     active: <Segmented val={item.active} key={item._id} />,
     actions: (
-      <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
         <Button
           leftIcon={<HiTemplate />}
           size="xs"
@@ -268,7 +274,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           name={item.name}
           myCompany={item}
         />
-      </>
+      </div>
     ),
   }));
 
@@ -317,10 +323,15 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
         />
       </Grid>
       <ScrollArea
-        style={{ height: 690 }}
+        style={{ height: 650 }}
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
-        <Table className={classes.table} highlightOnHover verticalSpacing="xs">
+        <Table
+          className={classes.table}
+          highlightOnHover
+          verticalSpacing="xs"
+          fontSize="xs"
+        >
           <thead
             className={cx(classes.header, { [classes.scrolled]: scrolled })}
             style={{ zIndex: 50 }}
@@ -375,7 +386,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           ) : (
             <tbody>
               {companies?.map((element: ICompanyElement) => (
-                <tr key={element.id} style={{ height: 20 }}>
+                <tr key={element.id}>
                   <td style={{ width: 10 }}>{element.button}</td>
                   <td
                     style={{ cursor: "pointer", width: 310 }}
@@ -397,15 +408,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                   >
                     {element.active}
                   </td>
-                  <td
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      height: 62,
-                    }}
-                  >
-                    {element.actions}
-                  </td>
+                  <td>{element.actions}</td>
                 </tr>
               ))}
             </tbody>

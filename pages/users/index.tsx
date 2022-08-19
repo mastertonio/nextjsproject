@@ -217,7 +217,13 @@ const Dashboard: React.FC = () => {
     role: item.role,
     s: item.manager,
     actions: (
-      <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: 'center'
+        }}
+      >
         <Button
           leftIcon={<HiTemplate />}
           size="xs"
@@ -238,7 +244,7 @@ const Dashboard: React.FC = () => {
         >
           Transfer
         </Button>
-      </>
+      </div>
     ),
   }));
 
@@ -274,7 +280,10 @@ const Dashboard: React.FC = () => {
             }}
           />
         </Grid>
-        <ScrollArea style={{ height: 620 }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+        <ScrollArea
+          style={{ height: 620 }}
+          onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+        >
           <Table
             className={classes.table}
             highlightOnHover
@@ -348,7 +357,7 @@ const Dashboard: React.FC = () => {
                       style={{
                         cursor: "pointer",
                         width: 140,
-                        paddingLeft: 30
+                        paddingLeft: 30,
                       }}
                     >
                       {element.created_rois}
@@ -365,17 +374,11 @@ const Dashboard: React.FC = () => {
                         width: 110,
                       }}
                     >
-                      <Badge color="green" variant="outline">{element.status}</Badge>
+                      <Badge color="green" variant="outline">
+                        {element.status}
+                      </Badge>
                     </td>
-                    <td
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        height: 62,
-                      }}
-                    >
-                      {element.actions}
-                    </td>
+                    <td>{element.actions}</td>
                   </tr>
                 ))}
               </tbody>
