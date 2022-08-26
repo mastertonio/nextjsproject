@@ -26,22 +26,9 @@ import {
 } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
-import RoiFooter from "@core/components/footer/Footer";
-import Welcome from "@dashboard/components/Welcome";
-import DashboardGraph from "@dashboard/components/DashboardGraph";
-import ViewCount from "@dashboard/components/ViewCount";
-import CreateNewRoi from "@dashboard/components/CreateNewRoi";
-import RoiRanking from "@dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
-import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
-import { FaPlusSquare } from "react-icons/fa";
 import Paginate from "@app/dashboard/components/table/paginate";
-import EditCompanyButton from "@app/company/components/buttons/EditCompanyButton";
-import { FiUsers } from "react-icons/fi";
-import { HiTemplate } from "react-icons/hi";
-import Segmented from "@app/core/components/buttons/Segmented";
-import { AiOutlineFolderOpen } from "react-icons/ai";
 import {
   filterCompanyUsersData,
   ICompanyUsersProps,
@@ -53,6 +40,11 @@ import { ICompanyElement } from "pages/company";
 import Sidebar from "@app/core/components/sidebar/Sidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import { useAppDispatch, useAppSelector } from "@redux/store";
+import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
+import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
+import TransferButton from "@app/company/components/buttons/Transfer";
+import CompanyUserTable from "@app/company/user/table";
+import MainLoader from "@app/core/components/loader/MainLoader";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -83,7 +75,7 @@ interface ICompanyUsersElements {
     | React.ReactPortal
     | null
     | undefined;
-  manager:
+  manager_email:
     | string
     | number
     | boolean
@@ -121,7 +113,7 @@ interface ICompanyUsersElements {
     | undefined;
 }
 
-const Dashboard: React.FC = () => {
+const UsersDashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
@@ -215,7 +207,8 @@ const Dashboard: React.FC = () => {
     currency: item.currency,
     status: item.status,
     role: item.role,
-    s: item.manager,
+    manager_email: item.manager_email,
+    manager_id: item.manager_id,
     actions: (
       <div
         style={{
@@ -224,31 +217,13 @@ const Dashboard: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        <Button
-          leftIcon={<HiTemplate />}
-          size="xs"
-          color="yellow"
-          onClick={() => {
-            router.push(`/templates`);
-          }}
-        >
-          Edit
-        </Button>
-        <Button
-          leftIcon={<FiUsers />}
-          size="xs"
-          color="cyan"
-          onClick={() => {
-            router.push(`/users`);
-          }}
-        >
-          Transfer
-        </Button>
+        <EditCompanyUserButton id={item._id} myCompany={item} refetch={refetch} name={item.email} />
+        <TransferButton id={item._id} name={item.email} refetch={refetch} />
       </div>
     ),
   }));
 
-  return (
+  return isLoading ? <MainLoader /> : (
     <AppShell
       styles={{
         main: {
@@ -268,7 +243,7 @@ const Dashboard: React.FC = () => {
       <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <Text size="lg">My ROIs</Text>
+          <AddCompanyUserButton refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
@@ -281,7 +256,7 @@ const Dashboard: React.FC = () => {
           />
         </Grid>
         <ScrollArea
-          style={{ height: 620 }}
+          style={{ height: 590 }}
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
@@ -320,9 +295,9 @@ const Dashboard: React.FC = () => {
                   Role
                 </Th>
                 <Th
-                  sorted={sortBy === "manager"}
+                  sorted={sortBy === "manager_email"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("manager")}
+                  onSort={() => setSorting("manager_email")}
                   style={{ width: 250 }}
                 >
                   Manager
@@ -364,7 +339,7 @@ const Dashboard: React.FC = () => {
                     </td>
                     <td>{element.role}</td>
                     <td>
-                      {!!element.manager ? element.manager : "Unassigned"}
+                      {!!element.manager_email ? element.manager_email : "Unassigned"}
                     </td>
                     <td style={{ width: 145, paddingLeft: 30 }}>
                       {element.currency}
@@ -399,6 +374,7 @@ const Dashboard: React.FC = () => {
           />
         </div>
       </div>
+      <CompanyUserTable update={refetch} />
     </AppShell>
   );
 };
@@ -412,5 +388,4 @@ const Dashboard: React.FC = () => {
 //   // Pass data to the page via props
 //   return { props: { data } }
 // }
-
-export default Dashboard;
+export default UsersDashboard
