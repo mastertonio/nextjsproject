@@ -45,11 +45,13 @@ const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
     getTemplateList
   );
 
-  const dataTemp = data?.map((element: { id: any; name: string }) => ({
-    key: element.id,
-    value: element.name,
-    label: element.name,
-  }));
+  const dataTemp2 = data?.map((a: { name: string; build: any }) => {return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+    key: b._id,
+    value: b.name,
+    label: b.name,
+    group: a.name
+  }))
+}).flat();
 
   return (
     <MultiSelect
@@ -57,7 +59,7 @@ const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
       placeholder="Filter Templates"
       searchable
       clearable
-      data={dataTemp ?? []}
+      data={dataTemp2 ?? []}
       value={filter}
       onChange={handleFilter}
     />
