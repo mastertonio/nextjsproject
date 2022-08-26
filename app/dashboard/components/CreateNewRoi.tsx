@@ -31,7 +31,7 @@ const CreateNewRoi: React.FC = () => {
   const router = useRouter();
   const p = router.query;
 
-  const getTemplateList = async () => {
+  const getTemplateButtonList = async () => {
     try {
       const res = await axios.get(
         `http://54.159.8.194/v1/dashboard/template/list`,
@@ -49,7 +49,7 @@ const CreateNewRoi: React.FC = () => {
 
   const { isLoading, status, data, isFetching } = useQuery(
     "template_List",
-    getTemplateList
+    getTemplateButtonList
   );
 
   const [mapp, setMapp] = useState<Array<object>>([])
@@ -61,17 +61,6 @@ const CreateNewRoi: React.FC = () => {
     group: a.name
   }))
 }).flat();
-
-  // a.build.map((b: { id: any; name: any; }) => ({
-  //   key: b.id,
-  //   value: b.id,
-  //   label: b.name,
-  //   group: a.name
-  // }))
-
-  useEffect(() => {
-    console.log(actionList);
-  }, [actionList]);
 
   const form = useForm({
     initialValues: {
@@ -105,7 +94,7 @@ const CreateNewRoi: React.FC = () => {
           autoClose: 2500,
         });
 
-        router.push(`/templates/${res.data.id}`);
+        router.push(`/templates`);
       }
       updateNotification({
         id: "create-row",
