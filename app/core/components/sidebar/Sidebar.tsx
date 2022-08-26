@@ -77,7 +77,7 @@ const Sidebar: React.FC = () => {
           variant="subtle"
           fullWidth
           style={{ marginTop: 5, color: "lightgray" }}
-          onClick={() => router.push(`/dashboard/${user?.id}`)}
+          onClick={() => router.push(`/dashboard`)}
           leftIcon={<MdSpaceDashboard />}
           size="md"
         >
@@ -99,17 +99,28 @@ const Sidebar: React.FC = () => {
         >
           Company
         </Button>
-        <Collapse in={openCompany} style={{display: 'flex', flexDirection: 'column', alignItems: 'end'}}>
-          <Button
-            variant="subtle"
-            color="blue"
-            fullWidth
-            style={{ marginTop: 5, marginLeft: 17, color: "lightgray" }}
-            leftIcon={<MdLineWeight />}
-            onClick={() => router.push(`/company`)}
-          >
-            Manage Company
-          </Button>
+        <Collapse
+          in={openCompany}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "end",
+          }}
+        >
+          {user?.role == "admin"? (
+            <Button
+              variant="subtle"
+              color="blue"
+              fullWidth
+              style={{ marginTop: 5, marginLeft: 17, color: "lightgray" }}
+              leftIcon={<MdLineWeight />}
+              onClick={() => router.push(`/company`)}
+            >
+              Manage Company
+            </Button>
+          ) : (
+            ""
+          )}
           <Button
             variant="subtle"
             color="blue"
