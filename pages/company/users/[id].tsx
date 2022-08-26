@@ -52,6 +52,7 @@ import { ICompanyElement } from "pages/company";
 import Sidebar from "@app/core/components/sidebar/Sidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import { useAppDispatch, useAppSelector } from "@redux/store";
+import MainLoader from "@app/core/components/loader/MainLoader";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -129,6 +130,7 @@ const Dashboard: React.FC = () => {
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [subComp, setSubComp] = useLocalStorage({ key: "sub-comp" });
   const users = useAppSelector((state) => state.user);
+  const [loading, setLoading] = useState(true);
   const p = router.query;
 
   const getCompanyUsers = async () => {
@@ -143,6 +145,9 @@ const Dashboard: React.FC = () => {
             },
           }
         );
+        if (res) {
+          setLoading(false);
+        }
         return res.data;
       }
     } catch (error) {
@@ -151,7 +156,7 @@ const Dashboard: React.FC = () => {
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
-    "get_all_company_users",
+    `get_all_company_users`,
     getCompanyUsers
   );
 
@@ -164,10 +169,6 @@ const Dashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<keyof ICompanyUsersProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
-
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
 
   useEffect(() => {
     setSortedData(data);
@@ -217,7 +218,7 @@ const Dashboard: React.FC = () => {
     currency: item.currency,
     status: item.status,
     role: item.role,
-    s: item.manager,
+    s: item.manager_email,
     actions: (
       <>
         <Button
@@ -244,7 +245,9 @@ const Dashboard: React.FC = () => {
     ),
   }));
 
-  return (
+  return isLoading && loading ? (
+    <MainLoader />
+  ) : (
     <AppShell
       styles={{
         main: {
@@ -309,9 +312,9 @@ const Dashboard: React.FC = () => {
                 Role
               </Th>
               <Th
-                sorted={sortBy === "manager"}
+                sorted={sortBy === "manager_email"}
                 reversed={reverseSortDirection}
-                onSort={() => setSorting("manager")}
+                onSort={() => setSorting("manager_email")}
                 style={{ width: 170 }}
               >
                 Manager
@@ -343,7 +346,7 @@ const Dashboard: React.FC = () => {
             verticalSpacing="xs"
             horizontalSpacing="xl"
           >
-            {isLoading ? (
+            {isLoading || !router.isReady || isFetching ? (
               <SkeletonLoader />
             ) : (
               <tbody>
