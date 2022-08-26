@@ -39,6 +39,7 @@ import Sidebar from "@app/core/components/sidebar/Sidebar";
 import RoiNavbar from "@app/core/components/navbar/Navbar";
 import Segmented from "@app/core/components/buttons/Segmented";
 import AddCompanyButton from "@app/company/components/buttons/AddCompanyButton";
+import MainLoader from "@app/core/components/loader/MainLoader";
 
 export interface iDashRowProp {
   id: string;
@@ -278,7 +279,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     ),
   }));
 
-  return (
+  return isLoading ? <MainLoader /> : (
     <AppShell
       styles={{
         main: {
