@@ -88,7 +88,7 @@ const DashboardGraph: React.FC = () => {
       text: graphData?.title.text ?? "ROIs Created Past Year",
     },
     xAxis: {
-      categories: graphData?.xAxis.categories ?? [
+      categories: graphData?.xAxis.categories.length !== 0 ? graphData?.xAxis.categories : [
         "January",
         "February",
         "March",
@@ -110,7 +110,7 @@ const DashboardGraph: React.FC = () => {
       {
         type: "column",
         name: graphData?.series[0].name,
-        data: graphData?.series[0].data ?? [
+        data: graphData?.series[0].data?.length !== 0 ? graphData?.series[0].data : [
           49.9, 71.5, 106.4, 129.2, 144, 176, 135.6, 148.5, 216.4, 194.1, 95.6,
           54.4,
         ],
