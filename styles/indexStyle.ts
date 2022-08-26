@@ -1,4 +1,5 @@
 import { createStyles } from '@mantine/core';
+import { url } from 'inspector';
 
 export const useStyles = createStyles((theme, _params, getRef) => ({
   wrapper: {
@@ -65,5 +66,37 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     alignItems: 'center',
     paddingBottom: 20,
     marginBottom: 20
-  }
+  },
+
+  wrapper2: {
+    minHeight: '100vh',
+    backgroundSize: 'cover',
+    backgroundImage: `url("/login.jpg")`,
+  },
+
+  form: {
+    borderRight: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
+    }`,
+    minHeight: `100vh`,
+    maxWidth: 450,
+    paddingTop: 80,
+
+    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+      maxWidth: '100%',
+    },
+  },
+
+  title2: {
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+  },
+
+  logo: {
+    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    width: 120,
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 }));
