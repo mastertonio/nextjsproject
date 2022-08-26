@@ -67,7 +67,7 @@ const RoiNavbar: React.FC = () => {
           mr="xl"
         />
       </MediaQuery>
-      {router.route.includes("dashboard") && user?.role=="admin" ? (
+      {router.route.includes("dashboard") && user?.role=="admin" || user?.role == "company-admin" || user?.role == "company-manager"  ? (
         <div>
             <Drawer
                 open={isOpen}
@@ -75,13 +75,39 @@ const RoiNavbar: React.FC = () => {
                 direction='left'
                 style={{ backgroundColor: '#2f4050', padding: 20}}
             >
-                <DashboardDrawer />
+                <DashboardDrawer user={user} />
             </Drawer>
           <Button
             style={{ marginRight: "auto", backgroundColor: '#00acac' }}
             onClick={toggleDrawer}
           >
             Navigate
+          </Button>
+        </div>
+        
+      ) : (
+        ""
+      )}
+      {router.route.includes("dashboard/manager") && user?.role == "company-manager"  ? (
+        <div style={{ marginLeft: 10}}>
+          <Button
+            style={{ marginRight: "auto" }}
+            onClick={()=> router.push('/dashboard')}
+          >
+            Main Dashboard
+          </Button>
+        </div>
+        
+      ) : (
+        ""
+      )}
+      {router.route == "/dashboard" && user?.role == "company-manager"  ? (
+        <div style={{ marginLeft: 10}}>
+          <Button
+            style={{ marginRight: "auto" }}
+            onClick={()=> router.push('/dashboard/manager')}
+          >
+            Back to Reporting
           </Button>
         </div>
         
