@@ -144,7 +144,8 @@ export interface ICompanyUsersProps {
   last_name: string;
   email: string;
   role: string;
-  manager: string;
+  manager_email: string;
+  manager_id: string;
   currency: string;
   status: string;
   created_rois: string;
@@ -175,6 +176,194 @@ export const sortCompanyUsersData = (
   }
 
   return filterCompanyUsersData(
+    [...data].sort((a, b) => {
+      if (a === b) {
+        return 0;
+      }
+
+      if (a === null || a[sortBy] == undefined) {
+        return 1;
+      }
+
+      if (b === null || b[sortBy] == undefined) {
+        return -1;
+      }
+
+      if (payload.reversed) {
+        return b[sortBy].toString().localeCompare(a[sortBy]);
+      }
+
+      return a[sortBy].toString().localeCompare(b[sortBy]);
+    }),
+    payload.search
+  );
+};
+
+//////////////////////////Company Users with Template
+export interface ICompanyTemplateUsersProps {
+  user_id: string;
+  template_id: string;
+  template_name: string;
+  calculator_name: string;
+  username: string;
+  link: string;
+  createdAt: string;
+  visits: string;
+  unique_ip: string;
+}
+
+export const filterCompanyTemplateUsersData = (
+  data: ICompanyTemplateUsersProps[],
+  search: string
+) => {
+  const query = search.toLowerCase().trim();
+  return data.filter((item) => {
+    return (
+      item.calculator_name.toLowerCase().includes(query) ||
+      item.username.toLowerCase().includes(query)
+    );
+  });
+};
+
+export const sortCompanyTemplateUsersData = (
+  data: ICompanyTemplateUsersProps[],
+  payload: {
+    sortBy: keyof ICompanyTemplateUsersProps | null;
+    reversed: boolean;
+    search: any;
+  }
+) => {
+  const { sortBy } = payload;
+
+  if (!sortBy) {
+    return filterCompanyTemplateUsersData(data, payload.search);
+  }
+
+  return filterCompanyTemplateUsersData(
+    [...data].sort((a, b) => {
+      if (a === b) {
+        return 0;
+      }
+
+      if (a === null || a[sortBy] == undefined) {
+        return 1;
+      }
+
+      if (b === null || b[sortBy] == undefined) {
+        return -1;
+      }
+
+      if (payload.reversed) {
+        return b[sortBy].toString().localeCompare(a[sortBy]);
+      }
+
+      return a[sortBy].toString().localeCompare(b[sortBy]);
+    }),
+    payload.search
+  );
+};
+
+//////////////////////////Company Templates
+export interface ICompanyTemplatesProps {
+  _id: string;
+  name: string;
+  notes: string;
+  company_id: string;
+  active: string;
+  status: string;
+}
+
+export const filterCompanyTemplatesData = (
+  data: ICompanyTemplatesProps[],
+  search: string
+) => {
+  const query = search.toLowerCase().trim();
+  return data.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(query) ||
+      item.notes.toLowerCase().includes(query)
+    );
+  });
+};
+
+export const sortCompanyTemplatesData = (
+  data: ICompanyTemplatesProps[],
+  payload: {
+    sortBy: keyof ICompanyTemplatesProps | null;
+    reversed: boolean;
+    search: any;
+  }
+) => {
+  const { sortBy } = payload;
+
+  if (!sortBy) {
+    return filterCompanyTemplatesData(data, payload.search);
+  }
+
+  return filterCompanyTemplatesData(
+    [...data].sort((a, b) => {
+      if (a === b) {
+        return 0;
+      }
+
+      if (a === null || a[sortBy] == undefined) {
+        return 1;
+      }
+
+      if (b === null || b[sortBy] == undefined) {
+        return -1;
+      }
+
+      if (payload.reversed) {
+        return b[sortBy].toString().localeCompare(a[sortBy]);
+      }
+
+      return a[sortBy].toString().localeCompare(b[sortBy]);
+    }),
+    payload.search
+  );
+};
+
+//////////////////////////Company Templates Versions
+export interface ICompanyTemplatesVersionsProps {
+  _id: string;
+  stage: string;
+  level: string;
+  versions: string;
+  name: string;
+  notes: string;
+  template_id: string;
+  status: string;
+}
+
+export const filterCompanyTemplatesVersionData = (
+  data: ICompanyTemplatesVersionsProps[],
+  search: string
+) => {
+  const query = search.toLowerCase().trim();
+  return data.filter((item) => {
+    return (
+      item.name.toLowerCase().includes(query) ||
+      item.notes.toLowerCase().includes(query)
+    );
+  });
+};
+
+export const sortCompanyTemplatesVersionData = (
+  data: ICompanyTemplatesVersionsProps[],
+  payload: {
+    sortBy: keyof ICompanyTemplatesVersionsProps | null;
+    reversed: boolean;
+    search: any;
+  }
+) => {
+  const { sortBy } = payload;
+
+  if (!sortBy) {
+    return filterCompanyTemplatesVersionData(data, payload.search);
+  }
+
+  return filterCompanyTemplatesVersionData(
     [...data].sort((a, b) => {
       if (a === b) {
         return 0;
