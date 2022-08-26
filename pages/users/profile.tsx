@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "@redux/store";
 import { login } from "@redux/reducers/user/userSlice";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons'
+import MainLoader from "@app/core/components/loader/MainLoader";
 
 const UserProfile: React.FC = () => {
   const theme = useMantineTheme();
@@ -125,10 +126,7 @@ const UserProfile: React.FC = () => {
     setUser(data);
   }, [data, userInfo, users]);
 
-  if (isLoading)
-    return <LoadingOverlay visible={router.isReady && isLoading} />;
-
-  return (
+  return isLoading ? <MainLoader /> : (
     <AppShell
       styles={{
         main: {
