@@ -2,7 +2,7 @@ import { Button, Collapse, Image, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { current } from "@reduxjs/toolkit";
 import router from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MdCalculate,
   MdKeyboardArrowDown,
@@ -16,6 +16,10 @@ const DashboardDrawer = ({ user }: any) => {
   const [openTemplate, setOpenTemplate] = useState(false);
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
+
+  useEffect(()=>{
+    console.log(user)
+  },[user])
 
   return (
     <>
@@ -42,16 +46,21 @@ const DashboardDrawer = ({ user }: any) => {
             Company
           </Button>
           <Collapse in={openCompany}>
-            <Button
-              variant="subtle"
-              color="blue"
-              fullWidth
-              style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
-              leftIcon={<MdLineWeight />}
-              onClick={() => router.push(`/company`)}
-            >
-              Manage Company
-            </Button>
+            {user?.role == "admin" ? (
+              <Button
+                variant="subtle"
+                color="blue"
+                fullWidth
+                style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
+                leftIcon={<MdLineWeight />}
+                onClick={() => router.push(`/company`)}
+              >
+                Manage Company
+              </Button>
+            ) : (
+              ""
+            )}
+
             <Button
               variant="subtle"
               color="blue"
@@ -100,7 +109,7 @@ const DashboardDrawer = ({ user }: any) => {
               fullWidth
               style={{ marginTop: 5, color: "lightgray" }}
               leftIcon={<MdLineWeight />}
-              onClick={() => router.push(`/templates/${current}`)}
+              onClick={() => router.push(`/templates`)}
             >
               Template List
             </Button>
