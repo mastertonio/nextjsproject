@@ -54,6 +54,8 @@ import Pophover from "@app/core/components/popover/Pophover";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
+import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
+import TransferButton from "@app/company/components/buttons/Transfer";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -221,26 +223,8 @@ const Dashboard: React.FC = () => {
     s: item.manager_email,
     actions: (
       <>
-        <Button
-          leftIcon={<HiTemplate />}
-          size="xs"
-          color="yellow"
-          onClick={() => {
-            router.push(`/templates`);
-          }}
-        >
-          Edit
-        </Button>
-        <Button
-          leftIcon={<FiUsers />}
-          size="xs"
-          color="cyan"
-          onClick={() => {
-            router.push(`/users`);
-          }}
-        >
-          Transfer
-        </Button>
+        <EditCompanyUserButton id={item._id} myCompany={item} refetch={refetch} name={item.email} />
+        <TransferButton id={item._id} name={item.email} refetch={refetch} />
       </>
     ),
   }));
