@@ -46,7 +46,7 @@ import TransferButton from "@app/company/components/buttons/Transfer";
 import CompanyUserTable from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
 
-interface ICompanyUsersElements {
+export interface ICompanyUsersElements {
   id: React.Key | null | undefined;
   username:
     | string

@@ -86,7 +86,7 @@ interface ICompanyUsersElements {
     | React.ReactPortal
     | null
     | undefined;
-  manager:
+  manager_email:
     | string
     | number
     | boolean
@@ -220,10 +220,16 @@ const Dashboard: React.FC = () => {
     currency: item.currency,
     status: item.status,
     role: item.role,
-    s: item.manager_email,
+    manager_email: item.manager_email,
+    manager_id: item.manager_id,
     actions: (
       <>
-        <EditCompanyUserButton id={item._id} myCompany={item} refetch={refetch} name={item.email} />
+        <EditCompanyUserButton
+          id={item._id}
+          myCompany={item}
+          refetch={refetch}
+          name={item.email}
+        />
         <TransferButton id={item._id} name={item.email} refetch={refetch} />
       </>
     ),
@@ -347,8 +353,10 @@ const Dashboard: React.FC = () => {
                       {element.created_rois}
                     </td>
                     <td style={{ width: 240 }}>{element.role}</td>
-                    <td style={{ width: 155 }}>
-                      {!!element.manager ? element.manager : "Unassigned"}
+                    <td>
+                      {!!element.manager_email
+                        ? element.manager_email
+                        : "Unassigned"}
                     </td>
                     <td style={{ width: 145, paddingLeft: 20 }}>
                       {element.currency}
