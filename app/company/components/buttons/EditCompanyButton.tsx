@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Button, Text, TextInput, Grid, Stack } from "@mantine/core";
+import { Modal, Button, Text, TextInput, Grid, Stack, NumberInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
@@ -157,7 +157,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
             <Grid style={{ marginLeft: 30, marginRight: 30 }}>
               <div>
                 <Text>Licenses: </Text>
-                <TextInput
+                <NumberInput
                   required
                   style={{ width: 350, marginLeft: "auto" }}
                   // defaultValue={myCompany.licenses}

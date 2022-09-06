@@ -112,9 +112,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [sortBy, setSortBy] = useState<keyof iDashRowProp | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-  useEffect(() => {
-    console.log(filter);
-  }, [filter]);
 
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;

@@ -17,7 +17,10 @@ import { useInputState, useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
-import { ICompanyProps, ICompanyTemplatesProps } from "@app/dashboard/components/table/utils/tableMethods";
+import {
+  ICompanyProps,
+  ICompanyTemplatesProps,
+} from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
 
 export interface IButtonTemplateProps {
@@ -25,7 +28,7 @@ export interface IButtonTemplateProps {
   refetch: () => void;
   name: string;
   notes: string;
-  status: string
+  status: string;
 }
 
 const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
@@ -33,7 +36,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
   refetch,
   name,
   notes,
-  status
+  status,
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -44,19 +47,15 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
   const [state, setState] = useState<string | null>(null);
   const [password, setPass] = useInputState("");
 
- 
-
-  
   const form = useForm({
     initialValues: {
       name,
       notes,
-      status,
+      status: status.toString(),
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
     try {
       showNotification({
         id: "edit-comp",
@@ -67,7 +66,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         disallowClose: true,
         color: "teal",
       });
-      
+
       const response = await axios.patch(
         `http://54.159.8.194/v1/company/${company}/template/${id}`,
         {
@@ -89,7 +88,6 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
           autoClose: 2500,
         });
       }
-      
     } catch (error) {
       updateNotification({
         id: "edit-comp",
@@ -101,6 +99,8 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
       return error;
     }
   };
+
+  
 
   return (
     <>
@@ -137,34 +137,36 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
             })}
           >
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-                <Text>Name : </Text>
-                <TextInput
-                  required
-                  style={{ width: 550, marginLeft: "auto" }}
-                  // defaultValue={myCompany.licenses}
-                  placeholder="Enter New Name"
-                  {...form.getInputProps("name")}
-                />
+              <Text>Name : </Text>
+              <TextInput
+                required
+                style={{ width: 550, marginLeft: "auto" }}
+                // defaultValue={myCompany.licenses}
+                placeholder="Enter New Name"
+                {...form.getInputProps("name")}
+              />
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-                <Text>Currency : </Text>
-                <Textarea
-                  required
-                  style={{ width: 550, marginLeft: "auto" }}
-                  // defaultValue={myCompany.licenses}
-                  placeholder="Template Notes"
-                  {...form.getInputProps("notes")}
-                />
+              <Text>Notes : </Text>
+              <Textarea
+                required
+                style={{ width: 550, marginLeft: "auto" }}
+                // defaultValue={myCompany.licenses}
+                placeholder="Template Notes"
+                {...form.getInputProps("notes")}
+              />
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-                <Text>Status : </Text>
-                <TextInput
-                  required
-                  style={{ width: 550, marginLeft: "auto" }}
-                  // defaultValue={myCompany.licenses}
-                  placeholder="Set Status"
-                  {...form.getInputProps("status")}
-                />
+              <Text>Status : </Text>
+              <Select
+                data={[
+                  { label: "Active", value: "1" },
+                  { label: "Inactive", value: "0" },
+                ]}
+                placeholder="Set Status"
+                {...form.getInputProps("status")}
+                style={{ width: 550, marginLeft: "auto" }}
+              />
             </Grid>
           </Stack>
           <Grid justify="flex-end" style={{ margin: 20 }}>
@@ -199,7 +201,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         radius="sm"
         size="xs"
         onClick={() => {
-          setOpened(true)
+          setOpened(true);
         }}
         color="yellow"
       >

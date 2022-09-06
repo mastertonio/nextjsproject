@@ -43,7 +43,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
-  
+  const [currency, setCurrency] = useState<string | null>(null);
 
   const getManagers = async () => {
     try {
@@ -84,17 +84,37 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
 
   const templates = useQuery(["templates"], getTemplates);
 
-  const templateList = templates?.data?.map((a: { name: string; build: any }) => {return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-    key: b._id,
-    value: b._id,
-    label: b.name,
-    group: a.name
-  }))
-}).flat();
+  const templateList = templates?.data
+    ?.map((a: { name: string; build: any }) => {
+      return a?.build?.map(
+        (b: { _id: string; name: string; group: string }) => ({
+          key: b._id,
+          value: b._id,
+          label: b.name,
+          group: a.name,
+        })
+      );
+    })
+    .flat();
 
-  const defaultTemps = templateList?.map((a: { value: any; })=> { return a.value})
-  
-  
+
+  const templateList2 = templates?.data
+    ?.map((a: { name: string; build: any }) => {
+      return a?.build?.map(
+        (b: { _id: string; name: string; group: string }) => ({
+          key: b._id,
+          value: b._id,
+          label: b.name,
+          group: a.name,
+        })
+      );
+    })
+    .flat();
+
+  const defaultTemps = templateList?.map((a: { value: any }) => {
+    return a.value;
+  });
+
   const [filter, setFilter] = useState<string[]>([""]);
 
   const transferlist = data?.map((item: { id: string; email: string }) => ({
@@ -102,7 +122,6 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
     value: item.id,
     label: item.email,
   }));
-
 
   const form = useForm({
     initialValues: {
@@ -172,6 +191,45 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
       return error;
     }
   };
+
+  const curData = [
+    {
+      label: "USD",
+      value: "USD",
+    },
+    {
+      label: "PHP",
+      value: "PHP",
+    },
+    {
+      label: "EUR",
+      value: "EUR",
+    },
+    {
+      label: "JPY",
+      value: "JPY",
+    },
+    {
+      label: "GBP",
+      value: "GBP",
+    },
+    {
+      label: "AUD",
+      value: "AUD",
+    },
+    {
+      label: "CAD",
+      value: "CAD",
+    },
+    {
+      label: "CHF",
+      value: "CHF",
+    },
+    {
+      label: "CNY",
+      value: "CNY",
+    },
+  ];
 
   return (
     <>
@@ -276,11 +334,13 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               }}
             >
               <Text>Currency: </Text>
-              <TextInput
-                required
-                style={{ width: 550, marginLeft: "auto" }}
+              <Select
+                value={currency}
+                onChange={setCurrency}
+                data={curData}
                 placeholder="Choose Currency"
                 {...form.getInputProps("currency")}
+                style={{ width: 550, marginLeft: "auto" }}
               />
             </Grid>
             <Grid
@@ -291,12 +351,18 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               }}
             >
               <Text>Role: </Text>
-              <TextInput
+              <Select
+                data={[{label: 'Company Manager', value: '3'}, { label: 'Company Agent', value: '4'}]}
+                placeholder="Choose Role"
+                {...form.getInputProps("role")}
+                style={{ width: 550, marginLeft: "auto" }}
+              />
+              {/* <TextInput
                 required
                 style={{ width: 550, marginLeft: "auto" }}
                 placeholder="Choose Role"
                 {...form.getInputProps("role")}
-              />
+              /> */}
             </Grid>
             <Grid
               style={{
@@ -322,9 +388,11 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
                 style={{ width: 550, marginLeft: "auto" }}
                 placeholder="Choose Templates"
                 searchable
-                clearable
+                // clearable
                 data={templateList ?? []}
-                value={filter}
+                defaultValue={templateList?.map((a: { value: string; })=> a.value)}
+                // value={filter}
+                styles={{ input: { overflow: 'auto', maxHeight: 120}}}
                 onChange={setFilter}
               />
             </Grid>

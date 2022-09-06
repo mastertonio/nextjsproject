@@ -17,10 +17,6 @@ const DashboardDrawer = ({ user }: any) => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
 
-  useEffect(()=>{
-    console.log(user)
-  },[user])
-
   return (
     <>
       <div>

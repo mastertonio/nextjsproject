@@ -53,6 +53,7 @@ import Sidebar from "@app/core/components/sidebar/Sidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import { useAppDispatch, useAppSelector } from "@redux/store";
 import MainLoader from "@app/core/components/loader/MainLoader";
+import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -134,7 +135,6 @@ const Dashboard: React.FC = () => {
   const p = router.query;
 
   const getCompanyUsers = async () => {
-    console.log(p);
     try {
       if (router.isReady) {
         const res = await axios.get(
@@ -267,7 +267,7 @@ const Dashboard: React.FC = () => {
       <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <Text size="lg">My ROIs</Text>
+          <AddCompanyUserButton refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"

@@ -30,9 +30,7 @@ export interface IButtonAddCompanyProps {
   refetch: () => void;
 }
 
-const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({
-  refetch,
-}) => {
+const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
@@ -45,12 +43,10 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({
   const [state, setState] = useState();
   const [filter, setFilter] = useState<string[]>([""]);
 
-
   const form = useForm({
     initialValues: {
-      name: '',
-      status: '',
-      notes: ''
+      name: "",
+      notes: "",
     },
   });
 
@@ -69,7 +65,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({
         `http://54.159.8.194/v1/company/${company}/template`,
         {
           name: values.name,
-          status: values.status,
+          status: "1",
           notes: values.notes,
         },
         {
@@ -136,7 +132,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
-              height: 300,
+              height: 200,
             })}
           >
             <Grid
@@ -168,21 +164,6 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({
                 style={{ width: 550, marginLeft: "auto" }}
                 placeholder="Enter Notes for Template"
                 {...form.getInputProps("notes")}
-              />
-            </Grid>
-            <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
-            >
-              <Text>Status: </Text>
-              <TextInput
-                required
-                style={{ width: 550, marginLeft: "auto" }}
-                placeholder="Enter User Last Name"
-                {...form.getInputProps("status")}
               />
             </Grid>
           </Stack>

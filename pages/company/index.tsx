@@ -239,7 +239,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     alias: item.alias,
     licenses: item.licenses,
     templates: item.templates,
-    active: <Segmented val={item.active} key={item._id} />,
+    active: <Segmented val={item.active} key={item._id} refetch={refetch} name={item.name} id={item._id} />,
     actions: (
       <div
         style={{

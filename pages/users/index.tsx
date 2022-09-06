@@ -200,7 +200,7 @@ const UsersDashboard: React.FC = () => {
 
   const companies = currentPosts?.map((item: ICompanyUsersProps) => ({
     id: item._id,
-    username: <Pophover title={item.email} />,
+    username: item.email,
     first_name: item.first_name,
     last_name: item.last_name,
     created_rois: item.created_rois,

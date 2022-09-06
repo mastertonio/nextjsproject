@@ -181,10 +181,6 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
     ),
   }));
 
-  useEffect(() => {
-    console.log(templates, "templates");
-  }, [templates]);
-
   return isLoading ? (
     <MainLoader />
   ) : (

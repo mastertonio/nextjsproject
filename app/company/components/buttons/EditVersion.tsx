@@ -43,7 +43,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
   status,
   version,
   comp_id,
-  temp_id
+  temp_id,
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -59,13 +59,13 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
       name,
       notes,
       status,
-      version
+      version,
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
     try {
+      console.log(values.status=="active")
       showNotification({
         id: "edit-comp",
         loading: true,
@@ -81,8 +81,8 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
         {
           name: values.name,
           notes: values.notes,
-          status: parseInt(values.status),
-          version: parseInt(values.version)
+          status: values.status=="active" ? 1 : 0,
+          version: parseInt(values.version),
         },
         { headers: { Authorization: `Bearer ${value}` } }
       );
@@ -155,7 +155,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
               />
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-              <Text>Currency : </Text>
+              <Text>Notes : </Text>
               <Textarea
                 required
                 style={{ width: 550, marginLeft: "auto" }}
@@ -166,12 +166,14 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
               <Text>Status : </Text>
-              <TextInput
-                required
-                style={{ width: 550, marginLeft: "auto" }}
-                // defaultValue={myCompany.licenses}
+              <Select
+                data={[
+                  { label: "Active", value: "active" },
+                  { label: "Inactive", value: "inactive" },
+                ]}
                 placeholder="Set Status"
                 {...form.getInputProps("status")}
+                style={{ width: 550, marginLeft: "auto" }}
               />
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>

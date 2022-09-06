@@ -70,7 +70,7 @@ const Home: React.FC = () => {
           router.push("/dashboard/manager");
         }
       }
-
+      
       router.push(`/dashboard`);
     } catch (error) {
       console.log(error);
@@ -84,12 +84,12 @@ const Home: React.FC = () => {
     }
   }, [router]);
 
-  useEffect(() => {
-    if (!!current) {
-      router.push("/dashboard");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (!!current) {
+  //     router.push("/dashboard");
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   if (loading) return <LoadingOverlay visible={!loading} />;
 

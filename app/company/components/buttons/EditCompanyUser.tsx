@@ -151,6 +151,45 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
     }
   };
 
+  const curData = [
+    {
+      label: "USD",
+      value: "USD",
+    },
+    {
+      label: "PHP",
+      value: "PHP",
+    },
+    {
+      label: "EUR",
+      value: "EUR",
+    },
+    {
+      label: "JPY",
+      value: "JPY",
+    },
+    {
+      label: "GBP",
+      value: "GBP",
+    },
+    {
+      label: "AUD",
+      value: "AUD",
+    },
+    {
+      label: "CAD",
+      value: "CAD",
+    },
+    {
+      label: "CHF",
+      value: "CHF",
+    },
+    {
+      label: "CNY",
+      value: "CNY",
+    },
+  ];
+
   return (
     <>
       <Modal
@@ -239,13 +278,19 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
               <div>
                 <Text>Currency : </Text>
-                <TextInput
+                <Select
+                data={curData}
+                placeholder="Choose Currency"
+                {...form.getInputProps("currency")}
+                style={{ width: 550, marginLeft: "auto" }}
+              />
+                {/* <TextInput
                   required
                   style={{ width: 350, marginLeft: "auto" }}
                   // defaultValue={myCompany.licenses}
                   placeholder="Change User Currency"
                   {...form.getInputProps("currency")}
-                />
+                /> */}
               </div>
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
