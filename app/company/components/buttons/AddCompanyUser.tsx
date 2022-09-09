@@ -136,7 +136,6 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(file, startDate, endDate);
     try {
       showNotification({
         id: "edit-comp",

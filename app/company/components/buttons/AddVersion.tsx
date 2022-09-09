@@ -30,7 +30,7 @@ export interface IButtonAddVersion {
   update: () => void;
   temp_id: string;
   comp_id: string;
-  first_temp: string
+  first_temp?: string
 }
 
 const AddVersion: React.FC<IButtonAddVersion> = ({
@@ -60,7 +60,6 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(file, startDate, endDate);
     try {
       showNotification({
         id: "edit-comp",
