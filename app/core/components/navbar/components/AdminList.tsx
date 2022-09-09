@@ -62,10 +62,6 @@ const AdminList: React.FC = () => {
   const adminList = data?.map((a: { name: string }) => a.name);
   adminList?.unshift("Admin");
 
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
-
   const handleChange = (event: string) => {
     setValues(event);
   };

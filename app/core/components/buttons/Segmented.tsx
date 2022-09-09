@@ -59,9 +59,7 @@ const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id }) => {
                 );
                 if(response){
                   refetch()
-                  console.log(response)
                 }
-                console.log(value=="active" ? 0 : 1)
               }}
             >
               Set to {value=="active" ? "Inactive" : "Active"}

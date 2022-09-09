@@ -41,7 +41,6 @@ const StarRating: React.FC<IStarProps> = ({
       }
       refetch();
     } catch (error) {
-      console.log(error);
       return error;
     }
   };
