@@ -8,7 +8,7 @@ import {
   ScrollArea,
   Table,
   Badge,
-  Text
+  Text,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
@@ -49,61 +49,62 @@ import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
 import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import AddVersion from "./buttons/AddVersion";
 import EditVersion from "./buttons/EditVersion";
+import FourOhFour from "pages/404";
 
 interface ITemplateVersionType {
   update: () => void;
   temp_id: string;
   comp_id: string;
-  first_temp: string
-  name: string
+  first_temp: string;
+  name: string;
 }
+//`http://54.159.8.194/v1/company/${!!comp_id ? comp_id : company}/template/${!!temp_id ? temp_id : first_temp}/version`,
+const getTemplatesVersions = async (
+  comp: string,
+  temp: string,
+  value: string
+) => {
+  try {
+    console.log(comp, temp)
+    const res = await axios.get(
+      `http://54.159.8.194/v1/company/${comp}/template/${temp}/version`,
+      {
+        headers: {
+          Authorization: `Bearer ${value}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
 
 const TemplateVersion: React.FC<ITemplateVersionType> = ({
   update,
   comp_id,
   temp_id,
   first_temp,
-  name
+  name,
 }) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const users = useAppSelector((state) => state.user);
-  const p = router.query;
 
+  const { isLoading, isError, error, data, refetch, isFetching, isSuccess } =
+    useQuery(
+      ["get_all_company_templates_versions", temp_id],
+      () => getTemplatesVersions(comp_id, temp_id, value),
+      { refetchOnWindowFocus: false, enabled: temp_id.length > 0 }
+    );
 
-  const getTemplatesVersions = async () => {
-    try {
-      const res = await axios.get(
-        `http://54.159.8.194/v1/company/${!!comp_id ? comp_id : company}/template/${!!temp_id ? temp_id : first_temp}/version`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
-
-      return res.data;
-    } catch (error) {
-      return error;
-    }
-  };
-
-  const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
-    "get_all_company_templates_versions",
-    getTemplatesVersions,
-    { refetchOnWindowFocus: false }
-  );
-
-  
-  useEffect(()=>{
-    update()
-    refetch()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comp_id, temp_id, update])
+  useEffect(() => {
+    update();
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comp_id, temp_id, update]);
 
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);
@@ -111,9 +112,9 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
   const [sortedData, setSortedData] = useState(data);
-  const [sortBy, setSortBy] = useState<keyof ICompanyTemplatesVersionsProps | null>(
-    null
-  );
+  const [sortBy, setSortBy] = useState<
+    keyof ICompanyTemplatesVersionsProps | null
+  >(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
@@ -138,7 +139,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-        sortCompanyTemplatesVersionData(data, {
+      sortCompanyTemplatesVersionData(data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -149,7 +150,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-        sortCompanyTemplatesVersionData(data, {
+      sortCompanyTemplatesVersionData(data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -157,38 +158,66 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
     );
   };
 
-  const templates = currentPosts?.map((item: ICompanyTemplatesVersionsProps) => ({
-    id: item._id,
-    name: item.name,
-    notes: item.notes,
-    status: item.status,
-    stage: item.stage,
-    level: item.level,
-    versions: item.versions,
-    actions: (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <EditVersion comp_id={comp_id} temp_id={temp_id} id={item._id} name={item.name} notes={item.notes} refetch={refetch} status={item.status} version={item.versions} key={shortUUID.generate()}/>
-        <Button radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
-          Delete
-        </Button>
-      </div>
-    ),
-  }));
+  const templates = currentPosts?.map(
+    (item: ICompanyTemplatesVersionsProps) => ({
+      id: item._id,
+      name: item.name,
+      notes: item.notes,
+      status: item.status,
+      stage: item.stage,
+      level: item.level,
+      versions: item.versions,
+      actions: (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+          <EditVersion
+            comp_id={comp_id}
+            temp_id={temp_id}
+            id={item._id}
+            name={item.name}
+            notes={item.notes}
+            refetch={refetch}
+            status={item.status}
+            version={item.versions}
+            key={shortUUID.generate()}
+          />
+          <Button radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
+            Delete
+          </Button>
+        </div>
+      ),
+    })
+  );
 
-  return isLoading ? (
-    <MainLoader />
-  ) : (
+  if (isLoading) {
+    return <MainLoader />;
+  }
+
+  if (isSuccess) {
+    // return isLoading ? (
+    //   <MainLoader />
+    // ) :
+    return (
       <div style={{ margin: 10, backgroundColor: "white", padding: 30 }}>
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddVersion update={refetch} comp_id={comp_id} first_temp={first_temp} temp_id={temp_id} />
-          <Text color="teal" weight={900} style={{marginLeft: 'auto', marginRight: 'auto'}}>{name}</Text>
+          <AddVersion
+            update={refetch}
+            comp_id={comp_id}
+            temp_id={temp_id}
+          />
+          <Text
+            color="teal"
+            weight={900}
+            style={{ marginLeft: "auto", marginRight: "auto" }}
+          >
+            {name}
+          </Text>
           <Input
             variant="default"
             placeholder="Search for ROI"
@@ -263,7 +292,81 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             ) : (
               <tbody>
                 {templates?.map(
-                  (element: { _id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; stage: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; level: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; notes: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; status: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; actions: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
+                  (element: {
+                    _id: React.Key | null | undefined;
+                    name:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                    stage:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                    level:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                    notes:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                    status:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                    actions:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                  }) => (
                     <tr key={element._id} style={{ height: 20 }}>
                       <td style={{ width: 10 }}>{element.name}</td>
                       <td style={{ width: 10 }}>{element.stage}</td>
@@ -308,7 +411,14 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
           />
         </div>
       </div>
-  );
+    );
+  }
+
+  if (isError) {
+    return <FourOhFour />;
+  }
+
+  return <></>
 };
 
 export default TemplateVersion;
