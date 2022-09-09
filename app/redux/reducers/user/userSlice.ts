@@ -41,7 +41,6 @@ export const loginAsync = createAsyncThunk(
   "user/login",
   async (userInfo: { email: string; password: string }) => {
     const [value, setValue] = useLocalStorage({ key: "auth-token" });
-    console.log(userInfo, "userInfo");
     try {
       const response = await fetchUser(userInfo);
       setValue(response.data.tokens.access.token);

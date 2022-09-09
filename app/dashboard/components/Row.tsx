@@ -99,7 +99,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   );
 
   useEffect(() => {
-    console.log(data);
     setSortedData(data);
   }, [data]);
 
@@ -133,7 +132,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         search: event,
       })
     );
-    console.log(sortedData);
   };
 
   const handleFilterChange = (event: SetStateAction<string[]>) => {
@@ -145,8 +143,6 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         search: event,
       })
     );
-
-    console.log(sortedData);
   };
 
   const myroi = currentPosts?.map((item: any) => ({
