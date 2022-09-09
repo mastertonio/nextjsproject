@@ -182,10 +182,6 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    console.log(filter);
-  }, [filter]);
-
-  useEffect(() => {
     setSortedData(data);
   }, [data]);
 
@@ -253,7 +249,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           size="xs"
           color="indigo"
           onClick={() => {
-            router.push(`/templates`);
+            router.push(`/company/templates/${item._id}`);
           }}
         >
           Templates
@@ -390,10 +386,6 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 <tr key={element.id}>
                   <td style={{ width: 10 }}>{element.button}</td>
                   <td
-                    style={{ cursor: "pointer", width: 310 }}
-                    onClick={() => {
-                      router.push(`/templates/${element.id}`);
-                    }}
                   >
                     {element.roiname}
                   </td>
