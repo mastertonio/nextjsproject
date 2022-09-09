@@ -171,10 +171,6 @@ const ManagerDashboard: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    console.log(filter);
-  }, [filter]);
-
-  useEffect(() => {
     setSortedData(data);
   }, [data]);
 
@@ -265,7 +261,7 @@ const ManagerDashboard: React.FC = () => {
         <ManagerDashboardGraph />
       </div>
       <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
-        <CompanyUserTable update={refetch} />
+        <CompanyUserTable company={company} update={refetch} />
       </div>
     </AppShell>
   );

@@ -156,10 +156,6 @@ const UsersDashboard: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    console.log(filter);
-  }, [filter]);
-
-  useEffect(() => {
     setSortedData(data);
   }, [data]);
 
@@ -374,7 +370,7 @@ const UsersDashboard: React.FC = () => {
           />
         </div>
       </div>
-      <CompanyUserTable update={refetch} />
+      <CompanyUserTable company={company} update={refetch} />
     </AppShell>
   );
 };
