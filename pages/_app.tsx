@@ -9,7 +9,13 @@ import { useState } from "react";
 import DashboardContextProvider from "app/context/dashboard.context";
 import UserContextProvider from "app/context/user.context";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
