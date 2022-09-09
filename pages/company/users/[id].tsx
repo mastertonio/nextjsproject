@@ -12,6 +12,7 @@ import {
   ScrollArea,
   Table,
   Center,
+  Badge,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
@@ -56,6 +57,8 @@ import MainLoader from "@app/core/components/loader/MainLoader";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import TransferButton from "@app/company/components/buttons/Transfer";
+import NotFoundImage from "pages/forbidden";
+import CompanyUserTable from "@app/company/user/table";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -124,43 +127,42 @@ interface ICompanyUsersElements {
     | undefined;
 }
 
+const getCompanyUsers = async (id: string, token: string) => {
+  try {
+    const res = await axios.get(`http://54.159.8.194/v1/company/${id}/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [subComp, setSubComp] = useLocalStorage({ key: "sub-comp" });
   const users = useAppSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
+  const companyID = typeof router.query?.id === "string" ? router.query.id : "";
   const p = router.query;
 
-  const getCompanyUsers = async () => {
-    try {
-      if (router.isReady) {
-        const res = await axios.get(
-          `http://54.159.8.194/v1/company/${p.id}/user`,
-          {
-            headers: {
-              Authorization: `Bearer ${value}`,
-            },
-          }
-        );
-        if (res) {
-          setLoading(false);
-        }
-        return res.data;
+  const { isLoading, isError, error, data, refetch, isFetching, isSuccess } =
+    useQuery(
+      [`get_specific_company_users`, companyID],
+      () => getCompanyUsers(companyID, value),
+      {
+        enabled: companyID.length > 0,
       }
-    } catch (error) {
-      return error;
-    }
-  };
+    );
 
-  const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
-    `get_all_company_users`,
-    getCompanyUsers
-  );
 
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);
@@ -171,6 +173,7 @@ const Dashboard: React.FC = () => {
   const [sortBy, setSortBy] = useState<keyof ICompanyUsersProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setSortedData(data);
@@ -213,7 +216,7 @@ const Dashboard: React.FC = () => {
 
   const companies = currentPosts?.map((item: ICompanyUsersProps) => ({
     id: item._id,
-    username: <Pophover title={item.email} />,
+    username: item.email,
     first_name: item.first_name,
     last_name: item.last_name,
     created_rois: item.created_rois,
@@ -235,108 +238,113 @@ const Dashboard: React.FC = () => {
     ),
   }));
 
-  return isLoading && loading ? (
-    <MainLoader />
-  ) : (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      className=""
-      fixed
-      header={<RoiNavbar />}
-      navbar={<Sidebar />}
-    >
-      <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
-        <Grid style={{ margin: 20 }}>
-          {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddCompanyUserButton refetch={refetch} />
-          <Input
-            variant="default"
-            placeholder="Search for ROI"
-            style={{ marginLeft: "auto" }}
-            onChange={(event: {
-              target: { value: React.SetStateAction<string> };
-            }) => {
-              handleSearchChange(event.target.value);
-            }}
-          />
-        </Grid>
-        <Table
-          className={classes.table}
-          horizontalSpacing="xl"
-          highlightOnHover
-          verticalSpacing="xs"
+  if (isLoading) {
+    return <MainLoader />;
+  }
+
+  if (isSuccess) {
+    // return isLoading && isFetching ? (
+    //   <MainLoader />
+    // ) :
+    return (
+      <AppShell
+        styles={{
+          main: {
+            background:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        }}
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        className=""
+        fixed
+        header={<RoiNavbar />}
+        navbar={<Sidebar />}
+      >
+        <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
+          <Grid style={{ margin: 20 }}>
+            {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
+            <AddCompanyUserButton refetch={refetch} />
+            <Input
+              variant="default"
+              placeholder="Search for ROI"
+              style={{ marginLeft: "auto" }}
+              onChange={(event: {
+                target: { value: React.SetStateAction<string> };
+              }) => {
+                handleSearchChange(event.target.value);
+              }}
+            />
+          </Grid>
+          <ScrollArea
+          style={{ height: 590 }}
+          onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
-          <thead>
-            <tr>
-              <Th
-                sorted={sortBy === "email"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("email")}
-                style={{ width: 220 }}
-              >
-                User Name
-              </Th>
-              <Th
-                sorted={sortBy === "created_rois"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("created_rois")}
-                style={{ width: 170 }}
-              >
-                Created Rois
-              </Th>
-              <Th
-                sorted={sortBy === "role"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("role")}
-                style={{ width: 160 }}
-              >
-                Role
-              </Th>
-              <Th
-                sorted={sortBy === "manager_email"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("manager_email")}
-                style={{ width: 170 }}
-              >
-                Manager
-              </Th>
-              <Th
-                sorted={sortBy === "currency"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("currency")}
-                style={{ width: 220 }}
-              >
-                Currency
-              </Th>
-              <Th
-                sorted={sortBy === "status"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("status")}
-                style={{ width: 220 }}
-              >
-                Status
-              </Th>
-              <th></th>
-            </tr>
-          </thead>
-        </Table>
-        <ScrollArea style={{ height: 620 }}>
           <Table
             className={classes.table}
             highlightOnHover
             verticalSpacing="xs"
             horizontalSpacing="xl"
           >
-            {isLoading || !router.isReady || isFetching ? (
+            <thead
+              className={cx(classes.header, { [classes.scrolled]: scrolled })}
+              style={{ zIndex: 50 }}
+            >
+              <tr>
+                <Th
+                  sorted={sortBy === "email"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("email")}
+                  style={{ width: 300 }}
+                >
+                  User Name
+                </Th>
+                <Th
+                  sorted={sortBy === "created_rois"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("created_rois")}
+                  style={{ width: 170 }}
+                >
+                  Created Rois
+                </Th>
+                <Th
+                  sorted={sortBy === "role"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("role")}
+                  style={{ width: 170 }}
+                >
+                  Role
+                </Th>
+                <Th
+                  sorted={sortBy === "manager_email"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("manager_email")}
+                  style={{ width: 250 }}
+                >
+                  Manager
+                </Th>
+                <Th
+                  sorted={sortBy === "currency"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("currency")}
+                  style={{ width: 110 }}
+                >
+                  Currency
+                </Th>
+                <Th
+                  sorted={sortBy === "status"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("status")}
+                  style={{ width: 130 }}
+                >
+                  Status
+                </Th>
+                <th></th>
+              </tr>
+            </thead>
+            {isLoading ? (
               <SkeletonLoader />
             ) : (
               <tbody>
@@ -347,60 +355,58 @@ const Dashboard: React.FC = () => {
                       style={{
                         cursor: "pointer",
                         width: 140,
-                        textAlign: "center",
+                        paddingLeft: 30,
                       }}
                     >
                       {element.created_rois}
                     </td>
-                    <td style={{ width: 240 }}>{element.role}</td>
+                    <td>{element.role}</td>
                     <td>
-                      {!!element.manager_email
-                        ? element.manager_email
-                        : "Unassigned"}
+                      {!!element.manager_email ? element.manager_email : "Unassigned"}
                     </td>
-                    <td style={{ width: 145, paddingLeft: 20 }}>
+                    <td style={{ width: 145, paddingLeft: 30 }}>
                       {element.currency}
                     </td>
                     <td
                       style={{
-                        width: 190,
-                        textAlign: "center",
-                        paddingRight: 40,
+                        width: 110,
                       }}
                     >
-                      {element.status}
+                      <Badge color="green" variant="outline">
+                        {element.status}
+                      </Badge>
                     </td>
-                    <td
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        height: 62,
-                      }}
-                    >
-                      {element.actions}
-                    </td>
+                    <td>{element.actions}</td>
                   </tr>
                 ))}
               </tbody>
             )}
           </Table>
         </ScrollArea>
-        <div>
-          <Paginate
-            refetch={refetch}
-            page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
-            limit={limit}
-            totalResults={sortedData?.length}
-            setLimit={setLimit}
-            activePage={activePage}
-            setPage={setPage}
-            firstIndex={indexOfFirstPost}
-            lastIndex={indexOfLastPost}
-          />
+          <div>
+            <Paginate
+              refetch={refetch}
+              page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
+              limit={limit}
+              totalResults={sortedData?.length}
+              setLimit={setLimit}
+              activePage={activePage}
+              setPage={setPage}
+              firstIndex={indexOfFirstPost}
+              lastIndex={indexOfLastPost}
+            />
+          </div>
         </div>
-      </div>
-    </AppShell>
-  );
+        <CompanyUserTable company={companyID} update={refetch} />
+      </AppShell>
+    );
+  }
+
+  if (isError) {
+    return <NotFoundImage />;
+  }
+
+  return <></>;
 };
 
 // export async function getServerSideProps(ctx: any) {
