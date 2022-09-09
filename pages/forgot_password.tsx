@@ -43,7 +43,6 @@ const ForgotPassword: React.FC = () => {
         payload
       );
       if (res) {
-        console.log(res);
         setValue(res.data.tokens.access.token);
         router.push("/");
       }

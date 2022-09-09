@@ -73,7 +73,6 @@ const Home: React.FC = () => {
       
       router.push(`/dashboard`);
     } catch (error) {
-      console.log(error);
       return error;
     }
   };
