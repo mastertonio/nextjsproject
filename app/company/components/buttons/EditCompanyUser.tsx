@@ -101,7 +101,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
     try {
       showNotification({
         id: "edit-comp",
@@ -132,8 +131,8 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         updateNotification({
           id: "edit-comp",
           color: "teal",
-          title: `Row updated!`,
-          message: "A row was edited! ",
+          title: `User updated!`,
+          message: "A user was edited! ",
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });

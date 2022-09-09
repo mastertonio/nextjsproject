@@ -65,7 +65,6 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      console.log(values.status=="active")
       showNotification({
         id: "edit-comp",
         loading: true,
@@ -92,7 +91,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
         updateNotification({
           id: "edit-comp",
           color: "teal",
-          title: `Row updated!`,
+          title: `Template Version updated!`,
           message: "A row was edited! ",
           icon: <IconCheck size={16} />,
           autoClose: 2500,

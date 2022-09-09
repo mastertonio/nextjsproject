@@ -82,7 +82,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         updateNotification({
           id: "edit-comp",
           color: "teal",
-          title: `Row updated!`,
+          title: `Template updated!`,
           message: "A row was edited! ",
           icon: <IconCheck size={16} />,
           autoClose: 2500,

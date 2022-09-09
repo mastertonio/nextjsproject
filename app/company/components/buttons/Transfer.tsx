@@ -65,7 +65,6 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
     try {
       showNotification({
         id: "edit-comp",
@@ -89,8 +88,8 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
         updateNotification({
           id: "edit-comp",
           color: "teal",
-          title: `Row updated!`,
-          message: "A row was edited! ",
+          title: `Transfer All Succeeded!`,
+          message: "The transfer was successful! ",
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });

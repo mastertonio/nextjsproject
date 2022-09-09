@@ -66,9 +66,6 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
-    console.log(id)
-    console.log(tempId)
     try {
       showNotification({
         id: "edit-comp",
@@ -93,8 +90,8 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
         updateNotification({
           id: "edit-comp",
           color: "teal",
-          title: `Row updated!`,
-          message: "A row was edited! ",
+          title: `Transfer success!`,
+          message: "Transfer succeeded! ",
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });
