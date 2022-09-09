@@ -128,18 +128,18 @@ const TemplatesDashboard: React.FC = () => {
     );
   };
 
-  const [temp_id, setTemp] = useState<string>('')
-  const [comp_id, setComp] = useState<string>('')
+  const [temp_id, setTemp] = useState<string>("");
+  const [comp_id, setComp] = useState<string>("");
   const templates = currentPosts?.map((item: ICompanyTemplatesProps) => ({
     id: item._id,
     name: (
       <span
         style={{ cursor: "pointer", width: 10 }}
         onClick={() => {
-          setTemp(item._id)
-          setComp(item.company_id)
-          setName(item.name)
-          refetch
+          setTemp(item._id);
+          setComp(item.company_id);
+          setName(item.name);
+          refetch;
         }}
       >
         {item.name}
@@ -345,9 +345,22 @@ const TemplatesDashboard: React.FC = () => {
             lastIndex={indexOfLastPost}
           />
         </div>
-        <Divider my="lg" size="xl" style={{ marginTop: 70}}/>
-        
-      <TemplateVersion update={refetch} comp_id={comp_id}  temp_id={temp_id} first_temp={data?.[0]._id} name={name} />
+
+        {temp_id !== "" ? (
+          <>
+            <Divider my="lg" size="xl" style={{ marginTop: 70 }} />
+            <TemplateVersion
+              update={refetch}
+              comp_id={company}
+              temp_id={temp_id}
+              first_temp={data?.[0]._id}
+              name={name}
+            />
+          </>
+        ) : (
+          ""
+        )}
+        {/* <TemplateVersion update={refetch} comp_id={comp_id}  temp_id={temp_id} first_temp={data?.[0]._id} name={name} /> */}
       </div>
     </AppShell>
   );
