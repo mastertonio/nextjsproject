@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Modal,
   Button,
@@ -19,6 +19,7 @@ import { FaPlusSquare } from "react-icons/fa";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useQuery } from "react-query";
+import UserContext from "@app/context/user.context";
 
 const CreateNewRoi: React.FC = () => {
   const [opened, setOpened] = useState(false);
@@ -30,6 +31,7 @@ const CreateNewRoi: React.FC = () => {
   });
   const router = useRouter();
   const p = router.query;
+  const userCtx = useContext(UserContext)
 
   const getTemplateButtonList = async () => {
     try {
@@ -37,7 +39,7 @@ const CreateNewRoi: React.FC = () => {
         `http://54.159.8.194/v1/dashboard/template/list`,
         {
           headers: {
-            Authorization: `Bearer ${value}`,
+            Authorization: `Bearer ${userCtx.token}`,
           },
         }
       );

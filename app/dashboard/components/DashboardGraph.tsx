@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,6 +15,7 @@ import Highcharts from "highcharts";
 import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";
+import UserContext from "@app/context/user.context";
 
 ChartJS.register(
   CategoryScale,
@@ -46,6 +47,7 @@ const DashboardGraph: React.FC = () => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [graphData, setGraphData] = useState<IDashboardData>();
+  const userCtx = useContext(UserContext)
 
   const getGraphData = async () => {
     try {
@@ -53,7 +55,7 @@ const DashboardGraph: React.FC = () => {
         `http://54.159.8.194/v1/dashboard/data/graph`,
         {
           headers: {
-            Authorization: `Bearer ${value}`,
+            Authorization: `Bearer ${userCtx.token}`,
           },
         }
       );

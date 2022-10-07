@@ -57,6 +57,7 @@ interface ITemplateVersionType {
   comp_id: string;
   first_temp: string;
   name: string;
+  refTarget: any;
 }
 //`http://54.159.8.194/v1/company/${!!comp_id ? comp_id : company}/template/${!!temp_id ? temp_id : first_temp}/version`,
 const getTemplatesVersions = async (
@@ -65,7 +66,7 @@ const getTemplatesVersions = async (
   value: string
 ) => {
   try {
-    console.log(comp, temp)
+    console.log(comp, temp);
     const res = await axios.get(
       `http://54.159.8.194/v1/company/${comp}/template/${temp}/version`,
       {
@@ -87,6 +88,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   temp_id,
   first_temp,
   name,
+  refTarget,
 }) => {
   const router = useRouter();
   const theme = useMantineTheme();
@@ -206,11 +208,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
       <div style={{ margin: 10, backgroundColor: "white", padding: 30 }}>
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddVersion
-            update={refetch}
-            comp_id={comp_id}
-            temp_id={temp_id}
-          />
+          <AddVersion update={refetch} comp_id={comp_id} temp_id={temp_id} />
           <Text
             color="teal"
             weight={900}
@@ -397,7 +395,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             )}
           </Table>
         </ScrollArea>
-        <div>
+        <div ref={refTarget}>
           <Paginate
             refetch={refetch}
             page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
@@ -418,7 +416,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
     return <FourOhFour />;
   }
 
-  return <></>
+  return <></>;
 };
 
 export default TemplateVersion;

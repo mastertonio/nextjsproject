@@ -1,5 +1,5 @@
 import { Button, Divider, Menu} from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import short from "short-uuid";
 import { useStyles } from "@styles/navStyle";
 import { IAdminListProps } from "./AdminList";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { ImProfile } from "react-icons/im";
 import { AiFillCaretDown } from "react-icons/ai";
+import UserContext from "@app/context/user.context";
 
 const ActionList: React.FC = () => {
   const router = useRouter();
@@ -16,6 +17,8 @@ const ActionList: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
   const [values, setValues] = useState<any>("");
+  
+  const userCtx = useContext(UserContext)
 
   const handleChange = (event: any) => {
     setValues(event);
@@ -26,7 +29,7 @@ const ActionList: React.FC = () => {
       const res = await axios.post(
         `http://54.159.8.194/v1/auth/logout`,
         { refreshToken: refresh },
-        { headers: { Authorization: `Bearer ${value}` } }
+        { headers: { Authorization: `Bearer ${userCtx.token}` } }
       );
       if (res) {
         router.push("/");

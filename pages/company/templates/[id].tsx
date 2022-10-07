@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState, useRef } from "react";
 import {
   AppShell,
   useMantineTheme,
@@ -22,7 +22,7 @@ import {
 } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
-import { useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage, useScrollIntoView, useWindowScroll } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
 import {
@@ -63,6 +63,7 @@ const getCompanyTemplate = async (_id: string, token: string) => {
 };
 
 const TemplateDashboard: React.FC = () => {
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({ offset: 60 });
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
@@ -145,6 +146,7 @@ const TemplateDashboard: React.FC = () => {
           setTemp(item._id);
           setComp(item.company_id);
           setName(item.name);
+          scrollIntoView({ alignment: 'center' })
           refetch;
         }}
       >
@@ -362,6 +364,7 @@ const TemplateDashboard: React.FC = () => {
             <>
               <Divider my="lg" size="xl" style={{ marginTop: 70 }} />
               <TemplateVersion
+                refTarget={targetRef}
                 update={refetch}
                 comp_id={templatesID}
                 temp_id={temp_id}

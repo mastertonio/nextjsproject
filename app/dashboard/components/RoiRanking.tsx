@@ -1,10 +1,11 @@
 import short from "short-uuid";
 import { Table } from "@mantine/core";
-import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useContext, useState } from "react";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useQuery } from "react-query";
+import UserContext from "@app/context/user.context";
 
 interface IRankCount {
   _id: string;
@@ -21,6 +22,7 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
   const [current] = useLocalStorage({ key: "current-user" });
   const router = useRouter();
   const p = router.query;
+  const userCtx = useContext(UserContext)
 
   const getRankings = async () => {
     try {
@@ -28,7 +30,7 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
         `http://54.159.8.194/v1/dashboard/ranking/list`,
         {
           headers: {
-            Authorization: `Bearer ${value}`,
+            Authorization: `Bearer ${userCtx.token}`,
           },
         }
       );

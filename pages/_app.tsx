@@ -7,7 +7,8 @@ import store from "@redux/store";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
 import DashboardContextProvider from "app/context/dashboard.context";
-import UserContextProvider from "app/context/user.context";
+import { UserContextProvider } from "app/context/user.context";
+import { BuilderContextProvider } from "@app/context/builder.context";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,11 +25,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NotificationsProvider position="bottom-right" zIndex={2077}>
           <UserContextProvider>
             <DashboardContextProvider>
-              <QueryClientProvider client={queryClient}>
-                <Hydrate state={pageProps.dehydratedState}>
-                  <Component {...pageProps} />
-                </Hydrate>
-              </QueryClientProvider>
+              <BuilderContextProvider>
+                <QueryClientProvider client={queryClient}>
+                  <Hydrate state={pageProps.dehydratedState}>
+                    <Component {...pageProps} />
+                  </Hydrate>
+                </QueryClientProvider>
+              </BuilderContextProvider>
             </DashboardContextProvider>
           </UserContextProvider>
         </NotificationsProvider>

@@ -16,6 +16,7 @@ import {
   ReactFragment,
   ReactPortal,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -34,6 +35,7 @@ import { sortData, sortFilterData } from "./table/utils/tableMethods";
 import Th from "./table/Thead";
 import SkeletonLoader from "@core/components/loader/SkeletonLoader";
 import TempList from "@core/components/dropdown/TemplateTags";
+import UserContext from "@app/context/user.context";
 
 export interface iDashRowProp {
   id: string;
@@ -79,12 +81,13 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
+  const userCtx = useContext(UserContext)
 
   const getRoiListAll = async () => {
     try {
       const res = await axios.get(`http://54.159.8.194/v1/dashboard/roi/list`, {
         headers: {
-          Authorization: `Bearer ${value}`,
+          Authorization: `Bearer ${userCtx.token}`,
         },
       });
       return res.data;

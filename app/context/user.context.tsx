@@ -1,101 +1,88 @@
-import { Router, useRouter } from "next/router";
-import React, { useCallback, useReducer } from "react";
 import { useLocalStorage } from "@mantine/hooks";
-import dayjs from "dayjs";
+import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 
-interface State {
-  isProcessing: boolean;
-  isAuthenticated: boolean;
-  user: object;
+interface UserContextTypes {
+  verification_code: string | null;
+  phone: string;
+  manager: string;
+  first_name: string;
+  last_name: string;
+  currency: string;
+  email_verified_at: string | null;
+  remember_token: string | null;
+  role: string;
+  isEmailVerified: boolean;
   avatar: string;
+  status: number;
+  name: string;
+  email: string;
+  company_id: string;
+  created_by: string;
+  id: string;
+}
+
+export interface State {
+  user: UserContextTypes;
   token: string;
+  refresh: string;
 }
 
 const initialState = {
-  isProcessing: false,
-  isAuthenticated: false,
-  user: null,
-  avatar: "",
-  tokens: ''
+  user: {},
+  token: "",
+  refresh: "",
 };
 
-export const UserContext = React.createContext<State | any>({});
+const UserContext = createContext<State | any>({});
 
-const UserReducer = (state: any, action: { type: any; payload?: any }) => {
+const builderReducer = (state: any, action: { type: any; payload?: any }) => {
   const { type, payload } = action;
   switch (type) {
-    case "FETCH_USER":
-      if (payload) {
-        return {
-          ...state,
-          user: payload.user,
-          token: payload.token,
-          authenticated: true,
-        };
-      }
+    case "USER_SIGNIN":
       return {
         ...state,
-        authenticated: false,
+        user: payload.user,
+        token: payload.tokens.access.token,
+        refresh: payload.tokens.refresh.token,
       };
-    case "REGISTER_USER":
-      return {
-        authenticated: false,
-        error: payload.error,
-      };
-    case "LOGIN_USER":
+    case "GET_USER":
       return {
         ...state,
-        user: payload,
-        authenticated: true,
+        user: payload.user,
+        token: payload.token,
+        refresh: payload.refresh,
       };
     default:
       return state;
   }
 };
 
-const UserContextProvider = (props: {
-  children:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
-}) => {
-  const router = useRouter();
-  const [userState, dispatch] = useReducer(UserReducer, initialState);
-  const [localUser, setLocalUser] = useLocalStorage({
-    key: "selectedCustomer",
-  });
+export function UserContextProvider(props: any) {
+  const [userState, dispatch] = useReducer(builderReducer, initialState);
 
-  const fetchUser = (data: any) => {
-    dispatch({ type: "FETCH_USER", payload: data });
+  const login = (user: object) => {
+    dispatch({ type: "USER_SIGNIN", payload: user });
   };
 
-  const registerUser = (data: string) => {
-    dispatch({ type: "REGISTER_USER", payload: data });
+  const getToken = (user: object) => {
+    dispatch({ type: "GET_USER", payload: user });
   };
 
-  const loginUser = (data: any) => {
-    dispatch({ type: "LOGIN_USER", payload: data });
-    router.push({ query: { page: 0 } });
-  };
+  const context = useMemo(
+    () => ({
+      user: userState.user,
+      token: userState.token,
+      login,
+      getToken
+    }),
+    [userState.token, userState.user]
+  );
 
   return (
-    <UserContext.Provider
-      value={{
-        token: userState.token,
-
-        fetchUser,
-        registerUser,
-        loginUser
-      }}
-    >
+    <UserContext.Provider value={context}>
       {props.children}
     </UserContext.Provider>
   );
-};
+}
 
-export default UserContextProvider;
+export default UserContext;

@@ -155,6 +155,7 @@ const Sidebar: React.FC = () => {
             fullWidth
             style={{ marginTop: 5, marginLeft: 17, color: "lightgray" }}
             leftIcon={<MdLineWeight />}
+            onClick={() => router.push(`/templates/builder`)}
           >
             Create Template
           </Button>

@@ -22,7 +22,7 @@ import {
 } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
-import { useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage, useScrollIntoView } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
 import {
@@ -46,6 +46,9 @@ import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
 
 const TemplatesDashboard: React.FC = () => {
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 60,
+  });
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
@@ -136,6 +139,7 @@ const TemplatesDashboard: React.FC = () => {
       <span
         style={{ cursor: "pointer", width: 10 }}
         onClick={() => {
+          scrollIntoView({ alignment: "center" });
           setTemp(item._id);
           setComp(item.company_id);
           setName(item.name);
@@ -350,6 +354,7 @@ const TemplatesDashboard: React.FC = () => {
           <>
             <Divider my="lg" size="xl" style={{ marginTop: 70 }} />
             <TemplateVersion
+              refTarget={targetRef}
               update={refetch}
               comp_id={company}
               temp_id={temp_id}
@@ -361,6 +366,7 @@ const TemplatesDashboard: React.FC = () => {
           ""
         )}
         {/* <TemplateVersion update={refetch} comp_id={comp_id}  temp_id={temp_id} first_temp={data?.[0]._id} name={name} /> */}
+        <div ref={targetRef}></div>
       </div>
     </AppShell>
   );

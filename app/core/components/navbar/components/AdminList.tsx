@@ -1,10 +1,11 @@
 import { Select } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useStyles } from "@styles/navStyle";
 import { AiFillCaretDown } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
+import UserContext from "@app/context/user.context";
 
 type iAdminData = {
   verification_code: string | null;
@@ -37,6 +38,7 @@ const AdminList: React.FC = () => {
   const [values, setValues] = useState<any>("Admin");
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const userCtx = useContext(UserContext)
 
   const getAdminList = async () => {
     try {
@@ -44,7 +46,7 @@ const AdminList: React.FC = () => {
         `http://54.159.8.194/v1/dashboard/admin/list`,
         {
           headers: {
-            Authorization: `Bearer ${value}`,
+            Authorization: `Bearer ${userCtx.token}`,
           },
         }
       );

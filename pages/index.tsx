@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import { loginAsync, login, selectUser } from "@redux/reducers/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@redux/store";
-import { UserContext } from "@context/user.context";
+import UserContext from "@context/user.context";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
@@ -31,9 +31,8 @@ const Home: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
   const [loading, setLoading] = useState(true);
+  const userCtx = useContext(UserContext)
 
   const form = useForm({
     initialValues: {
@@ -59,13 +58,13 @@ const Home: React.FC = () => {
         payload
       );
       if (res) {
+        userCtx.login(res.data)
         setValue(res.data.tokens.access.token);
         setRefresh(res.data.tokens.refresh.token);
         sessionStorage.setItem("auth-token", value);
         setUserInfo(res.data.user);
         setCurrent(res.data.user.id);
         setCompany(res.data.user.company_id);
-        dispatch(login(res.data.user));
         if (res.data.user.role == "company-manager") {
           router.push("/dashboard/manager");
         }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AppShell,
   useMantineTheme,
@@ -28,92 +28,87 @@ import { useLocalStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
+import UserContext, { State } from "@context/user.context";
 //
-const Dashboard: React.FC = (
+const Dashboard: React.FC = () =>
   // message
-  ) => {
-  const router = useRouter();
-  const theme = useMantineTheme();
-  const { classes } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const p = router.query;
+  {
+    const router = useRouter();
+    const theme = useMantineTheme();
+    const { classes } = useStyles();
+    const [value] = useLocalStorage({ key: "auth-token" });
+    const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+    const [userInfo, setUserInfo] = useLocalStorage<State>({ key: "ckear" });
+    const p = router.query;
+    const userCtx = useContext(UserContext);
 
-  // useEffect(() => {
-  //   console.log(message, value,'dta');
-  // }, [message, value]);
-
-  const getDashboardData = async () => {
-    try {
-      const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard`,
-        {
+    // useEffect(() => {
+    //   console.log(message, value,'dta');
+    // }, [message, value]);
+    const getDashboardData = async () => {
+      try {
+        const res = await axios.get(`http://54.159.8.194/v1/dashboard`, {
           headers: {
-            Authorization: `Bearer ${value}`,
+            Authorization: `Bearer ${userCtx.token}`,
           },
-        }
-      );
-      return res.data;
-    } catch (error) {
-      return error
-    }
-  };
-
-  const { isLoading, status, data, isFetching, refetch } = useQuery(
-    "dashboardData",
-    getDashboardData
-  );
-
-
-  // if (isLoading)
-  //   return ;
-
-  return isLoading ? <MainLoader /> : (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      className=""
-      fixed
-      header={
-        <RoiNavbar/>
+        });
+        return res.data;
+      } catch (error) {
+        return error;
       }
-      // footer={<RoiFooter />}
-    >
-      <div className={classes.body}>
-        <div className={classes.welcome}>
-          <Welcome
-            name={data?.welcome.account_name}
-            active_roi={data?.welcome.active_roi}
-            current_roi={data?.welcome.current_roi}
-          />
-          <ViewCount viewcount={data?.viewcount} />
+    };
+
+    const { isLoading, status, data, isFetching, refetch } = useQuery(
+      "dashboardData",
+      getDashboardData
+    );
+
+    // if (isLoading)
+    //   return ;
+
+    return isLoading ? (
+      <MainLoader />
+    ) : (
+      <AppShell
+        styles={{
+          main: {
+            background:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        }}
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        className=""
+        fixed
+        header={<RoiNavbar />}
+        // footer={<RoiFooter />}
+      >
+        <div className={classes.body}>
+          <div className={classes.welcome}>
+            <Welcome
+              name={data?.welcome.account_name}
+              active_roi={data?.welcome.active_roi}
+              current_roi={data?.welcome.current_roi}
+            />
+            <ViewCount viewcount={data?.viewcount} />
+          </div>
+          <div className={classes.dashboard_graph}>
+            <DashboardGraph />
+          </div>
+          <div className={classes.roi_ranking}>
+            <CreateNewRoi />
+            <RoiRanking />
+          </div>
         </div>
-        <div className={classes.dashboard_graph}>
-          <DashboardGraph />
+        <div className={classes.bar_graph_wrapper}>
+          <Text size="lg">My ROIs</Text>
+          <Row my_roi={data?.my_roi} refetch={refetch} />
         </div>
-        <div className={classes.roi_ranking}>
-          <CreateNewRoi />
-          <RoiRanking />
-        </div>
-      </div>
-      <div className={classes.bar_graph_wrapper}>
-        <Text size="lg">My ROIs</Text>
-        <Row
-          my_roi={data?.my_roi}
-          refetch={refetch}
-        />
-      </div>
-    </AppShell>
-  );
-};
+      </AppShell>
+    );
+  };
 
 // export async function getServerSideProps(ctx: any) {
 //   // Fetch data from external API

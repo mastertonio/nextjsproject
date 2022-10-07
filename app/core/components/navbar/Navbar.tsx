@@ -7,7 +7,7 @@ import {
   Group,
   Button,
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useStyles } from "@styles/navStyle";
 import AdminList, { IAdminListProps } from "./components/AdminList";
@@ -18,6 +18,7 @@ import 'react-modern-drawer/dist/index.css'
 import DashboardDrawer from "../drawer/DrawerContent";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
+import UserContext from "@context/user.context";
 
 const RoiNavbar: React.FC = () => {
   const theme = useMantineTheme();
@@ -28,6 +29,7 @@ const RoiNavbar: React.FC = () => {
   const toggleDrawer = () => {
       setIsOpen((prevState) => !prevState)
   }
+  const userCtx = useContext(UserContext)
 
   const [user, setUser] = useState<any>({});
   const [value] = useLocalStorage({ key: "auth-token" });
@@ -38,7 +40,7 @@ const RoiNavbar: React.FC = () => {
     try {
       const res = await axios.get(`http://54.159.8.194/v1/users/${current}`, {
         headers: {
-          Authorization: `Bearer ${value}`,
+          Authorization: `Bearer ${userCtx.token}`,
         },
       });
       return res.data;

@@ -1,10 +1,11 @@
 import { MultiSelect, Select } from "@mantine/core";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useContext, useEffect, useState } from "react";
 import { useStyles } from "@styles/navStyle";
 import { AiFillCaretDown } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
+import UserContext from "@app/context/user.context";
 
 export interface ITemplateList {
   active: string;
@@ -23,6 +24,7 @@ const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
   const [values, setValues] = useState<any>("Admin");
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const userCtx = useContext(UserContext)
 
   const getTemplateList = async () => {
     try {
@@ -30,7 +32,7 @@ const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
         `http://54.159.8.194/v1/dashboard/template/list`,
         {
           headers: {
-            Authorization: `Bearer ${value}`,
+            Authorization: `Bearer ${userCtx.token}`,
           },
         }
       );
