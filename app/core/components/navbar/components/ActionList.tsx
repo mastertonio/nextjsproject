@@ -1,4 +1,4 @@
-import { Button, Divider, Menu} from "@mantine/core";
+import { Button, Divider, Menu } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import short from "short-uuid";
 import { useStyles } from "@styles/navStyle";
@@ -17,8 +17,8 @@ const ActionList: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
   const [values, setValues] = useState<any>("");
-  
-  const userCtx = useContext(UserContext)
+
+  const userCtx = useContext(UserContext);
 
   const handleChange = (event: any) => {
     setValues(event);
@@ -29,7 +29,9 @@ const ActionList: React.FC = () => {
       const res = await axios.post(
         `http://54.159.8.194/v1/auth/logout`,
         { refreshToken: refresh },
-        { headers: { Authorization: `Bearer ${userCtx.token}` } }
+        {
+          withCredentials: true,
+        }
       );
       if (res) {
         router.push("/");
@@ -43,7 +45,7 @@ const ActionList: React.FC = () => {
   };
 
   return (
-    <Menu trigger="hover" openDelay={100} closeDelay={400} >
+    <Menu trigger="hover" openDelay={100} closeDelay={400}>
       <Menu.Target>
         <Button
           leftIcon={<ImProfile />}
@@ -65,12 +67,12 @@ const ActionList: React.FC = () => {
           onClick={() => {
             router.push(`/users/profile`);
           }}
-          style={{ width: 150}}
+          style={{ width: 150 }}
         >
           Profile
         </Menu.Item>
         <Divider />
-        <Menu.Item onClick={handleLogout} color="red" >
+        <Menu.Item onClick={handleLogout} color="red">
           Logout
         </Menu.Item>
       </Menu.Dropdown>

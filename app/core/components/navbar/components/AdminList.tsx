@@ -45,9 +45,7 @@ const AdminList: React.FC = () => {
       const res = await axios.get(
         `http://54.159.8.194/v1/dashboard/admin/list`,
         {
-          headers: {
-            Authorization: `Bearer ${userCtx.token}`,
-          },
+          withCredentials: true,
         }
       );
       return res.data;

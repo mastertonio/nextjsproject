@@ -54,9 +54,7 @@ const DashboardGraph: React.FC = () => {
       const res = await axios.get(
         `http://54.159.8.194/v1/dashboard/data/graph`,
         {
-          headers: {
-            Authorization: `Bearer ${userCtx.token}`,
-          },
+          withCredentials: true,
         }
       );
       return res.data;

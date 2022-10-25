@@ -1,26 +1,100 @@
-import { Box, Container, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  ColorInput,
+  ColorPicker,
+  Container,
+  HoverCard,
+  Text,
+  Textarea,
+  TextInput,
+  TypographyStylesProvider,
+} from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import Rte from "@app/company/components/sectionComponents/rte";
+import sanitizeHtml from "sanitize-html";
+import { IconSettings } from "@tabler/icons";
 
 type iSectionDescriptionProps = {
-    name: string
-}
+  name: string;
+  description: string;
+};
 
-const SectionDescription: React.FC<iSectionDescriptionProps> = ({ name }) => {
+const SectionDescription: React.FC<iSectionDescriptionProps> = ({
+  name,
+  description,
+}) => {
+  const initialValue =
+    "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+  const [descValue, setDesc] = useState(description || initialValue);
+  const [changeDesc, setDescChange] = useState(false);
+  const [color, setColor] = useState("");
+  const [picker, setPicker] = useState(false);
+
   return (
-    <Container style={{ margin: 40, padding: 0 }}>
-      <Text size="md" mb={20}>
-        Studies show that 40 - 60% of all opportunities will end in a no
-        decision. This happens so often because prospects have a difficult time
-        quantifying your benefits / value.. Companies will make a purchasing
-        decision for two main reasons:{" "}
-      </Text>
-      <span>1 - You&apos;re going to make them money</span>
-      <p>2 - You&apos;re going to save them money </p>
-      <Text>
-        {" "}
-        Yet the majority of salespeople do not have the tools to engage in these
-        types of financial discussions. Therefore they are only left to sell
-        features and functionality.
-      </Text>
+    <Container ml={40} style={{ margin: 40, padding: 0 }}>
+      {changeDesc ? (
+        <div style={{ width: 1000 }}>
+          <React.Suspense fallback={"...Loading Rte"}>
+            <Rte
+              value={descValue}
+              onChange={setDesc}
+              // onBlur={() => setDescChange(false)}
+              id="rte"
+            />
+            <Button
+              style={{ marginLeft: "auto", display: "block" }}
+              variant="subtle"
+              color="teal"
+              onClick={() => setDescChange(false)}
+            >
+              Save
+            </Button>
+          </React.Suspense>
+          {/* <Textarea
+            label="Enter New Description"
+            value={descValue}
+            onChange={(event) => setDesc(event.currentTarget.value)}
+            onBlur={() => setDescChange(false)}
+            onKeyDown={(event) => {
+              if (event.key == "Enter") {
+                setDescChange(false);
+              }
+            }}
+          /> */}
+        </div>
+      ) : (
+        <div>
+          <TypographyStylesProvider onClick={() => setDescChange(true)} mb={20}>
+            <div
+              style={{ width: 1000, color: color }}
+              dangerouslySetInnerHTML={{ __html: descValue }}
+            />
+          </TypographyStylesProvider>
+          <HoverCard
+            shadow="md"
+            withArrow
+            openDelay={200}
+            closeDelay={400}
+            position='right-start'
+          >
+            <HoverCard.Target>
+              <ActionIcon variant="transparent">
+                <IconSettings size={16} />
+              </ActionIcon>
+            </HoverCard.Target>
+
+            <HoverCard.Dropdown>
+              <ColorPicker
+                style={{ margin: 7 }}
+                value={color}
+                onChange={setColor}
+              />
+            </HoverCard.Dropdown>
+          </HoverCard>
+        </div>
+      )}
     </Container>
   );
 };

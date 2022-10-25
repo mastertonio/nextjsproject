@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [loading, setLoading] = useState(true);
-  const userCtx = useContext(UserContext)
+  const userCtx = useContext(UserContext);
 
   const form = useForm({
     initialValues: {
@@ -55,10 +55,16 @@ const Home: React.FC = () => {
       };
       const res = await axios.post(
         "http://54.159.8.194/v1/auth/login",
-        payload
+        payload,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       if (res) {
-        userCtx.login(res.data)
+        userCtx.login(res.data);
         setValue(res.data.tokens.access.token);
         setRefresh(res.data.tokens.refresh.token);
         sessionStorage.setItem("auth-token", value);
@@ -69,7 +75,7 @@ const Home: React.FC = () => {
           router.push("/dashboard/manager");
         }
       }
-      
+
       router.push(`/dashboard`);
     } catch (error) {
       return error;

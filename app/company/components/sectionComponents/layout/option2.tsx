@@ -14,6 +14,7 @@ import {
   
     return (
       <Container my="md">
+      <Skeleton height={70} mt={15} mb={10} radius="md" animate={false} />
         <SimpleGrid
           cols={2}
           spacing="md"
@@ -38,7 +39,6 @@ import {
           <Skeleton height={PRIMARY_COL_HEIGHT} radius="md" animate={false} />
         </SimpleGrid>
   
-        <Skeleton height={70} mt={15} radius="md" animate={false} />
       </Container>
     );
   };

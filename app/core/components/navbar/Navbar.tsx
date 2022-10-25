@@ -35,13 +35,12 @@ const RoiNavbar: React.FC = () => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
+  const sessionToken = sessionStorage.getItem('auth-token')
 
   const getCurrentUser = async () => {
     try {
       const res = await axios.get(`http://54.159.8.194/v1/users/${current}`, {
-        headers: {
-          Authorization: `Bearer ${userCtx.token}`,
-        },
+        withCredentials: true,
       });
       return res.data;
     } catch (error) {

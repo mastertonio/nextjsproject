@@ -1,7 +1,11 @@
 import { Text, Image, Container } from "@mantine/core";
 import ReactPlayer from 'react-player'
 
-const SectionMedia = () => {
+type IMediaProps = {
+  media?: string
+}
+
+const VideoLinkMedia: React.FC<IMediaProps> = ({ media }) => {
   return (
     <div style={{ width: 530, marginLeft: "auto" }}>
       <div style={{ height: 420}}>
@@ -10,7 +14,7 @@ const SectionMedia = () => {
           playing
           light={true}
           className="object-cover h-fit w-fit absolute top-0 left-0"
-          url={"https://www.youtube.com/watch?v=Z9e7K6Hx_rY&list=RDDAE1NbKstqk&index=28"}
+          url={media || "https://share.vidyard.com/watch/feATQcRhijLdXwZgTh5nDG?"}
           width="100%"
           height="100%"
         />
@@ -19,4 +23,4 @@ const SectionMedia = () => {
   );
 };
 
-export default SectionMedia;
+export default VideoLinkMedia;

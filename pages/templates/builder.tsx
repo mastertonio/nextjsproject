@@ -24,29 +24,11 @@ const TemplateBuilder: React.FC = () => {
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const builderCtx = useContext(BuilderContext)
 
-  const data = [
-    {
-      position: 6,
-      mass: 69,
-      symbol: "A",
-      name: "Carbon",
-    },
-    {
-      position: 7,
-      mass: 69,
-      symbol: "B",
-      name: "NobraC",
-    }
-  ];
-
   return (
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+          background: theme.colors.gray[2]
         },
       }}
       navbarOffsetBreakpoint="sm"
@@ -58,7 +40,7 @@ const TemplateBuilder: React.FC = () => {
     >
       {builderCtx.totalSections !== 0 ? (
       <Grid>
-        <Stack style={{ width: 1820 }}>
+        <Stack style={{ width: 1830 }}>
           <DndListHandle data={builderCtx.sections} />
         </Stack>
       </Grid>) : (<div> No Sections yet </div>) }

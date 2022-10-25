@@ -1,5 +1,5 @@
 import ActionList from "@app/core/components/navbar/components/ActionList";
-import BuilderContext from "@app/context/builder.context"
+import BuilderContext from "@app/context/builder.context";
 import {
   createStyles,
   Header,
@@ -33,6 +33,7 @@ import {
 import { useContext } from "react";
 import shortUUID from "short-uuid";
 import AddSectionModal from "@app/company/components/sectionComponents/modals/AddSectionModal";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -63,7 +64,7 @@ const useStyles = createStyles((theme) => ({
 
   builderheader: {
     margin: `30px auto`,
-    maxWidth: 1920
+    maxWidth: 1920,
   },
 
   subLink: {
@@ -148,7 +149,7 @@ const HeaderMegaMenu = () => {
     useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const { classes, theme } = useStyles();
-  const builderCtx = useContext(BuilderContext)
+  const builderCtx = useContext(BuilderContext);
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -174,10 +175,12 @@ const HeaderMegaMenu = () => {
         <Group position="apart" sx={{ height: "100%" }}>
           <div>
             <Button
-              style={{ marginRight: "auto", backgroundColor: "#00acac" }}
-              onClick={toggleDrawer}
+              style={{ marginRight: "auto" }}
+              onClick={()=> builderCtx.buildDraggable()}
+              color={builderCtx.draggableDisabled ? 'gray' : 'blue'}
+              variant="light"
             >
-              Navigate
+              Reorder Sections
             </Button>
           </div>
 
@@ -186,7 +189,7 @@ const HeaderMegaMenu = () => {
             spacing={0}
             className={classes.hiddenMobile}
           >
-            <AddSectionModal style={classes.link}/>
+            <AddSectionModal style={classes.link} />
             {/* <Button className={classes.link} variant="subtle">
               Add Section
             </Button> */}
@@ -236,14 +239,26 @@ const HeaderMegaMenu = () => {
                         Start Editing Your Template
                       </Text>
                     </div>
-                    <Button onClick={()=>{ builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), description: "ttest test"}) }} variant="default">Add Section</Button>
+                    <Button
+                      onClick={() => {
+                        builderCtx.addSection({
+                          id: shortUUID.generate(),
+                          name: shortUUID.generate(),
+                          title: "Edit Section Title",
+                          description: "Edit Section Description",
+                        });
+                      }}
+                      variant="default"
+                    >
+                      Add Section
+                    </Button>
                   </Group>
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            {/* <a href="#" className={classes.link}>
-              Preview
-            </a> */}
+            <Link href="/templates/builder/preview" className={classes.link} passHref>
+              <a target={"_blank"}>Preview</a>
+            </Link>
             <a href="#" className={classes.link}>
               Share
             </a>

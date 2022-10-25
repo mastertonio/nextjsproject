@@ -24,7 +24,7 @@ import DashboardGraph from "@dashboard/components/DashboardGraph";
 import ViewCount from "@dashboard/components/ViewCount";
 import CreateNewRoi from "@dashboard/components/CreateNewRoi";
 import RoiRanking from "@dashboard/components/RoiRanking";
-import { useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
@@ -42,15 +42,10 @@ const Dashboard: React.FC = () =>
     const p = router.query;
     const userCtx = useContext(UserContext);
 
-    // useEffect(() => {
-    //   console.log(message, value,'dta');
-    // }, [message, value]);
     const getDashboardData = async () => {
       try {
         const res = await axios.get(`http://54.159.8.194/v1/dashboard`, {
-          headers: {
-            Authorization: `Bearer ${userCtx.token}`,
-          },
+          withCredentials: true,
         });
         return res.data;
       } catch (error) {

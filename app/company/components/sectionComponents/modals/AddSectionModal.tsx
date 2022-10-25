@@ -21,6 +21,11 @@ import LeadGrid from "../layout/defaultOption";
 import LayoutOption1 from "../layout/option1";
 import shortUUID from "short-uuid";
 import BuilderContext from "@app/context/builder.context";
+import Option1 from "../layout/option1";
+import Option2 from "../layout/option2";
+import Option3 from "../layout/option3";
+import Option4 from "../layout/option4";
+import Option5 from "../layout/option5";
 
 type IAddSectionModalProps = {
   style: string;
@@ -61,7 +66,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
             color: "gray",
           }}
         >
-          Choose a layout
+          Choose a Section Layout
         </Text>
         <SimpleGrid cols={3} style={{ margin: 20}}>
         <Box
@@ -79,7 +84,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), description: "ttest test"})}
+            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
           >
             <LeadGrid />
           </Box>
@@ -101,9 +106,9 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), description: "ttest test"})}
+            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
           >
-            <LeadGrid />
+            <Option1 />
           </Box>
           <Box
             component="div"
@@ -123,9 +128,9 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), description: "ttest test"})}
+            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
           >
-            <LeadGrid />
+            <Option2 />
           </Box>
           <Box
             component="div"
@@ -145,9 +150,9 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), description: "ttest test"})}
+            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
           >
-            <LeadGrid />
+            <Option3 />
           </Box>
           <Box
             component="div"
@@ -167,9 +172,31 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), description: "ttest test"})}
+            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
           >
-            <LeadGrid />
+            <Option4 />
+          </Box>
+          <Box
+            component="div"
+            sx={(theme) => ({
+              backgroundColor: "whitesmoke",
+              color:
+                theme.colorScheme === "dark"
+                  ? theme.colors.blue[4]
+                  : theme.colors.blue[7],
+              textAlign: "center",
+              padding: theme.spacing.sm,
+              borderRadius: theme.radius.md,
+              borderColor: 'whitesmoke',
+              cursor: "pointer",
+
+              "&:hover": {
+                backgroundColor: theme.colors.cyan[1]
+              },
+            })}
+            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+          >
+            <Option5 />
           </Box>
         </SimpleGrid>
         <Grid justify="flex-end" style={{ margin: 20 }}>

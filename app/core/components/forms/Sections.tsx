@@ -40,7 +40,13 @@ export interface DndListHandleProps {
   data: {
     id: string;
     name: string;
+    title: string;
     description: string;
+    quote: string;
+    media: string;
+    price: number;
+    author: string
+    type: string
   }[];
 }
 
@@ -50,22 +56,19 @@ export function DndListHandle({ data }: DndListHandleProps) {
   const [state, handlers] = useListState(data);
 
   useEffect(() => {
-    
     handlers.setState(builderCtx.sections);
     // console.log(state, "state");
-    console.log(builderCtx.sections, "builderCtx.section", data);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [builderCtx.sections]);
-
 
   useEffect(() => {
     // console.log(state, "state");
-    console.log(state, 'teeest');
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    console.log(state, "reorder");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handlers.reorder]);
 
   const items = state.map((item, index) => (
-    <Draggable key={item.id} index={index} draggableId={item.name}>
+    <Draggable key={item.id} index={index} draggableId={item.name} isDragDisabled={builderCtx.draggableDisabled}>
       {(provided, snapshot) => (
         <div
           className={cx(classes.item, {
@@ -79,6 +82,11 @@ export function DndListHandle({ data }: DndListHandleProps) {
             id={item.id}
             name={item.name}
             description={item.description}
+            title={item.title}
+            quote={item.quote}
+            media={item.media}
+            price={item.price}
+            author={item.author}
           />
         </div>
       )}
@@ -87,7 +95,7 @@ export function DndListHandle({ data }: DndListHandleProps) {
 
   return (
     <DragDropContext
-      onDragEnd={({ destination, source }) => 
+      onDragEnd={({ destination, source }) =>
         handlers.reorder({ from: source.index, to: destination?.index || 0 })
       }
     >
