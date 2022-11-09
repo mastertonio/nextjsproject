@@ -21,8 +21,6 @@ import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { BsFolderSymlinkFill } from "react-icons/bs";
 import ChangePass from "@core/components/forms/changepassword";
-import { useAppDispatch, useAppSelector } from "@redux/store";
-import { login } from "@redux/reducers/user/userSlice";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons'
 import MainLoader from "@app/core/components/loader/MainLoader";
@@ -32,18 +30,11 @@ const UserProfile: React.FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const [user, setUser] = useState<any>({});
-  const users = useAppSelector((state) => state.user);
-  const [userCred, setUserCred] = useState<any>({
-    first_name: users.user?.first_name,
-    last_name: users.user?.last_name,
-    email: users.user?.email,
-    phone_number: users.user?.phone,
-  });
+  const [userCred, setUserCred] = useState<any>();
   const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
-  const dispatch = useAppDispatch();
 
   const getCurrentUser = async () => {
     try {
@@ -52,7 +43,6 @@ const UserProfile: React.FC = () => {
           Authorization: `Bearer ${value}`,
         },
       });
-      dispatch(login(res.data));
       return res.data;
     } catch (error) {
       return error;
@@ -124,7 +114,7 @@ const UserProfile: React.FC = () => {
 
   useEffect(() => {
     setUser(data);
-  }, [data, userInfo, users]);
+  }, [data, userInfo]);
 
   return isLoading ? <MainLoader /> : (
     <AppShell
@@ -164,7 +154,6 @@ const UserProfile: React.FC = () => {
                 placeholder="Your Email Address"
                 label="Email"
                 name="email"
-                defaultValue={users.user?.email}
                 style={{ width: 950, marginTop: "auto" }}
                 onChange={handleChange}
                 description="Your email address will also be your username and is the email address that all notifications will be sent to."
@@ -177,7 +166,6 @@ const UserProfile: React.FC = () => {
               placeholder="Your First Name"
               label="First Name"
               name="first_name"
-              defaultValue={users.user?.first_name}
               onChange={handleChange}
               onBlur={onSubmit}
             />
@@ -185,7 +173,6 @@ const UserProfile: React.FC = () => {
               placeholder="Your Last Name"
               label="Last Name"
               name="last_name"
-              defaultValue={users.user?.last_name}
               onChange={handleChange}
               onBlur={onSubmit}
             />
@@ -193,7 +180,6 @@ const UserProfile: React.FC = () => {
               placeholder="Enter Phone Number "
               label="Phone number"
               name="phone_number"
-              defaultValue={users.user?.phone}
               onChange={handleChange}
               onBlur={onSubmit}
             />

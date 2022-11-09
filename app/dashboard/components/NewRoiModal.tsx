@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AiOutlineDown } from "react-icons/ai";
-
 interface INewRoiModalProps {
   opened: boolean;
   onClose: () => void;

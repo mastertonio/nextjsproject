@@ -62,8 +62,8 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
       <SectionHeader id={id} title={title} price={price} />
       <Grid mb={40}>
         <Stack>
-          <SectionDescription name={title} description={description} />
-          <SectionBlockQuotes quote={quote} author={author} />
+          {/* <SectionDescription name={title} description={description} />
+          <SectionBlockQuotes quote={quote} author={author} /> */}
         </Stack>
         <Stack ml={'auto'}>
           {mediaType == "image" ? (
@@ -75,7 +75,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
           ) : (
             ""
           )}
-          <MediaSelection setMediaType={setMediaType} mediaType={mediaType} />
+          {/* <MediaSelection setMediaType={setMediaType} mediaType={mediaType} /> */}
         </Stack>
 
         {/* <SectionMedia media={media} /> */}

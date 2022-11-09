@@ -18,8 +18,6 @@ import { useStyles } from "../styles/indexStyle";
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
-import { loginAsync, login, selectUser } from "@redux/reducers/user/userSlice";
-import { useAppDispatch, useAppSelector } from "@redux/store";
 import UserContext from "@context/user.context";
 
 const Home: React.FC = () => {
@@ -54,16 +52,14 @@ const Home: React.FC = () => {
         password: values.password,
       };
       const res = await axios.post(
-        "http://54.159.8.194/v1/auth/login",
+        "http://localhost:5000/api/v1/user/login",
         payload,
         {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          withCredentials: true
         }
       );
       if (res) {
+        console.log(res)
         userCtx.login(res.data);
         setValue(res.data.tokens.access.token);
         setRefresh(res.data.tokens.refresh.token);
@@ -76,7 +72,7 @@ const Home: React.FC = () => {
         }
       }
 
-      router.push(`/dashboard`);
+      // router.push(`/dashboard`);
     } catch (error) {
       return error;
     }
@@ -171,61 +167,6 @@ const Home: React.FC = () => {
         </div>
       </Paper>
     </div>
-    // <div
-    //   className={classes.body}
-    //   style={{ background: theme.fn.radialGradient("teal", "#00acac") }}
-    // >
-    //   <Head>
-    //     <title>The ROI Shop Login</title>
-    //   </Head>
-    //   <Container size="xs" px="xs" className={classes.wrapper}>
-    //     <Text weight={500} className={classes.title}>
-    //       The ROI Shop Login
-    //     </Text>
-    //     <Box sx={{ width: 500, height: "100%" }} mx="md">
-    //       <form onSubmit={form.onSubmit(handleSubmit)}>
-    //         <TextInput
-    //           required
-    //           label="Email Address"
-    //           placeholder="your@email.com"
-    //           {...form.getInputProps("email")}
-    //         />
-
-    //         <PasswordInput
-    //           label="Password"
-    //           placeholder="Password"
-    //           {...form.getInputProps("password")}
-    //         />
-
-    //         <Checkbox
-    //           mt="md"
-    //           label="Remember Me"
-    //           {...form.getInputProps("rememberMe", { type: "checkbox" })}
-    //         />
-
-    //         <Group position="right" mt="xs">
-    //           <Button
-    //             type="submit"
-    //             style={{ background: theme.fn.radialGradient("#00acac") }}
-    //             className={classes.button}
-    //           >
-    //             Sign me in
-    //           </Button>
-    //         </Group>
-    //       </form>
-    //     </Box>
-    //     <div className={classes.forgot_password}>
-    //       <Text>© The ROI Shop</Text>
-    //       <Button
-    //         variant="subtle"
-    //         radius="lg"
-    //         onClick={() => router.push("/forgot_password")}
-    //       >
-    //         Forgot Password
-    //       </Button>
-    //     </div>
-    //   </Container>
-    // </div>
   );
 };
 

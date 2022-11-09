@@ -1,7 +1,23 @@
-import { Button, Grid, NumberInput, Text, TextInput } from "@mantine/core";
-import { IconMedal, IconCurrencyDollar, IconEdit } from "@tabler/icons";
+import {
+  ActionIcon,
+  Button,
+  ColorPicker,
+  Grid,
+  HoverCard,
+  NumberInput,
+  Text,
+  TextInput,
+} from "@mantine/core";
+import {
+  IconMedal,
+  IconCurrencyDollar,
+  IconEdit,
+  IconSettings,
+} from "@tabler/icons";
 import React, { useState } from "react";
 import Rte from "@app/company/components/sectionComponents/rte";
+import Tiptap from "./TiptapHeader";
+import styles from "@styles/tiptap.module.scss";
 
 type iSectionHeaderProps = {
   id: string;
@@ -15,29 +31,32 @@ const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
   const [changeTitle, setTitleChange] = useState(false);
   const [changePrice, setPriceChange] = useState(false);
 
+  const [color, setColor] = useState("");
+
   return (
     <Grid grow mb={10}>
       {changeTitle ? (
         <div style={{ width: 900 }}>
           <React.Suspense fallback={"...Loading Rte"}>
-              <Rte
-                value={titleValue}
-                onChange={setTitle}
-                // onBlur={() => setDescChange(false)}
-                id="rte"
-                controls={[
-                  ["bold", "italic", "underline"],
-                  ["h1", "h2", "h3"],
-                ]}
-              />
-              <Button
-                style={{ marginLeft: 'auto', display: 'block',}}
-                variant="subtle"
-                color="teal"
-                onClick={() => setTitleChange(false)}
-              >
-                Save
-              </Button>
+            <Tiptap titleValue={titleValue} setTitle={setTitle} setTitleChange={setTitleChange}/>
+            {/* <Rte
+              value={titleValue}
+              onChange={setTitle}
+              // onBlur={() => setDescChange(false)}
+              id="rte"
+              controls={[
+                ["bold", "italic", "underline"],
+                ["h1", "h2", "h3"],
+              ]}
+            />
+            <Button
+              style={{ marginLeft: "auto", display: "block" }}
+              variant="subtle"
+              color="teal"
+              onClick={() => setTitleChange(false)}
+            >
+              Save
+            </Button> */}
           </React.Suspense>
           {/* <TextInput
             label="New Header Title"
@@ -52,9 +71,30 @@ const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
           /> */}
         </div>
       ) : (
-        <Text onClick={() => setTitleChange(true)}>
-          <div dangerouslySetInnerHTML={{ __html: titleValue }} />
-        </Text>
+        <div style={{ display: 'flex', alignItems: 'center'}} onClick={() => setTitleChange(true)}>
+            <div style={{ color: color}} dangerouslySetInnerHTML={{ __html: titleValue }} className={styles.ProseMirror}/>
+          {/* <HoverCard
+            shadow="md"
+            withArrow
+            openDelay={200}
+            closeDelay={400}
+            position="right-start"
+          >
+            <HoverCard.Target>
+              <ActionIcon style={{ marginLeft: 20 }} variant="transparent">
+                <IconSettings size={16} />
+              </ActionIcon>
+            </HoverCard.Target>
+
+            <HoverCard.Dropdown>
+              <ColorPicker
+                style={{ margin: 7 }}
+                value={color}
+                onChange={setColor}
+              />
+            </HoverCard.Dropdown>
+          </HoverCard> */}
+        </div>
       )}
       {changePrice ? (
         <NumberInput

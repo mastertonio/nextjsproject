@@ -34,7 +34,6 @@ import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
 import Sidebar from "@app/core/components/sidebar/Sidebar";
 import Pophover from "@app/core/components/popover/Pophover";
-import { useAppDispatch, useAppSelector } from "@redux/store";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
 import TransferButton from "@app/company/components/buttons/Transfer";
@@ -55,7 +54,6 @@ const TemplatesDashboard: React.FC = () => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const users = useAppSelector((state) => state.user);
   const p = router.query;
 
   const getCompanyTemplates = async () => {

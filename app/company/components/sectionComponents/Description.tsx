@@ -65,14 +65,14 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
           /> */}
         </div>
       ) : (
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center'}}>
           <TypographyStylesProvider onClick={() => setDescChange(true)} mb={20}>
             <div
               style={{ width: 1000, color: color }}
               dangerouslySetInnerHTML={{ __html: descValue }}
             />
           </TypographyStylesProvider>
-          <HoverCard
+          {/* <HoverCard
             shadow="md"
             withArrow
             openDelay={200}
@@ -86,13 +86,13 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
             </HoverCard.Target>
 
             <HoverCard.Dropdown>
-              <ColorPicker
+              <ColorInput
                 style={{ margin: 7 }}
                 value={color}
                 onChange={setColor}
               />
             </HoverCard.Dropdown>
-          </HoverCard>
+          </HoverCard> */}
         </div>
       )}
     </Container>

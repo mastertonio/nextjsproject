@@ -189,73 +189,11 @@ const HeaderMegaMenu = () => {
             spacing={0}
             className={classes.hiddenMobile}
           >
-            <AddSectionModal style={classes.link} />
-            {/* <Button className={classes.link} variant="subtle">
+            {/* <AddSectionModal style={classes.link} /> */}
+            <Button className={classes.link} variant="subtle" onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "<p>Edit Section Description</p><p></p>"})}>
               Add Section
-            </Button> */}
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
-            >
-              {/* <HoverCard.Target>
-                <a href="#" className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Tools
-                    </Box>
-                    <IconChevronDown size={16} />
-                  </Center>
-                </a>
-              </HoverCard.Target> */}
-
-              <HoverCard.Dropdown sx={{ overflow: "hidden" }}>
-                {/* <Group position="apart" px="md">
-                  <Text weight={500}>Tools</Text>
-                  <Anchor href="#" size="xs">
-                    View all
-                  </Anchor>
-                </Group> */}
-
-                <Divider
-                  my="sm"
-                  mx="-md"
-                  color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
-                />
-
-                <SimpleGrid cols={2} spacing={0}>
-                  {links}
-                </SimpleGrid>
-
-                <div className={classes.dropdownFooter}>
-                  <Group position="apart">
-                    <div>
-                      <Text weight={500} size="sm">
-                        Get started
-                      </Text>
-                      <Text size="xs" color="dimmed">
-                        Start Editing Your Template
-                      </Text>
-                    </div>
-                    <Button
-                      onClick={() => {
-                        builderCtx.addSection({
-                          id: shortUUID.generate(),
-                          name: shortUUID.generate(),
-                          title: "Edit Section Title",
-                          description: "Edit Section Description",
-                        });
-                      }}
-                      variant="default"
-                    >
-                      Add Section
-                    </Button>
-                  </Group>
-                </div>
-              </HoverCard.Dropdown>
-            </HoverCard>
+            </Button>
+            
             <Link href="/templates/builder/preview" className={classes.link} passHref>
               <a target={"_blank"}>Preview</a>
             </Link>

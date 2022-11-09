@@ -17,7 +17,6 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": ["app/*"],
-      "@redux/*": ["app/redux/*"],
       "@dashboard/*": ["app/dashboard/*"],
       "@core/*": ["app/core/*"],
       "@styles/*": ["styles/*"],

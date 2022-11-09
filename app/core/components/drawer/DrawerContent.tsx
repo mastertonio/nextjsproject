@@ -1,6 +1,5 @@
 import { Button, Collapse, Image, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { current } from "@reduxjs/toolkit";
 import router from "next/router";
 import React, { useEffect, useState } from "react";
 import {

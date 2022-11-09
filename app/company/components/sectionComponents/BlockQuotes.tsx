@@ -1,7 +1,8 @@
-import { Blockquote, Button, TextInput } from "@mantine/core";
+import { ActionIcon, Blockquote, Button, ColorPicker, HoverCard, TextInput } from "@mantine/core";
 import React from "react";
 import { useState } from "react";
 import Rte from "@app/company/components/sectionComponents/rte";
+import { IconSettings } from "@tabler/icons";
 
 type IQuoteProps = {
   quote: string;
@@ -14,6 +15,8 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
 
   const [quoteValue, setQuote] = useState(quote || '');
   const [changeQuote, setQuoteChange] = useState(false);
+  
+  const [color, setColor] = useState("");
   return (
     <div>
       {changeQuote && changeAuthor ? (
@@ -62,6 +65,7 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
             </Button>
         </div>
       ) : (
+        <div style={{ display: 'flex', alignItems: 'start'}}>
         <Blockquote
           onClick={() => {
             setAuthorChange(true);
@@ -70,8 +74,30 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
           cite={authorValue ? ("- " + authorValue) : ""}
         >
           
-          {quoteValue ? <div dangerouslySetInnerHTML={{ __html: quoteValue }}></div> : "Insert Quotes Here"}
+          {quoteValue ? <div style={{ color: color }} dangerouslySetInnerHTML={{ __html: quoteValue }}></div> : "Insert Quotes Here"}
         </Blockquote>
+        {/* <HoverCard
+            shadow="md"
+            withArrow
+            openDelay={200}
+            closeDelay={400}
+            position='right-start'
+          >
+            <HoverCard.Target>
+              <ActionIcon style={{ marginTop: 20, marginLeft: 20}} variant="transparent">
+                <IconSettings size={16} />
+              </ActionIcon>
+            </HoverCard.Target>
+
+            <HoverCard.Dropdown>
+              <ColorPicker
+                style={{ margin: 7 }}
+                value={color}
+                onChange={setColor}
+              />
+            </HoverCard.Dropdown>
+          </HoverCard> */}
+        </div>
       )}
     </div>
   );

@@ -52,7 +52,6 @@ import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
 import Sidebar from "@app/core/components/sidebar/Sidebar";
 import Pophover from "@app/core/components/popover/Pophover";
-import { useAppDispatch, useAppSelector } from "@redux/store";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
@@ -149,7 +148,6 @@ const Dashboard: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [subComp, setSubComp] = useLocalStorage({ key: "sub-comp" });
-  const users = useAppSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
   const companyID = typeof router.query?.id === "string" ? router.query.id : "";
   const p = router.query;

@@ -5,6 +5,7 @@ import { IconGripVertical } from "@tabler/icons";
 import { useContext, useEffect } from "react";
 import BuilderContext from "@app/context/builder.context";
 import DefaultSection from "@app/company/components/DefaultSection";
+import SectionContentDnd from "@app/company/components/SectionContentDnd";
 
 const useStyles = createStyles((theme) => ({
   item: {
