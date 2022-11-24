@@ -80,6 +80,7 @@ export function DndListHandle({ data }: DndListHandleProps) {
           ref={provided.innerRef}
         >
           <DefaultSection
+            key={item.id}
             id={item.id}
             name={item.name}
             description={item.description}

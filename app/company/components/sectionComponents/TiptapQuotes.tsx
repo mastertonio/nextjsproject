@@ -170,16 +170,16 @@ const MenuBar = ({
   );
 };
 
-type ITiptapProps = {
-  titleValue: string;
-  setTitle: (st: string) => void;
-  setTitleChange: (st: boolean) => void;
+type ITiptapQuoteProps = {
+  descValue: string;
+  setDesc: (st: string) => void;
+  setDescChange: (st: boolean) => void;
 };
 
-const Tiptap: React.FC<ITiptapProps> = ({
-  setTitle,
-  titleValue,
-  setTitleChange,
+const TiptapQuotes: React.FC<ITiptapQuoteProps> = ({
+  descValue,
+  setDesc,
+  setDescChange,
 }) => {
   const editor = useEditor({
     extensions: [
@@ -196,11 +196,11 @@ const Tiptap: React.FC<ITiptapProps> = ({
       TableHeader,
       TableCell,
     ],
-    content: `${titleValue} <br>`,
+    content: `${descValue} <br>`,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       console.log(html);
-      setTitle(html);
+      setDesc(html);
     },
   });
 
@@ -217,7 +217,7 @@ const Tiptap: React.FC<ITiptapProps> = ({
         borderWidth: 1,
       }}
     >
-      <MenuBar editor={editor} setTitleChange={setTitleChange} />
+      <MenuBar editor={editor} setTitleChange={setDescChange} />
       <div>
         <EditorContent editor={editor} className={styles.ProseMirror} />
       </div>
@@ -225,4 +225,4 @@ const Tiptap: React.FC<ITiptapProps> = ({
   );
 };
 
-export default Tiptap;
+export default TiptapQuotes;

@@ -10,7 +10,6 @@ import {
   Checkbox,
   LoadingOverlay,
   Paper,
-  Image,
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -19,6 +18,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import UserContext from "@context/user.context";
+import Image from "next/image";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
@@ -52,14 +52,14 @@ const Home: React.FC = () => {
         password: values.password,
       };
       const res = await axios.post(
-        "http://localhost:5000/api/v1/user/login",
+        "http://localhost:8080/v1/auth/login",
         payload,
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       if (res) {
-        console.log(res)
+        console.log(res);
         userCtx.login(res.data);
         setValue(res.data.tokens.access.token);
         setRefresh(res.data.tokens.refresh.token);
@@ -69,10 +69,12 @@ const Home: React.FC = () => {
         setCompany(res.data.user.company_id);
         if (res.data.user.role == "company-manager") {
           router.push("/dashboard/manager");
+        } else {
+          router.push(`/dashboard`);
         }
       }
 
-      // router.push(`/dashboard`);
+      router.push(`/dashboard`);
     } catch (error) {
       return error;
     }
@@ -103,14 +105,15 @@ const Home: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <Image
+          {/* <div
             style={{
+              position: 'relative',
               marginTop: 5,
-              width: "50%",
+              width: '50%',
             }}
-            src="/logo.png"
-            alt="random"
-          />
+          >
+            <Image layout="fill" objectFit="contain" src="/logo.png" alt="random" />
+          </div> */}
         </div>
 
         <Title

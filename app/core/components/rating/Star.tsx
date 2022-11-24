@@ -51,7 +51,6 @@ const StarRating: React.FC<IStarProps> = ({
       fillColor="#000000"
       initialValue={importance}
       onClick={handleRate}
-      ratingValue={importance}
       size={size ? size : 16} /* Available Props */
     />
   );

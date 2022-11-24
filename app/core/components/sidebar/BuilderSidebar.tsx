@@ -1,4 +1,15 @@
-import { Navbar, Group, Code, ScrollArea, createStyles, Text, UnstyledButton, Box, ThemeIcon, Collapse } from '@mantine/core';
+import {
+  Navbar,
+  Group,
+  Code,
+  ScrollArea,
+  createStyles,
+  Text,
+  UnstyledButton,
+  Box,
+  ThemeIcon,
+  Collapse,
+} from "@mantine/core";
 import {
   IconNotes,
   IconCalendarStats,
@@ -10,30 +21,31 @@ import {
   TablerIcon,
   IconChevronRight,
   IconChevronLeft,
-} from '@tabler/icons';
-import { useState } from 'react';
+} from "@tabler/icons";
+import { useState } from "react";
 // import { UserButton } from '../UserButton/UserButton';
 // import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup';
 // import { Logo } from './Logo';
 
 const mockdata = [
-  { label: 'Dashboard', icon: IconGauge },
+  { label: "Dashboard", icon: IconGauge },
   {
-    label: 'My ROIs',
+    label: "My ROIs",
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: 'ROI 1', link: '/' },
-      { label: 'ROI 2', link: '/' },
-      { label: 'ROI 3', link: '/' },
-      { label: 'ROI 4', link: '/' },
+      { label: "ROI 1", link: "/" },
+      { label: "ROI 2", link: "/" },
+      { label: "ROI 3", link: "/" },
+      { label: "ROI 4", link: "/" },
     ],
-  }
+  },
 ];
 
 const useStyles = createStyles((theme) => ({
   navbar: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
     paddingBottom: 0,
   },
 
@@ -42,9 +54,9 @@ const useStyles = createStyles((theme) => ({
     paddingTop: 0,
     marginLeft: -theme.spacing.md,
     marginRight: -theme.spacing.md,
-    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
     borderBottom: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
   },
 
@@ -62,103 +74,125 @@ const useStyles = createStyles((theme) => ({
     marginLeft: -theme.spacing.md,
     marginRight: -theme.spacing.md,
     borderTop: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
   },
 
   control: {
     fontWeight: 500,
-    display: 'block',
-    width: '100%',
+    display: "block",
+    width: "100%",
     padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+    color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
     fontSize: theme.fontSizes.sm,
 
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    "&:hover": {
+      backgroundColor: "teal",
+      color: theme.colorScheme === "dark" ? theme.white : theme.black,
     },
   },
 
   link: {
     fontWeight: 500,
-    display: 'block',
-    textDecoration: 'none',
+    display: "block",
+    textDecoration: "none",
     padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
     paddingLeft: 31,
     marginLeft: 30,
     fontSize: theme.fontSizes.sm,
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
+    color: "gray",
     borderLeft: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
 
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+    "&:hover": {
+      backgroundColor: "teal",
+      color: "white",
+    },
+  },
+
+  hov: {
+    color: "gray",
+
+    "&:hover": {
+      backgroundColor: "teal",
+      color: theme.colorScheme === "dark" ? theme.white : theme.black,
     },
   },
 
   chevron: {
-    transition: 'transform 200ms ease',
+    transition: "transform 200ms ease",
+    color: 'white'
   },
 }));
 
 interface LinksGroupProps {
-    icon: TablerIcon;
-    label: string;
-    initiallyOpened?: boolean;
-    links?: { label: string; link: string }[];
-  }
+  icon: TablerIcon;
+  label: string;
+  initiallyOpened?: boolean;
+  links?: { label: string; link: string }[];
+}
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
-    const { classes, theme } = useStyles();
-    const hasLinks = Array.isArray(links);
-    const [opened, setOpened] = useState(initiallyOpened || false);
-    const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft;
-    const items = (hasLinks ? links : []).map((link) => (
-      <Text<'a'>
-        component="a"
-        className={classes.link}
-        href={link.link}
-        key={link.label}
-        onClick={(event) => event.preventDefault()}
+export function LinksGroup({
+  icon: Icon,
+  label,
+  initiallyOpened,
+  links,
+}: LinksGroupProps) {
+  const { classes, theme } = useStyles();
+  const hasLinks = Array.isArray(links);
+  const [opened, setOpened] = useState(initiallyOpened || false);
+  const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
+  const items = (hasLinks ? links : []).map((link) => (
+    <Text<"a">
+      component="a"
+      className={classes.link}
+      href={link.link}
+      key={link.label}
+      onClick={(event) => event.preventDefault()}
+    >
+      {link.label}
+    </Text>
+  ));
+
+  return (
+    <>
+      <UnstyledButton
+        onClick={() => setOpened((o) => !o)}
+        className={classes.control}
       >
-        {link.label}
-      </Text>
-    ));
-  
-    return (
-      <>
-        <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
-          <Group position="apart" spacing={0}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ThemeIcon variant="light" size={30}>
-                <Icon size={18} />
-              </ThemeIcon>
-              <Box ml="md">{label}</Box>
+        <Group position="apart" spacing={0}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Icon size={18} color={'white'}/>
+            <Box ml="md">
+              <Text color={"white"}>{label}</Text>
             </Box>
-            {hasLinks && (
-              <ChevronIcon
-                className={classes.chevron}
-                size={14}
-                stroke={1.5}
-                style={{
-                  transform: opened ? `rotate(${theme.dir === 'rtl' ? -90 : 90}deg)` : 'none',
-                }}
-              />
-            )}
-          </Group>
-        </UnstyledButton>
-        {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
-      </>
-    );
-  }
+          </Box>
+          {hasLinks && (
+            <ChevronIcon
+              className={classes.chevron}
+              size={14}
+              stroke={1.5}
+              style={{
+                transform: opened
+                  ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
+                  : "none",
+              }}
+            />
+          )}
+        </Group>
+      </UnstyledButton>
+      {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+    </>
+  );
+}
 
 const NavbarNested = () => {
   const { classes } = useStyles();
 
-  const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+  const links = mockdata.map((item) => (
+    <LinksGroup {...item} key={item.label} />
+  ));
 
   return (
     <Navbar width={{ sm: 300 }} p="md" className={classes.navbar}>
@@ -174,6 +208,6 @@ const NavbarNested = () => {
       </Navbar.Section>
     </Navbar>
   );
-}
+};
 
-export default NavbarNested
+export default NavbarNested;

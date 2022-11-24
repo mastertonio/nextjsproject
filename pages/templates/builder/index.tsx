@@ -40,7 +40,7 @@ const TemplateBuilder: React.FC = () => {
     >
       {builderCtx.totalSections !== 0 ? (
       <Grid>
-        <Stack style={{ width: 1830 }}>
+        <Stack style={{ width: '100%'}}>
           <DndListHandle data={builderCtx.sections} />
         </Stack>
       </Grid>) : (<div> No Sections yet </div>) }

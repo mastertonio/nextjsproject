@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import Rte from "@app/company/components/sectionComponents/rte";
 import sanitizeHtml from "sanitize-html";
 import { IconSettings } from "@tabler/icons";
+import TiptapDescription from "./TiptapDescription";
 
 type iSectionDescriptionProps = {
   name: string;
@@ -36,7 +37,8 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
     <Container ml={40} style={{ margin: 40, padding: 0 }}>
       {changeDesc ? (
         <div style={{ width: 1000 }}>
-          <React.Suspense fallback={"...Loading Rte"}>
+          <TiptapDescription descValue={descValue} setDesc={setDesc} setDescChange={setDescChange}/>
+          {/* <React.Suspense fallback={"...Loading Rte"}>
             <Rte
               value={descValue}
               onChange={setDesc}
@@ -51,7 +53,7 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
             >
               Save
             </Button>
-          </React.Suspense>
+          </React.Suspense> */}
           {/* <Textarea
             label="Enter New Description"
             value={descValue}

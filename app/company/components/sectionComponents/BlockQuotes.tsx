@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import Rte from "@app/company/components/sectionComponents/rte";
 import { IconSettings } from "@tabler/icons";
+import TiptapQuotes from "./TiptapQuotes";
 
 type IQuoteProps = {
   quote: string;
@@ -21,7 +22,8 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
     <div>
       {changeQuote && changeAuthor ? (
         <div>
-          <React.Suspense fallback={"...Loading Rte"}>
+          <TiptapQuotes descValue={quoteValue} setDesc={setQuote} setDescChange={setQuoteChange} />
+          {/* <React.Suspense fallback={"...Loading Rte"}>
             <Rte
               value={quoteValue}
               onChange={setQuote}
@@ -32,7 +34,7 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
                 ["h1", "h2", "h3"],
               ]}
             />
-          </React.Suspense>
+          </React.Suspense> */}
           {/* <TextInput
             label="Enter New Quote"
             value={quoteValue}

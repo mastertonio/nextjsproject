@@ -7,6 +7,7 @@ import { useState } from "react";
 import DashboardContextProvider from "app/context/dashboard.context";
 import { UserContextProvider } from "app/context/user.context";
 import { BuilderContextProvider } from "@app/context/builder.context";
+import Head from "next/head";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,7 +19,25 @@ const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-      <MantineProvider>
+    <>
+      <Head>
+        <title>The Roi Shop</title>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width"
+        />
+      </Head>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          /** Put your mantine theme override here */
+          colorScheme: "light",
+          fontFamily: "Open Sans, sans-serif",
+          fontFamilyMonospace: "Monaco, Courier, monospace",
+          headings: { fontFamily: "Greycliff CF, sans-serif" },
+        }}
+      >
         <NotificationsProvider position="bottom-right" zIndex={2077}>
           <UserContextProvider>
             <DashboardContextProvider>
@@ -33,6 +52,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </UserContextProvider>
         </NotificationsProvider>
       </MantineProvider>
+    </>
   );
 }
 

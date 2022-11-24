@@ -1,0 +1,112 @@
+$ next build && next export
+info  - Checking validity of types...
+info  - Creating an optimized production build...
+info  - Compiled successfully
+info  - Collecting page data...
+info  - Generating static pages (0/17)
+info  - Generating static pages (4/17)
+info  - Generating static pages (8/17)
+info  - Generating static pages (12/17)
+[
+  {
+    id: 'task-1',
+    content: {
+      '$$typeof': Symbol(react.element),
+      type: [Object],
+      key: null,
+      ref: null,
+      props: [Object],
+      _owner: null
+    }
+  },
+  {
+    id: 'task-2',
+    content: {
+      '$$typeof': Symbol(react.element),
+      type: [Object],
+      key: null,
+      ref: null,
+      props: [Object],
+      _owner: null
+    }
+  },
+  {
+    id: 'task-3',
+    content: {
+      '$$typeof': Symbol(react.element),
+      type: 'div',
+      key: null,
+      ref: null,
+      props: [Object],
+      _owner: null
+    }
+  },
+  {
+    id: 'task-4',
+    content: {
+      '$$typeof': Symbol(react.element),
+      type: [Object],
+      key: null,
+      ref: null,
+      props: [Object],
+      _owner: null
+    }
+  },
+  {
+    id: 'task-5',
+    content: {
+      '$$typeof': Symbol(react.element),
+      type: 'div',
+      key: null,
+      ref: null,
+      props: [Object],
+      _owner: null
+    }
+  }
+] tasks
+[] tasks
+info  - Generating static pages (17/17)
+info  - Finalizing page optimization...
+
+Page                                       Size     First Load JS
+┌ ○ /                                      15.8 kB         151 kB
+├   /_app                                  0 B             113 kB
+├ ○ /404                                   5.13 kB         118 kB
+├ ○ /company                               29.3 kB         227 kB
+├ ○ /company/[compId] (369 ms)             13 kB           190 kB
+├ ○ /company/templates/[id]                3.05 kB         218 kB
+├ ○ /company/users/[id]                    3.5 kB          226 kB
+├ ○ /dashboard                             15 kB           381 kB
+├ ○ /dashboard/manager                     6.33 kB         377 kB
+├ ○ /enterprise                            4.91 kB         131 kB
+├ ○ /forbidden                             5.13 kB         118 kB
+├ ○ /forgot_password                       2.93 kB         139 kB
+├ ○ /templates (411 ms)                    2.96 kB         218 kB
+├ ○ /templates/builder (524 ms)            135 kB          360 kB
+├   └ css/98d16c559d2f3778.css             774 B
+├ ○ /templates/builder/preview (514 ms)    5.42 kB         221 kB
+├ ○ /users                                 2.86 kB         225 kB
+└ ○ /users/profile                         14.1 kB         196 kB
++ First Load JS shared by all              113 kB
+  ├ chunks/framework-89f2f7d214569455.js   45 kB
+  ├ chunks/main-84e1dc9cd00d8520.js        28.6 kB
+  ├ chunks/pages/_app-f2207b735fac193c.js  37.1 kB
+  ├ chunks/webpack-65174b09afda98e6.js     1.8 kB
+  └ css/4ffcba1b707933b1.css               205 B
+
+○  (Static)  automatically rendered as static HTML (uses no initial props)
+
+info  - using build directory: C:\Users\ASPIRE\Documents\narrasoft\ROI-Frontend\.next
+info  - Copying "static build" directory
+info  - No "exportPathMap" found in "C:\Users\ASPIRE\Documents\narrasoft\ROI-Frontend\next.config.js". Generating map from "./pages"
+Error: Image Optimization using Next.js' default loader is not compatible with `next export`.
+  Possible solutions:
+    - Use `next start` to run a server, which includes the Image Optimization API.
+    - Use any provider which supports Image Optimization (like Vercel).
+    - Configure a third-party loader in `next.config.js`.
+    - Use the `loader` prop for `next/image`.
+  Read more: https://nextjs.org/docs/messages/export-image-api
+    at C:\Users\ASPIRE\Documents\narrasoft\ROI-Frontend\node_modules\next\dist\export\index.js:157:23
+    at async Span.traceAsyncFn (C:\Users\ASPIRE\Documents\narrasoft\ROI-Frontend\node_modules\next\dist\trace\trace.js:79:20)
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
