@@ -1,5 +1,5 @@
 import { Text, Image, Container } from "@mantine/core";
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player/lazy'
 
 type IMediaProps = {
   media?: string
@@ -7,14 +7,14 @@ type IMediaProps = {
 
 const VideoLinkMedia: React.FC<IMediaProps> = ({ media }) => {
   return (
-    <div style={{ width: 530, marginLeft: "auto" }}>
-      <div style={{ height: 420}}>
+    <div>
+      <div style={{ height: 280, margin: 30}}>
         <ReactPlayer
           controls
           playing
           light={true}
           className="object-cover h-fit w-fit absolute top-0 left-0"
-          url={media || "https://share.vidyard.com/watch/feATQcRhijLdXwZgTh5nDG?"}
+          url={media}
           width="100%"
           height="100%"
         />
