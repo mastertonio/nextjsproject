@@ -10,7 +10,7 @@ type iSliderCardProps = {
 
 const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress}) => {
   return (
-    <Card style={{ height: 200, width: 500, margin: 10, padding: 30, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} shadow="sm" p="lg" radius="md" withBorder>
+    <Card style={{height: 200, padding: 30,  }} shadow="sm" p="lg" radius="md" withBorder>
       <Card.Section>
         <Text style={{ fontSize: 25 }} color="blue" weight={700}>{label}</Text>
       </Card.Section>
