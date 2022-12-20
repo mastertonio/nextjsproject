@@ -94,20 +94,7 @@ const ImageDropzone = () => {
             >
               <Image radius="md" src={preview} alt="Random unsplash image" />
             </div>
-          ) : (
-            <div>
-              <Text align="center" weight={700} size="lg" mt="xl">
-                <Dropzone.Accept>Drop files here</Dropzone.Accept>
-                <Dropzone.Reject>
-                  Jpeg and PNG file less than 30mb
-                </Dropzone.Reject>
-                <Dropzone.Idle>Upload Image</Dropzone.Idle>
-              </Text>
-              <Text align="center" size="sm" mt="xs" color="dimmed">
-                Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
-                <i>.jpeg and .png</i> files that are less than 30mb in size.
-              </Text>
-            </div>
+          ) : (""
           )}
         </div>
       </Dropzone>
