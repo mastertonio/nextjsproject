@@ -121,6 +121,13 @@ export const finalData = {
                   author: "David Verhaag, Vice President Customer Success",
                 },
               },
+              {
+                type: "quote",
+                quote: {
+                  text: "Hey Michael, I created an ROI for my first client yesterday and we closed today. The ROI Shop made getting approval from the CFO a piece of cake and resulted in my first sale!",
+                  author: "Natalie Grant - Sales Rep",
+                },
+              },
             ],
           },
           content: {
@@ -297,9 +304,88 @@ export const finalData = {
       },
 
       GrayContent: {
-        type: "",
+        type: "variables",
         classes: "row border-bottom gray-bg dashboard-header",
-        elements: [],
+        elements: [
+          {
+            id: "01",
+            type: "text",
+            text: "<h2>Please tell us a little about your sales organization</h2>",
+            elements: [
+              {
+                id: "02",
+                type: "input",
+                label: "Number of salespeople",
+                format: "0,0",
+              },
+              {
+                id: "03",
+                type: "input",
+                label: "Average deal value",
+                format: "$0,0",
+              },
+              {
+                id: "05",
+                type: "output",
+                label:
+                  "What is the expected combined annual sales for those reps",
+                formula: "TBD",
+                format: "$0,0",
+              },
+              {
+                id: "06",
+                type: "input",
+                label: "Deals needed to hit your sales goal",
+                formula: "TBD",
+                format: "0,0",
+              },
+              {
+                id: "07",
+                type: "textarea",
+                label: "What are the main reasons you lose to the outcome:",
+              },
+            ],
+          },
+          {
+            id: "01",
+            type: "text",
+            text: "<h2>Please tell us a little about your sales organization</h2>",
+            elements: [
+              {
+                id: "02",
+                type: "input",
+                label: "Number of salespeople",
+                format: "0,0",
+              },
+              {
+                id: "03",
+                type: "input",
+                label: "Average deal value",
+                format: "$0,0",
+              },
+              {
+                id: "05",
+                type: "output",
+                label:
+                  "What is the expected combined annual sales for those reps",
+                formula: "TBD",
+                format: "$0,0",
+              },
+              {
+                id: "06",
+                type: "input",
+                label: "Deals needed to hit your sales goal",
+                formula: "TBD",
+                format: "0,0",
+              },
+              {
+                id: "07",
+                type: "textarea",
+                label: "What are the main reasons you lose to the outcome:",
+              },
+            ],
+          },
+        ],
       },
     },
     {
