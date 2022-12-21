@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3020",
-    "build": "next build && next export",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "trb": "yarn turbo dev"
@@ -42,6 +42,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.208",
     "axios": "^0.27.2",
     "chart.js": "^3.7.1",
+    "cookie": "^0.5.0",
     "dayjs": "^1.11.7",
     "embla-carousel-autoplay": "^7.0.5",
     "embla-carousel-react": "^7.0.5",
@@ -64,6 +65,7 @@
     "zustand": "^4.1.4"
   },
   "devDependencies": {
+    "@types/cookie": "^0.5.1",
     "@types/node": "17.0.32",
     "@types/react": "18.0.9",
     "@types/react-beautiful-dnd": "^13.1.2",
