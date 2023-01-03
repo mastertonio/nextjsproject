@@ -1,7 +1,7 @@
 import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
 import NavbarSimple from "@app/core/components/sidebar/EnterpriseSidebar";
 import Projection from "@app/enterprise/Projection";
-import { AppShell, Navbar, Header, Grid, SimpleGrid } from "@mantine/core";
+import { AppShell, Navbar, Header, Grid, SimpleGrid, Flex } from "@mantine/core";
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
 import InputVariable, { iElemsProp } from "@app/core/components/input";
@@ -27,46 +27,56 @@ const Enterprise = () => {
       <>
         {finalData
           ? finalData.sections.map((section) => (
-              <div style={{ width: "100%", color: "#676a6c" }} key={section.id}>
-                <Projection
-                  title={section.headers.title.mainTitle.text}
-                  description={section.headers.title.description}
-                  subTitle={section.headers.title.subTitle.text}
-                  content={section.headers.title.content}
-                  length={section.headers.title.content.elements.length}
-                  quotes={section.headers.title.quotes}
-                />
+            <div style={{ width: "100%", color: "#676a6c" }} key={section.order}>
+              <Projection
+                title={section.headers.title.mainTitle.text}
+                description={section.headers.title.description}
+                subTitle={section.headers.title.subTitle.text}
+                content={section.headers.title.content}
+                length={section.headers.title.content.elements.length}
+                quotes={section.headers.title.quotes}
+                key={section.id}
+              />
 
-                <div>
-                  {/* filter Gray Contents here */}
-                  {section.GrayContent.type == "sliders" ? (
-                    <SimpleGrid
-                      cols={3}
-                      p={10}
-                      pr={20}
-                      style={{ backgroundColor: "#e9ecef" }}
-                    >
-                      {contentData.sections.sliders.elements.map((element) => (
-                        <SliderCard
-                          key={element.id}
-                          label={element.title}
-                          money={element.money}
-                          progress={element.value}
-                        />
-                      ))}
-                    </SimpleGrid>
-                  ) : section.GrayContent.type == "variables" ? (
-                    <div style={{ backgroundColor: "#e9ecef" }}>
-                        <InputVariable id={section.id} type={section.GrayContent.type} />
-                    </div>
-                  ) : (
-                    <div style={{ backgroundColor: "#e9ecef" }}>
-                      <br></br>
-                    </div>
-                  )}
-                </div>
+              <div>
+                {/* filter Gray Contents here */}
+                {section.GrayContent.type == "sliders" ? (
+                  <SimpleGrid
+                    cols={3}
+                    p={10}
+                    pr={20}
+                    style={{ backgroundColor: "#e9ecef" }}
+                  >
+                    {contentData.sections.sliders.elements.map((element) => (
+                      <SliderCard
+                        key={element.id}
+                        label={element.title}
+                        money={element.money}
+                        progress={element.value}
+                      />
+                    ))}
+                  </SimpleGrid>
+                ) : section.GrayContent.type == "variables" ? (
+                  <div style={{ backgroundColor: "#e9ecef" }}>
+
+                    {/* <Flex
+                      gap="xs"
+                      direction="row"
+                      wrap="wrap"
+                      w={"100%"}
+                      style={{ marginTop: 10, marginBottom: 10, padding: 10 }}
+                    > */}
+                      <InputVariable elements={section.GrayContent.elements as iElemsProp[]} type={section.GrayContent.type}/>
+                    {/* </Flex> */}
+                  </div>
+                ) : (
+                  <div style={{ backgroundColor: "#e9ecef" }}>
+                    <br></br>
+                  </div>
+                )}
               </div>
-            ))
+            </div>
+          ))
           : ""}
         {/* <div style={{ width: "100%", color: "#676a6c" }}>
           <Projection
