@@ -2,7 +2,7 @@ import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 import { StringDecoder } from 'string_decoder';
 import RoiSlider from '../slider';
 
-type iSliderCardProps = {
+export type iSliderCardProps = {
     label: string
     money: number
     progress: number

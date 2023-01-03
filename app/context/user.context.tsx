@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 
-interface UserContextTypes {
+export interface UserContextTypes {
   verification_code: string | null;
   phone: string;
   manager: string;
