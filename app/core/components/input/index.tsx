@@ -13,6 +13,8 @@ import {
   Stack,
   Flex,
   Tooltip,
+  Textarea,
+  Divider,
 } from "@mantine/core";
 import {
   IconQuestionMark,
@@ -20,12 +22,17 @@ import {
   IconCalculator,
   IconAt,
 } from "@tabler/icons";
+import { ReactNode } from "react";
+import { iSliderCardProps } from "../card";
 
-type iVariableProp = {
+export type iVariableProp = {
   id: string;
   type: string;
   label: string;
   format: string;
+  icon: ReactNode | null,
+  rightSection: ReactNode | null,
+  disabled: boolean
 };
 
 export type iElemsProp = {
@@ -35,6 +42,13 @@ export type iElemsProp = {
   elements: iVariableProp[];
 };
 
+
+type iGrayProps = {
+  type: string,
+  classes?: string,
+  elements: iElemsProp[]
+}
+
 type iVariablesProps = {
   id: string;
   label?: string;
@@ -43,109 +57,71 @@ type iVariablesProps = {
   elems?: iElemsProp[];
 };
 
-const InputVariable: React.FC<iVariablesProps> = ({
-  id,
-  label,
-  text,
+type Itest = {
+  gray: iElemsProp
+}
+
+const InputVariable: React.FC<iGrayProps> = ({
   type,
-  elems,
+  classes,
+  elements,
 }) => {
   return (
-    <Flex
-      gap="xs"
-      direction="row"
-      wrap="wrap"
-      w={"100%"}
-      style={{ marginTop: 10, marginBottom: 10, padding: 10 }}
+    <Grid
+      // gap="xs"
+      // direction="row"
+      // wrap="wrap"
+      style={{ marginTop: 10, marginBottom: 10, padding: 10, width: "100%" }}
     >
-      <div style={{ backgroundColor: "white", padding: 10, width: "69%" }}>
-        <Text color="dark" fz="xl" fw={700}>
-          Please tell us a little about your sales organization
-        </Text>
-        <Stack>
-          <Grid
-            style={{
-              marginLeft: 30,
-              marginRight: 30,
-              marginTop: 30,
-              marginBottom: 15,
-            }}
-          >
-            <Text>Number of salespeople: </Text>
-            <TextInput
-              required
-              style={{ width: 450, marginLeft: "auto" }}
-              // defaultValue={myCompany.name}
-            />
-          </Grid>
-          <Grid
-            style={{
-              marginLeft: 30,
-              marginRight: 30,
-              marginBottom: 15,
-            }}
-          >
-            <Text>Average deal value: </Text>
-            <TextInput
-              required
-              style={{ width: 450, marginLeft: "auto" }}
-              icon={<IconAt size={14}/>}
-            />
-          </Grid>
-          <Grid
-            style={{
-              marginLeft: 30,
-              marginRight: 30,
-              marginBottom: 15,
-            }}
-          >
-            <Text>
-              What is the expected combined annual sales for those reps:{" "}
+      <Stack pb={20} w={"76%"} style={{ backgroundColor: "white", padding: 10, marginLeft: 10, borderRadius: 5 }}>
+        {type == "variables" ? elements.map((elem) => (
+          <div key={elem.id} >
+            <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}>
             </Text>
-            <TextInput
-              required
-              style={{ width: 450, marginLeft: "auto" }}
-              rightSection={
-                <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
-                  <Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>
-                </Tooltip>
-              }
-            />
-          </Grid>
-          <Grid
-            style={{
-              marginLeft: 30,
-              marginRight: 30,
-              marginBottom: 15,
-            }}
-          >
-            <Text>Deals needed to hit your sales goal: </Text>
-            <TextInput
-              required
-              style={{ width: 450, marginLeft: "auto" }}
-              // defaultValue={myCompany.name}
-            />
-          </Grid>
-          <Grid
-            style={{
-              marginLeft: 30,
-              marginRight: 30,
-              marginBottom: 15,
-            }}
-          >
-            <Text>What are the main reasons you lose to the outcome: </Text>
-            <TextInput
-              required
-              style={{ width: 450, marginLeft: "auto" }}
-              // defaultValue={myCompany.name}
-            />
-          </Grid>
-        </Stack>
-      </div>
-      <div style={{ width: "29%", marginLeft: "auto" }}>
+            <Divider my="sm" color="gray" size="sm" variant="dashed" />
+            <Stack>
+              {elem.elements.length > 0 ? elem.elements.map((state) => (
+                <Grid
+                  key={state.id}
+                  style={{
+                    marginLeft: 30,
+                    marginRight: 30,
+                    marginTop: 7,
+                    marginBottom: 3,
+                  }}
+                >
+                  <Text>{state.label}: </Text>
+                  {state.type !== "textarea" ? (
+                    <TextInput
+                      required
+                      style={{ width: 400, marginLeft: "auto" }}
+                      icon={state.icon ? state.icon : ""}
+                      rightSection={state.rightSection ?
+                        <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
+                          {state.rightSection}
+                        </Tooltip> : ""
+                      }
+                      disabled={state.disabled ? true : false}
+                      placeholder="$0"
+                    // defaultValue={myCompany.name}
+                    />) : (
+                    <Textarea
+                      style={{ width: 400, marginLeft: "auto" }}
+                      withAsterisk
+                    />)
+                  }
+
+                </Grid>)) : ""}
+            </Stack>
+          </div>)) : ""}
+      </Stack>
+
+      <div style={{ width: '22%', marginLeft: "auto" }}>
         <FloatingCard />
       </div>
-    </Flex>
+
+    </Grid>
+
   );
 };
 
