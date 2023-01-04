@@ -326,8 +326,8 @@ export const finalData = {
                 type: "input",
                 label: "Number of salespeople",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -336,8 +336,8 @@ export const finalData = {
                 type: "input",
                 label: "Average deal value",
                 format: "$0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -348,8 +348,8 @@ export const finalData = {
                   "What is the expected combined annual sales for those reps",
                 formula: "A1 x A2", //
                 format: "$0,0",
-                icon: null, 
-                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>), 
+                icon: null,
+                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
                 disabled: true
               },
               {
@@ -358,20 +358,20 @@ export const finalData = {
                 label: "Deals needed to hit your sales goal",
                 formula: "TBD",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
                 id: "07",
                 type: "textarea",
                 label: "What are the main reasons you lose to the outcome:",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
             ],
-          },{
+          }, {
             id: "011",
             type: "text",
             text: "<h4>Increase Sales With A Better Value Articulation</h4>",
@@ -381,8 +381,8 @@ export const finalData = {
                 type: "input",
                 label: "Out of the 0 deals lost, how many could you have won with better value messaging?",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -392,16 +392,16 @@ export const finalData = {
                   "ncrease Sales Revenue by Reducing Loss Rate by Only 0%",
                 formula: "TBD",
                 format: "$0,0",
-                icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>), 
-                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /></Button>), 
+                icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>),
+                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /></Button>),
                 disabled: true
               },
               {
                 id: "07",
                 type: "textarea",
                 label: "What are the main reasons you lose to the outcome:",
-                icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>), 
-                rightSection: null, 
+                icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>),
+                rightSection: null,
                 disabled: false
               },
             ],
@@ -543,8 +543,8 @@ export const finalData = {
                 type: "input",
                 label: "Average deal value",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -552,8 +552,8 @@ export const finalData = {
                 type: "input",
                 label: "Average discount applied per deal (%)",
                 format: "$0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -563,8 +563,8 @@ export const finalData = {
                   "Estimated list price before discounting",
                 formula: "TBD",
                 format: "$0,0",
-                icon: null, 
-                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>), 
+                icon: null,
+                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
                 disabled: true
               },
               {
@@ -573,20 +573,20 @@ export const finalData = {
                 label: "Lost revenue per deal",
                 formula: "TBD",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
                 id: "07",
                 type: "textarea",
                 label: 'Number of "deals" needed to hit your sales goal',
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
             ],
-          },{
+          }, {
             id: "05",
             type: "text",
             text: "<h4>Discount Reduction - Future State</h4>",
@@ -596,8 +596,8 @@ export const finalData = {
                 type: "input",
                 label: "Expected discount applied with a better value messaging (should be less then 0.0%) #",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -605,8 +605,8 @@ export const finalData = {
                 type: "input",
                 label: 'Number of "deals" needed to hit your sales goal',
                 format: "$0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
@@ -616,8 +616,8 @@ export const finalData = {
                   "Increase In Sales Revenue By Reducing Discounting by 0.0%",
                 formula: "TBD",
                 format: "$0,0",
-                icon: null, 
-                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>), 
+                icon: null,
+                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
                 disabled: true
               },
               {
@@ -626,16 +626,16 @@ export const finalData = {
                 label: "Deals needed to hit your sales goal",
                 formula: "TBD",
                 format: "0,0",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
               {
                 id: "07",
                 type: "textarea",
                 label: "What are the main reasons you lose to the outcome:",
-                icon: null, 
-                rightSection: null, 
+                icon: null,
+                rightSection: null,
                 disabled: false
               },
             ],
