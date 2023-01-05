@@ -66,7 +66,7 @@ const Enterprise = () => {
                       w={"100%"}
                       style={{ marginTop: 10, marginBottom: 10, padding: 10 }}
                     > */}
-                      <InputVariable elements={section.GrayContent.elements as iElemsProp[]} type={section.GrayContent.type}/>
+                    <InputVariable elements={section.GrayContent.elements as iElemsProp[]} type={section.GrayContent.type} />
                     {/* </Flex> */}
                   </div>
                 ) : (

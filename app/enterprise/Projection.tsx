@@ -2,7 +2,7 @@ import VideoLinkMedia from "@app/company/components/sectionComponents/VideoLinkM
 import { Blockquote, Grid, SimpleGrid, Stack } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { Suspense, useEffect } from "react";
-import QuotesCarousel from "./QuotesCarousel";
+import QuotesCarousel from "./NewQuotesCarousel";
 
 const VideoMedia = dynamic(
   () => import("@app/company/components/sectionComponents/VideoLinkMedia"),
@@ -67,27 +67,27 @@ const Projection = ({
   const columns =
     content.elements.length > 0
       ? content.elements
-          .filter((elem) => elem.type !== "revolver")
-          .slice(0, 3)
-          .map((element, idx) =>
-            element.type == "description" ? (
-              <Grid.Col
-                span={element.span}
-                key={idx}
-                style={{ marginLeft: 30, marginRight: 30, marginTop: 30 }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: element.text }}></div>
+        .filter((elem) => elem.type !== "revolver")
+        .slice(0, 3)
+        .map((element, idx) =>
+          element.type == "description" ? (
+            <Grid.Col
+              span={element.span}
+              key={idx}
+              style={{ marginLeft: 30, marginRight: 30, marginTop: 30 }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: element.text }}></div>
+            </Grid.Col>
+          ) : element.type == "media" ? (
+            <Suspense fallback={`Loading...`}>
+              <Grid.Col key={idx} w={"40%"} span={element.span}>
+                <VideoMedia media={element.link ? element.link : null} />
               </Grid.Col>
-            ) : element.type == "media" ? (
-              <Suspense fallback={`Loading...`}>
-                <Grid.Col key={idx} w={"40%"} span={element.span}>
-                  <VideoMedia media={element.link ? element.link : null} />
-                </Grid.Col>
-              </Suspense>
-            ) : (
-              ""
-            )
+            </Suspense>
+          ) : (
+            ""
           )
+        )
       : null;
 
   return (
@@ -98,7 +98,7 @@ const Projection = ({
         <div dangerouslySetInnerHTML={{ __html: description }} />
       </div>
       <Grid>
-      {quotes.position == "top" ? (
+        {quotes.position == "top" ? (
           <QuotesCarousel
             type={quotes.type}
             position={quotes.position}
