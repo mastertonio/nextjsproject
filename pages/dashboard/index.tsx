@@ -15,6 +15,7 @@ import {
   InferGetServerSidePropsType,
   GetStaticPaths,
   GetStaticPathsContext,
+  NextApiRequest,
 } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
@@ -29,58 +30,64 @@ import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import UserContext, { State } from "@context/user.context";
+import { useUserStore } from "@app/store/userState";
+import * as cookie from 'cookie'
 //
-const Dashboard: React.FC = () =>
-  // message
-  {
-    const router = useRouter();
-    const theme = useMantineTheme();
-    const { classes } = useStyles();
-    const [value] = useLocalStorage({ key: "auth-token" });
-    const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-    const [userInfo, setUserInfo] = useLocalStorage<State>({ key: "ckear" });
-    const p = router.query;
-    const userCtx = useContext(UserContext);
+const Dashboard: React.FC = (user) =>
+// message
+{
+  const router = useRouter();
+  const theme = useMantineTheme();
+  const { classes } = useStyles();
+  const [value] = useLocalStorage({ key: "auth-token" });
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [userInfo, setUserInfo] = useLocalStorage<State>({ key: "ckear" });
+  const p = router.query;
+  const userCtx = useContext(UserContext);
+  const tokenZ = useUserStore(state => state.token)
 
-    const getDashboardData = async () => {
-      try {
-        const res = await axios.get(`http://54.159.8.194/v1/dashboard`, {
-          withCredentials: true,
-        });
-        return res.data;
-      } catch (error) {
-        return error;
-      }
-    };
+  const getDashboardData = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/v1/dashboard`, {
+        withCredentials: true,
+      });
+      console.log(res)
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  };
 
-    const { isLoading, status, data, isFetching, refetch } = useQuery(
-      "dashboardData",
-      getDashboardData
-    );
+  const { isLoading, status, data, isFetching, refetch } = useQuery(
+    "dashboardData",
+    getDashboardData
+  );
 
-    // if (isLoading)
-    //   return ;
+  console.log(user, "user")
 
-    return isLoading ? (
-      <MainLoader />
-    ) : (
-      <AppShell
-        styles={{
-          main: {
-            background:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
-          },
-        }}
-        navbarOffsetBreakpoint="sm"
-        asideOffsetBreakpoint="sm"
-        className=""
-        fixed
-        header={<RoiNavbar />}
-        // footer={<RoiFooter />}
-      >
-        <div className={classes.body}>
+  // if (isLoading)
+  //   return ;
+
+  return data ? (
+    <MainLoader />
+  ) : (
+    <AppShell
+      styles={{
+        main: {
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[8]
+              : theme.colors.gray[0],
+        },
+      }}
+      navbarOffsetBreakpoint="sm"
+      asideOffsetBreakpoint="sm"
+      className=""
+      fixed
+    // header={<RoiNavbar />}
+    // footer={<RoiFooter />}
+    >
+      {/* <div className={classes.body}>
           <div className={classes.welcome}>
             <Welcome
               name={data?.welcome.account_name}
@@ -100,19 +107,35 @@ const Dashboard: React.FC = () =>
         <div className={classes.bar_graph_wrapper}>
           <Text size="lg">My ROIs</Text>
           <Row my_roi={data?.my_roi} refetch={refetch} />
-        </div>
-      </AppShell>
-    );
-  };
+        </div> */}
+    </AppShell>
+  );
+};
 
-// export async function getServerSideProps(ctx: any) {
-//   // Fetch data from external API
-//   console.log(ctx.req.cookies)
-//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
-//   const data = await res.json()
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const data = 'from gssp'
+  const cookies = context.req.cookies
+  const res = await fetch(`http://localhost:8080/v1/auth/current`, {
+    headers: {
+      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    }
+  })
+  const user = await res.json();
 
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
+  if (user) {
+    // redirect to dashboard page if authenticated
+    return { props: { user } }
+  } else {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+      props: { user },
+    }
+  }
+
+  // return { props: { user } }
+}
 
 export default Dashboard;

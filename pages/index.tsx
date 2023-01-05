@@ -17,8 +17,9 @@ import { useStyles } from "../styles/indexStyle";
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
-import UserContext from "@context/user.context";
+import UserContext, { UserContextTypes } from "@context/user.context";
 import Image from "next/image";
+import { useUserStore } from "@app/store/userState";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
@@ -31,6 +32,10 @@ const Home: React.FC = () => {
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [loading, setLoading] = useState(true);
   const userCtx = useContext(UserContext);
+
+
+  const setUserZ = useUserStore((state) => (state.login))
+  const setTokenZ = useUserStore((state) => (state.setToken))
 
   const form = useForm({
     initialValues: {
@@ -52,7 +57,7 @@ const Home: React.FC = () => {
         password: values.password,
       };
       const res = await axios.post(
-        "http://localhost:8080/v1/auth/login",
+        `http://localhost:8080/v1/auth/login`,
         payload,
         {
           withCredentials: true,
@@ -60,18 +65,24 @@ const Home: React.FC = () => {
       );
       if (res) {
         console.log(res);
-        userCtx.login(res.data);
-        setValue(res.data.tokens.access.token);
-        setRefresh(res.data.tokens.refresh.token);
-        sessionStorage.setItem("auth-token", value);
-        setUserInfo(res.data.user);
-        setCurrent(res.data.user.id);
-        setCompany(res.data.user.company_id);
-        if (res.data.user.role == "company-manager") {
-          router.push("/dashboard/manager");
-        } else {
-          router.push(`/dashboard`);
-        }
+        // userCtx.login(res.data);
+        // setValue(res.data.tokens.access.token);
+        // setRefresh(res.data.tokens.refresh.token);
+        // sessionStorage.setItem("auth-token", value);
+        // setUserInfo(res.data.user);
+        // setCurrent(res.data.user.id);
+        // setCompany(res.data.user.company_id);
+
+        // router.push(`/dashboard`);
+        setUserZ(res.data.user)
+        // setTokenZ(res.data.tokens.access.token)
+        // if (res.data.user.role == "company-manager") {
+        //   router.push("/dashboard/manager");
+        // } else {
+        //   router.push(`/dashboard`);
+        // }
+        
+      router.push(`/dashboard`);
       }
 
       router.push(`/dashboard`);
@@ -115,7 +126,6 @@ const Home: React.FC = () => {
             <Image layout="fill" objectFit="contain" src="/logo.png" alt="random" />
           </div> */}
         </div>
-
         <Title
           order={2}
           className={classes.title2}
