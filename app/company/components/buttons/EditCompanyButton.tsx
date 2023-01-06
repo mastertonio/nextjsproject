@@ -55,7 +55,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
         color: "teal",
       });
       const response = await axios.patch(
-        `http://54.159.8.194/v1/company/${id}`,
+        `/v1/company/${id}`,
         {
           name: values.company,
           alias: values.alias,
@@ -64,8 +64,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
           contact_lname: values.last_name,
           contact_email: values.email,
           contact_phone: values.phone,
-        },
-        { headers: { Authorization: `Bearer ${value}` } }
+        }
       );
       if (response) {
         refetch();

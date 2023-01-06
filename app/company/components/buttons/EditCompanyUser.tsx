@@ -63,13 +63,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const getManagers = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/company/${company}/manager`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
+        `/v1/company/${company}/manager`);
       return res.data;
     } catch (error) {
       return error;
@@ -113,7 +107,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       });
       
       const response = await axios.patch(
-        `http://54.159.8.194/v1/company/${company}/user/${id}`,
+        `/v1/company/${company}/user/${id}`,
         {
           first_name: values.first_name,
           last_name: values.last_name,
@@ -122,8 +116,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           currency: values.currency,
           manager: values.manager,
           role: values.role,
-        },
-        { headers: { Authorization: `Bearer ${value}` } }
+        }
       );
 
       if (response) {

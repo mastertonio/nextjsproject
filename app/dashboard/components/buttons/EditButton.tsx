@@ -38,9 +38,8 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         color: "teal",
       });
       const response = await axios.patch(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-        { title: values.title },
-        { headers: { Authorization: `Bearer ${value}` } }
+        `/v1/dashboard/roi/${id}/${p.id}`,
+        { title: values.title }
       );
       if (response) {
         refetch();

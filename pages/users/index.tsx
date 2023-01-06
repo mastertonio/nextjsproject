@@ -124,12 +124,7 @@ const UsersDashboard: React.FC = () => {
   const getCompanyUsers = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/company/${company}/user`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/v1/company/${company}/user`
       );
       return res.data;
     } catch (error) {

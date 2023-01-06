@@ -68,13 +68,12 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
       });
 
       const response = await axios.patch(
-        `http://54.159.8.194/v1/company/${company}/template/${id}`,
+        `/v1/company/${company}/template/${id}`,
         {
           name: values.name,
           notes: values.notes,
           status: parseInt(values.status),
-        },
-        { headers: { Authorization: `Bearer ${value}` } }
+        }
       );
 
       if (response) {

@@ -52,12 +52,7 @@ const ManagerDashboardGraph: React.FC = () => {
   const getGraphData = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/data/company/graph`,
-        {
-          headers: {
-            Authorization: `Bearer ${userCtx.token}`,
-          },
-        }
+        `/v1/dashboard/data/company/graph`
       );
       return res.data;
     } catch (error) {

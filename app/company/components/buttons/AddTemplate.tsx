@@ -62,18 +62,12 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         color: "teal",
       });
       const response = await axios.post(
-        `http://54.159.8.194/v1/company/${company}/template`,
+        `/v1/company/${company}/template`,
         {
           name: values.name,
           status: "1",
           notes: values.notes,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
+        });
       if (response) {
         refetch();
         updateNotification({

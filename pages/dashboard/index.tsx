@@ -29,11 +29,12 @@ import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
-import UserContext, { State } from "@context/user.context";
-import { useUserStore } from "@app/store/userState";
+import UserContext, { State, UserContextTypes } from "@context/user.context";
+import { UserState, useUserStore } from "@app/store/userState";
 import * as cookie from 'cookie'
+import FourOhFour from "pages/404";
 //
-const Dashboard: React.FC = (user) =>
+const Dashboard: React.FC<UserState> = ({ user }) =>
 // message
 {
   const router = useRouter();
@@ -48,9 +49,7 @@ const Dashboard: React.FC = (user) =>
 
   const getDashboardData = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/v1/dashboard`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(`/v1/dashboard`);
       console.log(res)
       return res.data;
     } catch (error) {
@@ -58,36 +57,33 @@ const Dashboard: React.FC = (user) =>
     }
   };
 
-  const { isLoading, status, data, isFetching, refetch } = useQuery(
+  const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
     "dashboardData",
     getDashboardData
   );
 
-  console.log(user, "user")
 
-  // if (isLoading)
-  //   return ;
+  if (isLoading) return <MainLoader />;
 
-  return data ? (
-    <MainLoader />
-  ) : (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      className=""
-      fixed
-    // header={<RoiNavbar />}
-    // footer={<RoiFooter />}
-    >
-      {/* <div className={classes.body}>
+  if (isSuccess) {
+    return (
+      <AppShell
+        styles={{
+          main: {
+            background:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        }}
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        className=""
+        fixed
+        header={<RoiNavbar />}
+      // footer={<RoiFooter />}
+      >
+        <div className={classes.body}>
           <div className={classes.welcome}>
             <Welcome
               name={data?.welcome.account_name}
@@ -107,31 +103,39 @@ const Dashboard: React.FC = (user) =>
         <div className={classes.bar_graph_wrapper}>
           <Text size="lg">My ROIs</Text>
           <Row my_roi={data?.my_roi} refetch={refetch} />
-        </div> */}
-    </AppShell>
-  );
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (isError) {
+    return <FourOhFour />;
+  }
+
+  return <></>
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const data = 'from gssp'
   const cookies = context.req.cookies
-  const res = await fetch(`http://localhost:8080/v1/auth/current`, {
+  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
     headers: {
       'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
     }
   })
   const user = await res.json();
 
-  if (user) {
+  if (Object.keys(user).length === 0 && user.constructor === Object) {
     // redirect to dashboard page if authenticated
-    return { props: { user } }
-  } else {
+    
     return {
       redirect: {
         destination: "/",
         permanent: false,
-      },
-      props: { user },
+      }, props: { user } }
+  } else {
+    return {
+      props: { user }
     }
   }
 

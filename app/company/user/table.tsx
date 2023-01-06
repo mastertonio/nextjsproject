@@ -81,12 +81,7 @@ export interface ICompanyUserTableProps {
 const getCompanyUsers = async (company: string, value: string) => {
   try {
     const res = await axios.get(
-      `http://54.159.8.194/v1/company/${company}/user/templates`,
-      {
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      }
+      `/v1/company/${company}/user/templates`
     );
     return res.data;
   } catch (error) {

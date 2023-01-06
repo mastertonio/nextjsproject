@@ -8,6 +8,10 @@ import DashboardContextProvider from "app/context/dashboard.context";
 import { UserContextProvider } from "app/context/user.context";
 import { BuilderContextProvider } from "@app/context/builder.context";
 import Head from "next/head";
+import axios from "axios";
+
+process.env.NODE_ENV == "production" ? axios.defaults.baseURL = process.env.NEXT_PROD_PORT : axios.defaults.baseURL = process.env.NEXT_DEV_PORT || "http://localhost:8080"
+axios.defaults.withCredentials = true
 
 const queryClient = new QueryClient({
   defaultOptions: {

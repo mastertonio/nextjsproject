@@ -36,10 +36,7 @@ const CreateNewRoi: React.FC = () => {
   const getTemplateButtonList = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/template/list`,
-        {
-          withCredentials: true,
-        }
+        `/v1/dashboard/template/list`
       );
       return res.data;
     } catch (error) {
@@ -80,9 +77,8 @@ const CreateNewRoi: React.FC = () => {
         disallowClose: true,
       });
       const res = await axios.post(
-        `http://54.159.8.194/v1/dashboard/${current}`,
-        { name: values.name, template_id: values.template },
-        { headers: { Authorization: `Bearer ${value}` } }
+        `/v1/dashboard/${current}`,
+        { name: values.name, template_id: values.template }
       );
       if (res && checked) {
         updateNotification({

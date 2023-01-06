@@ -128,11 +128,7 @@ interface ICompanyUsersElements {
 
 const getCompanyUsers = async (id: string, token: string) => {
   try {
-    const res = await axios.get(`http://54.159.8.194/v1/company/${id}/user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await axios.get(`/v1/company/${id}/user`);
 
     return res.data;
   } catch (error) {

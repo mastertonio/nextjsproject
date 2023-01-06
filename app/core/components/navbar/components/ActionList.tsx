@@ -27,17 +27,15 @@ const ActionList: React.FC = () => {
   const handleLogout = async () => {
     try {
       const res = await axios.post(
-        `http://54.159.8.194/v1/auth/logout`,
-        { refreshToken: refresh },
-        {
-          withCredentials: true,
-        }
+        `/v1/auth/logout`,
+        { refreshToken: refresh }
       );
       if (res) {
         router.push("/");
         setValue("");
         setRefresh("");
         setCurrent("");
+        sessionStorage.clear()
       }
     } catch (error) {
       return error;

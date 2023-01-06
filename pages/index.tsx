@@ -20,6 +20,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import UserContext, { UserContextTypes } from "@context/user.context";
 import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
+import { GetServerSideProps } from "next";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
@@ -30,7 +31,7 @@ const Home: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const userCtx = useContext(UserContext);
 
 
@@ -57,11 +58,8 @@ const Home: React.FC = () => {
         password: values.password,
       };
       const res = await axios.post(
-        `http://localhost:8080/v1/auth/login`,
-        payload,
-        {
-          withCredentials: true,
-        }
+        `/v1/auth/login`,
+        payload
       );
       if (res) {
         console.log(res);
@@ -81,8 +79,8 @@ const Home: React.FC = () => {
         // } else {
         //   router.push(`/dashboard`);
         // }
-        
-      router.push(`/dashboard`);
+
+        router.push(`/dashboard`);
       }
 
       router.push(`/dashboard`);
@@ -91,18 +89,6 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (router.isReady) {
-      setLoading(false);
-    }
-  }, [router]);
-
-  // useEffect(() => {
-  //   if (!!current) {
-  //     router.push("/dashboard");
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   if (loading) return <LoadingOverlay visible={!loading} />;
 
@@ -182,5 +168,24 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const data = 'from gssp'
+  const cookies = context.req.cookies
+  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    headers: {
+      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    }
+  })
+  const user = await res.json();
+
+  // if (Object.keys(user).length === 0 && user.constructor === Object) {
+  // redirect to dashboard page if authenticated
+  return {
+    props: { user }
+  }
+
+  // return { props: { user } }
+}
 
 export default Home;

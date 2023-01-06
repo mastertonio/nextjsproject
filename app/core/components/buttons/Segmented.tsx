@@ -51,11 +51,10 @@ const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id }) => {
                 setOpened(false)
                 setValue(value=="active" ? "inactive" : "active")
                 const response = await axios.patch(
-                  `http://54.159.8.194/v1/company/${id}`,
+                  `/v1/company/${id}`,
                   {
                     active: value=="active" ? 0 : 1
-                  },
-                  { headers: { Authorization: `Bearer ${values}` } }
+                  }
                 );
                 if(response){
                   refetch()

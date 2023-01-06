@@ -32,11 +32,7 @@ const Sidebar: React.FC = () => {
 
   const getCurrentUser = async () => {
     try {
-      const res = await axios.get(`http://54.159.8.194/v1/users/${current}`, {
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      });
+      const res = await axios.get(`/v1/users/${current}`);
       return res.data;
     } catch (error) {
       return error;

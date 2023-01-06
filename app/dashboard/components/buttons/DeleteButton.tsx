@@ -34,12 +34,7 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         disallowClose: true,
         color: "teal",
       });
-      const res = await axios.delete(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-        {
-          headers: { Authorization: `Bearer ${value}` },
-        }
-      );
+      const res = await axios.delete(`/v1/dashboard/roi/${id}/${p.id}`);
       if (res) {
         updateNotification({
           id: "delete-row",

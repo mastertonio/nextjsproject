@@ -57,9 +57,8 @@ const SelectDropdown: React.FC<IStarProps> = ({
         color: "teal",
       });
       const res = await axios.patch(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-        { status: data ?? values },
-        { headers: { Authorization: `Bearer ${value}` } }
+        `/v1/dashboard/roi/${id}/${p.id}`,
+        { status: data ?? values }
       );
       if (res) {
         updateNotification({

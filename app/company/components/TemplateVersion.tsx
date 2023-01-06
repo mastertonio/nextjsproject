@@ -58,7 +58,6 @@ interface ITemplateVersionType {
   name: string;
   refTarget: any;
 }
-//`http://54.159.8.194/v1/company/${!!comp_id ? comp_id : company}/template/${!!temp_id ? temp_id : first_temp}/version`,
 const getTemplatesVersions = async (
   comp: string,
   temp: string,
@@ -66,14 +65,7 @@ const getTemplatesVersions = async (
 ) => {
   try {
     console.log(comp, temp);
-    const res = await axios.get(
-      `http://54.159.8.194/v1/company/${comp}/template/${temp}/version`,
-      {
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      }
-    );
+    const res = await axios.get(`/v1/company/${comp}/template/${temp}/version`);
 
     return res.data;
   } catch (error) {

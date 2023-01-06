@@ -18,9 +18,12 @@ import 'react-modern-drawer/dist/index.css'
 import DashboardDrawer from "../drawer/DrawerContent";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
-import UserContext from "@context/user.context";
+import UserContext, { UserContextTypes } from "@context/user.context";
 
-const RoiNavbar: React.FC = () => {
+import { UserState, useUserStore } from "@app/store/userState";
+import { GetServerSideProps } from "next";
+
+const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -29,33 +32,32 @@ const RoiNavbar: React.FC = () => {
   const toggleDrawer = () => {
       setIsOpen((prevState) => !prevState)
   }
-  const userCtx = useContext(UserContext)
 
-  const [user, setUser] = useState<any>({});
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const sessionToken = sessionStorage.getItem('auth-token')
+  // const [user, setUser] = useState<any>({});
+  // const [value] = useLocalStorage({ key: "auth-token" });
+  // const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  // const [company, setCompany] = useLocalStorage({ key: "my-company" });
+  // const sessionToken = sessionStorage.getItem('auth-token')
 
-  const getCurrentUser = async () => {
-    try {
-      const res = await axios.get(`http://54.159.8.194/v1/users/${current}`, {
-        withCredentials: true,
-      });
-      return res.data;
-    } catch (error) {
-      return error;
-    }
-  };
+  // const getCurrentUser = async () => {
+  //   try {
+  //     const res = await axios.get(`${process.env.NEXT_DEV_PORT}/v1/users/${userData?.id}`, {
+  //       withCredentials: true,
+  //     });
+  //     return res.data;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // };
 
-  const { isLoading, status, data, isFetching, refetch } = useQuery(
-    "userList",
-    getCurrentUser
-  );
+  // const { isLoading, status, data, isFetching, refetch } = useQuery(
+  //   "userList",
+  //   getCurrentUser
+  // );
 
-  useEffect(() => {
-    setUser(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setUser(data);
+  // }, [data]);
 
   return (
     <Header height={70} p="md" className={classes.header}>
@@ -123,5 +125,31 @@ const RoiNavbar: React.FC = () => {
     </Header>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const data = 'from gssp'
+  const cookies = context.req.cookies
+  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    headers: {
+      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    }
+  })
+  const user = await res.json();
+
+  if (user) {
+    // redirect to dashboard page if authenticated
+    return { props: { user: user } }
+  } else {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+      props: { user },
+    }
+  }
+
+  // return { props: { user } }
+}
 
 export default RoiNavbar;

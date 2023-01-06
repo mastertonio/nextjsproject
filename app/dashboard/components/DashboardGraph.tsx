@@ -52,10 +52,7 @@ const DashboardGraph: React.FC = () => {
   const getGraphData = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/data/graph`,
-        {
-          withCredentials: true,
-        }
+        `/v1/dashboard/data/graph`
       );
       return res.data;
     } catch (error) {

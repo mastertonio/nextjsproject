@@ -76,14 +76,13 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
       });
 
       const response = await axios.patch(
-        `http://54.159.8.194/v1/company/${comp_id}/template/${temp_id}/version/${id}`,
+        `/v1/company/${comp_id}/template/${temp_id}/version/${id}`,
         {
           name: values.name,
           notes: values.notes,
           status: values.status=="active" ? 1 : 0,
           version: parseInt(values.version),
-        },
-        { headers: { Authorization: `Bearer ${value}` } }
+        }
       );
 
       if (response) {
