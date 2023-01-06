@@ -61,7 +61,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         color: "teal",
       });
       const response = await axios.post(
-        `http://54.159.8.194/v1/company`,
+        `/v1/company`,
         {
           alias: values.alias,
           licenses: values.licenses,
@@ -74,14 +74,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
           contact_lname: values.contact_lname,
           contact_email: values.contact_email,
           contact_phone: values.contact_phone,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+        });
       if (response) {
         refetch();
         updateNotification({
@@ -180,7 +173,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
               <Text>Licenses: </Text>
               <NumberInput
                 defaultValue={0}
-                style={{ marginLeft: 'auto', width: 550}}
+                style={{ marginLeft: 'auto', width: 550 }}
                 min={0}
                 {...form.getInputProps("licenses")}
                 required

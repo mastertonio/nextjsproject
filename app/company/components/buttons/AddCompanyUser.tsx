@@ -48,12 +48,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   const getManagers = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/company/${company}/manager`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/v1/company/${company}/manager`
       );
       return res.data;
     } catch (error) {
@@ -64,12 +59,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   const getTemplates = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/template/list`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/v1/dashboard/template/list`
       );
       return res.data;
     } catch (error) {
@@ -147,7 +137,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
         color: "teal",
       });
       const response = await axios.post(
-        `http://54.159.8.194/v1/company/${company}/user`,
+        `/v1/company/${company}/user`,
         {
           first_name: values.first_name,
           last_name: values.last_name,
@@ -157,13 +147,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
           manager: values.manager,
           role: values.role,
           template: filter,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
+        });
       if (response) {
         refetch();
         updateNotification({
@@ -351,7 +335,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
             >
               <Text>Role: </Text>
               <Select
-                data={[{label: 'Company Manager', value: '3'}, { label: 'Company Agent', value: '4'}]}
+                data={[{ label: 'Company Manager', value: '3' }, { label: 'Company Agent', value: '4' }]}
                 placeholder="Choose Role"
                 {...form.getInputProps("role")}
                 style={{ width: 550, marginLeft: "auto" }}
@@ -389,9 +373,9 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
                 searchable
                 // clearable
                 data={templateList ?? []}
-                defaultValue={templateList?.map((a: { value: string; })=> a.value)}
+                defaultValue={templateList?.map((a: { value: string; }) => a.value)}
                 // value={filter}
-                styles={{ input: { overflow: 'auto', maxHeight: 120}}}
+                styles={{ input: { overflow: 'auto', maxHeight: 120 } }}
                 onChange={setFilter}
               />
             </Grid>

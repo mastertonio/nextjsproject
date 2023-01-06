@@ -42,12 +42,7 @@ const AdminList: React.FC = () => {
 
   const getAdminList = async () => {
     try {
-      const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/admin/list`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`/v1/dashboard/admin/list`);
       return res.data;
     } catch (error) {
       return error;

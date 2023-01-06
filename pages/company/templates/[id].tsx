@@ -48,12 +48,7 @@ import FourOhFour from "pages/404";
 const getCompanyTemplate = async (_id: string, token: string) => {
   try {
     const res = await axios.get(
-      `http://54.159.8.194/v1/company/${_id}/template`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `/v1/company/${_id}/template`
     );
     return res.data;
   } catch (error) {

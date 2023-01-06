@@ -36,12 +36,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
   const getManagers = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/company/${company}/manager`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/v1/company/${company}/manager`
       );
       return res.data;
     } catch (error) {

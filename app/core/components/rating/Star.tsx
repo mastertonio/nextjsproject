@@ -32,9 +32,8 @@ const StarRating: React.FC<IStarProps> = ({
       setR(rate);
       setOpened?.(false);
       const res = await axios.patch(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-        { importance: rate },
-        { headers: { Authorization: `Bearer ${value}` } }
+        `/v1/dashboard/roi/${id}/${p.id}`,
+        { importance: rate }
       );
       if (res) {
         refetch();

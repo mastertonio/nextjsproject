@@ -59,12 +59,7 @@ const TemplatesDashboard: React.FC = () => {
   const getCompanyTemplates = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/company/${company}/template`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/v1/company/${company}/template`
       );
       return res.data;
     } catch (error) {

@@ -27,10 +27,7 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
   const getRankings = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/ranking/list`,
-        {
-          withCredentials: true,
-        }
+        `/v1/dashboard/ranking/list`
       );
       return res.data;
     } catch (error) {

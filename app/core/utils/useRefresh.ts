@@ -8,13 +8,8 @@ const useRefresh = async () => {
   const setLocal = async () => {
     try {
       const res = await axios.post(
-        `http://54.159.8.194/auth/refresh-tokens`,
-        refreshToken,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/auth/refresh-tokens`,
+        refreshToken
       );
       setValue(res.data.access.token);
       setRefresh(res.data.refresh.token);

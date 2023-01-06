@@ -154,11 +154,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
 
   const getCompanies = async () => {
     try {
-      const res = await axios.get(`http://54.159.8.194/v1/company`, {
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      });
+      const res = await axios.get(`/v1/company`);
       return res.data;
     } catch (error) {
       return error;

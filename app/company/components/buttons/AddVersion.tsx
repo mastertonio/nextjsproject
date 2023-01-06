@@ -71,18 +71,12 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
         color: "teal",
       });
       const response = await axios.post(
-        `http://54.159.8.194/v1/company/${comp_id}/template/${temp_id}/version`,
+        `/v1/company/${comp_id}/template/${temp_id}/version`,
         {
           name: values.name,
           version: values.stage,
           notes: values.notes,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
-      );
+        });
       if (response) {
         update();
         updateNotification({

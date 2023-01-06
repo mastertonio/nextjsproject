@@ -85,9 +85,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
 
   const getRoiListAll = async () => {
     try {
-      const res = await axios.get(`http://54.159.8.194/v1/dashboard/roi/list`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(`/v1/dashboard/roi/list`);
       return res.data;
     } catch (error) {
       return error;

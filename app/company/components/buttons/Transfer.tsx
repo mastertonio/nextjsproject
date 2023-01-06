@@ -36,12 +36,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
   const getManagers = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/company/${company}/user`,
-        {
-          headers: {
-            Authorization: `Bearer ${value}`,
-          },
-        }
+        `/v1/company/${company}/user`
       );
       return res.data;
     } catch (error) {
@@ -76,12 +71,11 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
         color: "teal",
       });
       const response = await axios.post(
-        `http://54.159.8.194/v1/company/${company}/roi/transfer/all`,
+        `/v1/company/${company}/roi/transfer/all`,
         {
           roi_source_uid: id,
           roi_new_uid: values.new_source,
-        },
-        { headers: { Authorization: `Bearer ${value}` } }
+        }
       );
       if (response) {
         refetch();

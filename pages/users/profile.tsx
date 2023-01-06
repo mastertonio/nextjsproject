@@ -38,11 +38,7 @@ const UserProfile: React.FC = () => {
 
   const getCurrentUser = async () => {
     try {
-      const res = await axios.get(`http://54.159.8.194/v1/users/${current}`, {
-        headers: {
-          Authorization: `Bearer ${value}`,
-        },
-      });
+      const res = await axios.get(`/v1/users/${current}`);
       return res.data;
     } catch (error) {
       return error;
@@ -67,14 +63,13 @@ const UserProfile: React.FC = () => {
         color: 'teal'
       })
       const res = await axios.patch(
-        `http://54.159.8.194/v1/users/${current}`,
+        `/v1/users/${current}`,
         {
           email: userCred.email,
           first_name: userCred.first_name,
           last_name: userCred.last_name,
           phone: userCred.phone_number,
-        },
-        { headers: { Authorization: `Bearer ${value}` } }
+        }
       );
       if(res){
         updateNotification({

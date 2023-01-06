@@ -29,12 +29,7 @@ const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
   const getTemplateList = async () => {
     try {
       const res = await axios.get(
-        `http://54.159.8.194/v1/dashboard/template/list`,
-        {
-          headers: {
-            Authorization: `Bearer ${userCtx.token}`,
-          },
-        }
+        `/v1/dashboard/template/list`
       );
       return res.data;
     } catch (error) {

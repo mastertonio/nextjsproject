@@ -107,9 +107,8 @@ const ChangePass: React.FC = () => {
         color: "teal",
       });
       const res = await axios.patch(
-        `http://54.159.8.194/v1/users/${current}`,
-        { password: values.confirmPassword },
-        { headers: { Authorization: `Bearer ${value}` } }
+        `/v1/users/${current}`,
+        { password: values.confirmPassword }
       );
 
       if (res) {

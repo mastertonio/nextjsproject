@@ -15,6 +15,7 @@ import {
   InferGetServerSidePropsType,
   GetStaticPaths,
   GetStaticPathsContext,
+  NextApiRequest,
 } from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
@@ -28,42 +29,44 @@ import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
-import UserContext, { State } from "@context/user.context";
+import UserContext, { State, UserContextTypes } from "@context/user.context";
+import { UserState, useUserStore } from "@app/store/userState";
+import * as cookie from 'cookie'
+import FourOhFour from "pages/404";
 //
-const Dashboard: React.FC = () =>
-  // message
-  {
-    const router = useRouter();
-    const theme = useMantineTheme();
-    const { classes } = useStyles();
-    const [value] = useLocalStorage({ key: "auth-token" });
-    const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-    const [userInfo, setUserInfo] = useLocalStorage<State>({ key: "ckear" });
-    const p = router.query;
-    const userCtx = useContext(UserContext);
+const Dashboard: React.FC<UserState> = ({ user }) =>
+// message
+{
+  const router = useRouter();
+  const theme = useMantineTheme();
+  const { classes } = useStyles();
+  const [value] = useLocalStorage({ key: "auth-token" });
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [userInfo, setUserInfo] = useLocalStorage<State>({ key: "ckear" });
+  const p = router.query;
+  const userCtx = useContext(UserContext);
+  const tokenZ = useUserStore(state => state.token)
 
-    const getDashboardData = async () => {
-      try {
-        const res = await axios.get(`http://54.159.8.194/v1/dashboard`, {
-          withCredentials: true,
-        });
-        return res.data;
-      } catch (error) {
-        return error;
-      }
-    };
+  const getDashboardData = async () => {
+    try {
+      const res = await axios.get(`/v1/dashboard`);
+      console.log(res)
+      return res.data;
+    } catch (error) {
+      return error;
+    }
+  };
 
-    const { isLoading, status, data, isFetching, refetch } = useQuery(
-      "dashboardData",
-      getDashboardData
-    );
+  const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
+    "dashboardData",
+    getDashboardData
+  );
 
-    // if (isLoading)
-    //   return ;
 
-    return isLoading ? (
-      <MainLoader />
-    ) : (
+  if (isLoading) return <MainLoader />;
+
+  if (isSuccess) {
+    return (
       <AppShell
         styles={{
           main: {
@@ -78,7 +81,7 @@ const Dashboard: React.FC = () =>
         className=""
         fixed
         header={<RoiNavbar />}
-        // footer={<RoiFooter />}
+      // footer={<RoiFooter />}
       >
         <div className={classes.body}>
           <div className={classes.welcome}>
@@ -103,16 +106,40 @@ const Dashboard: React.FC = () =>
         </div>
       </AppShell>
     );
-  };
+  }
 
-// export async function getServerSideProps(ctx: any) {
-//   // Fetch data from external API
-//   console.log(ctx.req.cookies)
-//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
-//   const data = await res.json()
+  if (isError) {
+    return <FourOhFour />;
+  }
 
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
+  return <></>
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const data = 'from gssp'
+  const cookies = context.req.cookies
+  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    headers: {
+      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    }
+  })
+  const user = await res.json();
+
+  if (Object.keys(user).length === 0 && user.constructor === Object) {
+    // redirect to dashboard page if authenticated
+    
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      }, props: { user } }
+  } else {
+    return {
+      props: { user }
+    }
+  }
+
+  // return { props: { user } }
+}
 
 export default Dashboard;

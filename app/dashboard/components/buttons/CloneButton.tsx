@@ -34,9 +34,8 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
       });
 
       const res = await axios.post(
-        `http://54.159.8.194/v1/dashboard/roi/${id}/${p.id}`,
-        { title: values.title },
-        { headers: { Authorization: `Bearer ${value}` } }
+        `/v1/dashboard/roi/${id}/${p.id}`,
+        { title: values.title }
       );
       if (res) {
         updateNotification({

@@ -39,7 +39,7 @@ const ForgotPassword: React.FC = () => {
       };
 
       const res = await axios.post(
-        "http://54.159.8.194/v1/auth/login",
+        "/v1/auth/login",
         payload
       );
       if (res) {

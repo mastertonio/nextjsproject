@@ -3,7 +3,7 @@ import { setegid } from "process";
 import create, { StateCreator } from "zustand";
 import { devtools, persist, PersistOptions } from "zustand/middleware";
 
-interface UserState {
+export interface UserState {
   user: UserContextTypes | null;
   token: string;
   refresh: string;
