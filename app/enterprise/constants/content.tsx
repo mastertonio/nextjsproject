@@ -319,6 +319,7 @@ export const finalData = {
             id: "01",
             type: "text",
             text: "<h4>Please tell us a little about your sales organization</h4>",
+            toggle: true,
             elements: [
               {
                 id: "02",
@@ -370,11 +371,29 @@ export const finalData = {
                 rightSection: null,
                 disabled: false
               },
+              {
+                id: "0227",
+                type: "stars",
+                label: "Map and explore dependencies between all business entities.",
+                icon: null,
+                rightSection: null,
+                disabled: false
+              },
+              {
+                id: "0337",
+                type: "slid",
+                label: "Fusion Gains - Impact Analysis (target 50%)",
+                icon: null,
+                rightSection: null,
+                disabled: false
+              },
             ],
+            
           }, {
             id: "011",
             type: "text",
             text: "<h4>Increase Sales With A Better Value Articulation</h4>",
+            toggle: false,
             elements: [
               {
                 id: "02",
@@ -392,7 +411,7 @@ export const finalData = {
                   "ncrease Sales Revenue by Reducing Loss Rate by Only 0%",
                 formula: "TBD",
                 format: "$0,0",
-                icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>),
+                icon: null,
                 rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /></Button>),
                 disabled: true
               },
@@ -403,6 +422,120 @@ export const finalData = {
                 icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>),
                 rightSection: null,
                 disabled: false
+              },
+              {
+                id: "08",
+                type: "checkbox",
+                label: "Identify the activities your Plan and Process Owners participate in:",
+                icon: null,
+                rightSection: null,
+                disabled: false,
+                other: {
+                  enabled: true,
+                  name: "Other",
+                  elements: [
+                    {
+                      id: "07",
+                      type: "textarea",
+                      label: "What are the main reasons you lose to the outcome:",
+                      icon: null,
+                      rightSection: null,
+                      disabled: false
+                    },
+                  ]
+                },
+                choices: [
+                  {
+                    id: '001',
+                    name: "Define/Document Processes"
+                  },
+                  {
+                    id: '002',
+                    name: "Create Impact Assessments"
+                  },
+                  {
+                    id: '003',
+                    name: "Document Process Requirements and Dependencies"
+                  },
+                  {
+                    id: '004',
+                    name: "Develop Plans"
+                  },
+                  {
+                    id: '005',
+                    name: "Develop Recovery Strategies"
+                  },
+                  {
+                    id: '006',
+                    name: "Educate Team on Plan"
+                  },
+                  {
+                    id: '007',
+                    name: "Exercise Plan (and Team)"
+                  }
+                ]
+              },
+              {
+                id: "08",
+                type: "dropdown",
+                label: "Identify the activities your Plan and Process Owners participate in:",
+                icon: null,
+                rightSection: null,
+                disabled: false,
+                other: {
+                  enabled: true,
+                  name: "Other",
+                  elements: [
+                    {
+                      id: "017",
+                      type: "textarea",
+                      label: "What are the main reasons you lose to the outcome:",
+                      icon: null,
+                      rightSection: null,
+                      disabled: false
+                    },
+                    {
+                      id: "06",
+                      type: "input",
+                      label: "Lost revenue per deal",
+                      formula: "TBD",
+                      format: "0,0",
+                      icon: null,
+                      rightSection: null,
+                      disabled: false
+                    },
+                  ]
+                },
+                choices: [
+                  {
+                    id: '001',
+                    name: "Define/Document Processes"
+                  },
+                  {
+                    id: '002',
+                    name: "Create Impact Assessments"
+                  },
+                  {
+                    id: '003',
+                    name: "Document Process Requirements and Dependencies"
+                  },
+                  {
+                    id: '004',
+                    name: "Develop Plans"
+                  },
+                  {
+                    id: '005',
+                    name: "Develop Recovery Strategies"
+                  },
+                  {
+                    id: '006',
+                    name: "Educate Team on Plan"
+                  },
+                  {
+                    id: '007',
+                    name: "Exercise Plan (and Team)"
+                  }
+                ]
               },
             ],
           },
