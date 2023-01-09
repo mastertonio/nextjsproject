@@ -4,6 +4,10 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/enterprise/**/*.{js,ts,jsx,tsx}",
+    "./app/core/components/input**/*.{js,ts,jsx,tsx}",
+    "./app/core/components/card**/*.{js,ts,jsx,tsx}",
+    "./app/core/components/sidebar/EnterpriseSidebar*.{js,ts,jsx,tsx}",
+    "./app/enterprise/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},

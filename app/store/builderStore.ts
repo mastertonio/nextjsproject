@@ -21,6 +21,19 @@ export const useHeaderStore = create<HeaderState>((set) => ({
   close: () => set(() => ({ value: false })),
 }));
 
+// Hamburger
+type NavShowState = {
+  value: boolean;
+  show: () => void;
+  hide: () => void;
+};
+
+export const useNavShowStore = create<NavShowState>((set) => ({
+  value: false,
+  show: () => set(() => ({ value: true })),
+  hide: () => set(() => ({ value: false })),
+}));
+
 type VarState = {
   id: string;
   var_name: string;

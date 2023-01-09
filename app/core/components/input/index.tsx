@@ -71,9 +71,9 @@ const InputVariable: React.FC<iGrayProps> = ({
       // gap="xs"
       // direction="row"
       // wrap="wrap"
-      style={{ marginTop: 10, marginBottom: 10, padding: 10, width: "100%" }}
+      className="mt-[10px] mb-[10px] p-[10px] w-full"
     >
-      <Stack pb={20} w={"76%"} style={{ backgroundColor: "white", padding: 10, marginLeft: 10, borderRadius: 5 }}>
+      <Stack pb={20} className="bg-[white] p-[10px] ml-[10px] rounded-[12px] w-full sm:w-[76%]">
         {type == "variables" ? elements.map((elem) => (
           <div key={elem.id} >
             <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}>
@@ -83,18 +83,13 @@ const InputVariable: React.FC<iGrayProps> = ({
               {elem.elements.length > 0 ? elem.elements.map((state) => (
                 <Grid
                   key={state.id}
-                  style={{
-                    marginLeft: 30,
-                    marginRight: 30,
-                    marginTop: 7,
-                    marginBottom: 3,
-                  }}
+                  className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
                 >
-                  <Text>{state.label}: </Text>
+                  <Text className="w-[100%] md:w-[300px] 2xl:w-[500px]">{state.label}: </Text>
                   {state.type !== "textarea" ? (
                     <TextInput
                       required
-                      style={{ width: 400, marginLeft: "auto" }}
+                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
                       icon={state.icon ? state.icon : ""}
                       rightSection={state.rightSection ?
                         <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
@@ -106,7 +101,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                     // defaultValue={myCompany.name}
                     />) : (
                     <Textarea
-                      style={{ width: 400, marginLeft: "auto" }}
+                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
                       withAsterisk
                     />)
                   }
@@ -116,7 +111,7 @@ const InputVariable: React.FC<iGrayProps> = ({
           </div>)) : ""}
       </Stack>
 
-      <div style={{ width: '22%', marginLeft: "auto" }}>
+      <div className="ml-[10px] sm:ml-auto w-full sm:w-[22%] mt-[10px] sm:mt-0">
         <FloatingCard />
       </div>
 

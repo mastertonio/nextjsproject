@@ -64,18 +64,13 @@ const InputVariable: React.FC<iVariablesProps> = ({
         </Text>
         <Stack>
           <Grid
-            style={{
-              marginLeft: 30,
-              marginRight: 30,
-              marginTop: 30,
-              marginBottom: 15,
-            }}
+            className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
           >
             <Text>Number of salespeople: </Text>
             <TextInput
               required
-              style={{ width: 450, marginLeft: "auto" }}
-              // defaultValue={myCompany.name}
+              className="w-[450px] ml-auto"
+            // defaultValue={myCompany.name}
             />
           </Grid>
           <Grid
@@ -88,8 +83,8 @@ const InputVariable: React.FC<iVariablesProps> = ({
             <Text>Average deal value: </Text>
             <TextInput
               required
-              style={{ width: 450, marginLeft: "auto" }}
-              icon={<IconAt size={14}/>}
+              className="w-[450px] ml-auto"
+              icon={<IconAt size={14} />}
             />
           </Grid>
           <Grid
@@ -104,7 +99,7 @@ const InputVariable: React.FC<iVariablesProps> = ({
             </Text>
             <TextInput
               required
-              style={{ width: 450, marginLeft: "auto" }}
+              className="w-[450px] ml-auto"
               rightSection={
                 <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
                   <Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>
@@ -122,8 +117,8 @@ const InputVariable: React.FC<iVariablesProps> = ({
             <Text>Deals needed to hit your sales goal: </Text>
             <TextInput
               required
-              style={{ width: 450, marginLeft: "auto" }}
-              // defaultValue={myCompany.name}
+              className="w-[450px] ml-auto"
+            // defaultValue={myCompany.name}
             />
           </Grid>
           <Grid
@@ -136,13 +131,13 @@ const InputVariable: React.FC<iVariablesProps> = ({
             <Text>What are the main reasons you lose to the outcome: </Text>
             <TextInput
               required
-              style={{ width: 450, marginLeft: "auto" }}
-              // defaultValue={myCompany.name}
+              className="w-[450px] ml-auto"
+            // defaultValue={myCompany.name}
             />
           </Grid>
         </Stack>
       </div>
-      <div style={{ width: "29%", marginLeft: "auto" }}>
+      <div className="w-[29px] ml-auto">
         <FloatingCard />
       </div>
     </Flex>

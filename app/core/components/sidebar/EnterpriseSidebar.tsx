@@ -3,21 +3,23 @@ import {
   createStyles,
   Navbar,
   Group,
-  Code,
+  // Code,
   ScrollArea,
   Image,
 } from "@mantine/core";
 import {
   IconBellRinging,
-  IconFingerprint,
-  IconKey,
-  IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
+  // IconFingerprint,
+  // IconKey,
+  // IconSettings,
+  // Icon2fa,
+  // IconDatabaseImport,
+  // IconReceipt2,
   IconCalculator,
   IconCategory,
+  IconX
 } from "@tabler/icons";
+import { useNavShowStore } from "@app/store/builderStore";
 import { LinksGroup } from "@app/core/components/sidebar/BuilderSidebar";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -42,11 +44,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
       marginLeft: -theme.spacing.md,
       marginRight: -theme.spacing.md,
       color: theme.colorScheme === "dark" ? theme.white : theme.black,
-      borderBottom: `1px solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[3]
-      }`,
+      borderBottom: `1px solid ${theme.colorScheme === "dark"
+        ? theme.colors.dark[4]
+        : theme.colors.gray[3]
+        }`,
     },
 
     links: {
@@ -62,11 +63,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
     footer: {
       marginLeft: -theme.spacing.md,
       marginRight: -theme.spacing.md,
-      borderTop: `1px solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[3]
-      }`,
+      borderTop: `1px solid ${theme.colorScheme === "dark"
+        ? theme.colors.dark[4]
+        : theme.colors.gray[3]
+        }`,
     },
   };
 });
@@ -147,15 +147,23 @@ const mockdata = {
 
 const NavbarSimple = () => {
   const { classes, cx } = useStyles();
+  const navShow = useNavShowStore((state) => state.value);
+  const hide = useNavShowStore((state) => state.hide);
   const [active, setActive] = useState("Billing");
+
   const links = mockdata.sidebar.navigationMenu.map((item) => (
     <LinksGroup {...item} key={item.label} icon={item.icon} />
   ));
+
   return (
-    <Navbar width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar width={{ sm: 300 }} p="md" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
       <Group position="apart">
+        <div className="ml-auto flex sm:hidden">
+          <IconX className="w-[30px] h-[30px]" onClick={() => hide()} />
+        </div>
+
         <Image
-          style={{ marginTop: 35 }}
+          className="mt-[15px] sm:mt-[35px]"
           src="https://www.theroishop.com/company_specific_files/547/logo/logo.png"
           alt="random"
         />

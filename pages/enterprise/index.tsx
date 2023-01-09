@@ -22,12 +22,12 @@ const Enterprise = () => {
           margin: 0,
         },
       })}
-      style={{ margin: 0, padding: 0 }}
+      className="m-0 p-0"
     >
       <>
         {finalData
           ? finalData.sections.map((section) => (
-            <div style={{ width: "100%", color: "#676a6c" }} key={section.order}>
+            <div className="w-full text-[#676a6c]" key={section.order}>
               <Projection
                 title={section.headers.title.mainTitle.text}
                 description={section.headers.title.description}
@@ -45,7 +45,7 @@ const Enterprise = () => {
                     cols={3}
                     p={10}
                     pr={20}
-                    style={{ backgroundColor: "#e9ecef" }}
+                    className="bg-[#e9ecef] sm:grid block"
                   >
                     {contentData.sections.sliders.elements.map((element) => (
                       <SliderCard
@@ -57,7 +57,7 @@ const Enterprise = () => {
                     ))}
                   </SimpleGrid>
                 ) : section.GrayContent.type == "variables" ? (
-                  <div style={{ backgroundColor: "#e9ecef" }}>
+                  <div className="bg-[#e9ecef]">
 
                     {/* <Flex
                       gap="xs"
@@ -70,7 +70,7 @@ const Enterprise = () => {
                     {/* </Flex> */}
                   </div>
                 ) : (
-                  <div style={{ backgroundColor: "#e9ecef" }}>
+                  <div className="bg-[#e9ecef]">
                     <br></br>
                   </div>
                 )}

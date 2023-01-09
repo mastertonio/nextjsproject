@@ -7,7 +7,7 @@ type iProjectionProps = {
 
 const MediaSection: React.FC<iProjectionProps> = ({ title, subTitle, description }) => {
     return (
-        <div style={{ marginRight: 22, marginLeft: 22}}>
+        <div className="ml-[22px] mr-[22px]">
             <div dangerouslySetInnerHTML={{ __html: title }} />
             <div dangerouslySetInnerHTML={{ __html: subTitle }} />
             <div dangerouslySetInnerHTML={{ __html: description }} />

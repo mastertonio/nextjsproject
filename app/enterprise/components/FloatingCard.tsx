@@ -2,7 +2,7 @@ import { Card, Image, Text, Badge, Button, Group, Divider, Grid, Slider } from '
 
 const FloatingCard: React.FC = () => {
   return (
-    <div style={{ width: '100%', position: 'sticky', top: 70, borderRadius: 10 }}>
+    <div className="w-full sticky top-[70px] rounded-[10px]">
       {/* w={'100%'} pos="sticky" top={70}  */}
       <Card mb={10} shadow="sm" p="lg" radius="md" withBorder>
         <Card.Section pt={20} pl={20} >
