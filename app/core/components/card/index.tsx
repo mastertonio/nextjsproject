@@ -3,22 +3,22 @@ import { StringDecoder } from 'string_decoder';
 import RoiSlider from '../slider';
 
 export type iSliderCardProps = {
-    label: string
-    money: number
-    progress: number
+  label: string
+  money: number
+  progress: number
 }
 
-const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress}) => {
+const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress }) => {
   return (
-    <Card style={{height: 200, padding: 30,  }} shadow="sm" p="lg" radius="md" withBorder>
+    <Card className="h-[200px] p-[30px] mb-4" shadow="sm" p="lg" radius="md" withBorder>
       <Card.Section>
-        <Text style={{ fontSize: 25 }} color="blue" weight={700}>{label}</Text>
+        <Text className="text-[24px] sm:text-[2em]" color="blue" weight={700}>{label}</Text>
       </Card.Section>
-      <Text style={{ fontSize: 30 }} weight={700} color="teal" align='end'>
+      <Text className="text-[30px]" weight={700} color="teal" align='end'>
         ${money}
       </Text>
       {label !== "Summary" ? (<RoiSlider addLabel={label == "Summary" ? false : true} progress={progress} />) : ""}
-      
+
     </Card>
   );
 }

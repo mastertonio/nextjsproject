@@ -74,13 +74,13 @@ const Projection = ({
             <Grid.Col
               span={element.span}
               key={idx}
-              style={{ marginLeft: 30, marginRight: 30, marginTop: 30 }}
+              className="ml-[30px] mr-[30px] mt-[30px] max-w-[100%] sm:max-w-[50%]"
             >
               <div dangerouslySetInnerHTML={{ __html: element.text }}></div>
             </Grid.Col>
           ) : element.type == "media" ? (
             <Suspense fallback={`Loading...`}>
-              <Grid.Col key={idx} w={"40%"} span={element.span}>
+              <Grid.Col key={idx} span={element.span} className="sm:w-[40%] w-[100%]">
                 <VideoMedia media={element.link ? element.link : null} />
               </Grid.Col>
             </Suspense>
@@ -92,12 +92,12 @@ const Projection = ({
 
   return (
     <div>
-      <div style={{ marginRight: 22, marginLeft: 22 }}>
+      <div className="ml-[22px] mr-[22px]">
         <div dangerouslySetInnerHTML={{ __html: title }} />
         <div dangerouslySetInnerHTML={{ __html: subTitle }} />
         <div dangerouslySetInnerHTML={{ __html: description }} />
       </div>
-      <Grid>
+      <Grid className="sm:flex block">
         {quotes.position == "top" ? (
           <QuotesCarousel
             type={quotes.type}

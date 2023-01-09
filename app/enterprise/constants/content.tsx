@@ -16,13 +16,13 @@ export const contentData = {
         mainTitle: {
           type: "text",
           style: "",
-          text: '<h1 style="text-align: left; color: green;">ROI DASHBOARD | 2 Year Projection <span style="float:right;">$0</span></h1>',
+          text: '<h1 class="text-left text-[green] text-[28px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span style="float:right;">$0</span></h1>',
         },
         subTitle: {
           type: "text",
-          text: `<hr><h3 style="font-size: 22px; font-weight: 700;">Select a section below to review your ROI</h3>`,
+          text: `<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>`,
         },
-        description: `<p style="font-size: 16px;">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left.</p>`,
+        description: `<p class="text-[16px]">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left.</p>`,
       },
     },
     sliders: {
@@ -111,13 +111,13 @@ export const finalData = {
           mainTitle: {
             type: "text",
             style: "",
-            text: '<h1 style="text-align: left; color: green;">ROI DASHBOARD | 2 Year Projection <span style="float:right;">$0</span></h1>',
+            text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
           },
           subTitle: {
             type: "text",
-            text: `<hr><h3 style="font-size: 22px; font-weight: 700;">Select a section below to review your ROI</h3>`,
+            text: `<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>`,
           },
-          description: `<p style="font-size: 16px;">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left. <br><br></p>`,
+          description: `<p class="text-[16px]">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left. <br><br></p>`,
           quotes: {
             type: "revolver",
             position: "bottom", //top , bottom of writeup, outside = outside entire section header
@@ -226,7 +226,7 @@ export const finalData = {
           mainTitle: {
             type: "text",
             style: "",
-            text: '<h1 style="margin-bottom: 20px">Improve Win Rate <span style="float:right;">$0</span></h1>',
+            text: '<h1 class="mb-[20px] text-[24px] sm:text-[2em]">Improve Win Rate <span class="float-right">$0</span></h1>',
           },
           subTitle: {
             type: "text",
@@ -472,7 +472,7 @@ export const finalData = {
           mainTitle: {
             type: "text",
             style: "",
-            text: '<h1 style="margin-bottom: 20px">Reduce Discounting <span style="float:right;">$0</span></h1>',
+            text: '<h1 class="mb-[20px] text-[24px] sm:text-[2em]">Reduce Discounting <span class="float-right">$0</span></h1>',
           },
           subTitle: {
             type: "text",
@@ -652,7 +652,7 @@ export const finalData = {
           mainTitle: {
             type: "text",
             style: "",
-            text: '<h1 style="margin-bottom: 20px">Additional Selling Time<span style="float:right;">$0</span></h1>',
+            text: '<h1 class="mb-[20px] text-[24px] sm:text-[2em]">Additional Selling Time<span class="float-right">$0</span></h1>',
           },
           subTitle: {
             type: "text",
@@ -732,7 +732,7 @@ const test = {
       mainTitle: {
         type: "text",
         style: "",
-        text: '<h1 style="margin-bottom: 20px">Reduce Discounting <span style="float:right;">$0</span></h1>',
+        text: '<h1 class="mb-[20px]">Reduce Discounting <span class="float-right">$0</span></h1>',
       },
       subTitle: {
         type: "text",
