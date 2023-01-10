@@ -45,7 +45,7 @@ const Enterprise = () => {
                     cols={3}
                     p={10}
                     pr={20}
-                    className="bg-[#e9ecef] sm:grid block"
+                    className="bg-[#e9ecef] sm:grid block pr-[10px] sm:pr-[20px]"
                   >
                     {contentData.sections.sliders.elements.map((element) => (
                       <SliderCard

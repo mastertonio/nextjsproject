@@ -73,7 +73,7 @@ const InputVariable: React.FC<iGrayProps> = ({
       // wrap="wrap"
       className="mt-[10px] mb-[10px] p-[10px] w-full"
     >
-      <Stack pb={20} className="bg-[white] p-[10px] ml-[10px] rounded-[12px] w-full sm:w-[76%]">
+      <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-[12px] w-[96%] sm:w-[76%]">
         {type == "variables" ? elements.map((elem) => (
           <div key={elem.id} >
             <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}>
@@ -111,7 +111,7 @@ const InputVariable: React.FC<iGrayProps> = ({
           </div>)) : ""}
       </Stack>
 
-      <div className="ml-[10px] sm:ml-auto w-full sm:w-[22%] mt-[10px] sm:mt-0">
+      <div className="ml-[15px] sm:ml-auto w-full sm:w-[22%] mt-[10px] sm:mt-0">
         <FloatingCard />
       </div>
 
