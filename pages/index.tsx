@@ -94,13 +94,9 @@ const Home: React.FC = () => {
 
   return (
     <div className={classes.wrapper2}>
-      <Paper className={classes.form} radius={0} p={30}>
+      <Paper className={`${classes.form} p-[30px] md:p-[50px] lg:p-[50px]`} radius={0} p={30}>
         <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          className="flex justify-center items-center"
         >
           {/* <div
             style={{
@@ -114,7 +110,7 @@ const Home: React.FC = () => {
         </div>
         <Title
           order={2}
-          className={classes.title2}
+          className={`${classes.title2} text-[22px] sm:text-[26px] mt-[50px] sm:mt-[30px]`}
           align="center"
           mt="xs"
           mb={50}
@@ -154,12 +150,12 @@ const Home: React.FC = () => {
           </Group>
         </form>
         <div className={classes.forgot_password}>
-          <Text>© The ROI Shop</Text>
+          <Text className="text-[14px]">© The ROI Shop</Text>
           <Button
             variant="subtle"
             radius="lg"
             onClick={() => router.push("/forgot_password")}
-            style={{ marginLeft: "auto" }}
+            className="ml-auto"
           >
             Forgot Password
           </Button>

@@ -72,6 +72,8 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     minHeight: '100vh',
     backgroundSize: 'cover',
     backgroundImage: `url("/login.jpg")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'top center'
   },
 
   form: {
@@ -83,6 +85,10 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     paddingTop: 80,
 
     [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+      maxWidth: '100%',
+    },
+
+     [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
       maxWidth: '100%',
     },
   },
