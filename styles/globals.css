@@ -21,3 +21,11 @@ a {
 *:focus {
   outline: none;
 }
+
+.small-chart .highcharts-subtitle {
+  display: none;
+}
+
+.small-chart .highcharts-legend {
+  display: none;
+}
