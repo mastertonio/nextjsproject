@@ -72,8 +72,8 @@ const DashboardGraph: React.FC = () => {
   const chartOptions: Highcharts.Options = {
     chart: {
       type: graphData?.chart.type,
-      width: 900,
-      height: null,
+      // width: 900,
+      // height: null,
     },
     plotOptions: {
       column: {
@@ -113,6 +113,18 @@ const DashboardGraph: React.FC = () => {
         ],
       },
     ],
+    responsive: {
+      rules: [{
+        condition: {
+          maxWidth: 740
+        },
+        chartOptions: {
+          chart: {
+            className: 'small-chart'
+          }
+        }
+      }]
+    },
   };
 
   return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;

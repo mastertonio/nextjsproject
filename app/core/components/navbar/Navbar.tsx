@@ -30,7 +30,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
   const [opened, setOpened] = useState(false);
   const [isOpen, setIsOpen] = React.useState(false)
   const toggleDrawer = () => {
-      setIsOpen((prevState) => !prevState)
+    setIsOpen((prevState) => !prevState)
   }
 
   // const [user, setUser] = useState<any>({});
@@ -60,7 +60,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
   // }, [data]);
 
   return (
-    <Header height={70} p="md" className={classes.header}>
+    <Header height={70} p="md" className={`${classes.header}`}>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>
         <Burger
           opened={opened}
@@ -70,16 +70,16 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
           mr="xl"
         />
       </MediaQuery>
-      {router.route.includes("dashboard") && user?.role=="admin" || user?.role == "company-admin" || user?.role == "company-manager"  ? (
+      {router.route.includes("dashboard") && user?.role == "admin" || user?.role == "company-admin" || user?.role == "company-manager" ? (
         <div>
-            <Drawer
-                open={isOpen}
-                onClose={toggleDrawer}
-                direction='left'
-                style={{ backgroundColor: '#2f4050', padding: 20}}
-            >
-                <DashboardDrawer user={user} />
-            </Drawer>
+          <Drawer
+            open={isOpen}
+            onClose={toggleDrawer}
+            direction='left'
+            style={{ backgroundColor: '#2f4050', padding: 20 }}
+          >
+            <DashboardDrawer user={user} />
+          </Drawer>
           <Button
             style={{ marginRight: "auto", backgroundColor: '#00acac' }}
             onClick={toggleDrawer}
@@ -87,37 +87,37 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
             Navigate
           </Button>
         </div>
-        
+
       ) : (
         ""
       )}
-      {router.route.includes("dashboard/manager") && user?.role == "company-manager"  ? (
-        <div style={{ marginLeft: 10}}>
+      {router.route.includes("dashboard/manager") && user?.role == "company-manager" ? (
+        <div style={{ marginLeft: 10 }}>
           <Button
             style={{ marginRight: "auto" }}
-            onClick={()=> router.push('/dashboard')}
+            onClick={() => router.push('/dashboard')}
           >
             Main Dashboard
           </Button>
         </div>
-        
+
       ) : (
         ""
       )}
-      {router.route == "/dashboard" && user?.role == "company-manager"  ? (
-        <div style={{ marginLeft: 10}}>
+      {router.route == "/dashboard" && user?.role == "company-manager" ? (
+        <div style={{ marginLeft: 10 }}>
           <Button
             style={{ marginRight: "auto" }}
-            onClick={()=> router.push('/dashboard/manager')}
+            onClick={() => router.push('/dashboard/manager')}
           >
             Back to Reporting
           </Button>
         </div>
-        
+
       ) : (
         ""
       )}
-      <Group position="right" style={{ marginLeft: 'auto'}}>
+      <Group position="right" className="ml-auto hidden sm:flex flex-col sm:flex-row justify-start sm:justify-center ">
         <AdminList />
         <PoweredByRoi />
         <ActionList />

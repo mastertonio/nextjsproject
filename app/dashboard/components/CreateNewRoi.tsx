@@ -51,13 +51,14 @@ const CreateNewRoi: React.FC = () => {
 
   const [mapp, setMapp] = useState<Array<object>>([])
 
-  const actionList = data?.map((a: { name: string; build: any }) => {return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-    key: b._id,
-    value: b._id,
-    label: b.name,
-    group: a.name
-  }))
-}).flat();
+  const actionList = data?.map((a: { name: string; build: any }) => {
+    return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+      key: b._id,
+      value: b._id,
+      label: b.name,
+      group: a.name
+    }))
+  }).flat();
 
   const form = useForm({
     initialValues: {
@@ -124,7 +125,7 @@ const CreateNewRoi: React.FC = () => {
           <Text
             weight={700}
             color="gray"
-            style={{ marginLeft: 20, marginBottom: 40, fontSize: 30 }}
+            className="ml-[20px] mb-[40px] text-[30px]"
           >
             Create A New ROI Calculation
           </Text>
@@ -133,7 +134,7 @@ const CreateNewRoi: React.FC = () => {
             <Text>Name</Text>
             <TextInput
               required
-              style={{ width: 550, marginLeft: "auto" }}
+              className="w-full ml-auto"
               placeholder="Enter Name"
               {...form.getInputProps("name")}
             />
@@ -142,7 +143,7 @@ const CreateNewRoi: React.FC = () => {
           <Grid style={{ margin: 20, marginBottom: 20 }}>
             <Text>Choose a Template</Text>
             <Select
-              style={{ width: 550, marginLeft: "auto" }}
+              className="w-full ml-auto"
               rightSection={<AiOutlineDown />}
               placeholder="Template"
               searchable
@@ -151,19 +152,19 @@ const CreateNewRoi: React.FC = () => {
                 actionList?.length > 0
                   ? actionList
                   : [
-                      {
-                        value: "",
-                        label: "No Template Detected",
-                        disabled: true,
-                      },
-                    ]
+                    {
+                      value: "",
+                      label: "No Template Detected",
+                      disabled: true,
+                    },
+                  ]
               }
               {...form.getInputProps("template")}
             />
           </Grid>
           <Grid
             justify="flex-end"
-            style={{ marginRight: 20, marginBottom: 140 }}
+            className="mr-[20px] mb-[140px]"
           >
             <Checkbox
               checked={checked}
@@ -176,7 +177,7 @@ const CreateNewRoi: React.FC = () => {
               type="submit"
               radius="sm"
               size="md"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Create ROI
@@ -199,7 +200,7 @@ const CreateNewRoi: React.FC = () => {
           leftIcon={<FaPlusSquare />}
           radius="sm"
           size="xl"
-          style={{ height: 100, marginRight: 0, fontSize: 25 }}
+          className="h-[100px] mr-0 text-[25px]"
           uppercase
           onClick={() => setOpened(true)}
         >

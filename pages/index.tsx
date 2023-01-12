@@ -175,6 +175,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   })
   const user = await res.json();
 
+
   // if (Object.keys(user).length === 0 && user.constructor === Object) {
   // redirect to dashboard page if authenticated
   return {

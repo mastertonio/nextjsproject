@@ -14,7 +14,7 @@ const Welcome: React.FC<iWelcomeProps> = ({
   current_roi,
 }) => {
   return (
-    <div style={{ width: "100%", padding: 10, margin: 5 }}>
+    <div className="w-full p-[10px] m-[5px]">
       <Text>Welcome {name ? name : "User"}</Text>
       <Text size="xs">You have {current_roi ? current_roi : 0} Current ROIs and {active_roi ? active_roi : 0} Active ROIs</Text>
     </div>
