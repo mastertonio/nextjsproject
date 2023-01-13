@@ -20,44 +20,28 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useQuery } from "react-query";
 import UserContext from "@app/context/user.context";
+import MainLoader from "@app/core/components/loader/MainLoader";
+import { useUserStore } from "@app/store/userState";
 
 const CreateNewRoi: React.FC = () => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
-  const [value] = useLocalStorage({ key: "auth-token" });
   const [current] = useLocalStorage({ key: "current-user" });
-  const [templateCreated, setTemplateCreated] = useLocalStorage({
-    key: "cr-temp",
-  });
   const router = useRouter();
-  const p = router.query;
-  const userCtx = useContext(UserContext)
+  const userZ = useUserStore((state) => (state.user))
 
   const getTemplateButtonList = async () => {
-    try {
-      const res = await axios.get(
+    return await axios.get(
         `/v1/dashboard/template/list`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
-  const { isLoading, status, data, isFetching } = useQuery(
+  const { isLoading, status, data: resp, isFetching, isSuccess, isError } = useQuery(
     "template_List",
     getTemplateButtonList
   );
 
-  const [mapp, setMapp] = useState<Array<object>>([])
 
-  const actionList = data?.map((a: { name: string; build: any }) => {return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-    key: b._id,
-    value: b._id,
-    label: b.name,
-    group: a.name
-  }))
-}).flat();
 
   const form = useForm({
     initialValues: {
@@ -77,7 +61,7 @@ const CreateNewRoi: React.FC = () => {
         disallowClose: true,
       });
       const res = await axios.post(
-        `/v1/dashboard/${current}`,
+        `/v1/dashboard/${userZ?.id}`,
         { name: values.name, template_id: values.template }
       );
       if (res && checked) {
@@ -112,102 +96,113 @@ const CreateNewRoi: React.FC = () => {
     }
   };
 
-  return (
-    <>
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        withCloseButton={false}
-        size="50%"
-      >
-        <form onSubmit={form.onSubmit(handleSubmit)} style={{ margin: 30 }}>
-          <Text
-            weight={700}
-            color="gray"
-            style={{ marginLeft: 20, marginBottom: 40, fontSize: 30 }}
-          >
-            Create A New ROI Calculation
-          </Text>
+  if (isLoading) return <MainLoader />
 
-          <Grid style={{ margin: 20 }}>
-            <Text>Name</Text>
-            <TextInput
-              required
-              style={{ width: 550, marginLeft: "auto" }}
-              placeholder="Enter Name"
-              {...form.getInputProps("name")}
-            />
-          </Grid>
+  if (isError) return <div>error</div>
+    
+    // const actionList = resp?.map((a: { name: string; build: any }) => {
+    //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+    //     key: b._id,
+    //     value: b._id,
+    //     label: b.name,
+    //     group: a.name
+    //   }))
+    // }).flat()
 
-          <Grid style={{ margin: 20, marginBottom: 20 }}>
-            <Text>Choose a Template</Text>
-            <Select
-              style={{ width: 550, marginLeft: "auto" }}
-              rightSection={<AiOutlineDown />}
-              placeholder="Template"
-              searchable
-              clearable
-              data={
-                actionList?.length > 0
-                  ? actionList
-                  : [
-                      {
-                        value: "",
-                        label: "No Template Detected",
-                        disabled: true,
-                      },
-                    ]
-              }
-              {...form.getInputProps("template")}
-            />
-          </Grid>
-          <Grid
-            justify="flex-end"
-            style={{ marginRight: 20, marginBottom: 140 }}
-          >
-            <Checkbox
-              checked={checked}
-              onChange={(event) => setChecked(event.currentTarget.checked)}
-              label="Open the Created ROI"
-            />
-          </Grid>
-          <Grid justify="flex-end">
-            <Button
-              type="submit"
-              radius="sm"
-              size="md"
-              style={{ marginRight: 10 }}
-              onClick={() => setOpened(false)}
-            >
-              Create ROI
-            </Button>
-            <Button
-              radius="sm"
-              size="md"
-              onClick={() => setOpened(false)}
-              color="red"
-            >
-              Close
-            </Button>
-          </Grid>
-        </form>
-      </Modal>
-
-      <Group position="center">
-        <Button
-          fullWidth
-          leftIcon={<FaPlusSquare />}
-          radius="sm"
-          size="xl"
-          style={{ height: 100, marginRight: 0, fontSize: 25 }}
-          uppercase
-          onClick={() => setOpened(true)}
+    return (
+      <>
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          withCloseButton={false}
+          size="50%"
         >
-          Create a New ROI
-        </Button>
-      </Group>
-    </>
-  );
-};
+          <form onSubmit={form.onSubmit(handleSubmit)} style={{ margin: 30 }}>
+            <Text
+              weight={700}
+              color="gray"
+              style={{ marginLeft: 20, marginBottom: 40, fontSize: 30 }}
+            >
+              Create A New ROI Calculation
+            </Text>
+
+            <Grid style={{ margin: 20 }}>
+              <Text>Name</Text>
+              <TextInput
+                required
+                style={{ width: 550, marginLeft: "auto" }}
+                placeholder="Enter Name"
+                {...form.getInputProps("name")}
+              />
+            </Grid>
+
+            <Grid style={{ margin: 20, marginBottom: 20 }}>
+              <Text>Choose a Template</Text>
+              <Select
+                style={{ width: 550, marginLeft: "auto" }}
+                rightSection={<AiOutlineDown />}
+                placeholder="Template"
+                searchable
+                clearable
+                data={
+                  [
+                    {
+                      value: "",
+                      label: "No Template Detected",
+                      disabled: true,
+                    },
+                  ]
+                }
+                {...form.getInputProps("template")}
+              />
+            </Grid>
+            <Grid
+              justify="flex-end"
+              style={{ marginRight: 20, marginBottom: 140 }}
+            >
+              <Checkbox
+                checked={checked}
+                onChange={(event) => setChecked(event.currentTarget.checked)}
+                label="Open the Created ROI"
+              />
+            </Grid>
+            <Grid justify="flex-end">
+              <Button
+                type="submit"
+                radius="sm"
+                size="md"
+                style={{ marginRight: 10 }}
+                onClick={() => setOpened(false)}
+              >
+                Create ROI
+              </Button>
+              <Button
+                radius="sm"
+                size="md"
+                onClick={() => setOpened(false)}
+                color="red"
+              >
+                Close
+              </Button>
+            </Grid>
+          </form>
+        </Modal>
+
+        <Group position="center">
+          <Button
+            fullWidth
+            leftIcon={<FaPlusSquare />}
+            radius="sm"
+            size="xl"
+            style={{ height: 100, marginRight: 0, fontSize: 25 }}
+            uppercase
+            onClick={() => setOpened(true)}
+          >
+            Create a New ROI
+          </Button>
+        </Group>
+      </>
+    );
+}
 
 export default CreateNewRoi;

@@ -25,6 +25,7 @@ import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethod
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
@@ -32,9 +33,6 @@ export interface IButtonAddCompanyProps {
 
 const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
   const [opened, setOpened] = useState(false);
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const router = useRouter();
   const p = router.query;
   const [file, setFile] = useState<File | null>(null);
@@ -42,6 +40,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [filter, setFilter] = useState<string[]>([""]);
+  const userZ = useUserStore((state) => (state.user))
 
   const form = useForm({
     initialValues: {
@@ -62,7 +61,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${company}/template`,
+        `/v1/company/${userZ?.company_id}/template`,
         {
           name: values.name,
           status: "1",

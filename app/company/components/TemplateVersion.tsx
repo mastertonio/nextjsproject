@@ -1,6 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import {
-  AppShell,
   useMantineTheme,
   Input,
   Grid,
@@ -13,39 +12,17 @@ import {
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  GetStaticPaths,
-  GetStaticPathsContext,
-} from "next";
-
-import RoiNavbar from "@core/components/navbar/Navbar";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
 import {
-  sortCompanyTemplatesData,
-  ICompanyTemplatesProps,
   ICompanyTemplatesVersionsProps,
   sortCompanyTemplatesVersionData,
 } from "@app/dashboard/components/table/utils/tableMethods";
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
-import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
-import Pophover from "@app/core/components/popover/Pophover";
-import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
-import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
-import TransferButton from "@app/company/components/buttons/Transfer";
-import CompanyUserTable, {
-  ICompanyUserTableProps,
-} from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import shortUUID from "short-uuid";
-import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
-import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import AddVersion from "./buttons/AddVersion";
 import EditVersion from "./buttons/EditVersion";
 import FourOhFour from "pages/404";
@@ -63,14 +40,7 @@ const getTemplatesVersions = async (
   temp: string,
   value: string
 ) => {
-  try {
-    console.log(comp, temp);
-    const res = await axios.get(`/v1/company/${comp}/template/${temp}/version`);
-
-    return res.data;
-  } catch (error) {
-    return error;
-  }
+  return await axios.get(`/v1/company/${comp}/template/${temp}/version`);
 };
 
 const TemplateVersion: React.FC<ITemplateVersionType> = ({
@@ -104,7 +74,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<
     keyof ICompanyTemplatesVersionsProps | null
   >(null);
@@ -113,7 +83,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -125,14 +95,14 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortCompanyTemplatesVersionData(data, { sortBy: field, reversed, search })
+      sortCompanyTemplatesVersionData(data?.data, { sortBy: field, reversed, search })
     );
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyTemplatesVersionData(data, {
+      sortCompanyTemplatesVersionData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -143,7 +113,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyTemplatesVersionData(data, {
+      sortCompanyTemplatesVersionData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,

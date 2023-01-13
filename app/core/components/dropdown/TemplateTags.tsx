@@ -16,51 +16,63 @@ export interface ITemplateList {
 
 interface ITempList {
   filter: string[]
-  handleFilter: (e: SetStateAction<string[]>)=> void
+  handleFilter: (e: SetStateAction<string[]>) => void
 }
 
 const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
-  const { classes } = useStyles();
-  const [values, setValues] = useState<any>("Admin");
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const userCtx = useContext(UserContext)
 
   const getTemplateList = async () => {
-    try {
-      const res = await axios.get(
+     return await axios.get(
         `/v1/dashboard/template/list`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
-  const { isLoading, status, data, isFetching, refetch } = useQuery(
+  const { isLoading, status, data, isFetching, refetch, isError, isSuccess } = useQuery(
     "templateList",
     getTemplateList
   );
 
-  const dataTemp2 = data?.map((a: { name: string; build: any }) => {return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-    key: b._id,
-    value: b.name,
-    label: b.name,
-    group: a.name
-  }))
-}).flat();
+  if (isLoading) return <div>Loading</div>
 
-  return (
-    <MultiSelect
-      style={{ width: 450 }}
-      placeholder="Filter Templates"
-      searchable
-      clearable
-      data={dataTemp2 ?? []}
-      value={filter}
-      onChange={handleFilter}
-    />
-  );
-};
+  if (isError) {
+    return (
+      <MultiSelect
+        style={{ width: 450 }}
+        placeholder="Filter Templates"
+        searchable
+        clearable
+        // data={dataTemp2 ?? []}
+        data={[]}
+        value={filter}
+        onChange={handleFilter}
+      />
+    );
+  };
+
+  if (isSuccess) {
+    const dataTemp2 = data?.data.map((a: { name: string; build: any }) => {
+      return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+        key: b._id,
+        value: b.name,
+        label: b.name,
+        group: a.name
+      }))
+    }).flat();
+
+    return (
+      <MultiSelect
+        style={{ width: 450 }}
+        placeholder="Filter Templates"
+        searchable
+        clearable
+        data={dataTemp2 ?? []}
+        value={filter}
+        onChange={handleFilter}
+      />
+    );
+  }
+
+  return <></>
+}
 
 export default TempList;

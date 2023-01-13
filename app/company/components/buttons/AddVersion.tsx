@@ -40,9 +40,6 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
   temp_id
 }) => {
   const [opened, setOpened] = useState(false);
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const router = useRouter();
   const p = router.query;
   const [file, setFile] = useState<File | null>(null);

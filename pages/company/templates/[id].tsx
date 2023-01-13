@@ -45,32 +45,27 @@ import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
 import FourOhFour from "pages/404";
 
-const getCompanyTemplate = async (_id: string, token: string) => {
-  try {
-    const res = await axios.get(
-      `/v1/company/${_id}/template`
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
+
 
 const TemplateDashboard: React.FC = () => {
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({ offset: 60 });
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const templatesID =
     typeof router.query?.id === "string" ? router.query.id : "";
+
+
+  const getCompanyTemplate = async (_id: string) => {
+    return await axios.get(
+      `/v1/company/${_id}/template`
+    );
+  };
 
   const { isLoading, isError, error, data, refetch, isFetching, isSuccess } =
     useQuery(
       ["get_specific_company_templates", templatesID],
-      () => getCompanyTemplate(templatesID, value),
+      () => getCompanyTemplate(templatesID),
       {
         enabled: templatesID.length > 0,
       }
@@ -81,7 +76,7 @@ const TemplateDashboard: React.FC = () => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof ICompanyTemplatesProps | null>(
     null
   );
@@ -90,7 +85,7 @@ const TemplateDashboard: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -102,14 +97,14 @@ const TemplateDashboard: React.FC = () => {
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortCompanyTemplatesData(data, { sortBy: field, reversed, search })
+      sortCompanyTemplatesData(data?.data, { sortBy: field, reversed, search })
     );
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyTemplatesData(data, {
+      sortCompanyTemplatesData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -120,7 +115,7 @@ const TemplateDashboard: React.FC = () => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyTemplatesData(data, {
+      sortCompanyTemplatesData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -263,53 +258,53 @@ const TemplateDashboard: React.FC = () => {
                     (element: {
                       _id: React.Key | null | undefined;
                       name:
-                        | string
-                        | number
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                        any,
+                        string | React.JSXElementConstructor<any>
+                      >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
                       notes:
-                        | string
-                        | number
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                        any,
+                        string | React.JSXElementConstructor<any>
+                      >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
                       status:
-                        | string
-                        | number
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                        any,
+                        string | React.JSXElementConstructor<any>
+                      >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
                       actions:
-                        | string
-                        | number
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                        any,
+                        string | React.JSXElementConstructor<any>
+                      >
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
                     }) => (
                       <tr key={element._id} style={{ height: 20 }}>
                         <td>{element.name}</td>
@@ -361,7 +356,7 @@ const TemplateDashboard: React.FC = () => {
                 update={refetch}
                 comp_id={templatesID}
                 temp_id={temp_id}
-                first_temp={data?.[0]._id}
+                first_temp={data?.data[0]._id}
                 name={name}
               />
             </>

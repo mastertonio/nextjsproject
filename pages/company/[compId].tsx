@@ -20,13 +20,14 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useUserStore } from "@app/store/userState";
 
 const Company: React.FC = () => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
   const router = useRouter();
   const [user, setUser] = useState<any>({});
-  const p = router.query;
+  const userZ = useUserStore((state) => (state.user))
+  
 
   const { register, handleSubmit } = useForm({
     mode: "onBlur",
@@ -43,16 +44,8 @@ const Company: React.FC = () => {
     alert(data.first_name);
   };
 
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-
   const getCurrentUser = async () => {
-    try {
-      const res = await axios.get(`/v1/users/${current}`);
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/users/${userZ?.id}`);
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -61,7 +54,7 @@ const Company: React.FC = () => {
   );
 
   useEffect(() => {
-    setUser(data);
+    setUser(data?.data);
   }, [data]);
 
   if (isLoading)

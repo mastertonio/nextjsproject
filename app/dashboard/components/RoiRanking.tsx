@@ -18,21 +18,10 @@ export interface IRankCountProps {
 }
 
 const RoiRanking: React.FC<IRankCountProps> = () => {
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current] = useLocalStorage({ key: "current-user" });
-  const router = useRouter();
-  const p = router.query;
-  const userCtx = useContext(UserContext)
-
   const getRankings = async () => {
-    try {
-      const res = await axios.get(
+    return await axios.get(
         `/v1/dashboard/ranking/list`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
   const { isLoading, status, data, isFetching } = useQuery(
@@ -41,7 +30,7 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
   );
 
 
-  const elements = data?.sort((a: { totalROIS: number; }, b: { totalROIS: number; }) => b.totalROIS - a.totalROIS);
+  const elements = data?.data.sort((a: { totalROIS: number; }, b: { totalROIS: number; }) => b.totalROIS - a.totalROIS);
   const [rank, setRank] = useState<number>(0)
   const rows = elements?.map((element: { _id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; totalROIS: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }, index: number) => (
     <tr key={element._id}>

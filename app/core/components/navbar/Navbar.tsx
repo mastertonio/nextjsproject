@@ -33,32 +33,6 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
       setIsOpen((prevState) => !prevState)
   }
 
-  // const [user, setUser] = useState<any>({});
-  // const [value] = useLocalStorage({ key: "auth-token" });
-  // const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  // const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  // const sessionToken = sessionStorage.getItem('auth-token')
-
-  // const getCurrentUser = async () => {
-  //   try {
-  //     const res = await axios.get(`${process.env.NEXT_DEV_PORT}/v1/users/${userData?.id}`, {
-  //       withCredentials: true,
-  //     });
-  //     return res.data;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // };
-
-  // const { isLoading, status, data, isFetching, refetch } = useQuery(
-  //   "userList",
-  //   getCurrentUser
-  // );
-
-  // useEffect(() => {
-  //   setUser(data);
-  // }, [data]);
-
   return (
     <Header height={70} p="md" className={classes.header}>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>

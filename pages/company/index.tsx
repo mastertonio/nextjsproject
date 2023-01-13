@@ -148,17 +148,10 @@ export interface iDashboardRowProps {
 const CompanyList: React.FC<iDashboardRowProps> = () => {
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [subComp, setSubComp] = useLocalStorage({ key: "sub-comp" });
   const router = useRouter();
 
   const getCompanies = async () => {
-    try {
-      const res = await axios.get(`/v1/company`);
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/company`);
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -171,14 +164,14 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof ICompanyProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -189,13 +182,13 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortCompanyData(data, { sortBy: field, reversed, search }));
+    setSortedData(sortCompanyData(data?.data, { sortBy: field, reversed, search }));
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyData(data, {
+      sortCompanyData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -206,7 +199,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyData(data, {
+      sortCompanyData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -255,7 +248,6 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           size="xs"
           color="cyan"
           onClick={() => {
-            setSubComp(item._id);
             router.push(`/company/users/${item._id}`);
           }}
         >

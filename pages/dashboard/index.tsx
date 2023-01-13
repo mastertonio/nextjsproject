@@ -40,21 +40,10 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [userInfo, setUserInfo] = useLocalStorage<State>({ key: "ckear" });
-  const p = router.query;
-  const userCtx = useContext(UserContext);
-  const tokenZ = useUserStore(state => state.token)
+  const userZ = useUserStore((state) => (state.user))
 
   const getDashboardData = async () => {
-    try {
-      const res = await axios.get(`/v1/dashboard`);
-      console.log(res)
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/dashboard`);
   };
 
   const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
@@ -86,11 +75,11 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         <div className={classes.body}>
           <div className={classes.welcome}>
             <Welcome
-              name={data?.welcome.account_name}
-              active_roi={data?.welcome.active_roi}
-              current_roi={data?.welcome.current_roi}
+              name={data?.data.welcome.account_name}
+              active_roi={data?.data.welcome.active_roi}
+              current_roi={data?.data.welcome.current_roi}
             />
-            <ViewCount viewcount={data?.viewcount} />
+            <ViewCount viewcount={data?.data.viewcount} />
           </div>
           <div className={classes.dashboard_graph}>
             <DashboardGraph />
@@ -102,7 +91,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         </div>
         <div className={classes.bar_graph_wrapper}>
           <Text size="lg">My ROIs</Text>
-          <Row my_roi={data?.my_roi} refetch={refetch} />
+          <Row my_roi={data?.data.my_roi} refetch={refetch} />
         </div>
       </AppShell>
     );
