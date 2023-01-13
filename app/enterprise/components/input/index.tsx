@@ -29,6 +29,7 @@ import {
 } from "@tabler/icons";
 import { ReactNode, useState } from "react";
 import { iSliderCardProps } from "../../../core/components/card";
+import styles from "@styles/tiptap.module.scss";
 
 export type iVariableProp = {
   id: string;
@@ -40,6 +41,7 @@ export type iVariableProp = {
   disabled: boolean
   other: iOtherTypeProps
   choices: iChoicesTypeProps[]
+  content: string
 };
 
 export type iElemsProp = {
@@ -86,18 +88,18 @@ const InputVariable: React.FC<iGrayProps> = ({
       // gap="xs"
       // direction="row"
       // wrap="wrap"
-      style={{ marginTop: 10, marginBottom: 10, padding: 10, width: "100%" }}
+      className="mt-[10px] mb-[10px] p-[10px] w-full"
     >
-      <Stack pb={20} w={"76%"} style={{ backgroundColor: "white", padding: 10, marginLeft: 10, borderRadius: 5 }}>
+      <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-[12px] w-[96%] sm:w-[76%]">
         {type == "variables" ? elements.map((elem) => (
           <div key={elem.id} >
             <Grid>
               <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}></Text>
               {elem.toggle ? (
-              <Button className="ml-auto w-48 m-8" color={value} onClick={() => toggle()} radius="md" size="md">
-                {value == "red" ? "Exclude" : "Include"}
-              </Button>)
-              : ""
+                <Button className="ml-auto w-48 m-8" color={value} onClick={() => toggle()} radius="md" size="md">
+                  {value == "red" ? "Exclude" : "Include"}
+                </Button>)
+                : ""
               }
             </Grid>
 
@@ -106,17 +108,12 @@ const InputVariable: React.FC<iGrayProps> = ({
               {elem.elements.length > 0 ? elem.elements.map((state) => (
                 <Grid
                   key={state.id}
-                  style={{
-                    marginLeft: 30,
-                    marginRight: 30,
-                    marginTop: 7,
-                    marginBottom: 3,
-                  }}
+                  className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
                 >
-                  <Text>{state.label}: </Text>
+                  <Text className="w-[100%] md:w-[300px] 2xl:w-[500px]">{state.label}: </Text>
                   {state.type == "textarea" ? (
                     <Textarea
-                      style={{ width: 400, marginLeft: "auto" }}
+                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
                       withAsterisk
                     />) : state.type == "checkbox" ? (
                       <>
@@ -142,7 +139,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                         <Rating
                           defaultValue={5}
                           fractions={2}
-                          style={{ marginLeft: 250 }}
+                          style={{ marginLeft: 190 }}
                           color="indigo" size="xl" />
                       </>
                     ) : state.type == "slid" ? (
@@ -162,7 +159,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                           step={20}
                         />
                       </>
-                    ) : (
+                    ) : state.type == "input" ? (
                       <TextInput
                         required
                         style={{ width: 400, marginLeft: "auto" }}
@@ -175,7 +172,9 @@ const InputVariable: React.FC<iGrayProps> = ({
                         disabled={state.disabled ? true : false}
                         placeholder="$0"
                       // defaultValue={myCompany.name}
-                      />)
+                      />) : state.type == "table" ? (
+                        <div className={styles.ProseMirror} dangerouslySetInnerHTML={{ __html: state.content }}></div>
+                      ) : ""
                   }
                 </Grid>)) : ""}
             </Stack>

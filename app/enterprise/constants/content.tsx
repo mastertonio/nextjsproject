@@ -428,23 +428,31 @@ export const finalData = {
                 type: "table",
                 label: "Table testing, with label or no ?",
                 disabled: false,
-                content: (<Table >
+                content: (`<table>
+                <tbody>
                   <tr>
-                    <th>Company</th>
-                    <th>Contact</th>
-                    <th>Country</th>
+                    <th>Name</th>
+                    <th colspan="3">Description</th>
                   </tr>
                   <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                    <td>Germany</td>
+                    <td>Cyndi Lauper</td>
+                    <td>singer</td>
+                    <td>songwriter</td>
+                    <td>actress</td>
                   </tr>
                   <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                    <td>Mexico</td>
+                    <td>Marie Curie</td>
+                    <td>scientist</td>
+                    <td>chemist</td>
+                    <td>physicist</td>
                   </tr>
-                </Table>)
+                  <tr>
+                    <td>Indira Gandhi</td>
+                    <td>prime minister</td>
+                    <td colspan="2">politician</td>
+                  </tr>
+                </tbody>
+              </table>`)
               },
               {
                 id: "08",
