@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { Table } from "@mantine/core/lib/Table";
 import {
   IconQuestionMark,
   IconZoomQuestion,
@@ -403,6 +404,28 @@ export const finalData = {
                 icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>),
                 rightSection: null,
                 disabled: false
+              }, {
+                id: "1107",
+                type: "table",
+                label: "Table testing, with label or no ?",
+                disabled: false,
+                content: (<Table >
+                  <tr>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Country</th>
+                  </tr>
+                  <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td>Maria Anders</td>
+                    <td>Germany</td>
+                  </tr>
+                  <tr>
+                    <td>Centro comercial Moctezuma</td>
+                    <td>Francisco Chang</td>
+                    <td>Mexico</td>
+                  </tr>
+                </Table>)
               },
             ],
           },
