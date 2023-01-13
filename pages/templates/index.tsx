@@ -13,13 +13,6 @@ import {
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  GetStaticPaths,
-  GetStaticPathsContext,
-} from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
 import { useLocalStorage, useScrollIntoView } from "@mantine/hooks";
@@ -33,16 +26,12 @@ import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
 import Sidebar from "@app/core/components/sidebar/Sidebar";
-import Pophover from "@app/core/components/popover/Pophover";
-import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
-import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
-import TransferButton from "@app/company/components/buttons/Transfer";
-import CompanyUserTable from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import shortUUID from "short-uuid";
 import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
 import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
+import { useUserStore } from "@app/store/userState";
 
 const TemplatesDashboard: React.FC = () => {
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
@@ -51,20 +40,14 @@ const TemplatesDashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const p = router.query;
 
+  const userZ = useUserStore((state) => (state.user))
+
   const getCompanyTemplates = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/company/${company}/template`
+    return await axios.get(
+        `/v1/company/${userZ?.company_id}/template`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -77,7 +60,7 @@ const TemplatesDashboard: React.FC = () => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof ICompanyTemplatesProps | null>(
     null
   );
@@ -86,7 +69,7 @@ const TemplatesDashboard: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -98,14 +81,14 @@ const TemplatesDashboard: React.FC = () => {
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortCompanyTemplatesData(data, { sortBy: field, reversed, search })
+      sortCompanyTemplatesData(data?.data, { sortBy: field, reversed, search })
     );
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyTemplatesData(data, {
+      sortCompanyTemplatesData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -116,7 +99,7 @@ const TemplatesDashboard: React.FC = () => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyTemplatesData(data, {
+      sortCompanyTemplatesData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -349,9 +332,9 @@ const TemplatesDashboard: React.FC = () => {
             <TemplateVersion
               refTarget={targetRef}
               update={refetch}
-              comp_id={company}
+              comp_id={userZ?.company_id ? userZ.company_id : ""}
               temp_id={temp_id}
-              first_temp={data?.[0]._id}
+              first_temp={data?.data[0]._id}
               name={name}
             />
           </>

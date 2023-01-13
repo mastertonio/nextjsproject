@@ -22,6 +22,7 @@ import {
   ICompanyTemplatesProps,
 } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 export interface IButtonTemplateProps {
   id: string;
@@ -46,6 +47,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
   const p = router.query;
   const [state, setState] = useState<string | null>(null);
   const [password, setPass] = useInputState("");
+  const userZ = useUserStore((state) => (state.user))
 
   const form = useForm({
     initialValues: {
@@ -68,7 +70,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
       });
 
       const response = await axios.patch(
-        `/v1/company/${company}/template/${id}`,
+        `/v1/company/${userZ?.company_id}/template/${id}`,
         {
           name: values.name,
           notes: values.notes,

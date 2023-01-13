@@ -17,6 +17,7 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 export interface ITransferSingleButton {
   id: string;
@@ -33,16 +34,12 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
   const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const p = router.query;
   const [state, setState] = useState<string | null>(null);
+  const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/company/${company}/user`
+    return await axios.get(
+        `/v1/company/${userZ?.company_id}/user`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
@@ -50,7 +47,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
     getManagers
   );
  
-  const transferlist = data?.map((item: { _id: string; email: string; })=> ({key: item._id, value: item._id, label: item.email}))
+  const transferlist = data?.data.map((item: { _id: string; email: string; })=> ({key: item._id, value: item._id, label: item.email}))
 
 
 

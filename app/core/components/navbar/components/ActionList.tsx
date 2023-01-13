@@ -26,17 +26,8 @@ const ActionList: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post(
-        `/v1/auth/logout`,
-        { refreshToken: refresh }
-      );
-      if (res) {
-        router.push("/");
-        setValue("");
-        setRefresh("");
-        setCurrent("");
-        sessionStorage.clear()
-      }
+      sessionStorage.clear()
+      router.push("/");
     } catch (error) {
       return error;
     }

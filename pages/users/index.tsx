@@ -17,13 +17,6 @@ import {
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  GetStaticPaths,
-  GetStaticPathsContext,
-} from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
 import { useLocalStorage } from "@mantine/hooks";
@@ -44,6 +37,7 @@ import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser
 import TransferButton from "@app/company/components/buttons/Transfer";
 import CompanyUserTable from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
+import { useUserStore } from "@app/store/userState";
 
 export interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -116,20 +110,13 @@ const UsersDashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const p = router.query;
+  const userZ = useUserStore((state) => (state.user))
 
   const getCompanyUsers = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/company/${company}/user`
+    return await axios.get(
+        `/v1/company/${userZ?.company_id}/user`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -142,14 +129,14 @@ const UsersDashboard: React.FC = () => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof ICompanyUsersProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -161,14 +148,14 @@ const UsersDashboard: React.FC = () => {
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortCompanyUsersData(data, { sortBy: field, reversed, search })
+      sortCompanyUsersData(data?.data, { sortBy: field, reversed, search })
     );
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyUsersData(data, {
+      sortCompanyUsersData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -179,7 +166,7 @@ const UsersDashboard: React.FC = () => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyUsersData(data, {
+      sortCompanyUsersData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -363,7 +350,7 @@ const UsersDashboard: React.FC = () => {
           />
         </div>
       </div>
-      <CompanyUserTable company={company} update={refetch} />
+      <CompanyUserTable company={userZ?.company_id ? userZ.company_id : ''} update={refetch} />
     </AppShell>
   );
 };

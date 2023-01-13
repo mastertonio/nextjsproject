@@ -1,3 +1,4 @@
+import { useUserStore } from "@app/store/userState";
 import {
   Button,
   Collapse,
@@ -25,18 +26,12 @@ const Sidebar: React.FC = () => {
   const router = useRouter();
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [user, setUser] = useState<any>({});
+  const userZ = useUserStore((state) => (state.user))
 
   const getCurrentUser = async () => {
-    try {
-      const res = await axios.get(`/v1/users/${current}`);
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/users/${userZ?.id}`);
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -45,7 +40,7 @@ const Sidebar: React.FC = () => {
   );
 
   useEffect(() => {
-    setUser(data);
+    setUser(data?.data);
   }, [data]);
 
   return (
