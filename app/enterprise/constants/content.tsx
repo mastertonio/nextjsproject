@@ -112,7 +112,7 @@ export const finalData = {
           mainTitle: {
             type: "text",
             style: "",
-            text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
+            text: '<h1 class="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">ROI DASHBOARD | 2 Year Projection <span class="float-right text-[#216C2A] font-bold">$0</span></h1>',
           },
           subTitle: {
             type: "text",
