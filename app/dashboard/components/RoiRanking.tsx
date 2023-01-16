@@ -45,7 +45,7 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
   const [rank, setRank] = useState<number>(0)
   const rows = elements?.map((element: { _id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; totalROIS: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }, index: number) => (
     <tr key={element._id}>
-      <td><span style={{ backgroundColor: '#1ab394', paddingTop: 3, paddingBottom: 3, paddingLeft: 8, paddingRight: 8, margin: 15, color: "white", borderRadius: 4}}>{index + 1}</span></td>
+      <td><span className="bg-[#1ab394] pt-[3px] pb-[3px] pl-[8px] pr-[8px] m-[15px] text-white rounded-[4px]">{index + 1}</span></td>
       <td>{element.name}</td>
       <td>{element.totalROIS}</td>
     </tr>
@@ -53,7 +53,7 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
 
   return (
     <>
-      <Table>
+      <Table className="mt-[20px] sm:mt-0">
         <thead>
           <tr>
             <th>Ranking</th>

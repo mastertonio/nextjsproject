@@ -200,11 +200,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     uniqueViews: item.uniqueViews,
     actions: (
       <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: 'center'
-        }}
+        className="flex justify-end items-center"
       >
         <EditButton id={item.id} refetch={refetch} name={item.name} />
         <CloneButton id={item.id} refetch={refetch} name={item.name} />
@@ -216,7 +212,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
 
   return (
     <div>
-      <Grid className="m-[20px]">
+      <Grid className="m-0 sm:m-[20px]">
         <TempList filter={filter} handleFilter={handleFilterChange} />
         {/* <MultiSelect
           style={{ width: 450 }}
@@ -230,7 +226,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         <Input
           variant="default"
           placeholder="Search for ROI"
-          className="ml-auto"
+          className="ml-auto w-full sm:w-[unset] mt-[20px] sm:mt-0"
           onChange={(event: {
             target: { value: React.SetStateAction<string> };
           }) => {
@@ -248,14 +244,14 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
             style={{ zIndex: 50 }}
           >
             <tr>
-              <th className="w-[100px]"></th>
-              <th className="w-[150px]">Status</th>
+              <th className="w-[80px] sm:w-[100px]"></th>
+              <th className="w-[130px] sm:w-[150px]">Status</th>
               <th className="w-[105px]">Importance</th>
               <Th
                 sorted={sortBy === "name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
-                style="w-[300px]"
+                style="w-[300px] whitespace-nowrap sm:whitespace-normal"
               >
                 ROI name
               </Th>
@@ -263,7 +259,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "source_name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
-                style="w-[225px]"
+                style="w-[225px] whitespace-nowrap sm:whitespace-normal"
               >
                 Template Name
               </Th>
@@ -271,7 +267,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "dateCreated"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("dateCreated")}
-                style="w-[250px]"
+                style="w-[250px] whitespace-nowrap sm:whitespace-normal"
               >
                 Dates
               </Th>
@@ -279,7 +275,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "views"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("views")}
-                style="w-[190px]"
+                style="w-[190px] whitespace-nowrap sm:whitespace-normal"
               >
                 Views
               </Th>
@@ -287,11 +283,11 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "uniqueViews"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("uniqueViews")}
-                style="w-[200px]"
+                style="w-[200px] whitespace-nowrap sm:whitespace-normal"
               >
                 Unique Views
               </Th>
-              <th></th>
+              <th className="whitespace-nowrap sm:whitespace-normal"></th>
             </tr>
           </thead>
           {isLoading ? (
@@ -384,26 +380,26 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                   | undefined;
                 }) => (
                   <tr key={element.id} className="h-[20px]">
-                    <td className="w-[10px]" >{element.button}</td>
-                    <td className="w-[145px]">{element.status}</td>
-                    <td className="w-[140px]">{element.importance}</td>
+                    <td className="w-[10px] whitespace-nowrap sm:whitespace-normal" >{element.button}</td>
+                    <td className="w-[145px] whitespace-nowrap sm:whitespace-normal">{element.status}</td>
+                    <td className="w-[140px] whitespace-nowrap sm:whitespace-normal">{element.importance}</td>
                     <td
-                      className="w-[310px] cursor-pointer"
+                      className="w-[310px] cursor-pointer whitespace-nowrap sm:whitespace-normal"
                       onClick={() => {
                         router.push(`/templates/${element.id}`);
                       }}
                     >
                       {element.roiname}
                     </td>
-                    <td className="w-[240px]">{element.source_name}</td>
-                    <td className="w-[285px]">{element.dates}</td>
-                    <td className="w-[150px] pl-[20px]" >
+                    <td className="w-[240px] whitespace-nowrap sm:whitespace-normal">{element.source_name}</td>
+                    <td className="w-[285px] whitespace-nowrap sm:whitespace-normal">{element.dates}</td>
+                    <td className="w-[150px] pl-[20px] whitespace-nowrap sm:whitespace-normal" >
                       {element.views}
                     </td>
-                    <td className="w-[190px] pl-[40px]">
+                    <td className="w-[190px] pl-[40px] whitespace-nowrap sm:whitespace-normal">
                       {element.uniqueViews}
                     </td>
-                    <td>{element.actions}</td>
+                    <td className="whitespace-nowrap sm:whitespace-normal">{element.actions}</td>
                   </tr>
                 )
               )}

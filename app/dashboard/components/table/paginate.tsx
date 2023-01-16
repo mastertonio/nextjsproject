@@ -29,18 +29,13 @@ const Paginate: React.FC<IPaginateProps> = ({
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        margin: 20,
-      }}
+      className="flex flex-col sm:flex-row items-center m-0 sm:m-[20px]"
     >
-      <Text style={{ marginRight: 5 }}>
-        Showing {firstIndex+1} to {lastIndex>totalResults ? totalResults : lastIndex} of {totalResults} ROIs{" "}
+      <Text className="mr-[5px] mt-[20px]">
+        Showing {firstIndex + 1} to {lastIndex > totalResults ? totalResults : lastIndex} of {totalResults} ROIs{" "}
       </Text>
       <Select
-        style={{ width: 70 }}
+        className="w-[70px] mt-[20px] sm:mt-0"
         placeholder="Pick one"
         value={defaultlimit}
         data={[
@@ -66,9 +61,9 @@ const Paginate: React.FC<IPaginateProps> = ({
           }
         }}
       />
-      <Text style={{ marginLeft: 5 }}> ROIs per page </Text>
+      <Text className="ml-[5px] mt-[20px] sm:mt-0"> ROIs per page </Text>
       <Pagination
-        style={{ marginLeft: "auto" }}
+        className="ml-auto mt-[20px] sm:mt-0"
         total={page}
         color="teal"
         page={activePage}

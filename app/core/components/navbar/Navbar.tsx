@@ -60,7 +60,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
   // }, [data]);
 
   return (
-    <Header height={70} p="md" className={`${classes.header}`}>
+    <Header height={opened === true ? 220 : 70} p="md" className={`${classes.header} flex-col sm:flex-row`}>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>
         <Burger
           opened={opened}
@@ -92,9 +92,9 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
         ""
       )}
       {router.route.includes("dashboard/manager") && user?.role == "company-manager" ? (
-        <div style={{ marginLeft: 10 }}>
+        <div className="ml-[10px]">
           <Button
-            style={{ marginRight: "auto" }}
+            className="mr-auto"
             onClick={() => router.push('/dashboard')}
           >
             Main Dashboard
@@ -105,9 +105,9 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
         ""
       )}
       {router.route == "/dashboard" && user?.role == "company-manager" ? (
-        <div style={{ marginLeft: 10 }}>
+        <div className="ml-[10px]">
           <Button
-            style={{ marginRight: "auto" }}
+            className="mr-auto"
             onClick={() => router.push('/dashboard/manager')}
           >
             Back to Reporting
@@ -117,7 +117,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
       ) : (
         ""
       )}
-      <Group position="right" className="ml-auto hidden sm:flex flex-col sm:flex-row justify-start sm:justify-center ">
+      <Group position="right" className={`${opened === true ? 'flex' : 'hidden'} ml-[unset] sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
         <AdminList />
         <PoweredByRoi />
         <ActionList />

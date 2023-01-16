@@ -116,16 +116,17 @@ const CreateNewRoi: React.FC = () => {
   return (
     <>
       <Modal
+        className="w-full"
         opened={opened}
         onClose={() => setOpened(false)}
         withCloseButton={false}
         size="50%"
       >
-        <form onSubmit={form.onSubmit(handleSubmit)} style={{ margin: 30 }}>
+        <form onSubmit={form.onSubmit(handleSubmit)} className="m-[10px] sm:m-[30px]">
           <Text
             weight={700}
             color="gray"
-            className="ml-[20px] mb-[40px] text-[30px]"
+            className="ml-[20px] mb-[40px] text-[25px] sm:text-[30px]"
           >
             Create A New ROI Calculation
           </Text>
@@ -200,7 +201,7 @@ const CreateNewRoi: React.FC = () => {
           leftIcon={<FaPlusSquare />}
           radius="sm"
           size="xl"
-          className="h-[100px] mr-0 text-[25px]"
+          className="h-[80px] sm:h-[100px] mt-[20px] sm:mt-0 mr-0 text-[20px] sm:text-[25px]"
           uppercase
           onClick={() => setOpened(true)}
         >

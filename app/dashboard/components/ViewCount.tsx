@@ -35,7 +35,7 @@ const ViewCount: React.FC<IViewCountProps> = ({ viewcount }) => {
         transitionDuration={400}
         transitionTimingFunction="linear"
       >
-        <Table>
+        <Table className="mt-[20px] sm:mt-0">
           <tbody>{rows}</tbody>
         </Table>
       </Collapse>
