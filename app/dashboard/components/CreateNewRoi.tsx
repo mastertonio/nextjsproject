@@ -32,8 +32,8 @@ const CreateNewRoi: React.FC = () => {
 
   const getTemplateButtonList = async () => {
     return await axios.get(
-        `/v1/dashboard/template/list`
-      );
+      `/v1/dashboard/template/list`
+    );
   };
 
   const { isLoading, status, data: resp, isFetching, isSuccess, isError } = useQuery(
@@ -41,14 +41,18 @@ const CreateNewRoi: React.FC = () => {
     getTemplateButtonList
   );
 
-  const actionList = data?.map((a: { name: string; build: any }) => {
-    return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-      key: b._id,
-      value: b._id,
-      label: b.name,
-      group: a.name
-    }))
-  }).flat();
+  if (isLoading) return <MainLoader />
+
+  if (isError) return <div>error</div>
+
+  // const actionList = resp?.map((a: { name: string; build: any }) => {
+  //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+  //     key: b._id,
+  //     value: b._id,
+  //     label: b.name,
+  //     group: a.name
+  //   }))
+  // }).flat()
 
   const form = useForm({
     initialValues: {
@@ -103,6 +107,19 @@ const CreateNewRoi: React.FC = () => {
     }
   };
 
+  if (isLoading) return <MainLoader />
+
+  if (isError) return <div>error</div>
+
+  // const actionList = resp?.map((a: { name: string; build: any }) => {
+  //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+  //     key: b._id,
+  //     value: b._id,
+  //     label: b.name,
+  //     group: a.name
+  //   }))
+  // }).flat()
+
   return (
     <>
       <Modal
@@ -121,7 +138,7 @@ const CreateNewRoi: React.FC = () => {
             Create A New ROI Calculation
           </Text>
 
-          <Grid style={{ margin: 20 }}>
+          <Grid className="m-[20px]">
             <Text>Name</Text>
             <TextInput
               required
@@ -131,7 +148,7 @@ const CreateNewRoi: React.FC = () => {
             />
           </Grid>
 
-          <Grid style={{ margin: 20, marginBottom: 20 }}>
+          <Grid className="m-[20px] mb-[20px]">
             <Text>Choose a Template</Text>
             <Select
               className="w-full ml-auto"
@@ -140,15 +157,13 @@ const CreateNewRoi: React.FC = () => {
               searchable
               clearable
               data={
-                actionList?.length > 0
-                  ? actionList
-                  : [
-                    {
-                      value: "",
-                      label: "No Template Detected",
-                      disabled: true,
-                    },
-                  ]
+                [
+                  {
+                    value: "",
+                    label: "No Template Detected",
+                    disabled: true,
+                  },
+                ]
               }
               {...form.getInputProps("template")}
             />
@@ -171,70 +186,19 @@ const CreateNewRoi: React.FC = () => {
               className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
-              Create A New ROI Calculation
-            </Text>
-
-            <Grid style={{ margin: 20 }}>
-              <Text>Name</Text>
-              <TextInput
-                required
-                style={{ width: 550, marginLeft: "auto" }}
-                placeholder="Enter Name"
-                {...form.getInputProps("name")}
-              />
-            </Grid>
-
-            <Grid style={{ margin: 20, marginBottom: 20 }}>
-              <Text>Choose a Template</Text>
-              <Select
-                style={{ width: 550, marginLeft: "auto" }}
-                rightSection={<AiOutlineDown />}
-                placeholder="Template"
-                searchable
-                clearable
-                data={
-                  [
-                    {
-                      value: "",
-                      label: "No Template Detected",
-                      disabled: true,
-                    },
-                  ]
-                }
-                {...form.getInputProps("template")}
-              />
-            </Grid>
-            <Grid
-              justify="flex-end"
-              style={{ marginRight: 20, marginBottom: 140 }}
+              Create ROI
+            </Button>
+            <Button
+              radius="sm"
+              size="md"
+              onClick={() => setOpened(false)}
+              color="red"
             >
-              <Checkbox
-                checked={checked}
-                onChange={(event) => setChecked(event.currentTarget.checked)}
-                label="Open the Created ROI"
-              />
-            </Grid>
-            <Grid justify="flex-end">
-              <Button
-                type="submit"
-                radius="sm"
-                size="md"
-                style={{ marginRight: 10 }}
-                onClick={() => setOpened(false)}
-              >
-                Create ROI
-              </Button>
-              <Button
-                radius="sm"
-                size="md"
-                onClick={() => setOpened(false)}
-                color="red"
-              >
-                Close
-              </Button>
-            </Grid>
-          </form>
-        </Modal>
+              Close
+            </Button>
+          </Grid>
+        </form>
+      </Modal>
 
       <Group position="center">
         <Button
@@ -251,6 +215,6 @@ const CreateNewRoi: React.FC = () => {
       </Group>
     </>
   );
-};
+}
 
 export default CreateNewRoi;
