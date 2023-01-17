@@ -37,8 +37,7 @@ interface ITemplateVersionType {
 }
 const getTemplatesVersions = async (
   comp: string,
-  temp: string,
-  value: string
+  temp: string
 ) => {
   return await axios.get(`/v1/company/${comp}/template/${temp}/version`);
 };
@@ -54,12 +53,11 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
 
   const { isLoading, isError, error, data, refetch, isFetching, isSuccess } =
     useQuery(
       ["get_all_company_templates_versions", temp_id],
-      () => getTemplatesVersions(comp_id, temp_id, value),
+      () => getTemplatesVersions(comp_id, temp_id),
       { refetchOnWindowFocus: false, enabled: temp_id.length > 0 }
     );
 
@@ -374,7 +372,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   }
 
   if (isError) {
-    return <FourOhFour />;
+    router.push('/404');
   }
 
   return <></>;
