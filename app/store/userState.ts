@@ -1,7 +1,7 @@
 import { State, UserContextTypes } from "@app/context/user.context";
 import { setegid } from "process";
-import create, { StateCreator } from "zustand";
-import { devtools, persist, PersistOptions } from "zustand/middleware";
+import { StateCreator, create } from "zustand";
+import { createJSONStorage, devtools, persist, PersistOptions } from "zustand/middleware";
 
 export interface UserState {
   user: UserContextTypes | null;
@@ -17,19 +17,30 @@ type MyPersist = (
   options: PersistOptions<UserState>
 ) => StateCreator<UserState>;
 
-// export const useUserStore = create<UserState>((set) => ({
-//   user: null,
-//   token: "",
-//   refresh: "",
-//   login: (user: UserContextTypes) => set((state) => ({ ...state, user })),
-//   setToken: (token: string) => set({ token }),
-//   setRefresh: (refresh: string) => set({ refresh }),
-// }));
-
 export const useUserStore = create<UserState>(
   (persist as MyPersist)(
     (set, get) => ({
-      user: null,
+      user: null
+      // {
+      //   verification_code: "",
+      //   company_id: "",
+      //   avatar: "",
+      //   created_by: "",
+      //   currency: "",
+      //   email: "",
+      //   email_verified_at: "",
+      //   first_name: "",
+      //   id: "",
+      //   isEmailVerified: true,
+      //   last_name: "",
+      //   manager: "",
+      //   name: "",
+      //   phone: "",
+      //   remember_token: "",
+      //   role: "",
+      //   status: 1
+      // }
+      ,
       token: "",
       refresh: "",
       login: (user: UserContextTypes) =>
@@ -39,7 +50,7 @@ export const useUserStore = create<UserState>(
     }),
     {
       name: "user-storage", // unique name
-      getStorage: () => sessionStorage, // (optional) by default the 'localStorage' is used
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default the 'localStorage' is used
     }
   )
 );

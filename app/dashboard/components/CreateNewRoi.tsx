@@ -20,36 +20,26 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useQuery } from "react-query";
 import UserContext from "@app/context/user.context";
+import MainLoader from "@app/core/components/loader/MainLoader";
+import { useUserStore } from "@app/store/userState";
 
 const CreateNewRoi: React.FC = () => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
-  const [value] = useLocalStorage({ key: "auth-token" });
   const [current] = useLocalStorage({ key: "current-user" });
-  const [templateCreated, setTemplateCreated] = useLocalStorage({
-    key: "cr-temp",
-  });
   const router = useRouter();
-  const p = router.query;
-  const userCtx = useContext(UserContext)
+  const userZ = useUserStore((state) => (state.user))
 
   const getTemplateButtonList = async () => {
-    try {
-      const res = await axios.get(
+    return await axios.get(
         `/v1/dashboard/template/list`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
-  const { isLoading, status, data, isFetching } = useQuery(
+  const { isLoading, status, data: resp, isFetching, isSuccess, isError } = useQuery(
     "template_List",
     getTemplateButtonList
   );
-
-  const [mapp, setMapp] = useState<Array<object>>([])
 
   const actionList = data?.map((a: { name: string; build: any }) => {
     return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
@@ -78,7 +68,7 @@ const CreateNewRoi: React.FC = () => {
         disallowClose: true,
       });
       const res = await axios.post(
-        `/v1/dashboard/${current}`,
+        `/v1/dashboard/${userZ?.id}`,
         { name: values.name, template_id: values.template }
       );
       if (res && checked) {
@@ -181,19 +171,70 @@ const CreateNewRoi: React.FC = () => {
               className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
-              Create ROI
-            </Button>
-            <Button
-              radius="sm"
-              size="md"
-              onClick={() => setOpened(false)}
-              color="red"
+              Create A New ROI Calculation
+            </Text>
+
+            <Grid style={{ margin: 20 }}>
+              <Text>Name</Text>
+              <TextInput
+                required
+                style={{ width: 550, marginLeft: "auto" }}
+                placeholder="Enter Name"
+                {...form.getInputProps("name")}
+              />
+            </Grid>
+
+            <Grid style={{ margin: 20, marginBottom: 20 }}>
+              <Text>Choose a Template</Text>
+              <Select
+                style={{ width: 550, marginLeft: "auto" }}
+                rightSection={<AiOutlineDown />}
+                placeholder="Template"
+                searchable
+                clearable
+                data={
+                  [
+                    {
+                      value: "",
+                      label: "No Template Detected",
+                      disabled: true,
+                    },
+                  ]
+                }
+                {...form.getInputProps("template")}
+              />
+            </Grid>
+            <Grid
+              justify="flex-end"
+              style={{ marginRight: 20, marginBottom: 140 }}
             >
-              Close
-            </Button>
-          </Grid>
-        </form>
-      </Modal>
+              <Checkbox
+                checked={checked}
+                onChange={(event) => setChecked(event.currentTarget.checked)}
+                label="Open the Created ROI"
+              />
+            </Grid>
+            <Grid justify="flex-end">
+              <Button
+                type="submit"
+                radius="sm"
+                size="md"
+                style={{ marginRight: 10 }}
+                onClick={() => setOpened(false)}
+              >
+                Create ROI
+              </Button>
+              <Button
+                radius="sm"
+                size="md"
+                onClick={() => setOpened(false)}
+                color="red"
+              >
+                Close
+              </Button>
+            </Grid>
+          </form>
+        </Modal>
 
       <Group position="center">
         <Button

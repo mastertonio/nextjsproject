@@ -78,18 +78,12 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [rating, setRating] = useState<number>(0);
   const [star, setStar] = useState<boolean>(true);
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const userCtx = useContext(UserContext)
 
   const getRoiListAll = async () => {
-    try {
-      const res = await axios.get(`/v1/dashboard/roi/list`);
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/dashboard/roi/list`);
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -98,7 +92,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   );
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const [limit, setLimit] = useState<number>(10);
@@ -106,7 +100,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof iDashRowProp | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
@@ -119,13 +113,13 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    setSortedData(sortData(data?.data, { sortBy: field, reversed, search }));
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortData(data, {
+      sortData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -136,7 +130,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortFilterData(data, {
+      sortFilterData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,

@@ -24,6 +24,7 @@ import ChangePass from "@core/components/forms/changepassword";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons'
 import MainLoader from "@app/core/components/loader/MainLoader";
+import { useUserStore } from "@app/store/userState";
 
 const UserProfile: React.FC = () => {
   const theme = useMantineTheme();
@@ -31,18 +32,12 @@ const UserProfile: React.FC = () => {
   const router = useRouter();
   const [user, setUser] = useState<any>({});
   const [userCred, setUserCred] = useState<any>();
-  const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
 
+  const userZ = useUserStore((state) => (state.user))
+
   const getCurrentUser = async () => {
-    try {
-      const res = await axios.get(`/v1/users/${current}`);
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/users/${userZ?.id}`);
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -63,7 +58,7 @@ const UserProfile: React.FC = () => {
         color: 'teal'
       })
       const res = await axios.patch(
-        `/v1/users/${current}`,
+        `/v1/users/${userZ?.id}`,
         {
           email: userCred.email,
           first_name: userCred.first_name,
@@ -108,8 +103,8 @@ const UserProfile: React.FC = () => {
   };
 
   useEffect(() => {
-    setUser(data);
-  }, [data, userInfo]);
+    setUser(data?.data);
+  }, [data]);
 
   return isLoading ? <MainLoader /> : (
     <AppShell

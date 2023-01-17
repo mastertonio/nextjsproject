@@ -44,20 +44,12 @@ export interface IDashboardGraphData {
   chartData: IDashboardData;
 }
 const ManagerDashboardGraph: React.FC = () => {
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [graphData, setGraphData] = useState<IDashboardData>();
-  const userCtx = useContext(UserContext)
 
   const getGraphData = async () => {
-    try {
-      const res = await axios.get(
+    return await axios.get(
         `/v1/dashboard/data/company/graph`
       );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -66,7 +58,7 @@ const ManagerDashboardGraph: React.FC = () => {
   );
 
   useEffect(() => {
-    setGraphData(data);
+    setGraphData(data?.data);
   }, [data]);
 
   const chartOptions: Highcharts.Options = {

@@ -126,32 +126,23 @@ interface ICompanyUsersElements {
     | undefined;
 }
 
-const getCompanyUsers = async (id: string, token: string) => {
-  try {
-    const res = await axios.get(`/v1/company/${id}/user`);
 
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const [subComp, setSubComp] = useLocalStorage({ key: "sub-comp" });
-  const [loading, setLoading] = useState(true);
   const companyID = typeof router.query?.id === "string" ? router.query.id : "";
   const p = router.query;
+
+  const getCompanyUsers = async (id: string) => {
+    return await axios.get(`/v1/company/${id}/user`);
+  };
 
   const { isLoading, isError, error, data, refetch, isFetching, isSuccess } =
     useQuery(
       [`get_specific_company_users`, companyID],
-      () => getCompanyUsers(companyID, value),
+      () => getCompanyUsers(companyID),
       {
         enabled: companyID.length > 0,
       }
@@ -163,14 +154,14 @@ const Dashboard: React.FC = () => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof ICompanyUsersProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -182,14 +173,14 @@ const Dashboard: React.FC = () => {
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortCompanyUsersData(data, { sortBy: field, reversed, search })
+      sortCompanyUsersData(data?.data, { sortBy: field, reversed, search })
     );
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyUsersData(data, {
+      sortCompanyUsersData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -200,7 +191,7 @@ const Dashboard: React.FC = () => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyUsersData(data, {
+      sortCompanyUsersData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,

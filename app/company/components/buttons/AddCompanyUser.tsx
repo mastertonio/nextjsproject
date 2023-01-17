@@ -25,6 +25,7 @@ import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethod
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
@@ -34,37 +35,25 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   refetch,
 }) => {
   const [opened, setOpened] = useState(false);
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const router = useRouter();
-  const p = router.query;
   const [file, setFile] = useState<File | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [currency, setCurrency] = useState<string | null>(null);
+  
+  const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/company/${company}/manager`
-      );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(
+      `/v1/company/${userZ?.company_id}/manager`
+    );
   };
 
   const getTemplates = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/dashboard/template/list`
-      );
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(
+      `/v1/dashboard/template/list`
+    );
   };
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
@@ -74,7 +63,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
 
   const templates = useQuery(["templates"], getTemplates);
 
-  const templateList = templates?.data
+  const templateList = templates?.data?.data
     ?.map((a: { name: string; build: any }) => {
       return a?.build?.map(
         (b: { _id: string; name: string; group: string }) => ({
@@ -88,7 +77,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
     .flat();
 
 
-  const templateList2 = templates?.data
+  const templateList2 = templates?.data?.data
     ?.map((a: { name: string; build: any }) => {
       return a?.build?.map(
         (b: { _id: string; name: string; group: string }) => ({
@@ -107,7 +96,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
 
   const [filter, setFilter] = useState<string[]>([""]);
 
-  const transferlist = data?.map((item: { id: string; email: string }) => ({
+  const transferlist = data?.data.map((item: { id: string; email: string }) => ({
     key: item.id,
     value: item.id,
     label: item.email,
@@ -137,7 +126,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${company}/user`,
+        `/v1/company/${userZ?.company_id}/user`,
         {
           first_name: values.first_name,
           last_name: values.last_name,

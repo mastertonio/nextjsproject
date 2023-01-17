@@ -156,7 +156,7 @@ const NavbarSimple = () => {
   ));
 
   return (
-    <Navbar width={{ sm: 300 }} p="md" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
+    <Navbar width={{ sm: 220 }} p="md" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
       <Group position="apart">
         <div className="ml-auto flex sm:hidden">
           <IconX className="w-[30px] h-[30px]" onClick={() => hide()} />

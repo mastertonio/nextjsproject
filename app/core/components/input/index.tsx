@@ -33,6 +33,7 @@ export type iVariableProp = {
   icon: ReactNode | null,
   rightSection: ReactNode | null,
   disabled: boolean
+  content?: ReactNode
 };
 
 export type iElemsProp = {

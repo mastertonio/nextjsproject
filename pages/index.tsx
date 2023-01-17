@@ -21,6 +21,7 @@ import UserContext, { UserContextTypes } from "@context/user.context";
 import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
+import { redirect } from "next/dist/server/api-utils";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();

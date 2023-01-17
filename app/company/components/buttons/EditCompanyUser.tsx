@@ -18,6 +18,7 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 type IManagerTypes = {
   _id: string;
@@ -53,21 +54,13 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const p = router.query;
   const [state, setState] = useState<string | null>(null);
   const [password, setPass] = useInputState("");
+  const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/company/${company}/manager`);
-      return res.data;
-    } catch (error) {
-      return error;
-    }
+    return await axios.get(`/v1/company/${userZ?.company_id}/manager`);
   };
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
@@ -75,7 +68,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
     getManagers
   );
 
-  const transferlist = data?.map((item: { id: string; email: string }) => ({
+  const transferlist = data?.data.map((item: { id: string; email: string }) => ({
     key: item.id,
     value: item.id,
     label: item.email,
@@ -107,7 +100,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       });
       
       const response = await axios.patch(
-        `/v1/company/${company}/user/${id}`,
+        `/v1/company/${userZ?.company_id}/user/${id}`,
         {
           first_name: values.first_name,
           last_name: values.last_name,

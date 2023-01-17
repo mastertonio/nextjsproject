@@ -4,7 +4,7 @@ import Projection from "@app/enterprise/Projection";
 import { AppShell, Navbar, Header, Grid, SimpleGrid, Flex } from "@mantine/core";
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
-import InputVariable, { iElemsProp } from "@app/core/components/input";
+import InputVariable, { iElemsProp } from "@app/enterprise/components/input";
 
 const Enterprise = () => {
 
@@ -45,7 +45,7 @@ const Enterprise = () => {
                     cols={3}
                     p={10}
                     pr={20}
-                    className="bg-[#e9ecef] sm:grid block pr-[10px] sm:pr-[20px]"
+                    className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
                   >
                     {contentData.sections.sliders.elements.map((element) => (
                       <SliderCard

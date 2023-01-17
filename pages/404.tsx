@@ -3,18 +3,17 @@ import { useRouter } from 'next/router';
 
 const useStyles = createStyles((theme) => ({
   root: {
-    paddingTop: 80,
     paddingBottom: 80,
   },
 
   title: {
     fontWeight: 900,
-    fontSize: 34,
+    fontSize: 32,
     marginBottom: theme.spacing.md,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
 
     [theme.fn.smallerThan('sm')]: {
-      fontSize: 32,
+      fontSize: 30,
     },
   },
 
@@ -32,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 
   desktopImage: {
     [theme.fn.smallerThan('sm')]: {
-      display: 'none',
+      display: 'block',
     },
   },
 }));
@@ -42,21 +41,36 @@ const FourOhFour: React.FC = () => {
   const router = useRouter();
 
   return (
-    <Container className={classes.root}>
-      <SimpleGrid spacing={80} cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1, spacing: 40 }]}>
-        {/* <Image src={image} alt="mobileImage" className={classes.mobileImage} /> */}
+    <Container className={`${classes.root} max-w-[100%] bg-gray-100`}>
+      <div className='max-w-[85%] h-screen flex mx-auto pt-[50px] lg:pt-0 sm:pt-[50px]'>
+        <div className="grid grid-cols-1 lg:grid-cols-2 sm:grid-cols-1 gap-0 sm:gap-8 items-center">
+          <div>
+            <Title className={`${classes.title} text-teal-800`}>You have found our error page 404.</Title>
+            <Text color="dimmed" size="lg" className="mt-[40px]">
+              Page you are trying to open does not exist. You may have mistyped the address, or the
+              page has been moved to another URL. If you think this is an error contact support.
+            </Text>
+            <Button variant="outline" size="md" mt="xl" className={`${classes.control} mt-[40px]`}>
+              Get back to home page
+            </Button>
+          </div>
+          <div>
+            <Image src="/404-png.png" alt="desktopImage" className={classes.desktopImage} />
+          </div>
+        </div>
+      </div>
+      {/* <SimpleGrid spacing={80} cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1, spacing: 40 }]}>
         <div>
           <Title className={classes.title}>You have found a secret place. Forbidden Access</Title>
           <Text color="dimmed" size="lg">
             Page you are trying to open does not exist. You may have mistyped the address, or the
             page has been moved to another URL. If you think this is an error contact support.
           </Text>
-          <Button variant="outline" size="md" mt="xl" className={classes.control} onClick={()=>{ router.push('/dashboard')}}>
+          <Button variant="outline" size="md" mt="xl" className={classes.control} onClick={() => { router.push('/dashboard') }}>
             Get back to home page
           </Button>
         </div>
-        {/* <Image src={image.src} alt="desktopImage" className={classes.desktopImage} /> */}
-      </SimpleGrid>
+      </SimpleGrid> */}
     </Container>
   );
 }

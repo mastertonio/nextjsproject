@@ -2,55 +2,20 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import {
   AppShell,
   useMantineTheme,
-  LoadingOverlay,
-  Select,
-  Text,
-  Input,
-  Grid,
-  MultiSelect,
-  Button,
-  ScrollArea,
-  Table,
-  Center,
-  Badge,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  GetStaticPaths,
-  GetStaticPathsContext,
-} from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
-import RoiFooter from "@core/components/footer/Footer";
-import Welcome from "@dashboard/components/Welcome";
-import DashboardGraph from "@dashboard/components/DashboardGraph";
-import ViewCount from "@dashboard/components/ViewCount";
-import CreateNewRoi from "@dashboard/components/CreateNewRoi";
-import RoiRanking from "@dashboard/components/RoiRanking";
 import { useLocalStorage } from "@mantine/hooks";
 import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
-import { FaPlusSquare } from "react-icons/fa";
-import Paginate from "@app/dashboard/components/table/paginate";
-import EditCompanyButton from "@app/company/components/buttons/EditCompanyButton";
-import { FiUsers } from "react-icons/fi";
-import { HiTemplate } from "react-icons/hi";
-import Segmented from "@app/core/components/buttons/Segmented";
-import { AiOutlineFolderOpen } from "react-icons/ai";
 import {
   filterCompanyUsersData,
   ICompanyUsersProps,
   sortCompanyUsersData,
 } from "@app/dashboard/components/table/utils/tableMethods";
-import Th from "@app/dashboard/components/table/Thead";
-import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
-import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
@@ -58,6 +23,7 @@ import TransferButton from "@app/company/components/buttons/Transfer";
 import CompanyUserTable from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import ManagerDashboardGraph from "@app/dashboard/components/ManagerDashboardGraph";
+import { useUserStore } from "@app/store/userState";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -130,21 +96,14 @@ const ManagerDashboard: React.FC = () => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const [value] = useLocalStorage({ key: "auth-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const p = router.query;
 
+  const userZ = useUserStore((state) => (state.user))
+
   const getCompanyUsers = async () => {
-    try {
-      const res = await axios.get(
-        `/v1/company/${company}/user`
+    return await axios.get(
+        `/v1/company/${userZ?.company_id}/user`
       );
-      return res.data;
-    } catch (error) {
-      router.push("/forbidden");
-      return error;
-    }
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -157,14 +116,14 @@ const ManagerDashboard: React.FC = () => {
   const [allRoi, setAllRoi] = useState<any>();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string[]>([]);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(data?.data);
   const [sortBy, setSortBy] = useState<keyof ICompanyUsersProps | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setSortedData(data);
+    setSortedData(data?.data);
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -176,14 +135,14 @@ const ManagerDashboard: React.FC = () => {
     setReverseSortDirection(reversed);
     setSortBy(field);
     setSortedData(
-      sortCompanyUsersData(data, { sortBy: field, reversed, search })
+      sortCompanyUsersData(data?.data, { sortBy: field, reversed, search })
     );
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
     setSearch(event);
     setSortedData(
-      sortCompanyUsersData(data, {
+      sortCompanyUsersData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -194,7 +153,7 @@ const ManagerDashboard: React.FC = () => {
   const handleFilterChange = (event: SetStateAction<string[]>) => {
     setFilter(event);
     setSortedData(
-      sortCompanyUsersData(data, {
+      sortCompanyUsersData(data?.data, {
         sortBy,
         reversed: reverseSortDirection,
         search: event,
@@ -254,7 +213,7 @@ const ManagerDashboard: React.FC = () => {
         <ManagerDashboardGraph />
       </div>
       <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
-        <CompanyUserTable company={company} update={refetch} />
+        <CompanyUserTable company={userZ?.company_id ? userZ.company_id : ""} update={refetch} />
       </div>
     </AppShell>
   );

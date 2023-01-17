@@ -13,10 +13,6 @@ import { useStyles } from "@styles/navStyle";
 import { useNavShowStore } from "@app/store/builderStore";
 // import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
-// import DashboardDrawer from "../drawer/DrawerContent";
-// import { useLocalStorage } from "@mantine/hooks";
-// import { useQuery } from "react-query";
-// import UserContext from "@context/user.context";
 
 const EnterpriseNavbar: React.FC = () => {
   const theme = useMantineTheme();
