@@ -41,19 +41,6 @@ const CreateNewRoi: React.FC = () => {
     getTemplateButtonList
   );
 
-  if (isLoading) return <MainLoader />
-
-  if (isError) return <div>error</div>
-
-  // const actionList = resp?.map((a: { name: string; build: any }) => {
-  //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-  //     key: b._id,
-  //     value: b._id,
-  //     label: b.name,
-  //     group: a.name
-  //   }))
-  // }).flat()
-
   const form = useForm({
     initialValues: {
       name: "",
@@ -106,19 +93,6 @@ const CreateNewRoi: React.FC = () => {
       return error;
     }
   };
-
-  if (isLoading) return <MainLoader />
-
-  if (isError) return <div>error</div>
-
-  // const actionList = resp?.map((a: { name: string; build: any }) => {
-  //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-  //     key: b._id,
-  //     value: b._id,
-  //     label: b.name,
-  //     group: a.name
-  //   }))
-  // }).flat()
 
   return (
     <>

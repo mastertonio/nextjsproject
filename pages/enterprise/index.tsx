@@ -19,7 +19,7 @@ const Enterprise = () => {
             theme.colorScheme === "dark"
               ? theme.colors.dark[8]
               : theme.colors.gray[0],
-          margin: 0,
+          width: '100%',
         },
       })}
       className="m-0 p-0"

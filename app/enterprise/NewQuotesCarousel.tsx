@@ -23,7 +23,7 @@ const NewQuotesCarousel: React.FC<QuoteCarouselProps> = ({ elements }) => {
     ));
 
     return (
-        <div className='container'>
+        <div className='container overflow-hidden'>
             <Slider {...settings}>
                 {slides}
             </Slider>

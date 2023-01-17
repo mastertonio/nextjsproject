@@ -227,7 +227,7 @@ const TemplateDashboard: React.FC = () => {
                     sorted={sortBy === "name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("name")}
-                    style={{ width: 300 }}
+                    style="w-[300px]"
                   >
                     Template Name
                   </Th>
@@ -235,7 +235,7 @@ const TemplateDashboard: React.FC = () => {
                     sorted={sortBy === "notes"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("notes")}
-                    style={{ width: 670 }}
+                    style="w-[670px]"
                   >
                     Notes
                   </Th>
@@ -243,7 +243,7 @@ const TemplateDashboard: React.FC = () => {
                     sorted={sortBy === "status"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("status")}
-                    style={{ width: 130 }}
+                    style="w-[130px]"
                   >
                     Status
                   </Th>
