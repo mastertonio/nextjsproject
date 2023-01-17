@@ -51,7 +51,6 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     getDashboardData
   );
 
-
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {

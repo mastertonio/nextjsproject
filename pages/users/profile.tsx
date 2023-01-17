@@ -31,10 +31,11 @@ const UserProfile: React.FC = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const [user, setUser] = useState<any>({});
-  const [userCred, setUserCred] = useState<any>();
   const p = router.query;
 
   const userZ = useUserStore((state) => (state.user))
+  
+  const [userCred, setUserCred] = useState<any>(userZ);
 
   const getCurrentUser = async () => {
     return await axios.get(`/v1/users/${userZ?.id}`);
