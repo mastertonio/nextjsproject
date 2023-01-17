@@ -90,7 +90,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         </div>
         <div className={`${classes.bar_graph_wrapper} mt-[30px] sm:mt-0 relative`}>
           <Text size="lg" className="mb-[20px] sm:mb-0">My ROIs</Text>
-          <Row my_roi={data?.my_roi} refetch={refetch} />
+          <Row my_roi={data?.data.my_roi} refetch={refetch} />
         </div>
       </AppShell>
     );

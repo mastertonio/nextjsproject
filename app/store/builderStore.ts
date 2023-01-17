@@ -1,5 +1,5 @@
 import { setegid } from "process";
-import create from "zustand";
+import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export const useTitleStore = create((set) => ({
