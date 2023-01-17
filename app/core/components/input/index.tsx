@@ -90,7 +90,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                   {state.type !== "textarea" ? (
                     <TextInput
                       required
-                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
+                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px] "
                       icon={state.icon ? state.icon : ""}
                       rightSection={state.rightSection ?
                         <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
@@ -102,7 +102,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                     // defaultValue={myCompany.name}
                     />) : (
                     <Textarea
-                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
+                      className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px] mb-[20px] sm:mb-[20px]"
                       withAsterisk
                     />)
                   }

@@ -42,68 +42,68 @@ import { useUserStore } from "@app/store/userState";
 export interface ICompanyUsersElements {
   id: React.Key | null | undefined;
   username:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   created_rois:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   role:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   manager_email:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   currency:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   status:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   actions:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
 }
 
 const UsersDashboard: React.FC = () => {
@@ -115,8 +115,8 @@ const UsersDashboard: React.FC = () => {
 
   const getCompanyUsers = async () => {
     return await axios.get(
-        `/v1/company/${userZ?.company_id}/user`
-      );
+      `/v1/company/${userZ?.company_id}/user`
+    );
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -250,7 +250,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("email")}
-                  style={{ width: 300 }}
+                  style="w-[300px]"
                 >
                   User Name
                 </Th>
@@ -258,7 +258,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "created_rois"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("created_rois")}
-                  style={{ width: 170 }}
+                  style="w-[170px]"
                 >
                   Created Rois
                 </Th>
@@ -266,7 +266,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "role"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("role")}
-                  style={{ width: 170 }}
+                  style="w-[170px]"
                 >
                   Role
                 </Th>
@@ -274,7 +274,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "manager_email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("manager_email")}
-                  style={{ width: 250 }}
+                  style="w-[250px]"
                 >
                   Manager
                 </Th>
@@ -282,7 +282,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "currency"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("currency")}
-                  style={{ width: 110 }}
+                  style="w-[110px]"
                 >
                   Currency
                 </Th>
@@ -290,7 +290,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style={{ width: 130 }}
+                  style="w-[130px]"
                 >
                   Status
                 </Th>

@@ -46,8 +46,8 @@ const TemplatesDashboard: React.FC = () => {
 
   const getCompanyTemplates = async () => {
     return await axios.get(
-        `/v1/company/${userZ?.company_id}/template`
-      );
+      `/v1/company/${userZ?.company_id}/template`
+    );
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -205,7 +205,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style={{ width: 300 }}
+                  style="w-[300px]"
                 >
                   Template Name
                 </Th>
@@ -213,7 +213,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "notes"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("notes")}
-                  style={{ width: 670 }}
+                  style="w-[670px]"
                 >
                   Notes
                 </Th>
@@ -221,7 +221,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style={{ width: 130 }}
+                  style="w-[130px]"
                 >
                   Status
                 </Th>
@@ -236,53 +236,53 @@ const TemplatesDashboard: React.FC = () => {
                   (element: {
                     _id: React.Key | null | undefined;
                     name:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     notes:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     status:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     actions:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                   }) => (
                     <tr key={element._id} style={{ height: 20 }}>
                       <td>{element.name}</td>

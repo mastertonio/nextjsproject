@@ -27,6 +27,7 @@ import {
   IconCalculator,
   IconAt,
 } from "@tabler/icons";
+import { FaGripLinesVertical } from 'react-icons/fa'
 import { ReactNode, useState } from "react";
 import { iSliderCardProps } from "../../../core/components/card";
 import styles from "@styles/tiptap.module.scss";
@@ -90,13 +91,13 @@ const InputVariable: React.FC<iGrayProps> = ({
       // wrap="wrap"
       className="mt-[10px] mb-[10px] p-[10px] w-full"
     >
-      <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-[12px] w-[96%] sm:w-[76%]">
+      <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-[12px] w-[96%] sm:w-[76%] pb-[30px] sm:pb-[20px]">
         {type == "variables" ? elements.map((elem) => (
-          <div key={elem.id} >
-            <Grid>
+          <div key={elem.id}>
+            <Grid className="flex items-center">
               <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}></Text>
               {elem.toggle ? (
-                <Button className="ml-auto w-48 m-8" color={value} onClick={() => toggle()} radius="md" size="md">
+                <Button className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[40px]" color={value} onClick={() => toggle()} radius="md" size="md">
                   {value == "red" ? "Exclude" : "Include"}
                 </Button>)
                 : ""
@@ -139,12 +140,12 @@ const InputVariable: React.FC<iGrayProps> = ({
                         <Rating
                           defaultValue={5}
                           fractions={2}
-                          style={{ marginLeft: 190 }}
+                          className="w-[280px] ml-[30px] sm:ml-auto mt-[10px] sm:mt-0"
                           color="indigo" size="xl" />
                       </>
                     ) : state.type == "slid" ? (
                       <>
-                        <Slider
+                        {/* <Slider
                           defaultValue={20}
                           size="xl"
                           radius="xl"
@@ -157,12 +158,35 @@ const InputVariable: React.FC<iGrayProps> = ({
                           ]}
                           style={{ width: 400, marginLeft: "auto" }}
                           step={20}
+                        /> */}
+                        <Slider
+                          thumbSize={26}
+                          thumbChildren={<FaGripLinesVertical />}
+                          size={15}
+                          color="teal"
+                          radius="xs"
+                          className="w-[400px] ml-auto" defaultValue={10}
+                          styles={(theme) => ({
+                            track: {
+                              borderRadius: 0,
+                            },
+                            thumb: {
+                              height: 30,
+                              width: 30,
+                              borderColor: '#D9D9D9',
+                              backgroundColor: theme.white,
+                              borderWidth: 1,
+                              boxShadow: theme.shadows.sm,
+                              borderRadius: 3,
+                              color: '#E8E7E6'
+                            },
+                          })}
                         />
                       </>
                     ) : state.type == "input" ? (
                       <TextInput
                         required
-                        style={{ width: 400, marginLeft: "auto" }}
+                        className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
                         icon={state.icon ? state.icon : ""}
                         rightSection={state.rightSection ?
                           <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
@@ -181,7 +205,7 @@ const InputVariable: React.FC<iGrayProps> = ({
           </div>)) : ""}
       </Stack>
 
-      <div style={{ width: '22%', marginLeft: "auto" }}>
+      <div className="ml-[15px] sm:ml-auto w-full sm:w-[22%] mt-[10px] sm:mt-0">
         <FloatingCard />
       </div>
 
