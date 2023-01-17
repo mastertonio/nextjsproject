@@ -22,6 +22,20 @@ a {
   outline: none;
 }
 
-.animate-card {
-  transition: all 0.8s;
+.small-chart .highcharts-subtitle {
+  display: none;
+}
+
+.small-chart .highcharts-legend {
+  display: none;
+}
+
+@media (max-width: 740px) {
+  .mantine-Modal-modal {
+    width: 100%;
+  }
+  
+  .animate-card {
+    transition: all 0.8s;
+  }
 }

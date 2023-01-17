@@ -72,8 +72,8 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         header={<RoiNavbar />}
       // footer={<RoiFooter />}
       >
-        <div className={classes.body}>
-          <div className={classes.welcome}>
+        <div className={`${classes.body} flex-col sm:flex-row relative h-auto`}>
+          <div className={`${classes.welcome} w-full sm:w-[400px]`}>
             <Welcome
               name={data?.data.welcome.account_name}
               active_roi={data?.data.welcome.active_roi}
@@ -81,17 +81,17 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
             />
             <ViewCount viewcount={data?.data.viewcount} />
           </div>
-          <div className={classes.dashboard_graph}>
+          <div className={`${classes.dashboard_graph} w-full sm:w-[900px] mt-[30px] sm:mt-0`}>
             <DashboardGraph />
           </div>
-          <div className={classes.roi_ranking}>
+          <div className={`${classes.roi_ranking} w-full sm:w-[400px] relative`}>
             <CreateNewRoi />
             <RoiRanking />
           </div>
         </div>
-        <div className={classes.bar_graph_wrapper}>
-          <Text size="lg">My ROIs</Text>
-          <Row my_roi={data?.data.my_roi} refetch={refetch} />
+        <div className={`${classes.bar_graph_wrapper} mt-[30px] sm:mt-0 relative`}>
+          <Text size="lg" className="mb-[20px] sm:mb-0">My ROIs</Text>
+          <Row my_roi={data?.my_roi} refetch={refetch} />
         </div>
       </AppShell>
     );
@@ -116,12 +116,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (Object.keys(user).length === 0 && user.constructor === Object) {
     // redirect to dashboard page if authenticated
-    
+
     return {
       redirect: {
         destination: "/",
         permanent: false,
-      }, props: { user } }
+      }, props: { user }
+    }
   } else {
     return {
       props: { user }

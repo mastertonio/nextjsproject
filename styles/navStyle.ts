@@ -24,7 +24,8 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     flexDirection: "row",
     justifyContent: "space-between",
     maxWidth: 1920,
-    margin: "0 auto"
+    margin: "0 auto",
+    transition: 'all 0.5s'
   },
 
   placeholder: {

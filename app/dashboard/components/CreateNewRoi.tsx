@@ -32,8 +32,8 @@ const CreateNewRoi: React.FC = () => {
 
   const getTemplateButtonList = async () => {
     return await axios.get(
-        `/v1/dashboard/template/list`
-      );
+      `/v1/dashboard/template/list`
+    );
   };
 
   const { isLoading, status, data: resp, isFetching, isSuccess, isError } = useQuery(
@@ -41,7 +41,18 @@ const CreateNewRoi: React.FC = () => {
     getTemplateButtonList
   );
 
+  if (isLoading) return <MainLoader />
 
+  if (isError) return <div>error</div>
+
+  // const actionList = resp?.map((a: { name: string; build: any }) => {
+  //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+  //     key: b._id,
+  //     value: b._id,
+  //     label: b.name,
+  //     group: a.name
+  //   }))
+  // }).flat()
 
   const form = useForm({
     initialValues: {
@@ -99,110 +110,111 @@ const CreateNewRoi: React.FC = () => {
   if (isLoading) return <MainLoader />
 
   if (isError) return <div>error</div>
-    
-    // const actionList = resp?.map((a: { name: string; build: any }) => {
-    //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-    //     key: b._id,
-    //     value: b._id,
-    //     label: b.name,
-    //     group: a.name
-    //   }))
-    // }).flat()
 
-    return (
-      <>
-        <Modal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          withCloseButton={false}
-          size="50%"
-        >
-          <form onSubmit={form.onSubmit(handleSubmit)} style={{ margin: 30 }}>
-            <Text
-              weight={700}
-              color="gray"
-              style={{ marginLeft: 20, marginBottom: 40, fontSize: 30 }}
-            >
-              Create A New ROI Calculation
-            </Text>
+  // const actionList = resp?.map((a: { name: string; build: any }) => {
+  //   return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+  //     key: b._id,
+  //     value: b._id,
+  //     label: b.name,
+  //     group: a.name
+  //   }))
+  // }).flat()
 
-            <Grid style={{ margin: 20 }}>
-              <Text>Name</Text>
-              <TextInput
-                required
-                style={{ width: 550, marginLeft: "auto" }}
-                placeholder="Enter Name"
-                {...form.getInputProps("name")}
-              />
-            </Grid>
-
-            <Grid style={{ margin: 20, marginBottom: 20 }}>
-              <Text>Choose a Template</Text>
-              <Select
-                style={{ width: 550, marginLeft: "auto" }}
-                rightSection={<AiOutlineDown />}
-                placeholder="Template"
-                searchable
-                clearable
-                data={
-                  [
-                    {
-                      value: "",
-                      label: "No Template Detected",
-                      disabled: true,
-                    },
-                  ]
-                }
-                {...form.getInputProps("template")}
-              />
-            </Grid>
-            <Grid
-              justify="flex-end"
-              style={{ marginRight: 20, marginBottom: 140 }}
-            >
-              <Checkbox
-                checked={checked}
-                onChange={(event) => setChecked(event.currentTarget.checked)}
-                label="Open the Created ROI"
-              />
-            </Grid>
-            <Grid justify="flex-end">
-              <Button
-                type="submit"
-                radius="sm"
-                size="md"
-                style={{ marginRight: 10 }}
-                onClick={() => setOpened(false)}
-              >
-                Create ROI
-              </Button>
-              <Button
-                radius="sm"
-                size="md"
-                onClick={() => setOpened(false)}
-                color="red"
-              >
-                Close
-              </Button>
-            </Grid>
-          </form>
-        </Modal>
-
-        <Group position="center">
-          <Button
-            fullWidth
-            leftIcon={<FaPlusSquare />}
-            radius="sm"
-            size="xl"
-            style={{ height: 100, marginRight: 0, fontSize: 25 }}
-            uppercase
-            onClick={() => setOpened(true)}
+  return (
+    <>
+      <Modal
+        className="w-full"
+        opened={opened}
+        onClose={() => setOpened(false)}
+        withCloseButton={false}
+        size="50%"
+      >
+        <form onSubmit={form.onSubmit(handleSubmit)} className="m-[10px] sm:m-[30px]">
+          <Text
+            weight={700}
+            color="gray"
+            className="ml-[20px] mb-[40px] text-[25px] sm:text-[30px]"
           >
-            Create a New ROI
-          </Button>
-        </Group>
-      </>
-    );
+            Create A New ROI Calculation
+          </Text>
+
+          <Grid className="m-[20px]">
+            <Text>Name</Text>
+            <TextInput
+              required
+              className="w-full ml-auto"
+              placeholder="Enter Name"
+              {...form.getInputProps("name")}
+            />
+          </Grid>
+
+          <Grid className="m-[20px] mb-[20px]">
+            <Text>Choose a Template</Text>
+            <Select
+              className="w-full ml-auto"
+              rightSection={<AiOutlineDown />}
+              placeholder="Template"
+              searchable
+              clearable
+              data={
+                [
+                  {
+                    value: "",
+                    label: "No Template Detected",
+                    disabled: true,
+                  },
+                ]
+              }
+              {...form.getInputProps("template")}
+            />
+          </Grid>
+          <Grid
+            justify="flex-end"
+            className="mr-[20px] mb-[140px]"
+          >
+            <Checkbox
+              checked={checked}
+              onChange={(event) => setChecked(event.currentTarget.checked)}
+              label="Open the Created ROI"
+            />
+          </Grid>
+          <Grid justify="flex-end">
+            <Button
+              type="submit"
+              radius="sm"
+              size="md"
+              className="mr-[10px]"
+              onClick={() => setOpened(false)}
+            >
+              Create ROI
+            </Button>
+            <Button
+              radius="sm"
+              size="md"
+              onClick={() => setOpened(false)}
+              color="red"
+            >
+              Close
+            </Button>
+          </Grid>
+        </form>
+      </Modal>
+
+      <Group position="center">
+        <Button
+          fullWidth
+          leftIcon={<FaPlusSquare />}
+          radius="sm"
+          size="xl"
+          className="h-[80px] sm:h-[100px] mt-[20px] sm:mt-0 mr-0 text-[20px] sm:text-[25px]"
+          uppercase
+          onClick={() => setOpened(true)}
+        >
+          Create a New ROI
+        </Button>
+      </Group>
+    </>
+  );
 }
 
 export default CreateNewRoi;
