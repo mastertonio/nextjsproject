@@ -70,68 +70,68 @@ export interface iDashRowProp2 {
 export interface ICompanyElement {
   id: Key | null | undefined;
   button:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
   roiname:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
   alias:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
   licenses:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
   templates:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
   active:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
   actions:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | ReactElement<any, string | JSXElementConstructor<any>>
+  | ReactFragment
+  | ReactPortal
+  | null
+  | undefined;
 }
 
 export interface ISearchableDashProp {
@@ -327,7 +327,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
-                style={{ width: 310 }}
+                style="w-[310px]"
               >
                 Company Name
               </Th>
@@ -335,7 +335,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "alias"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("alias")}
-                style={{ width: 225 }}
+                style="w-[225px]"
               >
                 Alias
               </Th>
@@ -343,7 +343,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "licenses"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("licenses")}
-                style={{ width: 160 }}
+                style="w-[160px]"
               >
                 Licenses
               </Th>
@@ -351,7 +351,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "templates"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("templates")}
-                style={{ width: 170 }}
+                style="w-[170px]"
               >
                 Templates
               </Th>
@@ -359,7 +359,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "active"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("active")}
-                style={{ width: 220 }}
+                style="w-[220px]"
               >
                 Status
               </Th>
