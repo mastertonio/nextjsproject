@@ -202,7 +202,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "calculator_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("calculator_name")}
-                    style="w-[300px]"
+                    style="w-[250px]"
                   >
                     Calculator Name
                   </Th>
