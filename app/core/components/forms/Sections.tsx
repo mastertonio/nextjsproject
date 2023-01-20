@@ -58,7 +58,6 @@ export function DndListHandle({ data }: DndListHandleProps) {
 
   useEffect(() => {
     handlers.setState(builderCtx.sections);
-    // console.log(state, "state");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [builderCtx.sections]);
 

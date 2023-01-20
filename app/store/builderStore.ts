@@ -9,6 +9,18 @@ export const useTitleStore = create((set) => ({
 //   value={titleValue}
 //               onChange={setTitle}
 //               // onBlur={() => setDescChange(false)}
+type ModalState = {
+  value: boolean,
+  show: () => void;
+  hide: () => void;
+}
+
+export const useModalEntryStore = create<ModalState>((set) => ({
+  value: false,
+  show: () => set(() => ({ value: true })),
+  hide: () => set(() => ({ value: false })),
+}));
+
 type HeaderState = {
   value: boolean;
   open: () => void;

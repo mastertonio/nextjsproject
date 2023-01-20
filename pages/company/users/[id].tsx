@@ -56,74 +56,74 @@ import MainLoader from "@app/core/components/loader/MainLoader";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import TransferButton from "@app/company/components/buttons/Transfer";
-import NotFoundImage from "pages/forbidden";
+import NotFoundImage from "pages/403";
 import CompanyUserTable from "@app/company/user/table";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
   username:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   created_rois:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   role:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   manager_email:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   currency:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   status:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   actions:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
 }
 
 
@@ -264,110 +264,110 @@ const Dashboard: React.FC = () => {
             />
           </Grid>
           <ScrollArea
-          style={{ height: 590 }}
-          onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-        >
-          <Table
-            className={classes.table}
-            highlightOnHover
-            verticalSpacing="xs"
-            horizontalSpacing="xl"
+            style={{ height: 590 }}
+            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
           >
-            <thead
-              className={cx(classes.header, { [classes.scrolled]: scrolled })}
-              style={{ zIndex: 50 }}
+            <Table
+              className={classes.table}
+              highlightOnHover
+              verticalSpacing="xs"
+              horizontalSpacing="xl"
             >
-              <tr>
-                <Th
-                  sorted={sortBy === "email"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("email")}
-                  style={{ width: 300 }}
-                >
-                  User Name
-                </Th>
-                <Th
-                  sorted={sortBy === "created_rois"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("created_rois")}
-                  style={{ width: 170 }}
-                >
-                  Created Rois
-                </Th>
-                <Th
-                  sorted={sortBy === "role"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("role")}
-                  style={{ width: 170 }}
-                >
-                  Role
-                </Th>
-                <Th
-                  sorted={sortBy === "manager_email"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("manager_email")}
-                  style={{ width: 250 }}
-                >
-                  Manager
-                </Th>
-                <Th
-                  sorted={sortBy === "currency"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("currency")}
-                  style={{ width: 110 }}
-                >
-                  Currency
-                </Th>
-                <Th
-                  sorted={sortBy === "status"}
-                  reversed={reverseSortDirection}
-                  onSort={() => setSorting("status")}
-                  style={{ width: 130 }}
-                >
-                  Status
-                </Th>
-                <th></th>
-              </tr>
-            </thead>
-            {isLoading ? (
-              <SkeletonLoader />
-            ) : (
-              <tbody>
-                {companies?.map((element: ICompanyUsersElements) => (
-                  <tr key={element.id} style={{ height: 20 }}>
-                    <td style={{ width: 10 }}>{element.username}</td>
-                    <td
-                      style={{
-                        cursor: "pointer",
-                        width: 140,
-                        paddingLeft: 30,
-                      }}
-                    >
-                      {element.created_rois}
-                    </td>
-                    <td>{element.role}</td>
-                    <td>
-                      {!!element.manager_email ? element.manager_email : "Unassigned"}
-                    </td>
-                    <td style={{ width: 145, paddingLeft: 30 }}>
-                      {element.currency}
-                    </td>
-                    <td
-                      style={{
-                        width: 110,
-                      }}
-                    >
-                      <Badge color="green" variant="outline">
-                        {element.status}
-                      </Badge>
-                    </td>
-                    <td>{element.actions}</td>
-                  </tr>
-                ))}
-              </tbody>
-            )}
-          </Table>
-        </ScrollArea>
+              <thead
+                className={cx(classes.header, { [classes.scrolled]: scrolled })}
+                style={{ zIndex: 50 }}
+              >
+                <tr>
+                  <Th
+                    sorted={sortBy === "email"}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting("email")}
+                    style="w-[300px]"
+                  >
+                    User Name
+                  </Th>
+                  <Th
+                    sorted={sortBy === "created_rois"}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting("created_rois")}
+                    style="w-[170px]"
+                  >
+                    Created Rois
+                  </Th>
+                  <Th
+                    sorted={sortBy === "role"}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting("role")}
+                    style="w-[170px]"
+                  >
+                    Role
+                  </Th>
+                  <Th
+                    sorted={sortBy === "manager_email"}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting("manager_email")}
+                    style="w-[250px]"
+                  >
+                    Manager
+                  </Th>
+                  <Th
+                    sorted={sortBy === "currency"}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting("currency")}
+                    style="w-[110px]"
+                  >
+                    Currency
+                  </Th>
+                  <Th
+                    sorted={sortBy === "status"}
+                    reversed={reverseSortDirection}
+                    onSort={() => setSorting("status")}
+                    style="w-[130px]"
+                  >
+                    Status
+                  </Th>
+                  <th></th>
+                </tr>
+              </thead>
+              {isLoading ? (
+                <SkeletonLoader />
+              ) : (
+                <tbody>
+                  {companies?.map((element: ICompanyUsersElements) => (
+                    <tr key={element.id} style={{ height: 20 }}>
+                      <td style={{ width: 10 }}>{element.username}</td>
+                      <td
+                        style={{
+                          cursor: "pointer",
+                          width: 140,
+                          paddingLeft: 30,
+                        }}
+                      >
+                        {element.created_rois}
+                      </td>
+                      <td>{element.role}</td>
+                      <td>
+                        {!!element.manager_email ? element.manager_email : "Unassigned"}
+                      </td>
+                      <td style={{ width: 145, paddingLeft: 30 }}>
+                        {element.currency}
+                      </td>
+                      <td
+                        style={{
+                          width: 110,
+                        }}
+                      >
+                        <Badge color="green" variant="outline">
+                          {element.status}
+                        </Badge>
+                      </td>
+                      <td>{element.actions}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </Table>
+          </ScrollArea>
           <div>
             <Paginate
               refetch={refetch}
