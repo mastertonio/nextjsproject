@@ -205,7 +205,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style={{ width: 400 }}
+                  style="w-[400px]"
                 >
                   Version Name
                 </Th>
@@ -213,7 +213,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style={{ width: 220 }}
+                  style="w-[220px]"
                 >
                   Version Stage
                 </Th>
@@ -221,7 +221,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style={{ width: 200 }}
+                  style="w-[200px]"
                 >
                   Level
                 </Th>
@@ -229,7 +229,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "notes"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("notes")}
-                  style={{ width: 620 }}
+                  style="w-[620px]"
                 >
                   Notes
                 </Th>
@@ -237,7 +237,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style={{ width: 130 }}
+                  style="w-[130px]"
                 >
                   Status
                 </Th>
@@ -252,77 +252,77 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   (element: {
                     _id: React.Key | null | undefined;
                     name:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     stage:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     level:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     notes:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     status:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                     actions:
-                      | string
-                      | number
-                      | boolean
-                      | React.ReactElement<
-                          any,
-                          string | React.JSXElementConstructor<any>
-                        >
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined;
+                    | string
+                    | number
+                    | boolean
+                    | React.ReactElement<
+                      any,
+                      string | React.JSXElementConstructor<any>
+                    >
+                    | React.ReactFragment
+                    | React.ReactPortal
+                    | null
+                    | undefined;
                   }) => (
                     <tr key={element._id} style={{ height: 20 }}>
                       <td style={{ width: 10 }}>{element.name}</td>
