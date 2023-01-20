@@ -43,15 +43,6 @@
       }
     }
   
-    img {
-      max-width: 100%;
-      height: auto;
-      
-      &.ProseMirror-selectednode {
-        outline: 3px solid #68CEF8;
-      }
-    }
-  
     blockquote {
       padding-left: 1rem;
       border-left: 2px solid rgba(#616161, 0.1);
@@ -118,10 +109,6 @@
     }
 
     
-    &.ProseMirror:focus {
-      background: #ba1818;
-      outline: none;
-  }
   }
   
 
@@ -135,9 +122,6 @@
     cursor: col-resize;
   }
 
-  .ProseMirror-focused {
-    outline: none;
-  }
 
 
 .Test {

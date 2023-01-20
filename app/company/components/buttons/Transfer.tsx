@@ -140,8 +140,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
               <Select
                 placeholder="New Title Name"
                 style={{ width: 550, marginLeft: "auto" }}
-                value={state}
-                onChange={setState}
+                defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}
                 {...form.getInputProps("new_source")}
               />

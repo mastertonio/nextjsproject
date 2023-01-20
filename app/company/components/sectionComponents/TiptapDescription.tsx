@@ -3,15 +3,6 @@ import { Button, FileButton, Input } from "@mantine/core";
 import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import styles from "@styles/tiptap.module.scss";
-import { Color } from "@tiptap/extension-color";
-import TextStyle from "@tiptap/extension-text-style";
-import Image from "@tiptap/extension-image";
-import Youtube from "@tiptap/extension-youtube";
-import Gapcursor from "@tiptap/extension-gapcursor";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { IconBold, IconItalic, IconStrikethrough, IconCode} from '@tabler/icons'
@@ -42,35 +33,6 @@ const MenuBar = ({
     return null;
   }
 
-  const addImage = () => {
-    const url = window.prompt("URL");
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  };
-
-  const addImageUpload = (value: File | null) => {
-    console.log(value);
-    let test = value
-    if (test) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        editor.chain().focus().setImage({ src: reader.result as string }).run()
-      };
-      reader.readAsDataURL(test);
-    } else {
-      test = null
-    }
-  };
-
-  const addYoutubeVideo = () => {
-    const url = prompt("Enter YouTube URL");
-    editor.commands.setYoutubeVideo({
-      src: url || "https://www.youtube.com/watch?v=BD8m4H_0Nls",
-    });
-  };
-
   return (
     <>
       <Input
@@ -82,7 +44,6 @@ const MenuBar = ({
           editor
             .chain()
             .focus()
-            .setColor((event.target as HTMLInputElement).value)
             .run()
         }
         value={editor.getAttributes('textStyle').color ? editor.getAttributes('textStyle').color : ''}
@@ -298,7 +259,6 @@ const MenuBar = ({
         color="dark"
         radius="md"
         size="xs"
-        onClick={addImage}
       >
         add image from URL
       </Button>
@@ -308,24 +268,9 @@ const MenuBar = ({
         color="dark"
         radius="md"
         size="xs"
-        onClick={addImage}
       >
         add image from URL
       </Button>
-      <FileButton onChange={addImageUpload} accept="image/png,image/jpeg">
-        {(props) => (
-          <Button
-            compact
-            variant="outline"
-            color="dark"
-            radius="md"
-            size="xs"
-            {...props}
-          >
-            Upload image
-          </Button>
-        )}
-      </FileButton>
       <Button
         compact
         variant="outline"
@@ -333,7 +278,6 @@ const MenuBar = ({
         radius="md"
         size="xs"
         id="add"
-        onClick={addYoutubeVideo}
         m={2}
       >
         Add youtube video
@@ -391,17 +335,6 @@ const TiptapDescription: React.FC<ITiptapDescriptionProps> = ({
   const editor = useEditor({
     extensions: [
       StarterKit,
-      TextStyle,
-      Color,
-      Image,
-      Youtube,
-      Gapcursor,
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
     ],
     content: `${descValue} <br>`,
     onUpdate: ({ editor }) => {

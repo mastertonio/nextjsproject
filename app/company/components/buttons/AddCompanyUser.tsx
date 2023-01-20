@@ -307,8 +307,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
             >
               <Text>Currency: </Text>
               <Select
-                value={currency}
-                onChange={setCurrency}
+                defaultValue={currency}
                 data={curData}
                 placeholder="Choose Currency"
                 {...form.getInputProps("currency")}
@@ -347,8 +346,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               <Select
                 placeholder="New Title Name"
                 style={{ width: 550, marginLeft: "auto" }}
-                value={state}
-                onChange={setState}
+                defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}
                 {...form.getInputProps("manager")}
               />

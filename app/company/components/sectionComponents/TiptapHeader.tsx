@@ -3,15 +3,6 @@ import { Button, Input } from "@mantine/core";
 import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import styles from "@styles/tiptap.module.scss";
-import { Color } from "@tiptap/extension-color";
-import TextStyle from "@tiptap/extension-text-style";
-import Image from "@tiptap/extension-image";
-import Youtube from "@tiptap/extension-youtube";
-import Gapcursor from "@tiptap/extension-gapcursor";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 
@@ -26,21 +17,6 @@ const MenuBar = ({
     return null;
   }
 
-  const addImage = () => {
-    const url = window.prompt("URL");
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  };
-
-  const addYoutubeVideo = () => {
-    const url = prompt("Enter YouTube URL");
-    editor.commands.setYoutubeVideo({
-      src: url || "https://www.youtube.com/watch?v=BD8m4H_0Nls",
-    });
-  };
-
   return (
     <>
       <Input
@@ -52,7 +28,6 @@ const MenuBar = ({
           editor
             .chain()
             .focus()
-            .setColor((event.target as HTMLInputElement).value)
             .run()
         }
         value=""
@@ -183,18 +158,7 @@ const Tiptap: React.FC<ITiptapProps> = ({
 }) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      TextStyle,
-      Color,
-      Image,
-      Youtube,
-      Gapcursor,
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
+      StarterKit
     ],
     content: `${titleValue} <br>`,
     onUpdate: ({ editor }) => {

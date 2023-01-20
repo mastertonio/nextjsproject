@@ -231,8 +231,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                 <Text>Password: </Text>
                 <PasswordInput
                   style={{ width: 350, marginLeft: "auto" }}
-                  value={password}
-                  onChange={setPass}
+                  defaultValue={password}
                   placeholder="Enter User Password"
                   {...form.getInputProps("password")}
                 />
@@ -285,8 +284,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                   placeholder="New Title Name"
                   style={{ width: 550, marginLeft: "auto" }}
                   defaultValue={myCompany.manager_email}
-                  value={state}
-                  onChange={setState}
                   data={transferlist?.length > 0 ? transferlist : []}
                   {...form.getInputProps("manager")}
                 />
