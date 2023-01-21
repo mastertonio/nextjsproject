@@ -30,6 +30,20 @@ a {
   display: none;
 }
 
+.section-wrapper .mantine-Modal-header {
+  background: #073e52;
+  color: #fff;
+  font-size: 24px;
+  padding: 20px 40px 20px 40px;
+  margin-right: 0;
+  margin-bottom: 0;
+}
+
+.button-section .mantine-Button-root {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;

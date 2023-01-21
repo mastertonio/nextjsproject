@@ -1,0 +1,136 @@
+import React from 'react'
+import { Modal, Button, Divider, Text, TextInput, Textarea, Grid } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import FormSelect from '@app/core/components/dropdown/FormSelect';
+import { useModalAddEntryStore } from '@app/store/builderStore';
+
+type iModalAddEntryProps = {
+    showModal: boolean
+}
+
+const ModalAddEntry: React.FC<iModalAddEntryProps> = ({ showModal }) => {
+    const hideModal = useModalAddEntryStore((state) => state.hide);
+    const form = useForm({
+        initialValues: {
+            title: "",
+            type: "",
+            format: "",
+            tooltip: "",
+            appendText: "",
+            formula: "",
+            address: ""
+        }
+    })
+
+    const handleSubmit = async (values: typeof form.values) => {
+        try {
+            console.log('Values: ', values)
+        } catch (error) {
+            console.log('Error: ', error)
+        }
+    }
+
+
+    const dataSelect = [
+        { value: 'input', label: 'Input' },
+        { value: 'output', label: 'Output' },
+        { value: 'textarea', label: 'Textarea' },
+        { value: 'dropdown', label: 'Dropdown' },
+        { value: 'slider', label: 'Slider' },
+        { value: 'html', label: 'HTML' },
+    ]
+
+    return (
+        <Modal opened={showModal} onClose={() => hideModal()} size="920px" title="Create a New Entry" className="section-wrapper" padding={0}>
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+                <div className="bg-[#ECEFF1] p-[40px] mt-0">
+                    <Grid className="p-[10px]">
+                        < Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]" > Title: </Text >
+                        <Textarea
+                            required
+                            className="w-[75%] ml-auto"
+                            {...form.getInputProps("title")}
+                        />
+                    </Grid >
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Type: </Text>
+                        <div className="w-[75%]">
+                            <FormSelect data={dataSelect} values={{ ...form.getInputProps("type") }} />
+                        </div>
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
+                        <TextInput
+                            required
+                            className="w-[75%] ml-auto"
+                            {...form.getInputProps("format")}
+                        />
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Tooltip: </Text>
+                        <Textarea
+                            required
+                            className="w-[75%] ml-auto"
+                            {...form.getInputProps("tooltip")}
+                        />
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Appended Text: </Text>
+                        <TextInput
+                            required
+                            className="w-[75%] ml-auto"
+                            {...form.getInputProps("appendedText")}
+                        />
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
+                        <Textarea
+                            required
+                            className="w-[75%] ml-auto"
+                            {...form.getInputProps("formula")}
+                        />
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
+                        <TextInput
+                            required
+                            className="w-[75%] ml-auto"
+                            {...form.getInputProps("address")}
+                        />
+                    </Grid>
+
+                    <Divider className="mt-[30px] mb-[30px]" />
+
+                    <Grid justify="flex-end" className="mt-[20px]">
+                        <Button
+                            type="submit"
+                            radius="sm"
+                            size="sm"
+                            color="teal"
+                            className="mr-[10px]"
+                        >
+                            Create Entry
+                        </Button>
+                        <Button
+                            radius="sm"
+                            size="sm"
+                            color="gray"
+                            className="mr-[10px]"
+                            onClick={() => hideModal()}
+                        >
+                            Cancel
+                        </Button>
+                    </Grid>
+                </div>
+            </form>
+        </Modal >
+    )
+}
+
+export default ModalAddEntry

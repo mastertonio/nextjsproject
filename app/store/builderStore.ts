@@ -21,6 +21,18 @@ export const useModalEntryStore = create<ModalState>((set) => ({
   hide: () => set(() => ({ value: false })),
 }));
 
+type AddModalEntryState = {
+  value: boolean,
+  show: () => void;
+  hide: () => void;
+}
+
+export const useModalAddEntryStore = create<AddModalEntryState>((set) => ({
+  value: false,
+  show: () => set(() => ({ value: true })),
+  hide: () => set(() => ({ value: false })),
+}));
+
 type HeaderState = {
   value: boolean;
   open: () => void;
