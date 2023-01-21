@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { createStyles, Text } from '@mantine/core';
+import { createStyles, Text, Button } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react-beautiful-dnd';
-import { IconGripVertical } from '@tabler/icons';
+import { IconGripVertical, IconEdit, IconX } from '@tabler/icons';
 import CollapseSection from '@app/admin/components/CollapseSection';
 import { useModalEntryStore } from '@app/store/builderStore';
 
 const useStyles = createStyles((theme) => ({
     item: {
         display: 'flex',
+        flexDirection: 'row',
         alignItems: 'center',
         borderRadius: theme.radius.md,
         border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
@@ -17,6 +18,7 @@ const useStyles = createStyles((theme) => ({
         paddingLeft: theme.spacing.xl - theme.spacing.md, // to offset drag handle
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white,
         marginBottom: theme.spacing.sm,
+        boxShadow: theme.shadows.md,
     },
 
     itemDragging: {
@@ -30,7 +32,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     dragHandle: {
-        ...theme.fn.focusStyles(),
+        // ...theme.fn.focusStyles(),
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -52,13 +54,10 @@ export interface DragNDropProps {
 
 export function DragNDrop({ data, type }: DragNDropProps) {
     const { classes, cx } = useStyles();
-    const showModal = useModalEntryStore((state) => state.value);
     const show = useModalEntryStore((state) => state.show);
     const [state, handlers] = useListState(data);
     const [hideShow, setHideShow] = useState<any>({});
     resetServerContext();
-
-    console.log(showModal)
 
     useEffect(() => {
         handlers.setState(state);
@@ -93,9 +92,23 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                             <IconGripVertical size={18} stroke={1.5} />
                         </div>
                         <div>
-                            <Text>{item.sectionName}</Text>
+                            <div className="h-[20px] flex flex-row">
+                                <IconEdit size={18} stroke={1.5} />
+                                <Text className="text-[14px] ml-[5px]">{item.sectionName}</Text>
+                            </div>
+                        </div>
+                        <div className="ml-auto button-section">
+                            <Button
+                                radius="sm"
+                                color="red"
+                                size="sm"
+                                className="h-[20px] w-full"
+                            >
+                                <IconX size={12} stroke={1.5} />
+                            </Button>
                         </div>
                     </div>
+
 
                     {hideShow[item.id] && (
                         <CollapseSection />
@@ -103,7 +116,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
 
                 </div>
             )}
-        </Draggable>
+        </Draggable >
     ));
 
     return (
