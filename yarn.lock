@@ -3276,16 +3276,7 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.29.2:
-  version "1.29.2"
-  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.29.2.tgz#0c59605d8dffc252054721a641e0bc574f6668e5"
-  integrity sha512-T4Wm+eTpTH0N9gBJfJR6iecjRX2hYTKewoJUwa92hQOoEz2bYVZy6sYeN+hfnRR506TRvRcuZYqftp4KA8dN+Q==
-  dependencies:
-    prosemirror-model "^1.16.0"
-    prosemirror-state "^1.0.0"
-    prosemirror-transform "^1.1.0"
-
-prosemirror-view@^1.27.0, prosemirror-view@^1.28.2:
+prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.27.0, prosemirror-view@^1.28.2, prosemirror-view@^1.29.2:
   version "1.29.2"
   resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.29.2.tgz#0c59605d8dffc252054721a641e0bc574f6668e5"
   integrity sha512-T4Wm+eTpTH0N9gBJfJR6iecjRX2hYTKewoJUwa92hQOoEz2bYVZy6sYeN+hfnRR506TRvRcuZYqftp4KA8dN+Q==
@@ -4009,6 +4000,11 @@ unbox-primitive@^1.0.2:
     has-bigints "^1.0.2"
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
+
+unique-names-generator@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/unique-names-generator/-/unique-names-generator-4.7.1.tgz#966407b12ba97f618928f77322cfac8c80df5597"
+  integrity sha512-lMx9dX+KRmG8sq6gulYYpKWZc9RlGsgBR6aoO8Qsm3qvkSJ+3rAymr+TnV8EDMrIrwuFJ4kruzMWM/OpYzPoow==
 
 unload@2.2.0:
   version "2.2.0"
