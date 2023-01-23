@@ -4,12 +4,17 @@ import { useForm } from '@mantine/form';
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import FormSelect from '@app/core/components/dropdown/FormSelect';
 import { useModalEntryStore } from '@app/store/builderStore';
+import { iSectionData } from './Sections';
 
-type iModalEntryProps = {
-  showModal: boolean,
+interface IModalEntryProps {
+  showModal: boolean
+  sectionData: iSectionData[]
+  setSectionData: (arr: iSectionData[]) => void
+  setOpened: (b: boolean) => void
+  open: boolean
 }
 
-const ModalUpdateEntry: React.FC<iModalEntryProps> = ({ showModal }) => {
+const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, open }) => {
   const hideModal = useModalEntryStore((state) => state.hide);
   const form = useForm({
     initialValues: {
@@ -46,7 +51,7 @@ const ModalUpdateEntry: React.FC<iModalEntryProps> = ({ showModal }) => {
   ]
 
   return (
-    <Modal opened={showModal} onClose={() => hideModal()} size="920px" title="Update Entry" padding={0} className="section-wrapper">
+    <Modal opened={open} onClose={() => hideModal()} size="920px" title="Update Entry" padding={0} className="section-wrapper">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className="bg-[#ECEFF1] p-[40px] mt-0">
           <Grid className="p-[10px]">
@@ -152,7 +157,7 @@ const ModalUpdateEntry: React.FC<iModalEntryProps> = ({ showModal }) => {
               size="sm"
               color="gray"
               className="mr-[10px]"
-              onClick={() => hideModal()}
+              onClick={() => setOpened(false)}
             >
               Cancel
             </Button>

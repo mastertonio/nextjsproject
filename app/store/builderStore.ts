@@ -1,6 +1,11 @@
 import { setegid } from "process";
-import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { StateCreator, create } from "zustand";
+import {
+  createJSONStorage,
+  devtools,
+  persist,
+  PersistOptions,
+} from "zustand/middleware";
 
 export const useTitleStore = create((set) => ({
   title: "",
@@ -10,10 +15,10 @@ export const useTitleStore = create((set) => ({
 //               onChange={setTitle}
 //               // onBlur={() => setDescChange(false)}
 type ModalState = {
-  value: boolean,
+  value: boolean;
   show: () => void;
   hide: () => void;
-}
+};
 
 export const useModalEntryStore = create<ModalState>((set) => ({
   value: false,
@@ -22,10 +27,10 @@ export const useModalEntryStore = create<ModalState>((set) => ({
 }));
 
 type AddModalEntryState = {
-  value: boolean,
+  value: boolean;
   show: () => void;
   hide: () => void;
-}
+};
 
 export const useModalAddEntryStore = create<AddModalEntryState>((set) => ({
   value: false,
@@ -67,34 +72,58 @@ type VarState = {
 
 interface CalcState {
   variables: VarState[];
-  add: (var_name: string, type: "INPUT" | "OUTPUT" | "FIXED", value: number) => void;
+  add: (
+    var_name: string,
+    type: "INPUT" | "OUTPUT" | "FIXED",
+    value: number
+  ) => void;
   remove: (var_name: string) => void;
-  update: (obj: VarState) => void
+  update: (obj: VarState) => void;
 }
 
-export const useCalcStore = create<CalcState>((set) => ({
-  variables: [],
-  add: (var_name: string, type: "INPUT" | "OUTPUT" | "FIXED", value: number) =>
-    set((state) => ({
-      variables: [{ id: Math.random() * 100 + '', var_name, type, value }, ...state.variables],
-    })),
-  remove: (id) =>
-    set((state) => ({
-      variables: state.variables.filter((vars) => vars.id !== id),
-    })),
-  update: variable =>
-    set(state => ({
-      variables: state.variables.map(vars => {
-        if (vars.id === variable.id) {
-          return {
-            ...vars,
-            var_name: variable.var_name,
-            type: variable.type,
-            value: variable.value
-          };
-        } else {
-          return vars;
-        }
-      })
-    }))
-}));
+type MyPersist = (
+  config: StateCreator<CalcState>,
+  options: PersistOptions<CalcState>
+) => StateCreator<CalcState>;
+
+export const useCalcStore = create<CalcState>(
+  (persist as MyPersist)(
+    (set) => ({
+      variables: [],
+      add: (
+        var_name: string,
+        type: "INPUT" | "OUTPUT" | "FIXED",
+        value: number
+      ) =>
+        set((state) => ({
+          variables: [
+            { id: Math.random() * 100 + "", var_name, type, value },
+            ...state.variables,
+          ],
+        })),
+      remove: (id) =>
+        set((state) => ({
+          variables: state.variables.filter((vars) => vars.id !== id),
+        })),
+      update: (variable) =>
+        set((state) => ({
+          variables: state.variables.map((vars) => {
+            if (vars.id === variable.id) {
+              return {
+                ...vars,
+                var_name: variable.var_name,
+                type: variable.type,
+                value: variable.value,
+              };
+            } else {
+              return vars;
+            }
+          }),
+        })),
+    }),
+    {
+      name: "builder-storage", // unique name
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default the 'localStorage' is used
+    }
+  )
+);

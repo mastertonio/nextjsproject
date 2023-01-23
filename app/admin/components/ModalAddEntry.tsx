@@ -3,12 +3,17 @@ import { Modal, Button, Divider, Text, TextInput, Textarea, Grid } from '@mantin
 import { useForm } from '@mantine/form';
 import FormSelect from '@app/core/components/dropdown/FormSelect';
 import { useModalAddEntryStore } from '@app/store/builderStore';
+import { iSectionData } from './Sections';
 
-type iModalAddEntryProps = {
+interface IModalAddEntryProps {
     showModal: boolean
+    sectionData: iSectionData[]
+    setSectionData: (arr: iSectionData[]) => void
+    setOpened: (b: boolean) => void
+    open: boolean
 }
 
-const ModalAddEntry: React.FC<iModalAddEntryProps> = ({ showModal }) => {
+const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, open }) => {
     const hideModal = useModalAddEntryStore((state) => state.hide);
     const form = useForm({
         initialValues: {
@@ -16,7 +21,7 @@ const ModalAddEntry: React.FC<iModalAddEntryProps> = ({ showModal }) => {
             type: "",
             format: "",
             tooltip: "",
-            appendText: "",
+            appendedText: "",
             formula: "",
             address: ""
         }
@@ -24,7 +29,8 @@ const ModalAddEntry: React.FC<iModalAddEntryProps> = ({ showModal }) => {
 
     const handleSubmit = async (values: typeof form.values) => {
         try {
-            console.log('Values: ', values)
+            setSectionData([ ...sectionData, { ...values, id: Math.floor(Math.random()*1000)} ])
+            setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
         }
@@ -41,7 +47,7 @@ const ModalAddEntry: React.FC<iModalAddEntryProps> = ({ showModal }) => {
     ]
 
     return (
-        <Modal opened={showModal} onClose={() => hideModal()} size="920px" title="Create a New Entry" className="section-wrapper" padding={0}>
+        <Modal opened={open} onClose={() => hideModal()} size="920px" title="Create a New Entry" className="section-wrapper" padding={0}>
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <div className="bg-[#ECEFF1] p-[40px] mt-0">
                     <Grid className="p-[10px]">
@@ -122,7 +128,7 @@ const ModalAddEntry: React.FC<iModalAddEntryProps> = ({ showModal }) => {
                             size="sm"
                             color="gray"
                             className="mr-[10px]"
-                            onClick={() => hideModal()}
+                            onClick={() => setOpened(false)}
                         >
                             Cancel
                         </Button>

@@ -5,7 +5,8 @@ import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react
 import { IconGripVertical, IconEdit, IconX } from '@tabler/icons';
 import CollapseSection from '@app/admin/components/CollapseSection';
 import { useModalEntryStore } from '@app/store/builderStore';
-import { IBuilderSubState, useBuilderStore } from '@app/store/builder/builderState';
+import { IBuilderSubState, useBuilderStore, useSectionsStore } from '@app/store/builder/builderState';
+import { iSectionData } from '../Sections';
 
 const useStyles = createStyles((theme) => ({
     item: {
@@ -45,20 +46,17 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface DragNDropProps {
-    data: IBuilderSubState[],
+    data: iSectionData[],
     type: string
+    setUpdate: (b: boolean) => void
 }
 
-export function DragNDrop({ data, type }: DragNDropProps) {
+function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
     const { classes, cx } = useStyles();
     const show = useModalEntryStore((state) => state.show);
     const [hideShow, setHideShow] = useState<any>({});
     resetServerContext();
-    const [display, setDisplay] = useState<any>(false)
-
-    const equalsCheck = (a: IBuilderSubState[], b: IBuilderSubState[]) => a.length === b.length && a.every((v, i) => v === b[i])
-
-    const remove = useBuilderStore((state) => state.remove)
+    const remove = useSectionsStore((state) => state.remove)
     const [state, handlers] = useListState(data);
 
     useEffect(() => {
@@ -82,7 +80,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        onClick={() => type === "collapse" ? handleShow(item.id) : show()}
+                        onClick={() => setUpdate(true)}
                     >
                         <div {...provided.dragHandleProps} className={classes.dragHandle}>
                             <IconGripVertical size={18} stroke={1.5} />
@@ -90,7 +88,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                         <div>
                             <div className="h-[20px] flex flex-row">
                                 <IconEdit size={18} stroke={1.5} />
-                                <Text className="text-[14px] ml-[5px]">{item.sectionName}</Text>
+                                <Text className="text-[14px] ml-[5px]">{item.title}</Text>
                             </div>
                         </div>
                         <div className="ml-auto button-section">
@@ -99,17 +97,15 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                                 color="red"
                                 size="sm"
                                 className="h-[20px] w-full"
-                                onClick={() => remove(item.id) }
+                                onClick={() => {
+                                    remove(item.id)
+                                }
+                                }
                             >
                                 <IconX size={12} stroke={1.5} />
                             </Button>
                         </div>
                     </div>
-
-
-                    {hideShow[item.id] && (
-                        <CollapseSection item={item} />
-                    )}
 
                 </div>
             )}
@@ -134,3 +130,6 @@ export function DragNDrop({ data, type }: DragNDropProps) {
         </DragDropContext>
     )
 }
+
+
+export default SectionDnd
