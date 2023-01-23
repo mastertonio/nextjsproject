@@ -99,11 +99,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                                 color="red"
                                 size="sm"
                                 className="h-[20px] w-full"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    remove(item.id)
-                                }
-                                }
+                                onClick={() => remove(item.id) }
                             >
                                 <IconX size={12} stroke={1.5} />
                             </Button>
