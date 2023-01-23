@@ -9,27 +9,13 @@ import {
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  GetStaticPaths,
-  GetStaticPathsContext,
-  NextApiRequest,
-} from "next";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
 import TemplateSpecifics from "@app/admin/components/TemplateSpecifics";
 import Sections from "@app/admin/components/Sections";
-import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
-import Row from "@dashboard/components/Row";
 import { useRouter } from "next/router";
-import MainLoader from "@app/core/components/loader/MainLoader";
-import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
-import * as cookie from 'cookie'
-import FourOhFour from "pages/404";
-//
+
 const AdminBuilder: React.FC<UserState> = () => {
   const router = useRouter();
   const theme = useMantineTheme();
@@ -71,13 +57,6 @@ const AdminBuilder: React.FC<UserState> = () => {
       </div>
     </AppShell>
   );
-  //   }
-
-  //   if (isError) {
-  //     return <FourOhFour />;
-  //   }
-
-  //   return <></>
 };
 
 export default AdminBuilder;
