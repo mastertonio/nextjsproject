@@ -98,7 +98,7 @@ const Sidebar: React.FC = () => {
             alignItems: "end",
           }}
         >
-          {user?.role == "admin"? (
+          {user?.role == "admin" ? (
             <Button
               variant="subtle"
               color="blue"

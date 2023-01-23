@@ -44,6 +44,12 @@ a {
   padding-right: 6px;
 }
 
+.mantine-AppShell-main {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: calc(70px + 0px);
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;
@@ -51,5 +57,19 @@ a {
 
   .animate-card {
     transition: all 0.8s;
+  }
+
+  .section-wrapper .mantine-Modal-header {
+    background: #073e52;
+    color: #fff;
+    font-size: 24px;
+    padding: 20px 20px 20px 20px;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+
+  .mantine-AppShell-main {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
