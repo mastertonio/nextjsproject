@@ -66,7 +66,7 @@ export const useBuilderStore = create<IBuilderState>((set) => ({
         {
           id: Date.now(),
           symbol: "1" + Math.floor(Math.random() * 100),
-          sectionName: "", 
+          sectionName: "New Section", 
           //uniqueNamesGenerator(customConfig),
           sectionWriteUp: "",
           sectionFormula: "",

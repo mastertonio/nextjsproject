@@ -22,7 +22,7 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
     const showAddEntry = useModalAddEntryStore((state) => state.show);
     const [opened, setOpened] = useState(false);
     const [update, setUpdate] = useState(false);
-    
+
     const [sectData, setSectData] = useState<iSectionData[]>([])
 
 
@@ -45,36 +45,38 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
     }
 
     return (
-        <div>
+        <div className='pl-0 pr-0'>
             <div className="bg-[#ffffff] rounded-[5px] shadow p-[10px] mt-[50px]">
-                <h1 className="text-[28px] text-[#676a6c] font-bold flex flex-row items-center">
+                <h1 className="text-[28px] text-[#676a6c] font-bold flex flex-row items-center ml-[20px]">
                     <IconBookmark size={30} stroke={3} />
                     <span>{content.sectionName}</span>
                 </h1>
             </div>
 
-            <Card className="mt-[20px] mb-[20px]">
-                <div className="mt-[20px]">
-                    <SectionDnd data={sectData} type="modal" setUpdate={setUpdate} />
-                </div>
+            <div className="pl-[2rem] pr-[2rem]">
+                <Card className="mt-[20px] mb-[20px]">
+                    <div className="mt-[20px]">
+                        <SectionDnd data={sectData} type="modal" setUpdate={setUpdate} />
+                    </div>
 
-                <Grid justify="flex-end" className="mt-[20px] mb-[20px]">
-                    <Button
-                        type="submit"
-                        radius="sm"
-                        size="sm"
-                        color="teal"
-                        className="mr-[10px]"
-                        onClick={()=> {
-                            setOpened(true)
-                        }}
-                    >
-                        Add New Entry
-                    </Button>
-                </Grid>
-            </Card>
-            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update}/>
-            <ModalAddEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setOpened} open={opened}/>
+                    <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[-unset] pt-0 sm:pt-[20px]">
+                        <Button
+                            type="submit"
+                            radius="sm"
+                            size="sm"
+                            color="teal"
+                            className="mr-[10px]"
+                            onClick={() => {
+                                setOpened(true)
+                            }}
+                        >
+                            Add New Entry
+                        </Button>
+                    </Grid>
+                </Card>
+            </div>
+            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} />
+            <ModalAddEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setOpened} open={opened} />
         </div>
     )
 }
