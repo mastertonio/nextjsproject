@@ -46,7 +46,7 @@ const AdminBuilder: React.FC<UserState> = () => {
       }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
-      className="p-0 m-0"
+      className="p-0 m-0 "
       fixed
       header={<RoiNavbar />}
     >

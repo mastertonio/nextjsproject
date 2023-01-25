@@ -45,7 +45,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
       justifyContent: 'center',
       height: '95vh',
       margin: 20,
-      borderRadius: 8
+      borderRadius: 8,
   },
 
   button:{
@@ -105,4 +105,10 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+
+    forgotImage: {
+        [theme.fn.smallerThan('sm')]: {
+            display: 'block',
+        },
+    },
 }));
