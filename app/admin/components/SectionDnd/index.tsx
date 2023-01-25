@@ -16,11 +16,12 @@ const useStyles = createStyles((theme) => ({
         borderRadius: theme.radius.md,
         border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
             }`,
-        padding: `${theme.spacing.sm}px ${theme.spacing.xl}px`,
+        // padding: `${theme.spacing.sm}px ${theme.spacing.xl}px`,
         paddingLeft: theme.spacing.xl - theme.spacing.md, // to offset drag handle
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white,
         marginBottom: theme.spacing.sm,
         boxShadow: theme.shadows.md,
+        zIndex: 0
     },
 
     itemDragging: {
@@ -59,6 +60,8 @@ function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
     const remove = useSectionsStore((state) => state.remove)
     const [state, handlers] = useListState(data);
 
+    console.log('secdata', state)
+
     useEffect(() => {
         handlers.setState(data);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,22 +79,25 @@ function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
             {(provided, snapshot) => (
                 <div>
                     <div
-                        className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
+                        className={cx(classes.item)}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        onClick={() => setUpdate(true)}
                     >
-                        <div {...provided.dragHandleProps} className={classes.dragHandle}>
-                            <IconGripVertical size={18} stroke={1.5} />
-                        </div>
-                        <div>
-                            <div className="h-[20px] flex flex-row">
-                                <IconEdit size={18} stroke={1.5} />
-                                <Text className="text-[14px] ml-[5px]">{item.title}</Text>
+                        <div
+                            className={`flex flex-row w-full pt-[12px] pb-[12px] ${cx({ [classes.itemDragging]: snapshot.isDragging })}`}
+                            onClick={() => setUpdate(true)}
+                        >
+                            <div {...provided.dragHandleProps} className={classes.dragHandle}>
+                                <IconGripVertical size={18} stroke={1.5} />
+                            </div>
+                            <div>
+                                <div className="h-[20px] flex flex-row">
+                                    <IconEdit size={18} stroke={1.5} />
+                                    <Text className="text-[14px] ml-[5px]">{item.title}</Text>
+                                </div>
                             </div>
                         </div>
-                        <div className="ml-auto button-section">
+                        <div className="ml-auto button-section pr-[24px] z-!40">
                             <Button
                                 radius="sm"
                                 color="red"
@@ -99,8 +105,8 @@ function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
                                 className="h-[20px] w-full"
                                 onClick={() => {
                                     remove(item.id)
-                                }
-                                }
+                                    console.log(remove(item.id))
+                                }}
                             >
                                 <IconX size={12} stroke={1.5} />
                             </Button>

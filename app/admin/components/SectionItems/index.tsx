@@ -25,7 +25,6 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
 
     const [sectData, setSectData] = useState<iSectionData[]>([])
 
-
     const form = useForm({
         initialValues: {
             sectionName: "",

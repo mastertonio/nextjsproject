@@ -12,6 +12,7 @@ import {
   Paper,
   Title,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
 import React, { useContext, useEffect, useState } from "react";
@@ -85,7 +86,30 @@ const Home: React.FC = () => {
       }
 
       router.push(`/dashboard`);
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error.response.data.message)
+
+      showNotification({
+        title: error.response.statusText,
+        message: error.response.data.message,
+        color: 'red',
+        styles: () => ({
+          root: {
+            padding: '15px'
+          },
+          title: {
+            fontSize: '16px',
+            fontWeight: 700,
+            marginLeft: '5px'
+          },
+          description: {
+            fontSize: '14px',
+            fontWeight: 500,
+            marginLeft: '5px'
+          }
+        }),
+      })
+
       return error;
     }
   };
