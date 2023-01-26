@@ -10,7 +10,9 @@ import {
   Container,
   useMantineTheme,
   Checkbox,
+  Image
 } from "@mantine/core";
+import { IconLock } from '@tabler/icons'
 import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
 import React, { useEffect } from "react";
@@ -56,43 +58,53 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <div
-      className={classes.body}
-      style={{ background: theme.fn.radialGradient("teal", "#00acac") }}
+      className={`${classes.body} m-0 bg-[url('/bg.jpg')] bg-cover h-screen`}
+    // style={{ background: theme.fn.radialGradient("teal", "#00acac") }}
     >
       <Head>
         <title>The ROI Shop Forgot Password</title>
       </Head>
-      <Container size="xs" px="xs" className={classes.wrapper}>
-        <Text weight={500} className={classes.title}>
-          Forgot Password
-        </Text>
-        <Box sx={{ width: 500, height: "45%" }} mx="md">
-          <form onSubmit={form.onSubmit(handleSubmit)}>
-            <TextInput
-              required
-              label="Email"
-              placeholder="your@email.com"
-              {...form.getInputProps("email")}
-            />
+      <div className="flex flex-row">
+        <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-40 items-center">
+          <div className="text-center block order-last xl:order-1">
+            <Image src="/forgot.png" alt="forgot" width={500} height="auto" />
+          </div>
+          <div className="order-1 block  xl:order-1">
+            <Container size="xs" px="xs" className={`flex flex-col items-center justify-center m-w-[100px] w-full h-[450px] bg-white p-[30px] rounded-lg shadow-lg border-0`}>
+              <Text className={`${classes.title} text-[30px] font-bold text-[#134e4a] flex flex-row items-center`}>
+                <IconLock size={30} stroke={2.5} />
+                <span className="ml-[10px]">Forgot Password</span>
+              </Text>
+              <Box sx={{ width: 400, height: "45%" }} className="mt-[20px] mb-[30px]">
+                <form onSubmit={form.onSubmit(handleSubmit)}>
+                  <Text className="text-[16px] font-semibold mb-[20px]">Email Address</Text>
+                  <TextInput
+                    required
+                    placeholder="your@email.com"
+                    {...form.getInputProps("email")}
+                  />
 
-            <Group position="right" mt="xs">
-              <Button
-                type="submit"
-                style={{ background: theme.fn.radialGradient("#00acac") }}
-                className={classes.button}
-              >
-                Send Email Verification
-              </Button>
-            </Group>
-          </form>
-        </Box>
-        <div className={classes.forgot_password}>
-          <Text>© The ROI Shop</Text>
-          <Button variant="subtle" radius="lg" onClick={()=>(router.push('/'))}>
-            Login
-          </Button>
+                  <Group position="right" mt="xs">
+                    <Button
+                      type="submit"
+                      style={{ background: theme.fn.radialGradient("#00acac") }}
+                      className={classes.button}
+                    >
+                      Send Email Verification
+                    </Button>
+                  </Group>
+                </form>
+              </Box>
+              <div className={classes.forgot_password}>
+                <Text className="text-[15px] font-semibold">© The ROI Shop</Text>
+                <Button variant="subtle" radius="lg" onClick={() => (router.push('/'))} className="text-[15px] font-semibold">
+                  Login
+                </Button>
+              </div>
+            </Container>
+          </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 };

@@ -45,8 +45,9 @@ a {
 }
 
 .mantine-AppShell-main {
-  padding-left: 0;
-  padding-right: 0;
+  max-width: 100%;
+  /* padding-left: 0;
+  padding-right: 0; */
   padding-top: calc(70px + 0px);
 }
 
