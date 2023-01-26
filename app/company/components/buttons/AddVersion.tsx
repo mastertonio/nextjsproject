@@ -25,6 +25,7 @@ import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethod
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 export interface IButtonAddVersion {
   update: () => void;
@@ -47,6 +48,8 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [filter, setFilter] = useState<string[]>([""]);
+  
+  const userZ = useUserStore((state) => (state.user))
 
   const form = useForm({
     initialValues: {
@@ -68,7 +71,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${comp_id}/template/${temp_id}/version`,
+        `/v1/company/${userZ?.company_id}/template/${temp_id}/version`,
         {
           name: values.name,
           version: values.stage,
