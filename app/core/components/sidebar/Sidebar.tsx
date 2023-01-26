@@ -20,10 +20,12 @@ import {
   MdLineWeight,
 } from "react-icons/md";
 import { useQuery } from "react-query";
+import { useNavShowStore } from "@app/store/builderStore";
 import { IAdminListProps } from "../navbar/components/AdminList";
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
+  const navShow = useNavShowStore((state) => state.value);
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
@@ -48,16 +50,9 @@ const Sidebar: React.FC = () => {
       p="md"
       hiddenBreakpoint="sm"
       //   hidden={!opened}
-      style={{
-        backgroundColor: "#2f4050",
-        color: "lightgray",
-        marginTop: -70,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "start",
-      }}
       width={{ sm: 200, lg: 250 }}
       height="100vh"
+      className={`bg-[#2f4050] text-[lightgray] mt-[-70px] flex-col items-start ${navShow === false ? 'hidden' : ''} sm:flex`}
     >
       <Image style={{ marginTop: 35 }} src="/logo.png" alt="random" />
       <Text style={{ marginBottom: 150, marginLeft: 35, width: "full" }}>

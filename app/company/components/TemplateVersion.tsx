@@ -130,11 +130,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
       versions: item.versions,
       actions: (
         <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
+          className="flex justify-end items-center"
         >
           <EditVersion
             comp_id={comp_id}
@@ -147,7 +143,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             version={item.versions}
             key={shortUUID.generate()}
           />
-          <Button radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
+          <Button radius="sm" size="xs" color="red" className="ml-[10px]">
             Delete
           </Button>
         </div>
@@ -164,21 +160,25 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
     //   <MainLoader />
     // ) :
     return (
-      <div style={{ margin: 10, backgroundColor: "white", padding: 30 }}>
-        <Grid style={{ margin: 20 }}>
+      <div className="m-[10px] bg-white">
+        <div className="text-center mb-[40px] mt-[30px]">
+          <Text className="text-[40px] text-[#00acac] font-bold">Template Version</Text>
+        </div>
+
+        <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
           <AddVersion update={refetch} comp_id={comp_id} temp_id={temp_id} />
           <Text
             color="teal"
             weight={900}
-            style={{ marginLeft: "auto", marginRight: "auto" }}
+            className="ml-auto mr-auto mt-[30px] sm:mt-0 mb-[10px] sm:mb-0 text-[18px] sm:text-[16px]"
           >
             {name}
           </Text>
           <Input
             variant="default"
             placeholder="Search for ROI"
-            style={{ marginLeft: "auto" }}
+            className="ml-auto w-full sm:w-[unset] mt-[30px] sm:mt-0"
             onChange={(event: {
               target: { value: React.SetStateAction<string> };
             }) => {
@@ -187,7 +187,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
           />
         </Grid>
         <ScrollArea
-          style={{ height: 590 }}
+          className="h-[590px]"
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
@@ -197,15 +197,14 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             horizontalSpacing="xl"
           >
             <thead
-              className={cx(classes.header, { [classes.scrolled]: scrolled })}
-              style={{ zIndex: 50 }}
+              className={`${cx(classes.header, { [classes.scrolled]: scrolled })} z-[50]`}
             >
               <tr>
                 <Th
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[400px]"
+                  style="w-[400px] whitespace-nowrap"
                 >
                   Version Name
                 </Th>
@@ -213,7 +212,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[220px]"
+                  style="w-[220px] whitespace-nowrap"
                 >
                   Version Stage
                 </Th>
@@ -221,7 +220,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[200px]"
+                  style="w-[200px] whitespace-nowrap"
                 >
                   Level
                 </Th>
@@ -229,7 +228,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "notes"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("notes")}
-                  style="w-[620px]"
+                  style="w-[620px] whitespace-nowrap"
                 >
                   Notes
                 </Th>
@@ -237,7 +236,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px]"
+                  style="w-[130px] whitespace-nowrap"
                 >
                   Status
                 </Th>
@@ -324,23 +323,17 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                     | null
                     | undefined;
                   }) => (
-                    <tr key={element._id} style={{ height: 20 }}>
-                      <td style={{ width: 10 }}>{element.name}</td>
-                      <td style={{ width: 10 }}>{element.stage}</td>
-                      <td style={{ width: 10 }}>{element.level}</td>
+                    <tr key={element._id} className="h-[20px]">
+                      <td className="w-[10px]">{element.name}</td>
+                      <td className="w-[10px]">{element.stage}</td>
+                      <td className="w-[10px]">{element.level}</td>
                       <td
-                        style={{
-                          cursor: "pointer",
-                          width: 140,
-                          paddingLeft: 30,
-                        }}
+                        className="w-[140px] cursor-pointer pl-[30px]"
                       >
                         {element.notes}
                       </td>
                       <td
-                        style={{
-                          width: 110,
-                        }}
+                        className="w-[110px]"
                       >
                         <Badge color="green" variant="outline">
                           {element.status}
@@ -354,7 +347,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             )}
           </Table>
         </ScrollArea>
-        <div ref={refTarget}>
+        <div ref={refTarget} className="mt-[30px]">
           <Paginate
             refetch={refetch}
             page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}

@@ -11,10 +11,13 @@ module.exports = {
     "./app/core/components/card**/*.{js,ts,jsx,tsx}",
     "./app/core/components/slider**/*.{js,ts,jsx,tsx}",
     "./app/core/components/sidebar/EnterpriseSidebar*.{js,ts,jsx,tsx}",
+    "./app/core/components/sidebar/Sidebar*.{js,ts,jsx,tsx}",
     "./app/enterprise/components/**/*.{js,ts,jsx,tsx}",
     "./app/dashboard/components/**/*.{js,ts,jsx,tsx}",
     "./app/admin/components/**/*.{js,ts,jsx,tsx}",
     "./app/dashboard/components/table**/*.{js,ts,jsx,tsx}",
+    "./app/company/components/TemplateVersion*.{js,ts,jsx,tsx}",
+    "./app/company/components/buttons/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},

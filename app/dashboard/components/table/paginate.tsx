@@ -31,7 +31,7 @@ const Paginate: React.FC<IPaginateProps> = ({
     <div
       className="flex flex-col sm:flex-row items-center m-0 sm:m-[20px]"
     >
-      <Text className="mr-[5px] mt-[20px]">
+      <Text className="mr-[10px] text-[14px] text-slate-800 font-medium">
         Showing {firstIndex + 1} to {lastIndex > totalResults ? totalResults : lastIndex} of {totalResults} ROIs{" "}
       </Text>
       <Select
@@ -61,15 +61,15 @@ const Paginate: React.FC<IPaginateProps> = ({
           }
         }}
       />
-      <Text className="ml-[5px] mt-[20px] sm:mt-0"> ROIs per page </Text>
+      <Text className="ml-[10px] mt-[20px] sm:mt-0 text-[14px] text-slate-800 font-medium"> ROIs per page </Text>
       <Pagination
-        className="ml-auto mt-[20px] sm:mt-0"
+        className="ml-[unset] sm:ml-auto mt-[20px] sm:mt-0"
         total={page}
         color="teal"
         page={activePage}
         onChange={setPage}
       />
-    </div>
+    </div >
   );
 };
 

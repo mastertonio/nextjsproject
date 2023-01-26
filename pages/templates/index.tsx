@@ -10,6 +10,7 @@ import {
   Badge,
   Divider,
 } from "@mantine/core";
+import { IconPlus } from '@tabler/icons';
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -113,7 +114,7 @@ const TemplatesDashboard: React.FC = () => {
     id: item._id,
     name: (
       <span
-        style={{ cursor: "pointer", width: 10 }}
+        className="cursor-pointer w-[10px]"
         onClick={() => {
           scrollIntoView({ alignment: "center" });
           setTemp(item._id);
@@ -145,7 +146,7 @@ const TemplatesDashboard: React.FC = () => {
           name={item.name}
           key={shortUUID.generate()}
         />
-        <Button radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
+        <Button radius="sm" size="xs" color="red" className="ml-[10px]">
           Delete
         </Button>
       </div>
@@ -171,14 +172,14 @@ const TemplatesDashboard: React.FC = () => {
       header={<RoiNavbar />}
       navbar={<Sidebar />}
     >
-      <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
-        <Grid style={{ margin: 20 }}>
+      <div className="m-[10px] bg-white p-[10px] sm:p-[25px]">
+        <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
           <AddTemplateButton refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
-            style={{ marginLeft: "auto" }}
+            className="ml-auto w-full sm:w-[unset] mt-[30px] sm:mt-0"
             onChange={(event: {
               target: { value: React.SetStateAction<string> };
             }) => {
@@ -187,7 +188,7 @@ const TemplatesDashboard: React.FC = () => {
           />
         </Grid>
         <ScrollArea
-          style={{ height: 590 }}
+          className="h-[590px]"
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
@@ -205,7 +206,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[300px]"
+                  style="w-[400px] whitespace-nowrap"
                 >
                   Template Name
                 </Th>
@@ -213,7 +214,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "notes"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("notes")}
-                  style="w-[670px]"
+                  style="w-[600px] whitespace-nowrap"
                 >
                   Notes
                 </Th>
@@ -221,7 +222,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px]"
+                  style="w-[130px] whitespace-nowrap"
                 >
                   Status
                 </Th>
@@ -284,21 +285,15 @@ const TemplatesDashboard: React.FC = () => {
                     | null
                     | undefined;
                   }) => (
-                    <tr key={element._id} style={{ height: 20 }}>
-                      <td>{element.name}</td>
+                    <tr key={element._id} className="h-[20px]">
+                      <td className="w-[100px]"><IconPlus size={20} stroke={3} className="pt-[7px] pr-[5px]" /> {element.name}</td>
                       <td
-                        style={{
-                          cursor: "pointer",
-                          width: 140,
-                          paddingLeft: 30,
-                        }}
+                        className="cursor-pointer w-[140px] pl-[30px]"
                       >
                         {element.notes}
                       </td>
                       <td
-                        style={{
-                          width: 110,
-                        }}
+                        className="w-[110px]"
                       >
                         <Badge color="green" variant="outline">
                           {element.status}
@@ -312,7 +307,7 @@ const TemplatesDashboard: React.FC = () => {
             )}
           </Table>
         </ScrollArea>
-        <div>
+        <div className="mt-[30px]">
           <Paginate
             refetch={refetch}
             page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
