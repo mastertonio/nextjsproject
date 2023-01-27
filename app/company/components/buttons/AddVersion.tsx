@@ -48,7 +48,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [filter, setFilter] = useState<string[]>([""]);
-  
+
   const userZ = useUserStore((state) => (state.user))
 
   const form = useForm({
@@ -221,7 +221,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
         size="sm"
         onClick={() => setOpened(true)}
         color="teal"
-        style={{ width: 300 }}
+        className="w-full sm:w-[300px]"
       >
         Add Template Version
       </Button>

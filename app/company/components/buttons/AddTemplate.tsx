@@ -46,10 +46,16 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
     initialValues: {
       name: "",
       notes: "",
+      projection: 0,
+      month: 0,
+      year: 0
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    const month = values.month;
+    const year = Math.floor(values.year * 12);
+
     try {
       showNotification({
         id: "edit-comp",
@@ -66,6 +72,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
           name: values.name,
           status: "1",
           notes: values.notes,
+          projection: values.year !== 0 ? year : values.month !== 0 ? month : year
         });
       if (response) {
         refetch();
@@ -105,13 +112,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
       >
         <Text
           weight={700}
-          color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] bg-[#073e52] text-white"
           align="center"
         >
           Add Company Template
@@ -125,66 +126,68 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
-              height: 200,
+              height: 'auto',
             })}
           >
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text>Name: </Text>
+              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Name: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter Template Name"
                 {...form.getInputProps("name")}
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Notes: </Text>
+              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Notes: </Text>
               <Textarea
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter Notes for Template"
                 {...form.getInputProps("notes")}
               />
             </Grid>
+            <Grid className="ml-[30px] mr-[30px] mb-[20px]">
+              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Projection</Text>
+              <div className="w-full sm:w-[550px] ml-auto flex flex-col sm:flex-row items-center">
+                <div className="flex flex-row items-center mr-0 sm:mr-[30px] mt-[20px] sm:mt-0">
+                  <Text className="text-[14px] mr-[10px] text-slate-700 font-semibold">Month</Text>
+                  <NumberInput defaultValue={0}  {...form.getInputProps("month")} />
+                </div>
+                <div className="flex flex-row items-center mt-[20px] sm:mt-0">
+                  <Text className="text-[14px] mr-[22px] sm:mr-[10px] text-slate-700 font-semibold">Year</Text>
+                  <NumberInput defaultValue={0}  {...form.getInputProps("year")} />
+                </div>
+              </div>
+            </Grid>
+
+            <Grid justify="flex-end" className="m-[20px] pt-[10px] bg-[#f8f9fa]">
+              <Button
+                type="submit"
+                radius="sm"
+                size="sm"
+                color="teal"
+                className="mr-[10px]"
+                onClick={() => setOpened(false)}
+              >
+                Save Template
+              </Button>
+              <Button
+                radius="sm"
+                size="sm"
+                onClick={() => setOpened(false)}
+                className="bg-white text-black border-[gray]"
+              >
+                Close
+              </Button>
+            </Grid>
           </Stack>
 
-          <Grid justify="flex-end" style={{ margin: 20 }}>
-            <Button
-              type="submit"
-              radius="sm"
-              size="sm"
-              color="teal"
-              style={{ marginRight: 10 }}
-              onClick={() => setOpened(false)}
-            >
-              Save Template
-            </Button>
-            <Button
-              radius="sm"
-              size="sm"
-              onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
-            >
-              Close
-            </Button>
-          </Grid>
+
         </form>
       </Modal>
 
@@ -194,7 +197,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         size="sm"
         onClick={() => setOpened(true)}
         color="teal"
-        style={{ width: 300 }}
+        className="w-full sm:w-[300px]"
       >
         Add Template
       </Button>
