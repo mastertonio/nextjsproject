@@ -250,7 +250,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("email")}
-                  style="w-[300px]"
+                  style="w-[300px] !border-white !border-0"
                 >
                   User Name
                 </Th>
@@ -258,7 +258,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "created_rois"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("created_rois")}
-                  style="w-[170px]"
+                  style="w-[170px] !border-white !border-0"
                 >
                   Created Rois
                 </Th>
@@ -266,7 +266,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "role"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("role")}
-                  style="w-[170px]"
+                  style="w-[170px] !border-white !border-0"
                 >
                   Role
                 </Th>
@@ -274,7 +274,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "manager_email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("manager_email")}
-                  style="w-[250px]"
+                  style="w-[250px] !border-white !border-0"
                 >
                   Manager
                 </Th>
@@ -282,7 +282,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "currency"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("currency")}
-                  style="w-[110px]"
+                  style="w-[110px] !border-white !border-0"
                 >
                   Currency
                 </Th>
@@ -290,11 +290,11 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px]"
+                  style="w-[130px] !border-white !border-0"
                 >
                   Status
                 </Th>
-                <th></th>
+                <th className="!border-white !border-0"></th>
               </tr>
             </thead>
             {isLoading ? (

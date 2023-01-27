@@ -327,7 +327,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
-                style="w-[310px]"
+                style="w-[310px] !border-white !border-0"
               >
                 Company Name
               </Th>
@@ -335,7 +335,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "alias"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("alias")}
-                style="w-[225px]"
+                style="w-[225px] !border-white !border-0"
               >
                 Alias
               </Th>
@@ -343,7 +343,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "licenses"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("licenses")}
-                style="w-[160px]"
+                style="w-[160px] !border-white !border-0"
               >
                 Licenses
               </Th>
@@ -351,7 +351,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "templates"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("templates")}
-                style="w-[170px]"
+                style="w-[170px] !border-white !border-0"
               >
                 Templates
               </Th>
@@ -359,11 +359,11 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                 sorted={sortBy === "active"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("active")}
-                style="w-[220px]"
+                style="w-[220px] !border-white !border-0"
               >
                 Status
               </Th>
-              <th></th>
+              <th className="!border-white !border-0"></th>
             </tr>
           </thead>
           {isLoading ? (
