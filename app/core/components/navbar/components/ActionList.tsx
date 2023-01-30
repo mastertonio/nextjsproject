@@ -24,7 +24,7 @@ const ActionList: React.FC = () => {
     setValues(event);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
       sessionStorage.clear()
       router.push("/");

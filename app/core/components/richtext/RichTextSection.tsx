@@ -9,8 +9,13 @@ import TextStyle from '@tiptap/extension-text-style'
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import Placeholder from '@tiptap/extension-placeholder';
-import YouTube from '@tiptap/extension-youtube'
-import { Color } from '@tiptap/extension-color'
+import YouTube from '@tiptap/extension-youtube';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import { Color } from '@tiptap/extension-color';
+import { IconTable, IconTableOff, IconTableExport, IconTableImport, IconVideo } from '@tabler/icons';
 
 
 type iRichTextProps = {}
@@ -30,10 +35,32 @@ const RichTextSection: React.FC<iRichTextProps> = () => {
                 controls: false,
             }),
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
-            Placeholder.configure({ placeholder: 'This is placeholder' })
+            Placeholder.configure({ placeholder: 'This is placeholder' }),
+            Table.configure({
+                resizable: true,
+            }),
+            TableRow,
+            TableHeader,
+            TableCell,
         ],
-        content: " "
+        content: ``
     });
+
+    const addTable = () => {
+        editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+    }
+
+    const addVideo = () => {
+        const url = prompt('Enter YouTube URL')
+
+        if (url) {
+            editor?.commands.setYoutubeVideo({
+                src: url,
+                width: 600,
+                height: 350,
+            })
+        }
+    }
 
     return (
         <RichTextEditor editor={editor}>
@@ -85,6 +112,11 @@ const RichTextSection: React.FC<iRichTextProps> = () => {
                 <RichTextEditor.ControlsGroup>
                     <RichTextEditor.Link />
                     <RichTextEditor.Unlink />
+                    <RichTextEditor.Control
+                        onClick={() => addVideo()}
+                    >
+                        <IconVideo size={18} stroke={1} />
+                    </RichTextEditor.Control>
                 </RichTextEditor.ControlsGroup>
 
                 <RichTextEditor.ControlsGroup>
@@ -93,6 +125,30 @@ const RichTextSection: React.FC<iRichTextProps> = () => {
                     <RichTextEditor.AlignJustify />
                     <RichTextEditor.AlignRight />
                 </RichTextEditor.ControlsGroup>
+
+                <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.Control
+                        onClick={() => addTable()}
+                    >
+                        <IconTable size={18} stroke={1} />
+                    </RichTextEditor.Control>
+                    <RichTextEditor.Control
+                        onClick={() => editor?.chain().focus().deleteTable().run()}
+                    >
+                        <IconTableOff size={18} stroke={1} />
+                    </RichTextEditor.Control>
+                    <RichTextEditor.Control
+                        onClick={() => editor?.chain().focus().addColumnAfter().run()}
+                    >
+                        <IconTableExport size={18} stroke={1} />
+                    </RichTextEditor.Control>
+                    <RichTextEditor.Control
+                        onClick={() => editor?.chain().focus().addColumnBefore().run()}
+                    >
+                        <IconTableImport size={18} stroke={1} />
+                    </RichTextEditor.Control>
+                </RichTextEditor.ControlsGroup>
+
 
             </RichTextEditor.Toolbar>
             <RichTextEditor.Content />

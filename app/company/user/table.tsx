@@ -194,7 +194,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "username"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("username")}
-                    style="w-[300px]"
+                    style="w-[300px] !border-white !border-0"
                   >
                     User Name
                   </Th>
@@ -202,7 +202,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "calculator_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("calculator_name")}
-                    style="w-[250px]"
+                    style="w-[250px] !border-white !border-0"
                   >
                     Calculator Name
                   </Th>
@@ -210,7 +210,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "template_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("template_name")}
-                    style="w-[250px]"
+                    style="w-[250px] !border-white !border-0"
                   >
                     Template Name
                   </Th>
@@ -218,7 +218,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "createdAt"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("createdAt")}
-                    style="w-[400px]"
+                    style="w-[400px] !border-white !border-0"
                   >
                     Created Date
                   </Th>
@@ -226,7 +226,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "visits"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("visits")}
-                    style="w-[110px]"
+                    style="w-[110px] !border-white !border-0"
                   >
                     Visits
                   </Th>
@@ -234,11 +234,11 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "unique_ip"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("unique_ip")}
-                    style="w-[130px]"
+                    style="w-[130px] !border-white !border-0"
                   >
                     Unique
                   </Th>
-                  <th></th>
+                  <th className="!border-white !border-0"></th>
                 </tr>
               </thead>
               {isLoading ? (

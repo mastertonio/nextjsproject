@@ -204,7 +204,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[400px] whitespace-nowrap"
+                  style="w-[400px] whitespace-nowrap !border-white !border-0"
                 >
                   Version Name
                 </Th>
@@ -212,7 +212,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[220px] whitespace-nowrap"
+                  style="w-[220px] whitespace-nowrap !border-white !border-0"
                 >
                   Version Stage
                 </Th>
@@ -220,7 +220,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[200px] whitespace-nowrap"
+                  style="w-[200px] whitespace-nowrap !border-white !border-0"
                 >
                   Level
                 </Th>
@@ -228,7 +228,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "notes"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("notes")}
-                  style="w-[620px] whitespace-nowrap"
+                  style="w-[620px] whitespace-nowrap !border-white !border-0"
                 >
                   Notes
                 </Th>
@@ -236,11 +236,11 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px] whitespace-nowrap"
+                  style="w-[130px] whitespace-nowrap !border-white !border-0"
                 >
                   Status
                 </Th>
-                <th></th>
+                <th className="!border-white !border-0"></th>
               </tr>
             </thead>
             {isLoading || isFetching ? (
