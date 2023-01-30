@@ -238,14 +238,14 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
             style={{ zIndex: 50 }}
           >
             <tr>
-              <th className="w-[80px] sm:w-[100px]"></th>
-              <th className="w-[130px] sm:w-[150px]">Status</th>
-              <th className="w-[105px]">Importance</th>
+              <th className="w-[80px] sm:w-[100px] !border-white !border-0"></th>
+              <th className="w-[130px] sm:w-[150px] !border-white !border-0">Status</th>
+              <th className="w-[105px] !border-white !border-0">Importance</th>
               <Th
                 sorted={sortBy === "name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
-                style="w-[300px] whitespace-nowrap sm:whitespace-normal"
+                style="w-[300px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
               >
                 ROI name
               </Th>
@@ -253,7 +253,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "source_name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
-                style="w-[225px] whitespace-nowrap sm:whitespace-normal"
+                style="w-[225px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
               >
                 Template Name
               </Th>
@@ -261,7 +261,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "dateCreated"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("dateCreated")}
-                style="w-[250px] whitespace-nowrap sm:whitespace-normal"
+                style="w-[250px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
               >
                 Dates
               </Th>
@@ -269,7 +269,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "views"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("views")}
-                style="w-[190px] whitespace-nowrap sm:whitespace-normal"
+                style="w-[190px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
               >
                 Views
               </Th>
@@ -277,11 +277,11 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                 sorted={sortBy === "uniqueViews"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("uniqueViews")}
-                style="w-[200px] whitespace-nowrap sm:whitespace-normal"
+                style="w-[200px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
               >
                 Unique Views
               </Th>
-              <th className="whitespace-nowrap sm:whitespace-normal"></th>
+              <th className="whitespace-nowrap sm:whitespace-normal !border-white !border-0"></th>
             </tr>
           </thead>
           {isLoading ? (

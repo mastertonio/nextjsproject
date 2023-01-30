@@ -9,6 +9,8 @@ import { useLocalStorage } from "@mantine/hooks";
 import { ImProfile } from "react-icons/im";
 import { AiFillCaretDown } from "react-icons/ai";
 import UserContext from "@app/context/user.context";
+import { useCookies, withCookies } from 'react-cookie';
+
 
 const ActionList: React.FC = () => {
   const router = useRouter();
@@ -17,6 +19,8 @@ const ActionList: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
   const [values, setValues] = useState<any>("");
+  // const cookies = new Cookies();
+  const [cookies, setCookie, removeCookie] = useCookies(['x-access-token']);
 
   const userCtx = useContext(UserContext);
 
@@ -26,7 +30,11 @@ const ActionList: React.FC = () => {
 
   const handleLogout = () => {
     try {
-      sessionStorage.clear()
+      setCookie('x-access-token', '', {
+        expires: new Date(0),
+        path: '/',
+        domain: 'localhost'
+      });
       router.push("/");
     } catch (error) {
       return error;
@@ -69,4 +77,4 @@ const ActionList: React.FC = () => {
   );
 };
 
-export default ActionList;
+export default withCookies(ActionList);
