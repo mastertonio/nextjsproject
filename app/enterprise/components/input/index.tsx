@@ -141,7 +141,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                           defaultValue={5}
                           fractions={2}
                           className="w-[280px] ml-[30px] sm:ml-auto mt-[10px] sm:mt-0"
-                          color="indigo" size="xl" />
+                          color="teal" size="xl" />
                       </>
                     ) : state.type == "slid" ? (
                       <>
