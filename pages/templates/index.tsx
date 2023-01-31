@@ -132,11 +132,7 @@ const TemplatesDashboard: React.FC = () => {
     company_id: item.company_id,
     actions: (
       <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
+        className="flex justify-end items-center"
       >
         <EditTemplateButton
           id={item._id}
@@ -206,7 +202,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[400px] whitespace-nowrap"
+                  style="w-[400px] whitespace-nowrap !border-white !border-0"
                 >
                   Template Name
                 </Th>
@@ -214,7 +210,7 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "notes"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("notes")}
-                  style="w-[600px] whitespace-nowrap"
+                  style="w-[600px] whitespace-nowrap !border-white !border-0"
                 >
                   Notes
                 </Th>
@@ -222,11 +218,11 @@ const TemplatesDashboard: React.FC = () => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px] whitespace-nowrap"
+                  style="w-[130px] whitespace-nowrap !border-white !border-0"
                 >
                   Status
                 </Th>
-                <th></th>
+                <th className="!border-white !border-0"></th>
               </tr>
             </thead>
             {isLoading ? (
