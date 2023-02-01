@@ -137,6 +137,11 @@ const CreateNewRoi: React.FC = () => {
                     label: "No Template Detected",
                     disabled: true,
                   },
+                  {
+                    value: "0",
+                    label: "The ROI Shop",
+                    disabled: false,
+                  },
                 ]
               }
               {...form.getInputProps("template")}
