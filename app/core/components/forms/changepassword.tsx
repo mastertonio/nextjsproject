@@ -7,6 +7,7 @@ import {
   Text,
   Center,
   Progress,
+  Stack,
 } from "@mantine/core";
 import { BsFolderSymlinkFill } from "react-icons/bs";
 import axios from "axios";
@@ -80,8 +81,8 @@ const ChangePass: React.FC = () => {
           values.length > 0 && index === 0
             ? 100
             : strength >= ((index + 1) / 5) * 100
-            ? 100
-            : 0
+              ? 100
+              : 0
         }
         color={strength > 80 ? "teal" : strength > 50 ? "yellow" : "red"}
         key={index}
@@ -142,63 +143,70 @@ const ChangePass: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        maxWidth: "full",
-        margin: 5,
-        padding: 20,
-        backgroundColor: "white",
-        borderRadius: 10,
-      }}
-      mx="auto"
-    >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <PasswordInput
-          label="Password"
-          placeholder="Password"
-          value={values}
-          onChange={setValues}
-          required
-          // {...form.getInputProps("password")}
-        />
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <div className="mt-[20px] mb-[20px] bg-white p-[20px] rounded-[10px] shadow-lg">
+        <Text weight={700} className="text-[30px] text-teal-500">
+          Security
+        </Text>
+        <Stack>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="gap-1">
+              <p className="text-[14px] text-slate-900 mb-[5px] font-semibold">Password</p>
+              <PasswordInput
+                placeholder="Password"
+                value={values}
+                onChange={setValues}
+                required
+                className="w-full"
+              // {...form.getInputProps("password")}
+              />
+            </div>
 
-        <PasswordInput
-          mt="sm"
-          label="Confirm password"
-          placeholder="Confirm password"
-          {...form.getInputProps("confirmPassword")}
-        />
-        {values ? (
-          <>
-            <Group spacing={5} grow mt="xs" mb="md">
-              {bars}
-            </Group>
-            <PasswordRequirement
-              label="Has at least 8 characters"
-              meets={values.length > 7}
-            />
-            <PasswordRequirement
-              label="Matches Confirm Password"
-              meets={values == form.values.confirmPassword}
-            />
-            {checks}
-          </>
-        ) : (
-          ""
-        )}
+            <div className="gap-1">
+              <p className="text-[14px] text-slate-900 mb-[5px] font-semibold">Confirm Password</p>
+              <PasswordInput
+                mt="sm"
+                placeholder="Confirm password"
+                className="w-full mt-0"
+                {...form.getInputProps("confirmPassword")}
+              />
+            </div>
+          </div>
 
-        {error ? <span>{error}</span> : ""}
-        <Group position="right" mt="md">
+          {values ? (
+            <>
+              <Group spacing={5} grow mt="xs" mb="md">
+                {bars}
+              </Group>
+              <PasswordRequirement
+                label="Has at least 8 characters"
+                meets={values.length > 7}
+              />
+              <PasswordRequirement
+                label="Matches Confirm Password"
+                meets={values == form.values.confirmPassword}
+              />
+              {checks}
+            </>
+          ) : (
+            ""
+          )}
+
+          {error ? <span>{error}</span> : ""}
+        </Stack>
+
+        <Group position="right" mt="md" className="mt-[20px]">
           <Button
             leftIcon={<BsFolderSymlinkFill size={14} />}
+            className="ml-auto"
             color="teal"
             type="submit"
           >
             Update Password
           </Button>
         </Group>
-      </form>
-    </Box>
+      </div>
+    </form>
   );
 };
 

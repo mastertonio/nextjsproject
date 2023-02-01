@@ -1,10 +1,10 @@
-import { Modal, Text } from "@mantine/core";
+import { Modal, Text, Rating } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Rating } from "react-simple-star-rating";
+// import { Rating } from "react-simple-star-rating";
 import { IStarProps } from "../dropdown/Select";
 
 const StarRating: React.FC<IStarProps> = ({
@@ -46,12 +46,19 @@ const StarRating: React.FC<IStarProps> = ({
 
   return (
     <Rating
-      readonly={readOnly}
-      fillColor="#000000"
-      initialValue={importance}
-      onClick={handleRate}
-      size={size ? size : 16} /* Available Props */
+      color="teal"
+      readOnly={readOnly}
+      value={importance}
+      onChange={handleRate}
+      size="sm"
     />
+    // <Rating
+    //   readonly={readOnly}
+    //   fillColor="#000000"
+    //   initialValue={importance}
+    //   onClick={handleRate}
+    //   size={size ? size : 16} /* Available Props */
+    // />
   );
 };
 
