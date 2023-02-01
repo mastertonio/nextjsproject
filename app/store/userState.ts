@@ -7,8 +7,10 @@ export interface UserState {
   user: UserContextTypes | null;
   token: string;
   refresh: string;
+  expires: string;
   login: (user: UserContextTypes) => void;
   setToken: (token: string) => void;
+  setExpires: (expires: string) => void;
   setRefresh: (refresh: string) => void;
 }
 
@@ -43,9 +45,11 @@ export const useUserStore = create<UserState>(
       ,
       token: "",
       refresh: "",
+      expires: "",
       login: (user: UserContextTypes) =>
-        set((state) => ({ ...state, user })),
+      set((state) => ({ ...state, user })),
       setToken: (token: string) => set({ token }),
+      setExpires: (expires: string) => set({ expires }),
       setRefresh: (refresh: string) => set({ refresh }),
     }),
     {

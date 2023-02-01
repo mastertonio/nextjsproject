@@ -38,6 +38,7 @@ const Home: React.FC = () => {
 
 
   const setUserZ = useUserStore((state) => (state.login))
+  const setExpire = useUserStore((state) => (state.setExpires))
   const setTokenZ = useUserStore((state) => (state.setToken))
 
   const form = useForm({
@@ -63,8 +64,9 @@ const Home: React.FC = () => {
         `/v1/auth/login`,
         payload
       );
+      console.log('res2', res.data.tokens.access.expires)
       if (res) {
-        console.log(res);
+        console.log('res', res);
         // userCtx.login(res.data);
         // setValue(res.data.tokens.access.token);
         // setRefresh(res.data.tokens.refresh.token);
@@ -75,6 +77,9 @@ const Home: React.FC = () => {
 
         // router.push(`/dashboard`);
         setUserZ(res.data.user)
+        setExpire(res.data.tokens.access.expires)
+        setTokenZ(res.data.tokens.access.token)
+        // setExpire(res.data.tokens.access.expires)
         // setTokenZ(res.data.tokens.access.token)
         // if (res.data.user.role == "company-manager") {
         //   router.push("/dashboard/manager");

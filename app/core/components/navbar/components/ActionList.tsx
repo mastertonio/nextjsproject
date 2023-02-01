@@ -9,9 +9,13 @@ import { useLocalStorage } from "@mantine/hooks";
 import { ImProfile } from "react-icons/im";
 import { AiFillCaretDown } from "react-icons/ai";
 import UserContext from "@app/context/user.context";
+import { useUserStore } from "@app/store/userState";
+import Cookies from 'js-cookie';
 
 const ActionList: React.FC = () => {
   const router = useRouter();
+  const expireCookies = useUserStore((state) => (state.expires))
+  const tokenSet = useUserStore((state) => (state.token))
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
   const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
@@ -26,7 +30,12 @@ const ActionList: React.FC = () => {
 
   const handleLogout = () => {
     try {
-      sessionStorage.clear()
+      // sessionStorage.clear()
+      Cookies.set('x-access-token', ' ', {
+        expires: Date.now()
+      });
+
+      Cookies.remove('x-access-token', { path: '/' })
       router.push("/");
     } catch (error) {
       return error;

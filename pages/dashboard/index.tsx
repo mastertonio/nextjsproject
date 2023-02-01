@@ -31,7 +31,7 @@ import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
-import * as cookie from 'cookie'
+import Cookies from 'js-cookie';
 import FourOhFour from "pages/404";
 //
 const Dashboard: React.FC<UserState> = ({ user }) =>
@@ -40,8 +40,8 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const userZ = useUserStore((state) => (state.user))
-
+  const expireCookies = useUserStore((state) => (state.expires))
+  const tokenSet = useUserStore((state) => (state.token))
   const getDashboardData = async () => {
     return await axios.get(`/v1/dashboard`);
   };
@@ -50,6 +50,18 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     "dashboardData",
     getDashboardData
   );
+
+  useEffect(() => {
+    Cookies.set('x-access-token', tokenSet, {
+      expires: new Date(expireCookies).getTime()
+    });
+
+    if (Date.now() > new Date(expireCookies).getTime()) {
+      Cookies.remove('x-access-token')
+      router.push('/');
+    }
+  }, []);
+
 
   if (isLoading) return <MainLoader />;
 
@@ -96,6 +108,10 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     );
   }
 
+  // if (Date.now() > new Date(expireCookies).getTime()) {
+  //   router.push(`/`);
+  // }
+
   if (isError) {
     return <FourOhFour />;
   }
@@ -106,6 +122,21 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const data = 'from gssp'
   const cookies = context.req.cookies
+  const sessionExpired = cookies['x-access-token'];
+
+  console.log(cookies)
+
+  // check if the session has expired
+  if (Date.now() > new Date(sessionExpired).getTime()) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+      props: {}
+    }
+  }
+
   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
     headers: {
       'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
@@ -120,7 +151,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       redirect: {
         destination: "/",
         permanent: false,
-      }, props: { user }
+      },
+      props: { user }
     }
   } else {
     return {
