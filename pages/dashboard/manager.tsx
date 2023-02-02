@@ -28,68 +28,68 @@ import { useUserStore } from "@app/store/userState";
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
   username:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   created_rois:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   role:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   manager_email:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   currency:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   status:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
   actions:
-    | string
-    | number
-    | boolean
-    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
+  | string
+  | number
+  | boolean
+  | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+  | React.ReactFragment
+  | React.ReactPortal
+  | null
+  | undefined;
 }
 
 const ManagerDashboard: React.FC = () => {
@@ -102,11 +102,11 @@ const ManagerDashboard: React.FC = () => {
 
   const getCompanyUsers = async () => {
     return await axios.get(
-        `/v1/company/${userZ?.company_id}/user`
-      );
+      `/v1/company/${userZ?.company_id}/user`
+    );
   };
 
-  const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
+  const { isLoading, isError, error, data, refetch, isFetching, isSuccess } = useQuery(
     "get_all_company_users",
     getCompanyUsers
   );
@@ -191,32 +191,36 @@ const ManagerDashboard: React.FC = () => {
     ),
   }));
 
-  return isLoading ? (
-    <MainLoader />
-  ) : (
-    <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      className=""
-      fixed
-      header={<RoiNavbar />}
-    >
-      <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
-        <ManagerDashboardGraph />
-      </div>
-      <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
-        <CompanyUserTable company={userZ?.company_id ? userZ.company_id : ""} update={refetch} />
-      </div>
-    </AppShell>
-  );
+  if (isLoading) return <MainLoader />
+
+
+  if (isSuccess) {
+    return (
+      <AppShell
+        styles={{
+          main: {
+            background:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[8]
+                : theme.colors.gray[0],
+          },
+        }}
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        className=""
+        fixed
+        header={<RoiNavbar />}
+      >
+        <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
+          <ManagerDashboardGraph />
+        </div>
+        <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
+          <CompanyUserTable company={userZ?.company_id ? userZ.company_id : ""} update={refetch} />
+        </div>
+      </AppShell>
+    );
+  }
+  return <></>
 };
 
 export default ManagerDashboard;
