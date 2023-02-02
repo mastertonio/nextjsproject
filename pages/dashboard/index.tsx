@@ -7,7 +7,7 @@ import {
   Loader,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import {
   GetServerSideProps,
@@ -33,6 +33,7 @@ import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
 import * as cookie from 'cookie'
 import FourOhFour from "pages/404";
+import { ApiError } from "next/dist/server/api-utils";
 //
 const Dashboard: React.FC<UserState> = ({ user }) =>
 // message
@@ -46,7 +47,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     return await axios.get(`/v1/dashboard`);
   };
 
-  const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
+  const { isLoading, status, data, isFetching, refetch, isSuccess, isError, error } = useQuery(
     "dashboardData",
     getDashboardData
   );
@@ -96,39 +97,35 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     );
   }
 
-  if (isError) {
-    return <FourOhFour />;
-  }
-
   return <></>
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const data = 'from gssp'
-  const cookies = context.req.cookies
-  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-    headers: {
-      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-    }
-  })
-  const user = await res.json();
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   // const data = 'from gssp'
+//   const cookies = context.req.cookies
+//   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+//     headers: {
+//       'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+//     }
+//   })
+//   const user = await res.json();
 
-  if (Object.keys(user).length === 0 && user.constructor === Object) {
-    // redirect to dashboard page if authenticated
+//   if (Object.keys(user).length === 0 && user.constructor === Object) {
+//     // redirect to dashboard page if authenticated
 
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      }, props: { user }
-    }
-  } else {
-    return {
-      props: { user }
-    }
-  }
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       }, props: { user }
+//     }
+//   } else {
+//     return {
+//       props: { user }
+//     }
+//   }
 
-  // return { props: { user } }
-}
+//   // return { props: { user } }
+// }
 
 export default Dashboard;
