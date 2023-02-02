@@ -7,6 +7,8 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
+import { useMutation, useQueryClient } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 export interface IButtonRoiNameProps {
   id: string;
@@ -19,6 +21,8 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
+  const userZ = useUserStore((state) => (state.user))
+  const queryClient = useQueryClient()
 
   const form = useForm({
     initialValues: {
@@ -26,43 +30,55 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
     },
   });
 
-  const handleSubmit = async (values: typeof form.values) => {
-    try {
+  type iEditTempProp = {
+    title: string
+  }
+
+  const editRoi = useMutation({
+    mutationFn: (roi: iEditTempProp) => axios.patch(`/v1/dashboard/roi/${id}/${userZ?.id}`, roi).then((response) => response.data),
+    onMutate: (roi: iEditTempProp) => {
       showNotification({
         id: "edit-row",
         loading: true,
-        title: `Updating ${name}`,
-        message: "Please wait, updating edited row",
+        title: `Editing ${roi.title}`,
+        message: "Please wait ...",
         autoClose: false,
         disallowClose: true,
-        color: "teal",
       });
-      const response = await axios.patch(
-        `/v1/dashboard/roi/${id}/${p.id}`,
-        { title: values.title }
-      );
-      if (response) {
-        refetch();
+    },
+    onSuccess: (newRoi) => {
+      queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
+
         updateNotification({
           id: "edit-row",
           color: "teal",
-          title: `${name} row was updated to ${values.title}`,
-          message: "A row was updated! and renamed",
+          title: `${newRoi.title} edited successfully`,
+          message: "",
           icon: <IconCheck size={16} />,
-          autoClose: 2500,
+          autoClose: 3000,
+        });
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        updateNotification({
+          id: "edit-row",
+          color: "red",
+          title: `Update failed`,
+          message: error.message,
+          autoClose: false,
         });
       }
-    } catch (error) {
+
       updateNotification({
         id: "edit-row",
         color: "red",
-        title: "Updating a table row failed",
+        title: `Update failed`,
         message: "Something went wrong, Please try again",
         autoClose: false,
       });
-      return error;
     }
-  };
+  })
+
 
   return (
     <>
@@ -87,7 +103,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         >
           {name}
         </Text>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={form.onSubmit((values) => editRoi.mutate({ title: values.title }))}>
           <Grid style={{ margin: 30, marginBottom: 80 }}>
             <Text>Change ROI Name to: </Text>
             <TextInput

@@ -146,7 +146,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
         leftIcon={<AiOutlineFolderOpen />}
         color="blue"
         onClick={() => {
-          router.push(`/templates/${item.id}`);
+          router.push(`/enterprise/${item.id}`);
         }}
       >
         Open
@@ -380,7 +380,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
                     <td
                       className="w-[310px] cursor-pointer whitespace-nowrap sm:whitespace-normal"
                       onClick={() => {
-                        router.push(`/templates/${element.id}`);
+                        router.push(`/enterprise/${element.id}`);
                       }}
                     >
                       {element.roiname}

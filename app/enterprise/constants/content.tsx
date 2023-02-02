@@ -105,7 +105,7 @@ export const finalData = {
   sections: [
     {
       id: "Section 1",
-      order: 1,
+      order: 1231241,
       headers: {
         title: {
           type: "element",
@@ -220,7 +220,7 @@ export const finalData = {
     },
     {
       id: "Section 2",
-      order: 1,
+      order: 1123346,
       headers: {
         title: {
           type: "element",
@@ -317,13 +317,13 @@ export const finalData = {
         classes: "row border-bottom gray-bg dashboard-header",
         elements: [
           {
-            id: "01",
+            id: "0112334544",
             type: "text",
             text: "<h4>Please tell us a little about your sales organization</h4>",
             toggle: true,
             elements: [
               {
-                id: "02",
+                id: "02078",
                 cellId: "A1",
                 type: "input",
                 label: "Number of salespeople",
@@ -333,7 +333,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "03",
+                id: "03697",
                 cellId: "A2", //
                 type: "input",
                 label: "Average deal value",
@@ -343,7 +343,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "05",
+                id: "05678",
                 cellId: "A3",
                 type: "output",
                 label:
@@ -355,7 +355,7 @@ export const finalData = {
                 disabled: true
               },
               {
-                id: "06",
+                id: "060678",
                 type: "input",
                 label: "Deals needed to hit your sales goal",
                 formula: "TBD",
@@ -365,7 +365,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "07",
+                id: "077890",
                 type: "textarea",
                 label: "What are the main reasons you lose to the outcome:",
                 icon: null,
@@ -373,7 +373,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "0227",
+                id: "0227678",
                 type: "stars",
                 label: "Map and explore dependencies between all business entities.",
                 icon: null,
@@ -381,7 +381,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "0337",
+                id: "033789",
                 type: "slid",
                 label: "Fusion Gains - Impact Analysis (target 50%)",
                 icon: null,
@@ -391,13 +391,13 @@ export const finalData = {
             ],
             
           }, {
-            id: "011",
+            id: "0117925",
             type: "text",
             text: "<h4>Increase Sales With A Better Value Articulation</h4>",
             toggle: false,
             elements: [
               {
-                id: "02",
+                id: "02780",
                 type: "input",
                 label: "Out of the 0 deals lost, how many could you have won with better value messaging?",
                 format: "0,0",
@@ -406,7 +406,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "05",
+                id: "053679",
                 type: "output",
                 label:
                   "ncrease Sales Revenue by Reducing Loss Rate by Only 0%",
@@ -417,14 +417,14 @@ export const finalData = {
                 disabled: true
               },
               {
-                id: "07",
+                id: "07457856976",
                 type: "textarea",
                 label: "What are the main reasons you lose to the outcome:",
                 icon: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionMark size="18" /><IconQuestionMark size="18" /></Button>),
                 rightSection: null,
                 disabled: false
               }, {
-                id: "1107",
+                id: "110797949",
                 type: "table",
                 label: "Table testing, with label or no ?",
                 disabled: false,
@@ -455,7 +455,7 @@ export const finalData = {
               </table>`)
               },
               {
-                id: "08",
+                id: "856888379979",
                 type: "checkbox",
                 label: "Identify the activities your Plan and Process Owners participate in:",
                 icon: null,
@@ -466,7 +466,7 @@ export const finalData = {
                   name: "Other",
                   elements: [
                     {
-                      id: "07",
+                      id: "0745645456",
                       type: "textarea",
                       label: "What are the main reasons you lose to the outcome:",
                       icon: null,
@@ -477,37 +477,37 @@ export const finalData = {
                 },
                 choices: [
                   {
-                    id: '001',
+                    id: '00167987567',
                     name: "Define/Document Processes"
                   },
                   {
-                    id: '002',
+                    id: '002948',
                     name: "Create Impact Assessments"
                   },
                   {
-                    id: '003',
+                    id: '00356767',
                     name: "Document Process Requirements and Dependencies"
                   },
                   {
-                    id: '004',
+                    id: '0047897890',
                     name: "Develop Plans"
                   },
                   {
-                    id: '005',
+                    id: '00545656',
                     name: "Develop Recovery Strategies"
                   },
                   {
-                    id: '006',
+                    id: '006678789',
                     name: "Educate Team on Plan"
                   },
                   {
-                    id: '007',
+                    id: '007123123123',
                     name: "Exercise Plan (and Team)"
                   }
                 ]
               },
               {
-                id: "08",
+                id: "08989898989",
                 type: "dropdown",
                 label: "Identify the activities your Plan and Process Owners participate in:",
                 icon: null,
@@ -518,7 +518,7 @@ export const finalData = {
                   name: "Other",
                   elements: [
                     {
-                      id: "017",
+                      id: "0177777",
                       type: "textarea",
                       label: "What are the main reasons you lose to the outcome:",
                       icon: null,
@@ -526,7 +526,7 @@ export const finalData = {
                       disabled: false
                     },
                     {
-                      id: "06",
+                      id: "0666666",
                       type: "input",
                       label: "Lost revenue per deal",
                       formula: "TBD",
@@ -539,31 +539,31 @@ export const finalData = {
                 },
                 choices: [
                   {
-                    id: '001',
+                    id: '00111111',
                     name: "Define/Document Processes"
                   },
                   {
-                    id: '002',
+                    id: '0022222',
                     name: "Create Impact Assessments"
                   },
                   {
-                    id: '003',
+                    id: '003333',
                     name: "Document Process Requirements and Dependencies"
                   },
                   {
-                    id: '004',
+                    id: '0044444',
                     name: "Develop Plans"
                   },
                   {
-                    id: '005',
+                    id: '00555555',
                     name: "Develop Recovery Strategies"
                   },
                   {
-                    id: '006',
+                    id: '006566556',
                     name: "Educate Team on Plan"
                   },
                   {
-                    id: '007',
+                    id: '0073454545',
                     name: "Exercise Plan (and Team)"
                   }
                 ]
@@ -629,7 +629,7 @@ export const finalData = {
     },
     {
       id: "Section 3",
-      order: 1,
+      order: 1789,
       headers: {
         title: {
           type: "element",
@@ -698,12 +698,12 @@ export const finalData = {
         classes: "row border-bottom gray-bg dashboard-header",
         elements: [
           {
-            id: "03",
+            id: "03adwdaw",
             type: "text",
             text: "<h4>Cost of Discounting - Current State</h4>",
             elements: [
               {
-                id: "02",
+                id: "02asdasdsad",
                 type: "input",
                 label: "Average deal value",
                 format: "0,0",
@@ -712,7 +712,7 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "03",
+                id: "03asddsdaads",
                 type: "input",
                 label: "Average discount applied per deal (%)",
                 format: "$0,0",
@@ -721,18 +721,18 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "05",
+                id: "05wghjd",
                 type: "output",
                 label:
                   "Estimated list price before discounting",
                 formula: "TBD",
-                format: "$0,0",
+                format: ["05wghjd", "03asddsdaads", { operation: "SUM"} ],//if array, possible
                 icon: null,
                 rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
                 disabled: true
               },
               {
-                id: "06",
+                id: "06jfgdj",
                 type: "input",
                 label: "Lost revenue per deal",
                 formula: "TBD",
@@ -742,62 +742,9 @@ export const finalData = {
                 disabled: false
               },
               {
-                id: "07",
+                id: "07dfjgj",
                 type: "textarea",
                 label: 'Number of "deals" needed to hit your sales goal',
-                icon: null,
-                rightSection: null,
-                disabled: false
-              },
-            ],
-          }, {
-            id: "05",
-            type: "text",
-            text: "<h4>Discount Reduction - Future State</h4>",
-            elements: [
-              {
-                id: "02",
-                type: "input",
-                label: "Expected discount applied with a better value messaging (should be less then 0.0%) #",
-                format: "0,0",
-                icon: null,
-                rightSection: null,
-                disabled: false
-              },
-              {
-                id: "03",
-                type: "input",
-                label: 'Number of "deals" needed to hit your sales goal',
-                format: "$0,0",
-                icon: null,
-                rightSection: null,
-                disabled: false
-              },
-              {
-                id: "05",
-                type: "output",
-                label:
-                  "Increase In Sales Revenue By Reducing Discounting by 0.0%",
-                formula: "TBD",
-                format: "$0,0",
-                icon: null,
-                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
-                disabled: true
-              },
-              {
-                id: "06",
-                type: "input",
-                label: "Deals needed to hit your sales goal",
-                formula: "TBD",
-                format: "0,0",
-                icon: null,
-                rightSection: null,
-                disabled: false
-              },
-              {
-                id: "07",
-                type: "textarea",
-                label: "What are the main reasons you lose to the outcome:",
                 icon: null,
                 rightSection: null,
                 disabled: false
@@ -809,7 +756,7 @@ export const finalData = {
     },
     {
       id: "Section 4",
-      order: 1,
+      order: 145673,
       headers: {
         title: {
           type: "element",

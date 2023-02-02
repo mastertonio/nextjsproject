@@ -2,18 +2,20 @@ import { useState } from "react";
 import { Button, Modal, TextInput, Text, Grid } from "@mantine/core";
 import { FaRegClone } from "react-icons/fa";
 import axios from "axios";
-import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { IButtonRoiNameProps } from "./EditButton";
 import { useForm } from "@mantine/form";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
+import { useMutation, useQueryClient } from "react-query";
+import { useUserStore } from "@app/store/userState";
 
 const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
   const [opened, setOpened] = useState(false);
-  const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
+  const userZ = useUserStore((state) => (state.user))
+  const queryClient = useQueryClient()
 
   const form = useForm({
     initialValues: {
@@ -21,45 +23,62 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
     },
   });
 
-  const handleSubmit = async (values: typeof form.values) => {
-    try {
+  type iCloneProp = {
+    title: string
+  }
+
+  const cloneRoi = useMutation({
+    mutationFn: (roi: iCloneProp) => axios.post(`/v1/dashboard/roi/${id}/${userZ?.id}`, roi).then((response) => response.data),
+    onMutate: (roi: iCloneProp) => {
       showNotification({
         id: "clone-row",
         loading: true,
-        title: `Cloning ${name}`,
-        message: "Please wait, cloning a row",
+        title: `Cloning ${roi.title}`,
+        message: "Please wait ...",
         autoClose: false,
         disallowClose: true,
-        color: "teal",
       });
-
-      const res = await axios.post(
-        `/v1/dashboard/roi/${id}/${p.id}`,
-        { title: values.title }
-      );
-      if (res) {
+    },
+    onSuccess: (newRoi) => {
+      Promise.all(
+        [
+          queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
+          queryClient.invalidateQueries({ queryKey: ['graphData'] }),
+          queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+        ]
+      )
+      updateNotification({
+        id: "clone-row",
+        color: "teal",
+        title: `Clone successful`,
+        message: "Redirecting shortly ...",
+        icon: <IconCheck size={16} />,
+        autoClose: 3000,
+      });
+      router.push(`/templates/${newRoi.id}`);
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
         updateNotification({
           id: "clone-row",
-          color: "teal",
-          title: `${name} was cloned to ${values.title}`,
-          message: "Redirecting shortly ...",
-          icon: <IconCheck size={16} />,
-          autoClose: 3000,
+          color: "red",
+          title: `Template cloning failed`,
+          message: error.message,
+          autoClose: false,
         });
-        router.push(`/templates/${id}`);
       }
-    } catch (error) {
+
       updateNotification({
         id: "clone-row",
         color: "red",
-        title: "Cloning a table row failed",
+        title: `Template cloning failed`,
         message: "Something went wrong, Please try again",
         autoClose: false,
       });
-      return error;
     }
-  };
+  })
 
+ 
   return (
     <>
       <Modal
@@ -99,7 +118,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
           Cloning this calculator will create an identical copy using the last
           saved set of values.
         </Text>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={form.onSubmit((values) => cloneRoi.mutate({ title: values.title }))}>
           <Grid style={{ margin: 30, marginBottom: 80 }}>
             <Text>Name </Text>
             <TextInput

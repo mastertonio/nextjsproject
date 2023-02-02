@@ -19,32 +19,23 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import UserContext, { UserContextTypes } from "@context/user.context";
-import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
-import { GetServerSideProps } from "next";
-import { redirect } from "next/dist/server/api-utils";
+import { useMutation } from "react-query";
+
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const router = useRouter();
-  const [value, setValue] = useLocalStorage({ key: "auth-token" });
-  const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
-  const [loading, setLoading] = useState(false);
-  const userCtx = useContext(UserContext);
 
 
-  const setUserZ = useUserStore((state) => (state.login))
+  const setUser = useUserStore((state) => (state.login))
   const setTokenZ = useUserStore((state) => (state.setToken))
 
   const form = useForm({
     initialValues: {
       email: "",
-      password: "",
-      rememberMe: false,
+      password: ""
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -53,41 +44,27 @@ const Home: React.FC = () => {
     },
   });
 
-  const handleSubmit = async (values: typeof form.values) => {
-    try {
-      const payload = {
-        email: values.email,
-        password: values.password,
-      };
-      const res = await axios.post(
-        `/v1/auth/login`,
-        payload
-      );
-      if (res) {
-        console.log(res);
-        // userCtx.login(res.data);
-        // setValue(res.data.tokens.access.token);
-        // setRefresh(res.data.tokens.refresh.token);
-        // sessionStorage.setItem("auth-token", value);
-        // setUserInfo(res.data.user);
-        // setCurrent(res.data.user.id);
-        // setCompany(res.data.user.company_id);
+  type iPayloadType = {
+    email: string
+    password: string
+  }
 
-        // router.push(`/dashboard`);
-        setUserZ(res.data.user)
-        // setTokenZ(res.data.tokens.access.token)
-        // if (res.data.user.role == "company-manager") {
-        //   router.push("/dashboard/manager");
-        // } else {
-        //   router.push(`/dashboard`);
-        // }
+  type iLoggedUserType = {
+    user: UserContextTypes
+    tokens: { 
+      access: { token: string, expires: string },
+      refresh: { token: string, expires: string }
+    }
+  }
 
-        router.push(`/dashboard`);
-      }
-
-      router.push(`/dashboard`);
-    } catch (error: any) {
-
+  const login = useMutation({
+    mutationFn: (user: iPayloadType) =>
+      axios.post(`/v1/auth/login`, user).then((response) => response.data),
+    onSuccess: (loggedUser: iLoggedUserType) => {
+      console.log(loggedUser, " loggedUser")
+      setUser(loggedUser.user)
+    },
+    onError: () => {
       showNotification({
         title: 'Unauthorized',
         message: 'Incorrect email and password',
@@ -108,13 +85,8 @@ const Home: React.FC = () => {
           }
         }),
       })
-
-      return error;
     }
-  };
-
-
-  if (loading) return <LoadingOverlay visible={!loading} />;
+  })
 
   return (
     <div className={classes.wrapper2}>
@@ -142,7 +114,7 @@ const Home: React.FC = () => {
           The ROI Shop Login
         </Title>
 
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <form onSubmit={form.onSubmit((values) => login.mutateAsync(values, { onSuccess: ()=> router.push(`/dashboard`)}))}>
           <TextInput
             required
             label="Email Address"
