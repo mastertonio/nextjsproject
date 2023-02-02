@@ -27,7 +27,7 @@ const Enterprise = () => {
       <>
         {finalData
           ? finalData.sections.map((section) => (
-            <div className="w-full text-[#676a6c]" key={section.order}>
+            <div className="w-full text-[#676a6c]" key={section.id}>
               <Projection
                 title={section.headers.title.mainTitle.text}
                 description={section.headers.title.description}
@@ -35,7 +35,7 @@ const Enterprise = () => {
                 content={section.headers.title.content}
                 length={section.headers.title.content.elements.length}
                 quotes={section.headers.title.quotes}
-                key={section.id}
+                key={section.order}
               />
 
               <div>
