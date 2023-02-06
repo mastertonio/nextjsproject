@@ -7,7 +7,7 @@ import {
   Loader,
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useQuery } from "react-query";
 import {
   GetServerSideProps,
@@ -31,9 +31,8 @@ import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
-import * as cookie from 'cookie'
+import Cookies from 'js-cookie';
 import FourOhFour from "pages/404";
-import { ApiError } from "next/dist/server/api-utils";
 //
 const Dashboard: React.FC<UserState> = ({ user }) =>
 // message
@@ -41,16 +40,28 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const userZ = useUserStore((state) => (state.user))
-
+  const expireCookies = useUserStore((state) => (state.expires))
+  const tokenSet = useUserStore((state) => (state.token))
   const getDashboardData = async () => {
     return await axios.get(`/v1/dashboard`);
   };
 
-  const { isLoading, status, data, isFetching, refetch, isSuccess, isError, error } = useQuery(
+  const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
     "dashboardData",
     getDashboardData
   );
+
+  useEffect(() => {
+    Cookies.set('x-access-token', tokenSet, {
+      expires: new Date(expireCookies).getTime()
+    });
+
+    if (Date.now() > new Date(expireCookies).getTime()) {
+      Cookies.remove('x-access-token')
+      router.push('/');
+    }
+  }, []);
+
 
   if (isLoading) return <MainLoader />;
 
@@ -69,7 +80,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar user={userZ} />}
+        header={<RoiNavbar />}
       // footer={<RoiFooter />}
       >
         <div className={`${classes.body} flex-col sm:flex-row relative h-auto`}>
@@ -97,35 +108,59 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     );
   }
 
+  // if (Date.now() > new Date(expireCookies).getTime()) {
+  //   router.push(`/`);
+  // }
+
+  if (isError) {
+    return <FourOhFour />;
+  }
+
   return <></>
 };
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   // const data = 'from gssp'
-//   const cookies = context.req.cookies
-//   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-//     headers: {
-//       'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-//     }
-//   })
-//   const user = await res.json();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // const data = 'from gssp'
+  const cookies = context.req.cookies
+  const sessionExpired = cookies['x-access-token'];
 
-//   if (Object.keys(user).length === 0 && user.constructor === Object) {
-//     // redirect to dashboard page if authenticated
+  console.log(cookies)
 
-//     return {
-//       redirect: {
-//         destination: "/",
-//         permanent: false,
-//       }, props: { user }
-//     }
-//   } else {
-//     return {
-//       props: { user }
-//     }
-//   }
+  // check if the session has expired
+  if (Date.now() > new Date(sessionExpired).getTime()) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+      props: {}
+    }
+  }
 
-//   // return { props: { user } }
-// }
+  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    headers: {
+      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    }
+  })
+  const user = await res.json();
+
+  if (Object.keys(user).length === 0 && user.constructor === Object) {
+    // redirect to dashboard page if authenticated
+
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+      props: { user }
+    }
+  } else {
+    return {
+      props: { user }
+    }
+  }
+
+  // return { props: { user } }
+}
 
 export default Dashboard;

@@ -19,23 +19,33 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 import UserContext, { UserContextTypes } from "@context/user.context";
+import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
-import { useMutation } from "react-query";
-
+import { GetServerSideProps } from "next";
+import { redirect } from "next/dist/server/api-utils";
 
 const Home: React.FC = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const router = useRouter();
+  const [value, setValue] = useLocalStorage({ key: "auth-token" });
+  const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
+  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
+  const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
+  const [company, setCompany] = useLocalStorage({ key: "my-company" });
+  const [loading, setLoading] = useState(false);
+  const userCtx = useContext(UserContext);
 
 
-  const setUser = useUserStore((state) => (state.login))
+  const setUserZ = useUserStore((state) => (state.login))
+  const setExpire = useUserStore((state) => (state.setExpires))
   const setTokenZ = useUserStore((state) => (state.setToken))
 
   const form = useForm({
     initialValues: {
       email: "",
-      password: ""
+      password: "",
+      rememberMe: false,
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -44,27 +54,45 @@ const Home: React.FC = () => {
     },
   });
 
-  type iPayloadType = {
-    email: string
-    password: string
-  }
+  const handleSubmit = async (values: typeof form.values) => {
+    try {
+      const payload = {
+        email: values.email,
+        password: values.password,
+      };
+      const res = await axios.post(
+        `/v1/auth/login`,
+        payload
+      );
+      console.log('res2', res.data.tokens.access.expires)
+      if (res) {
+        console.log('res', res);
+        // userCtx.login(res.data);
+        // setValue(res.data.tokens.access.token);
+        // setRefresh(res.data.tokens.refresh.token);
+        // sessionStorage.setItem("auth-token", value);
+        // setUserInfo(res.data.user);
+        // setCurrent(res.data.user.id);
+        // setCompany(res.data.user.company_id);
 
-  type iLoggedUserType = {
-    user: UserContextTypes
-    tokens: { 
-      access: { token: string, expires: string },
-      refresh: { token: string, expires: string }
-    }
-  }
+        // router.push(`/dashboard`);
+        setUserZ(res.data.user)
+        setExpire(res.data.tokens.access.expires)
+        setTokenZ(res.data.tokens.access.token)
+        // setExpire(res.data.tokens.access.expires)
+        // setTokenZ(res.data.tokens.access.token)
+        // if (res.data.user.role == "company-manager") {
+        //   router.push("/dashboard/manager");
+        // } else {
+        //   router.push(`/dashboard`);
+        // }
 
-  const login = useMutation({
-    mutationFn: (user: iPayloadType) =>
-      axios.post(`/v1/auth/login`, user).then((response) => response.data),
-    onSuccess: (loggedUser: iLoggedUserType) => {
-      console.log(loggedUser, " loggedUser")
-      setUser(loggedUser.user)
-    },
-    onError: () => {
+        router.push(`/dashboard`);
+      }
+
+      router.push(`/dashboard`);
+    } catch (error: any) {
+
       showNotification({
         title: 'Unauthorized',
         message: 'Incorrect email and password',
@@ -85,8 +113,13 @@ const Home: React.FC = () => {
           }
         }),
       })
+
+      return error;
     }
-  })
+  };
+
+
+  if (loading) return <LoadingOverlay visible={!loading} />;
 
   return (
     <div className={classes.wrapper2}>
@@ -114,7 +147,7 @@ const Home: React.FC = () => {
           The ROI Shop Login
         </Title>
 
-        <form onSubmit={form.onSubmit((values) => login.mutateAsync(values, { onSuccess: ()=> router.push(`/dashboard`)}))}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             required
             label="Email Address"

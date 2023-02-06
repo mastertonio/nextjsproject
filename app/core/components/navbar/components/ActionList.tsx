@@ -9,18 +9,21 @@ import { useLocalStorage } from "@mantine/hooks";
 import { ImProfile } from "react-icons/im";
 import { AiFillCaretDown } from "react-icons/ai";
 import UserContext from "@app/context/user.context";
-import { useCookies, withCookies } from 'react-cookie';
+import { useUserStore } from "@app/store/userState";
+import Cookies from 'js-cookie';
 
 
 const ActionList: React.FC = () => {
   const router = useRouter();
+  const expireCookies = useUserStore((state) => (state.expires))
+  const tokenSet = useUserStore((state) => (state.token))
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
   const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
   const [values, setValues] = useState<any>("");
   // const cookies = new Cookies();
-  const [cookies, setCookie, removeCookie] = useCookies(['x-access-token']);
+  // const [cookies, setCookie, removeCookie] = useCookies(['x-access-token']);
 
   const userCtx = useContext(UserContext);
 
@@ -30,11 +33,12 @@ const ActionList: React.FC = () => {
 
   const handleLogout = () => {
     try {
-      setCookie('x-access-token', '', {
-        expires: new Date(0),
-        path: '/',
-        domain: 'localhost'
+      // sessionStorage.clear()
+      Cookies.set('x-access-token', ' ', {
+        expires: Date.now()
       });
+
+      Cookies.remove('x-access-token', { path: '/' })
       router.push("/");
     } catch (error) {
       return error;
