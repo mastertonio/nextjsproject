@@ -69,7 +69,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={userZ} />}
       // footer={<RoiFooter />}
       >
         <div className={`${classes.body} flex-col sm:flex-row relative h-auto`}>
