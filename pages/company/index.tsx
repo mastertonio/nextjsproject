@@ -154,7 +154,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     return await axios.get(`/v1/company`);
   };
 
-  const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
+  const { isLoading, isError, error, data, refetch, isFetching, isSuccess } = useQuery(
     "get_all_company",
     getCompanies
   );
@@ -263,7 +263,10 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     ),
   }));
 
-  return isLoading ? <MainLoader /> : (
+  if (isLoading) return <MainLoader />
+
+  if(isSuccess) {
+  return (
     <AppShell
       styles={{
         main: {
@@ -412,5 +415,9 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     </AppShell>
   );
 };
+
+return <></>
+}
+
 
 export default CompanyList;

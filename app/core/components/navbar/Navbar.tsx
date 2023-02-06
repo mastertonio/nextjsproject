@@ -23,7 +23,7 @@ import UserContext, { UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 
-const RoiNavbar: React.FC<Partial<UserState>> = ({ user }) => {
+const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         destination: "/",
         permanent: false,
       },
-      props: { user },
+      props: { user, cookies },
     }
   }
 

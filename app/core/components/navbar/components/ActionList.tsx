@@ -12,6 +12,7 @@ import UserContext from "@app/context/user.context";
 import { useUserStore } from "@app/store/userState";
 import Cookies from 'js-cookie';
 
+
 const ActionList: React.FC = () => {
   const router = useRouter();
   const expireCookies = useUserStore((state) => (state.expires))
@@ -21,6 +22,8 @@ const ActionList: React.FC = () => {
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
   const [values, setValues] = useState<any>("");
+  // const cookies = new Cookies();
+  // const [cookies, setCookie, removeCookie] = useCookies(['x-access-token']);
 
   const userCtx = useContext(UserContext);
 
@@ -78,4 +81,4 @@ const ActionList: React.FC = () => {
   );
 };
 
-export default ActionList;
+export default withCookies(ActionList);

@@ -3,14 +3,15 @@ import {
   AppShell,
   Button,
   Group,
-  LoadingOverlay,
-  Navbar,
-  PasswordInput,
+  // LoadingOverlay,
+  // Navbar,
+  // PasswordInput,
   Stack,
   Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import RoiFooter from "@core/components/footer/Footer";
 import { useRouter } from "next/router";
 import RoiNavbar from "@core/components/navbar/Navbar";
@@ -34,8 +35,20 @@ const UserProfile: React.FC = () => {
   const p = router.query;
 
   const userZ = useUserStore((state) => (state.user))
-  
+
   const [userCred, setUserCred] = useState<any>(userZ);
+
+  const form = useForm({
+    initialValues: {
+      email: "",
+      first_name: "",
+      last_name: "",
+      phone_number: ""
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    }
+  })
 
   const getCurrentUser = async () => {
     return await axios.get(`/v1/users/${userZ?.id}`);
@@ -46,9 +59,9 @@ const UserProfile: React.FC = () => {
     getCurrentUser
   );
 
-  const onSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (values: typeof form.values) => {
     try {
-      e.preventDefault();
+      // values.preventDefault();
       showNotification({
         id: 'load-data',
         loading: true,
@@ -61,13 +74,22 @@ const UserProfile: React.FC = () => {
       const res = await axios.patch(
         `/v1/users/${userZ?.id}`,
         {
-          email: userCred.email,
-          first_name: userCred.first_name,
-          last_name: userCred.last_name,
-          phone: userCred.phone_number,
+          email: values.email,
+          first_name: values.first_name,
+          last_name: values.last_name,
+          phone: values.phone_number,
         }
       );
-      if(res){
+      // const res = await axios.patch(
+      //   `/v1/users/${userZ?.id}`,
+      //   {
+      //     email: userCred.email,
+      //     first_name: userCred.first_name,
+      //     last_name: userCred.last_name,
+      //     phone: userCred.phone_number,
+      //   }
+      // );
+      if (res) {
         updateNotification({
           id: 'load-data',
           color: 'teal',
@@ -126,60 +148,74 @@ const UserProfile: React.FC = () => {
       // }
       header={<RoiNavbar />}
     >
-      <form onSubmit={onSubmit}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <div
-          style={{
-            margin: 5,
-            backgroundColor: "white",
-            padding: 20,
-            borderRadius: 10,
-          }}
+          className="mt-[20px] mb-[20px] bg-white p-[20px] rounded-[10px] shadow-lg"
         >
-          <Text weight={700} color="gray" style={{ fontSize: 30 }}>
+          <Text weight={700} className="text-[30px] text-teal-500">
             Personal Information
           </Text>
 
-          <Stack>
-            <Group>
-              <TextInput
-                placeholder="Your Email Address"
-                label="Email"
-                name="email"
-                style={{ width: 950, marginTop: "auto" }}
-                onChange={handleChange}
-                description="Your email address will also be your username and is the email address that all notifications will be sent to."
-                inputWrapperOrder={['label', 'error', 'input', 'description']}
-                onBlur={onSubmit}
-              />
-            </Group>
+          <Stack className="mt-[20px]">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="gap-1">
+                <p className="text-[14px] text-slate-900 mb-[5px] font-semibold">Email Address</p>
+                <TextInput
+                  placeholder="Your Email Address"
+                  name="email"
+                  className="w-full"
+                  // description="Your email address will also be your username and is the email address that all notifications will be sent to."
+                  // inputWrapperOrder={['label', 'error', 'input', 'description']}
+                  {...form.getInputProps("email")}
+                // onBlur={onSubmit}
+                />
+                <p className="text-[10px] text-slate-400 mt-[5px] mb-0">Your email address will also be your username and is the email address that all notifications will be sent to.</p>
+              </div>
 
-            <TextInput
-              placeholder="Your First Name"
-              label="First Name"
-              name="first_name"
-              onChange={handleChange}
-              onBlur={onSubmit}
-            />
-            <TextInput
-              placeholder="Your Last Name"
-              label="Last Name"
-              name="last_name"
-              onChange={handleChange}
-              onBlur={onSubmit}
-            />
-            <TextInput
-              placeholder="Enter Phone Number "
-              label="Phone number"
-              name="phone_number"
-              onChange={handleChange}
-              onBlur={onSubmit}
-            />
-            <Group>
+              <div className="gap-1">
+                <p className="text-[14px] text-slate-900 mb-[5px] font-semibold">Phone number</p>
+                <TextInput
+                  placeholder="Enter Phone Number "
+                  name="phone_number"
+                  className="w-full"
+                  {...form.getInputProps("phone_number")}
+                // onChange={handleChange}
+                // onBlur={onSubmit}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="gap-1">
+                <p className="text-[14px] text-slate-900 mb-[5px] font-semibold mt-0">First Name</p>
+                <TextInput
+                  placeholder="Your First Name"
+                  name="first_name"
+                  className="w-full"
+                  {...form.getInputProps("first_name")}
+                // onChange={handleChange}
+                // onBlur={onSubmit}
+                />
+              </div>
+              <div className="gap-1">
+                <p className="text-[14px] text-slate-900 mb-[5px] font-semibold mt-0">Last Name</p>
+                <TextInput
+                  placeholder="Your Last Name"
+                  name="last_name"
+                  className="w-full"
+                  {...form.getInputProps("last")}
+                // onChange={handleChange}
+                // onBlur={onSubmit}
+                />
+              </div>
+            </div>
+
+            <Group className="mt-[20px]">
               <Button
                 type="submit"
                 color="teal"
                 leftIcon={<BsFolderSymlinkFill size={14} />}
-                style={{ marginLeft: "auto" }}
+                className="ml-auto"
               >
                 Update Information
               </Button>

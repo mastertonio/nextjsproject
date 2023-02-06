@@ -9,12 +9,16 @@ import { IButtonRoiNameProps } from "./EditButton";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
+import { useUserStore } from "@app/store/userState";
+import { useMutation, useQueryClient } from "react-query";
 
 const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
+  const userZ = useUserStore((state) => (state.user))
+  const queryClient = useQueryClient()
 
   const form = useForm({
     initialValues: {
@@ -22,43 +26,61 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
     },
   });
 
-  const handleSubmit = async () => {
-    try {
-      setOpened(false);
+  type iDeleteTempProp = {
+    title: string
+  }
+
+  const deleteRoi = useMutation({
+    mutationFn: () => axios.delete(`/v1/dashboard/roi/${id}/${userZ?.id}`).then((response) => response.data),
+    onMutate: (roi) => {
+      console.log(roi, "roi")
       showNotification({
         id: "delete-row",
         loading: true,
-        title: `Deleting ${name}`,
+        title: `Deleting row`,
         message: "Please wait ...",
         autoClose: false,
         disallowClose: true,
-        color: "teal",
       });
-      const res = await axios.delete(`/v1/dashboard/roi/${id}/${p.id}`);
-      if (res) {
+    },
+    onSuccess: (newRoi) => {
+      console.log(newRoi, "roiroi")
+      Promise.all(
+        [
+          queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
+          queryClient.invalidateQueries({ queryKey: ['graphData'] }),
+          queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+        ]
+      )
+      updateNotification({
+        id: "delete-row",
+        color: "teal",
+        title: `${newRoi.title} removed successfully`,
+        message: "",
+        icon: <IconCheck size={16} />,
+        autoClose: 3000,
+      });
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
         updateNotification({
           id: "delete-row",
-          color: "teal",
-          title: `${name} was deleted`,
-          message: "Refreshing shortly ...",
-          icon: <IconCheck size={16} />,
-          autoClose: 2500,
+          color: "red",
+          title: `Deletion failed`,
+          message: error.message,
+          autoClose: false,
         });
-
-        refetch();
       }
-      refetch();
-    } catch (error) {
+
       updateNotification({
         id: "delete-row",
         color: "red",
-        title: "Deleting a table row failed",
+        title: `Deletion failed`,
         message: "Something went wrong, Please try again",
         autoClose: false,
       });
-      return error;
     }
-  };
+  })
 
   return (
     <>
@@ -115,7 +137,10 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
             size="sm"
             color="red"
             style={{ marginRight: 10 }}
-            onClick={() => handleSubmit()}
+            onClick={() => {
+              setOpened(false)
+              deleteRoi.mutate()
+            }}
           >
             Delete
           </Button>

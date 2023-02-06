@@ -10,15 +10,29 @@ import DashboardContextProvider from "app/context/dashboard.context";
 import { UserContextProvider } from "app/context/user.context";
 import { BuilderContextProvider } from "@app/context/builder.context";
 import Head from "next/head";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import router, { useRouter } from "next/router";
+
 
 process.env.NODE_ENV == "production" ? axios.defaults.baseURL = process.env.NEXT_PROD_PORT : axios.defaults.baseURL = process.env.NEXT_DEV_PORT || "http://localhost:8080"
 axios.defaults.withCredentials = true
 
-const queryClient = new QueryClient({
+
+const queryClient = new QueryClient(
+  {
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
+      retry: false,
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401){
+            router.push('/401')
+          } else if(error.response?.status === 403) {
+            router.push('/403')
+          }
+        }
+      },
     },
   },
 });

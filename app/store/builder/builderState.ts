@@ -17,6 +17,10 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
+
+const FormulaParser = require('hot-formula-parser').Parser
+const parser = new FormulaParser()
+
 import { iSectionData } from "@app/admin/components/Sections";
 
 export interface UserState {
@@ -136,3 +140,13 @@ export const useSectionsStore = create<ISectionState>((set) => ({
       section: state.section.filter((vars) => vars.id !== id),
     })),
 }));
+
+
+interface ICalculatorState {
+  val: number;
+}
+
+export const useCalculationStore = create<ICalculatorState>((set) => ({
+  val: 0,
+}));
+

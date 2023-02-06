@@ -20,8 +20,8 @@ export interface IRankCountProps {
 const RoiRanking: React.FC<IRankCountProps> = () => {
   const getRankings = async () => {
     return await axios.get(
-        `/v1/dashboard/ranking/list`
-      );
+      `/v1/dashboard/ranking/list`
+    );
   };
 
   const { isLoading, status, data, isFetching } = useQuery(
@@ -45,9 +45,9 @@ const RoiRanking: React.FC<IRankCountProps> = () => {
       <Table className="mt-[20px] sm:mt-0">
         <thead>
           <tr>
-            <th>Ranking</th>
-            <th>Name</th>
-            <th>ROIS</th>
+            <th className="!border-white !border-0">Ranking</th>
+            <th className="!border-white !border-0">Name</th>
+            <th className="!border-white !border-0">ROIS</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
