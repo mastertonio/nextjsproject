@@ -227,11 +227,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     active: <Segmented val={item.active} key={item._id} refetch={refetch} name={item.name} id={item._id} />,
     actions: (
       <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
+        className="flex justify-end items-center gap-2"
       >
         <Button
           leftIcon={<HiTemplate />}
@@ -265,158 +261,158 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
 
   if (isLoading) return <MainLoader />
 
-  if(isSuccess) {
-  return (
-    <AppShell
-      styles={{
-        main: {
-          backgroundColor: "white",
-        },
-      }}
-      style={{
-        marginLeft: 50,
-        marginRight: 50,
-        marginTop: "auto",
-        marginBottom: "auto",
-        maxWidth: 1780,
-      }}
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      fixed
-      navbar={<Sidebar />}
-      // footer={
-      //   <RoiFooter />
-      // }
-      header={<RoiNavbar />}
-    >
-      <Grid
-        style={{
-          marginTop: 20,
-          marginBottom: 20,
-          marginLeft: 10,
-          marginRight: 10,
+  if (isSuccess) {
+    return (
+      <AppShell
+        styles={{
+          main: {
+            backgroundColor: "white",
+          },
         }}
+        style={{
+          marginLeft: 50,
+          marginRight: 50,
+          marginTop: "auto",
+          marginBottom: "auto",
+          maxWidth: 1780,
+        }}
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        fixed
+        navbar={<Sidebar />}
+        // footer={
+        //   <RoiFooter />
+        // }
+        header={<RoiNavbar />}
       >
-        {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-        <AddCompanyButton refetch={refetch} />
-        <Input
-          variant="default"
-          placeholder="Search for ROI"
-          style={{ marginLeft: "auto" }}
-          onChange={(event: {
-            target: { value: React.SetStateAction<string> };
-          }) => {
-            handleSearchChange(event.target.value);
+        <Grid
+          style={{
+            marginTop: 20,
+            marginBottom: 20,
+            marginLeft: 10,
+            marginRight: 10,
           }}
-        />
-      </Grid>
-      <ScrollArea
-        style={{ height: 650 }}
-        onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-      >
-        <Table
-          className={classes.table}
-          highlightOnHover
-          verticalSpacing="xs"
-          fontSize="xs"
         >
-          <thead
-            className={cx(classes.header, { [classes.scrolled]: scrolled })}
-            style={{ zIndex: 50 }}
+          {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
+          <AddCompanyButton refetch={refetch} />
+          <Input
+            variant="default"
+            placeholder="Search for ROI"
+            style={{ marginLeft: "auto" }}
+            onChange={(event: {
+              target: { value: React.SetStateAction<string> };
+            }) => {
+              handleSearchChange(event.target.value);
+            }}
+          />
+        </Grid>
+        <ScrollArea
+          style={{ height: 650 }}
+          onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+        >
+          <Table
+            className={classes.table}
+            highlightOnHover
+            verticalSpacing="xs"
+            fontSize="xs"
           >
-            <tr>
-              <th style={{ width: 85 }}></th>
-              <Th
-                sorted={sortBy === "name"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("name")}
-                style="w-[310px] !border-white !border-0"
-              >
-                Company Name
-              </Th>
-              <Th
-                sorted={sortBy === "alias"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("alias")}
-                style="w-[225px] !border-white !border-0"
-              >
-                Alias
-              </Th>
-              <Th
-                sorted={sortBy === "licenses"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("licenses")}
-                style="w-[160px] !border-white !border-0"
-              >
-                Licenses
-              </Th>
-              <Th
-                sorted={sortBy === "templates"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("templates")}
-                style="w-[170px] !border-white !border-0"
-              >
-                Templates
-              </Th>
-              <Th
-                sorted={sortBy === "active"}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting("active")}
-                style="w-[220px] !border-white !border-0"
-              >
-                Status
-              </Th>
-              <th className="!border-white !border-0"></th>
-            </tr>
-          </thead>
-          {isLoading ? (
-            <SkeletonLoader />
-          ) : (
-            <tbody>
-              {companies?.map((element: ICompanyElement) => (
-                <tr key={element.id}>
-                  <td style={{ width: 10 }}>{element.button}</td>
-                  <td
-                  >
-                    {element.roiname}
-                  </td>
-                  <td style={{ width: 240 }}>{element.alias}</td>
-                  <td style={{ width: 155 }}>{element.licenses}</td>
-                  <td style={{ width: 145, paddingLeft: 20 }}>
-                    {element.templates}
-                  </td>
-                  <td
-                    style={{
-                      width: 190,
-                    }}
-                  >
-                    {element.active}
-                  </td>
-                  <td>{element.actions}</td>
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </Table>
-      </ScrollArea>
-      <div>
-        <Paginate
-          refetch={refetch}
-          page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
-          limit={limit}
-          totalResults={sortedData?.length}
-          setLimit={setLimit}
-          activePage={activePage}
-          setPage={setPage}
-          firstIndex={indexOfFirstPost}
-          lastIndex={indexOfLastPost}
-        />
-      </div>
-    </AppShell>
-  );
-};
+            <thead
+              className={cx(classes.header, { [classes.scrolled]: scrolled })}
+              style={{ zIndex: 50 }}
+            >
+              <tr>
+                <th className="w-[85px] !border-white !border-0"></th>
+                <Th
+                  sorted={sortBy === "name"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("name")}
+                  style="w-[310px] !border-white !border-0"
+                >
+                  Company Name
+                </Th>
+                <Th
+                  sorted={sortBy === "alias"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("alias")}
+                  style="w-[225px] !border-white !border-0"
+                >
+                  Alias
+                </Th>
+                <Th
+                  sorted={sortBy === "licenses"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("licenses")}
+                  style="w-[160px] !border-white !border-0"
+                >
+                  Licenses
+                </Th>
+                <Th
+                  sorted={sortBy === "templates"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("templates")}
+                  style="w-[170px] !border-white !border-0"
+                >
+                  Templates
+                </Th>
+                <Th
+                  sorted={sortBy === "active"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("active")}
+                  style="w-[220px] !border-white !border-0"
+                >
+                  Status
+                </Th>
+                <th className="!border-white !border-0"></th>
+              </tr>
+            </thead>
+            {isLoading ? (
+              <SkeletonLoader />
+            ) : (
+              <tbody>
+                {companies?.map((element: ICompanyElement) => (
+                  <tr key={element.id}>
+                    <td style={{ width: 10 }}>{element.button}</td>
+                    <td
+                    >
+                      {element.roiname}
+                    </td>
+                    <td style={{ width: 240 }}>{element.alias}</td>
+                    <td style={{ width: 155 }}>{element.licenses}</td>
+                    <td style={{ width: 145, paddingLeft: 20 }}>
+                      {element.templates}
+                    </td>
+                    <td
+                      style={{
+                        width: 190,
+                      }}
+                    >
+                      {element.active}
+                    </td>
+                    <td>{element.actions}</td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </Table>
+        </ScrollArea>
+        <div>
+          <Paginate
+            refetch={refetch}
+            page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
+            limit={limit}
+            totalResults={sortedData?.length}
+            setLimit={setLimit}
+            activePage={activePage}
+            setPage={setPage}
+            firstIndex={indexOfFirstPost}
+            lastIndex={indexOfLastPost}
+          />
+        </div>
+      </AppShell>
+    );
+  };
 
-return <></>
+  return <></>
 }
 
 

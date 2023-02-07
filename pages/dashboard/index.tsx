@@ -60,7 +60,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
       Cookies.remove('x-access-token')
       router.push('/');
     }
-  }, []);
+  }, [router, expireCookies, tokenSet]);
 
 
   if (isLoading) return <MainLoader />;
