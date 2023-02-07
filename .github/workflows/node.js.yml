@@ -26,4 +26,4 @@ jobs:
         cache: 'npm'
     - run: yarn install --frozen-lockfile
     - run: cp /home/ubuntu/.env /home/ubuntu/roi/_work/ROI-Frontend/ROI-Frontend
-    - run: yarn build
+    - run: yarn && yarn build
