@@ -4,7 +4,7 @@ name: ROI Frontend
 
 on:
   push:
-    branches: [ "deployment" ]
+    branches: [ "main" ]
 
 jobs:
   build:
