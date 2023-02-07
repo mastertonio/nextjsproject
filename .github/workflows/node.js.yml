@@ -27,3 +27,4 @@ jobs:
     - run: cp /home/ubuntu/.env /home/ubuntu/roi/_work/ROI-Frontend/ROI-Frontend
     - run: yarn 
     - run: yarn build
+    - run: pm2 restart nextjs
