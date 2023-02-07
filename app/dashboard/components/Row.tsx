@@ -117,6 +117,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   };
 
   const handleSearchChange = (event: React.SetStateAction<string>) => {
+    console.log('search handle', event)
     setSearch(event);
     setSortedData(
       sortData(data?.data, {
@@ -194,7 +195,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     uniqueViews: item.uniqueViews,
     actions: (
       <div
-        className="flex justify-end items-center"
+        className="flex justify-end items-center gap-2"
       >
         <EditButton id={item.id} refetch={refetch} name={item.name} />
         <CloneButton id={item.id} refetch={refetch} name={item.name} />

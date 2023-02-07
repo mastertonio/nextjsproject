@@ -18,10 +18,12 @@ import {
   MdKeyboardArrowDown,
   MdAccessTimeFilled,
   MdLineWeight,
+  MdLogout
 } from "react-icons/md";
 import { useQuery } from "react-query";
 import { useNavShowStore } from "@app/store/builderStore";
 import { IAdminListProps } from "../navbar/components/AdminList";
+import Cookies from 'js-cookie';
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
@@ -40,6 +42,20 @@ const Sidebar: React.FC = () => {
     "userList",
     getCurrentUser
   );
+
+  const handleLogout = () => {
+    try {
+      // sessionStorage.clear()
+      Cookies.set('x-access-token', ' ', {
+        expires: Date.now()
+      });
+
+      Cookies.remove('x-access-token', { path: '/' })
+      router.push("/");
+    } catch (error) {
+      return error;
+    }
+  };
 
   useEffect(() => {
     setUser(data?.data);
@@ -156,6 +172,19 @@ const Sidebar: React.FC = () => {
             Template List
           </Button>
         </Collapse>
+      </Navbar.Section>
+      <Navbar.Section>
+        <Button
+          variant="subtle"
+          color="blue"
+          fullWidth
+          style={{ marginTop: 5, color: "lightgray" }}
+          size="md"
+          leftIcon={<MdLogout />}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
       </Navbar.Section>
     </Navbar>
   );

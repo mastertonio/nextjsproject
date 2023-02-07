@@ -81,4 +81,4 @@ const ActionList: React.FC = () => {
   );
 };
 
-export default withCookies(ActionList);
+export default ActionList;
