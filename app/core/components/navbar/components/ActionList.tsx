@@ -38,7 +38,17 @@ const ActionList: React.FC = () => {
         expires: Date.now()
       });
 
-      Cookies.remove('x-access-token', { path: '/' })
+      Cookies.set('session.sig', ' ', {
+        expires: Date.now()
+      });
+
+      Cookies.set('session', ' ', {
+        expires: Date.now()
+      });
+
+      Cookies.remove('x-access-token', { path: '/', domain: 'localhost' })
+      Cookies.remove('session.sig', { path: '/', domain: 'localhost' })
+      Cookies.remove('session', { path: '/', domain: 'localhost' })
       router.push("/");
     } catch (error) {
       return error;

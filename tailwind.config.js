@@ -18,6 +18,7 @@ module.exports = {
     "./app/dashboard/components/table**/*.{js,ts,jsx,tsx}",
     "./app/company/components/TemplateVersion*.{js,ts,jsx,tsx}",
     "./app/company/components/buttons/**/*.{js,ts,jsx,tsx}",
+    "./app/core/components/dropdown/Select*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},

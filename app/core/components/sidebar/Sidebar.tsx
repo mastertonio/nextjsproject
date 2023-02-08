@@ -50,7 +50,17 @@ const Sidebar: React.FC = () => {
         expires: Date.now()
       });
 
+      Cookies.set('session.sig', ' ', {
+        expires: Date.now()
+      });
+
+      Cookies.set('session', ' ', {
+        expires: Date.now()
+      });
+
       Cookies.remove('x-access-token', { path: '/' })
+      Cookies.remove('session.sig', { path: '/' })
+      Cookies.remove('session', { path: '/' })
       router.push("/");
     } catch (error) {
       return error;
