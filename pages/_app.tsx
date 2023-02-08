@@ -14,7 +14,7 @@ import axios, { AxiosError } from "axios";
 import router, { useRouter } from "next/router";
 
 
-process.env.NODE_ENV == "production" ? axios.defaults.baseURL = process.env.NEXT_PROD_PORT : axios.defaults.baseURL = process.env.NEXT_DEV_PORT || "http://localhost:8080"
+process.env.NODE_ENV == "production" ? axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_PORT : axios.defaults.baseURL = process.env.NEXT_PUBLIC_DEV_PORT
 axios.defaults.withCredentials = true
 
 
