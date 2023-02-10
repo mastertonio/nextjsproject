@@ -41,7 +41,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [currency, setCurrency] = useState<string | null>(null);
-  
+
   const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
@@ -215,12 +215,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] !bg-[#073e52] text-white"
           align="center"
         >
           Add Company User
@@ -238,17 +233,12 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
             })}
           >
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
               <Text>Email: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter User Email"
                 {...form.getInputProps("email")}
               />
@@ -263,47 +253,35 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               <Text>Password: </Text>
               <PasswordInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter User Password"
                 {...form.getInputProps("password")}
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>First Name: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter User First Name"
                 {...form.getInputProps("first_name")}
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>Last Name: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter User Last Name"
                 {...form.getInputProps("last_name")}
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>Currency: </Text>
               <Select
@@ -311,22 +289,18 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
                 data={curData}
                 placeholder="Choose Currency"
                 {...form.getInputProps("currency")}
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>Role: </Text>
               <Select
                 data={[{ label: 'Company Manager', value: '3' }, { label: 'Company Agent', value: '4' }]}
                 placeholder="Choose Role"
                 {...form.getInputProps("role")}
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
               />
               {/* <TextInput
                 required
@@ -336,26 +310,22 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               /> */}
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>Select Manager: </Text>
               <Select
                 placeholder="New Title Name"
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}
                 {...form.getInputProps("manager")}
               />
             </Grid>
 
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 10 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
               <Text>Templates: </Text>
               <MultiSelect
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Choose Templates"
                 searchable
                 // clearable
@@ -368,13 +338,13 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
             </Grid>
           </Stack>
 
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Save User
@@ -383,11 +353,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-gray-500"
             >
               Close
             </Button>
@@ -401,7 +367,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
         size="sm"
         onClick={() => setOpened(true)}
         color="teal"
-        style={{ width: 300 }}
+        className="w-[300px]"
       >
         Add User
       </Button>

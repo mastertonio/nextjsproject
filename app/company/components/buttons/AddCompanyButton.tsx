@@ -114,12 +114,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] !bg-[#073e52] text-white"
           align="center"
         >
           Create Company
@@ -137,12 +132,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
             })}
           >
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
               <Text>Company Name: </Text>
               <TextInput
@@ -154,62 +144,58 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>Company Alias: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 // defaultValue={myCompany.name}
                 placeholder="New Title Name"
                 {...form.getInputProps("alias")}
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30 }}>
+            <Grid style={{ marginLeft: 30, marginRight: 30 }} className="ml-[30px] mr-[30px]">
               <Text>Licenses: </Text>
               <NumberInput
                 defaultValue={0}
-                style={{ marginLeft: 'auto', width: 550 }}
+                className="w-[550px] ml-auto"
                 min={0}
                 {...form.getInputProps("licenses")}
                 required
               />
             </Grid>
-            <Text align="center" style={{ marginTop: 10 }} weight={700}>
+            <Text align="center" className="mt-[10px]" weight={700}>
               Account Contact
             </Text>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginBottom: 10 }}>
+            <Grid className="ml-[30px] mr-[30px] mb-[10px]">
               <div>
                 <Text>First Name: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   // defaultValue="Jason"
                   placeholder="First Name"
                   {...form.getInputProps("contact_fname")}
                 />
               </div>
-              <div style={{ marginLeft: "auto" }}>
+              <div className="ml-auto">
                 <Text>Last Name: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   // defaultValue="Ronda"
                   placeholder="Last Name"
                   {...form.getInputProps("contact_lname")}
                 />
               </div>
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginBottom: 10 }}>
+            <Grid className="ml-[30px] mr-[30px] mb-[10px]">
               <div>
                 <Text>Email: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   placeholder="Email Address"
                   // defaultValue="jason.ronda003@gmail.com"
                   {...form.getInputProps("contact_email")}
@@ -219,7 +205,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
                 <Text>Contact Number: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   // defaultValue="09269666992"
                   placeholder="Phone Number"
                   {...form.getInputProps("contact_phone")}
@@ -227,20 +213,12 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
               </div>
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+                className="flex justify-between items-center"
               >
-                <Text style={{ marginRight: 20 }}>
+                <Text className="mr-[20px]">
                   Contract and Agreements:{" "}
                 </Text>
                 <Group>
@@ -259,7 +237,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
                   </FileButton>
                 </Group>
               </div>
-              <div style={{ marginLeft: 20 }}>
+              <div className="ml-[20px]">
                 {file && (
                   <Text size="sm" align="center" mt="xs">
                     Picked file: {file.name}
@@ -267,30 +245,30 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
                 )}
               </div>
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30 }}>
-              <Text style={{ marginRight: 20 }}>Contract Start: </Text>
+            <Grid className="ml-[30px] mr-[30px]">
+              <Text className="mr-[20px]">Contract Start: </Text>
               <DatePicker
                 value={startDate}
                 onChange={setStartDate}
                 clearable
-                style={{ width: 250 }}
+                className="w-[250px]"
               />
               {/* onChange={dat => dat && setDate(dat)} */}
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 10 }}>
-              <Text style={{ marginRight: 26 }}>Contract End: </Text>
+            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
+              <Text className="mr-[26px]">Contract End: </Text>
               <DatePicker
                 value={endDate}
                 onChange={setEndDate}
                 clearable
-                style={{ width: 250 }}
+                className="w-[250px]"
                 minDate={startDate || new Date()}
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 10 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
               <Text>Notes: </Text>
               <Textarea
-                style={{ width: 600, marginLeft: "auto" }}
+                className="w-[600px] ml-auto"
                 autosize
                 minRows={3}
                 maxRows={4}
@@ -299,13 +277,13 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
             </Grid>
           </Stack>
 
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Save Company
@@ -314,11 +292,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-gray-500"
             >
               Close
             </Button>
@@ -332,7 +306,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         size="sm"
         onClick={() => setOpened(true)}
         color="teal"
-        style={{ width: 300 }}
+        className="w-[300px]"
       >
         Create Company
       </Button>
