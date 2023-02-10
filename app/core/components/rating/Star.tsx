@@ -4,6 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useUserStore } from "@app/store/userState";
 // import { Rating } from "react-simple-star-rating";
 import { IStarProps } from "../dropdown/Select";
 
@@ -22,6 +23,7 @@ const StarRating: React.FC<IStarProps> = ({
   disabled,
 }) => {
   const [value] = useLocalStorage({ key: "auth-token" });
+  const userZ = useUserStore((state) => (state.user))
   const [r, setR] = useState<number>(rating);
   const [loaded, setLoaded] = useState(false)
   const router = useRouter();
@@ -32,7 +34,7 @@ const StarRating: React.FC<IStarProps> = ({
       setR(rate);
       setOpened?.(false);
       const res = await axios.patch(
-        `/v1/dashboard/roi/${id}/${p.id}`,
+        `/v1/dashboard/roi/${id}/${userZ?.id}`,
         { importance: rate }
       );
       if (res) {
@@ -40,17 +42,20 @@ const StarRating: React.FC<IStarProps> = ({
       }
       refetch();
     } catch (error) {
+      console.log('error rating', error)
       return error;
     }
   };
+
+
 
   return (
     <Rating
       color="teal"
       readOnly={readOnly}
-      value={importance}
+      defaultValue={importance}
       onChange={handleRate}
-      size="sm"
+      size={size}
     />
     // <Rating
     //   readonly={readOnly}

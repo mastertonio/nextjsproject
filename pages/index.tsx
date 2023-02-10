@@ -64,7 +64,6 @@ const Home: React.FC = () => {
         `/v1/auth/login`,
         payload
       );
-      console.log('res2', res.data.tokens.access.expires)
       if (res) {
         console.log('res', res);
         // userCtx.login(res.data);
