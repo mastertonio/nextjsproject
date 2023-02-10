@@ -134,3 +134,13 @@ th {
     padding-right: 0;
   }
 }
+
+@media (min-width: 1280px) {
+  .login-auth span {
+    width: 100% !important;
+  }
+
+  .button-auth span {
+    width: unset !important;
+  }
+}

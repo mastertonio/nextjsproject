@@ -122,74 +122,66 @@ const Home: React.FC = () => {
   if (loading) return <LoadingOverlay visible={!loading} />;
 
   return (
-    <div className={classes.wrapper2}>
-      <Paper className={`${classes.form} p-[30px] md:p-[50px] lg:p-[50px]`} radius={0} p={30}>
-        <div
-          className="flex justify-center items-center"
-        >
-          {/* <div
-            style={{
-              position: 'relative',
-              marginTop: 5,
-              width: '50%',
-            }}
-          >
-            <Image layout="fill" objectFit="contain" src="/logo.png" alt="random" />
-          </div> */}
-        </div>
-        <Title
-          order={2}
-          className={`${classes.title2} text-[22px] sm:text-[26px] mt-[50px] sm:mt-[30px]`}
-          align="center"
-          mt="xs"
-          mb={50}
-        >
-          The ROI Shop Login
-        </Title>
-
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
-            required
-            label="Email Address"
-            placeholder="your@email.com"
-            {...form.getInputProps("email")}
-          />
-
-          <PasswordInput
-            label="Password"
-            placeholder="Password"
-            {...form.getInputProps("password")}
-            style={{ marginTop: 20 }}
-          />
-
-          <Checkbox
-            mt="md"
-            label="Remember Me"
-            {...form.getInputProps("rememberMe", { type: "checkbox" })}
-          />
-
-          <Group position="right" style={{ marginBottom: 10 }}>
-            <Button
-              type="submit"
-              style={{ background: theme.fn.radialGradient("#00acac") }}
-              className={classes.button}
+    <div className="flex flex-col sm:flex-row h-screen w-full login-auth">
+      <div className="w-full sm:w-[35%] 2xl:w-[35%]">
+        <Paper className={`${classes.form} p-[30px] md:p-[50px] lg:p-[50px]`} radius={0} p={30}>
+          <div>
+            <Title
+              order={2}
+              className={`${classes.title2} text-[22px] sm:text-[26px] mt-[50px] sm:mt-[30px]`}
+              align="center"
+              mt="xs"
+              mb={50}
             >
-              Sign me in
-            </Button>
-          </Group>
-        </form>
-        <div className={classes.forgot_password}>
-          <Text className="text-[14px]">© The ROI Shop</Text>
-          <Button
-            variant="subtle"
-            radius="lg"
-            onClick={() => router.push("/forgot_password")}
-            className="ml-auto"
-          >
-            Forgot Password
-          </Button>
-        </div>
-      </Paper>
+              The ROI Shop Login
+            </Title>
+
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+              <TextInput
+                required
+                label="Email Address"
+                placeholder="your@email.com"
+                {...form.getInputProps("email")}
+              />
+
+              <PasswordInput
+                label="Password"
+                placeholder="Password"
+                {...form.getInputProps("password")}
+                style={{ marginTop: 20 }}
+              />
+
+              <Checkbox
+                mt="md"
+                label="Remember Me"
+                {...form.getInputProps("rememberMe", { type: "checkbox" })}
+              />
+
+              <Group position="right" className="button-auth mb-[10px]">
+                <Button
+                  type="submit"
+                  style={{ background: theme.fn.radialGradient("#00acac") }}
+                  className={classes.button}
+                >
+                  Sign me in
+                </Button>
+              </Group>
+            </form>
+            <div className={classes.forgot_password}>
+              <Text className="text-[14px]">© The ROI Shop</Text>
+              <Button
+                variant="subtle"
+                radius="lg"
+                onClick={() => router.push("/forgot_password")}
+                className="ml-auto"
+              >
+                Forgot Password
+              </Button>
+            </div>
+          </div>
+        </Paper>
+      </div>
+      <Image src="/login.jpg" alt="bg" height={1000} width={1200} objectFit="cover" />
     </div>
   );
 };
