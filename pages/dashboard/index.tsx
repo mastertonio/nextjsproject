@@ -42,6 +42,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
   const { classes } = useStyles();
   const expireCookies = useUserStore((state) => (state.expires))
   const tokenSet = useUserStore((state) => (state.token))
+  const userZ = useUserStore((state) => (state.user))
   const getDashboardData = async () => {
     return await axios.get(`/v1/dashboard`);
   };
@@ -80,7 +81,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={userZ} />}
       // footer={<RoiFooter />}
       >
         <div className={`${classes.body} flex-col sm:flex-row relative h-auto`}>
