@@ -35,30 +35,32 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
 
   return (
     <Header height={opened === true ? 220 : 70} p="md" className={`${classes.header} flex-col sm:flex-row`}>
-      <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-        <Burger
-          opened={opened}
-          onClick={() => setOpened((o) => !o)}
-          size="sm"
-          color={theme.colors.gray[5]}
-          mr="xl"
-        />
-      </MediaQuery>
-      <div>
-        <Drawer
-          open={isOpen}
-          onClose={toggleDrawer}
-          direction='left'
-          className="!bg-[#2f4050] !p-[20px]"
-        >
-          <DashboardDrawer user={user} />
-        </Drawer>
-        <Button
-          className="mr-auto !bg-[#00acac]"
-          onClick={toggleDrawer}
-        >
-          Navigate
-        </Button>
+      <div className="flex justify-between items-center">
+        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+          <Burger
+            opened={opened}
+            onClick={() => setOpened((o) => !o)}
+            size="sm"
+            color={theme.colors.gray[5]}
+            mr="xl"
+          />
+        </MediaQuery>
+        <div>
+          <Drawer
+            open={isOpen}
+            onClose={toggleDrawer}
+            direction='left'
+            className="!bg-[#2f4050] !p-[20px]"
+          >
+            <DashboardDrawer user={user} />
+          </Drawer>
+          <Button
+            className="mr-auto !bg-[#00acac]"
+            onClick={toggleDrawer}
+          >
+            Navigate
+          </Button>
+        </div>
       </div>
       {/* {router.route.includes("dashboard") && user?.role == "admin" || user?.role == "company-admin" || user?.role == "company-manager" ? (
         <div>

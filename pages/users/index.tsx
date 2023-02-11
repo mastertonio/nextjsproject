@@ -216,14 +216,14 @@ const UsersDashboard: React.FC = () => {
       header={<RoiNavbar />}
       navbar={<Sidebar />}
     >
-      <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
+      <div className="m-[20px] bg-white p-[10px] sm:p-[50px]">
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
           <AddCompanyUserButton refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
-            style={{ marginLeft: "auto" }}
+            className="ml-auto w-full sm:w-[unset] mt-[20px] sm:mt-0"
             onChange={(event: {
               target: { value: React.SetStateAction<string> };
             }) => {
@@ -232,18 +232,17 @@ const UsersDashboard: React.FC = () => {
           />
         </Grid>
         <ScrollArea
-          style={{ height: 590 }}
+          className="h-[590px]"
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
-            className={classes.table}
+            className={`${classes.table} w-[1300px] sm:w-[unset]`}
             highlightOnHover
             verticalSpacing="xs"
             horizontalSpacing="xl"
           >
             <thead
-              className={cx(classes.header, { [classes.scrolled]: scrolled })}
-              style={{ zIndex: 50 }}
+              className={`${cx(classes.header, { [classes.scrolled]: scrolled })}z-[50]`}
             >
               <tr>
                 <Th
@@ -258,7 +257,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "created_rois"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("created_rois")}
-                  style="w-[170px] !border-white !border-0"
+                  style="w-[300px] sm:w-[170px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                 >
                   Created Rois
                 </Th>
@@ -266,7 +265,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "role"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("role")}
-                  style="w-[170px] !border-white !border-0"
+                  style="w-[300px] sm:w-[170px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                 >
                   Role
                 </Th>
@@ -282,7 +281,7 @@ const UsersDashboard: React.FC = () => {
                   sorted={sortBy === "currency"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("currency")}
-                  style="w-[110px] !border-white !border-0"
+                  style="w-[300px] sm:w-[110px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                 >
                   Currency
                 </Th>
@@ -302,14 +301,10 @@ const UsersDashboard: React.FC = () => {
             ) : (
               <tbody>
                 {companies?.map((element: ICompanyUsersElements) => (
-                  <tr key={element.id} style={{ height: 20 }}>
+                  <tr key={element.id} className="h-[20px]">
                     <td style={{ width: 10 }}>{element.username}</td>
                     <td
-                      style={{
-                        cursor: "pointer",
-                        width: 140,
-                        paddingLeft: 30,
-                      }}
+                      className="cursor-pointer w-[140px] pl-[30px]"
                     >
                       {element.created_rois}
                     </td>
@@ -317,13 +312,11 @@ const UsersDashboard: React.FC = () => {
                     <td>
                       {!!element.manager_email ? element.manager_email : "Unassigned"}
                     </td>
-                    <td style={{ width: 145, paddingLeft: 30 }}>
+                    <td className="w-[145px] pl-[30px]">
                       {element.currency}
                     </td>
                     <td
-                      style={{
-                        width: 110,
-                      }}
+                      className="w-[110px]"
                     >
                       <Badge color="green" variant="outline">
                         {element.status}
@@ -336,7 +329,7 @@ const UsersDashboard: React.FC = () => {
             )}
           </Table>
         </ScrollArea>
-        <div>
+        <div className="mb-[40px]">
           <Paginate
             refetch={refetch}
             page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
