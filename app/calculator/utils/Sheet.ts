@@ -7,13 +7,13 @@ import { Event } from "./Sheet/Event";
 interface SheetProps {
   workbook: Workbook;
   name: string;
-  dispatcher?: EventDispatcher;
+  // dispatcher?: EventDispatcher;
 }
 
 const Sheet = ({
   workbook,
   name,
-  dispatcher = new EventDispatcher(),
+  // dispatcher = new EventDispatcher(),
 }: SheetProps) => {
   const [el, setEl] = useState<HTMLElement | null>(null);
   const [id, setId] = useState<string>(generateId());
