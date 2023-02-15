@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { Event } from './Cell/Event';
 import { DataType } from './Cell/DataType';
 import { ErrorType } from './Cell/ErrorType';
@@ -9,7 +9,7 @@ interface CellProps {
   address: string;
 }
 
-export default function Cell(props: CellProps) {
+const Cell = (props: CellProps): JSX.Element => {
   const [value, setValue] = useState<any>(null);
   const [formula, setFormula] = useState<string | null>(null);
   const [computed, setComputed] = useState<any>(null);
@@ -21,15 +21,15 @@ export default function Cell(props: CellProps) {
   const [format, setFormat] = useState<string | null>(null);
   const [formatter, setFormatter] = useState<FormatterInterface | null>(null);
 
-  const init = () => {};
+  const init = () => { };
 
-  const mount = (el: HTMLElement) => {};
+  const mount = (el: HTMLElement) => { };
 
   const isError = () => {
     return Object.values(ErrorType).includes(value as ErrorType);
   };
 
-  const isEmpty = () => {};
+  const isEmpty = () => { };
 
   const isCalculated = () => {
     return calculated;
@@ -56,7 +56,7 @@ export default function Cell(props: CellProps) {
       return address;
     }
 
-    throw new Error('Cell address should follow spreadsheet like address rule');
+    // throw new Error('Cell address should follow spreadsheet like address rule');
   };
 
   const setCellFormula = (formula: string) => {
@@ -75,5 +75,16 @@ export default function Cell(props: CellProps) {
     props.sheet.dispatcher.dispatch(Event.VALUE_CHANGED, { cell: props.address, value: value });
   };
 
-  return null;
+  useEffect(() => {
+    setAddress('Test Address');
+  }, [])
+
+
+  return (
+    <div className="cell">
+      <p>Cell</p>
+    </div>
+  )
 }
+
+export default Cell;

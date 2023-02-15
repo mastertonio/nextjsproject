@@ -7,10 +7,14 @@ import { Event } from "./Sheet/Event";
 interface SheetProps {
   workbook: Workbook;
   name: string;
-  dispatcher?: typeof EventDispatcher;
+  dispatcher?: EventDispatcher;
 }
 
-function Sheet({ workbook, name, dispatcher = new EventDispatcher() }: SheetProps) {
+const Sheet = ({
+  workbook,
+  name,
+  dispatcher = new EventDispatcher(),
+}: SheetProps) => {
   const [el, setEl] = useState<HTMLElement | null>(null);
   const [id, setId] = useState<string>(generateId());
   const [cells, setCells] = useState<{ [address: string]: Cell }>({});
@@ -40,7 +44,9 @@ function Sheet({ workbook, name, dispatcher = new EventDispatcher() }: SheetProp
    *
    * @param options calculation option
    */
-  function calculate({ withoutEvent = false }: { withoutEvent?: boolean } = {}) {
+  function calculate({
+    withoutEvent = false,
+  }: { withoutEvent?: boolean } = {}) {
     if (withoutEvent) {
       pauseEvent();
     }
@@ -59,13 +65,17 @@ function Sheet({ workbook, name, dispatcher = new EventDispatcher() }: SheetProp
     }
 
     return cells[address];
-  }
+  };
 
   /**
    * Evaluate the given formula.
    */
-  function eval(formula: string) {
-    workbook.parser.yy.activeSheet = this;
+  // function evalFormula(formula: string) {
+  //   workbook.parser.yy.activeSheet = this;
+  //   return workbook.parser.parse(formula);
+  // }
+  function evalFormula(formula: string, workbook: Workbook) {
+    workbook.parser.yy.activeSheet = workbook;
     return workbook.parser.parse(formula);
   }
 
@@ -93,11 +103,11 @@ function Sheet({ workbook, name, dispatcher = new EventDispatcher() }: SheetProp
     setElement,
     calculate,
     getCell,
-    eval,
+    evalFormula,
     pauseEvent,
     resumeEvent,
     buildDependencyGraph,
   };
-}
+};
 
 export default Sheet;
