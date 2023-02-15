@@ -3,88 +3,116 @@ import { Event } from './Cell/Event';
 import { DataType } from './Cell/DataType';
 import { ErrorType } from './Cell/ErrorType';
 import { FormatterInterface } from './Cell/Formatter';
+import { SheetProps } from './Sheet';
 
-interface CellProps {
-  sheet: any; // replace any with a more specific type if possible
+export type CellProps = {
   address: string;
-}
+  sheet: SheetProps;
+  type?: string;
+};
 
-const Cell = (props: CellProps): JSX.Element => {
-  const [value, setValue] = useState<any>(null);
-  const [formula, setFormula] = useState<string | null>(null);
-  const [computed, setComputed] = useState<any>(null);
-  const [precedents, setPrecedents] = useState<any>({});
-  const [dependents, setDependents] = useState<any>({});
+const Cell = ({ address, sheet, type = DataType.TEXT }: CellProps) => {
+  const [value, setValue] = useState<any>();
+  const [formula, setFormula] = useState<string>();
+  const [computed, setComputed] = useState<any>();
+  const [precedents, setPrecedents] = useState<Record<string, CellProps>>({});
+  const [dependents, setDependents] = useState<Record<string, CellProps>>({});
   const [affected, setAffected] = useState<boolean>(false);
   const [calculated, setCalculated] = useState<boolean>(false);
   const [hasDynamicPrecedents, setHasDynamicPrecedents] = useState<boolean>(false);
-  const [format, setFormat] = useState<string | null>(null);
-  const [formatter, setFormatter] = useState<FormatterInterface | null>(null);
-
-  const init = () => { };
-
-  const mount = (el: HTMLElement) => { };
-
+  const [format, setFormat] = useState<string>();
+  const [formatter, setFormatter] = useState<FormatterInterface>();
+  const [el, setEl] = useState<HTMLElement>();
+// change to zustand @jom @son
   const isError = () => {
     return Object.values(ErrorType).includes(value as ErrorType);
   };
-
-  const isEmpty = () => { };
-
-  const isCalculated = () => {
-    return calculated;
+// change to zustand @jom @son
+  const isEmpty = () => {
+    // Implement this function
   };
-
-  const isAffected = () => {
-    return affected;
-  };
-
+// change to zustand @jom @son
   const isNumeric = () => {
     return !isNaN(value - parseFloat(value));
   };
-
-  const setAddress = (address: string) => {
+// change to zustand @jom @son
+  const getAddress = () => {
+    return address;
+  };
+// change to zustand @jom @son
+  const setAddress = (newAddress: string) => {
     const rule = /^[A-Z]+[0-9]+$/;
 
-    if (address.match(rule)) {
-      setPrecedents({});
-      setDependents({});
-      setAffected(false);
-      setCalculated(false);
-      setHasDynamicPrecedents(false);
-
-      return address;
+    if (newAddress.match(rule)) {
+      // Update address state
+    } else {
+      throw new Error("Cell address should follow spreadsheet like address rule");
     }
-
-    // throw new Error('Cell address should follow spreadsheet like address rule');
   };
-
-  const setCellFormula = (formula: string) => {
+// change to zustand @jom @son
+  const setCellValue = (newValue: any) => {
+    setValue(newValue);
+    setFormula(undefined);
+    sheet.dispatcher.dispatch(Event.VALUE_CHANGED, { cell: address, value: newValue });
+  };
+// change to zustand @jom @son
+  const setCellFormula = (newFormula: string) => {
     const oldFormula = formula;
-    setFormula(formula);
-    props.sheet.dispatcher.dispatch(Event.FORMULA_CHANGED, {
-      cell: props.address,
+    setFormula(newFormula);
+
+    sheet.dispatcher.dispatch(Event.FORMULA_CHANGED, {
+      cell: address,
       oldFormula: oldFormula,
-      newFormula: formula,
+      newFormula: newFormula,
     });
   };
-
-  const setCellValue = (value: any) => {
-    setValue(value);
-    setFormula(null);
-    props.sheet.dispatcher.dispatch(Event.VALUE_CHANGED, { cell: props.address, value: value });
+// change to zustand @jom @son
+  const isCalculated = () => {
+    return calculated;
+  };
+// change to zustand @jom @son
+  const isAffected = () => {
+    return affected;
+  };
+// change to zustand @jom @son
+  const init = () => {
+    // Implement this function
+  };
+// change to zustand @jom @son
+  const mount = (el: HTMLElement) => {
+    setEl(el);
+  };
+// change to zustand @jom @son
+  const cell = {
+    get value() {
+      return formula ? computed : value;
+    },
+    set value(newValue: any) {
+      setCellValue(newValue);
+    },
+    get formula() {
+      return formula;
+    },
+    set formula(newFormula: string) {
+      setCellFormula(newFormula);
+    },
+    get address() {
+      return getAddress();
+    },
+    set address(newAddress: string) {
+      setAddress(newAddress);
+    },
+    init,
+    mount,
+    isError,
+    isEmpty,
+    isCalculated,
+    isAffected,
+    isNumeric,
   };
 
-  useEffect(() => {
-    setAddress('Test Address');
-  }, [])
+  return null; // Return the JSX for the cell component
+};
 
-
-  return (
-    <div className="cell">
-      <p>Cell</p>
-    </div>
-  )
-}
 
 export default Cell;

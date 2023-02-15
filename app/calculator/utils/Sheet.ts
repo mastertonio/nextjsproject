@@ -1,23 +1,35 @@
 import React, { useState } from "react";
 import Workbook from "./Workbook";
-import Cell from "./Cell";
-import EventDispatcher from "./Utility/EventDispatcher";
+import Cell, { CellProps } from "./Cell";
+import eventDispatcher, {
+  EventDispatcherType,
+} from "./Utility/EventDispatcher";
 import { Event } from "./Sheet/Event";
 
-interface SheetProps {
-  workbook: Workbook;
+interface WorkbookType {
+  sheets: Record<
+    string,
+    {
+      element?: HTMLElement;
+      cells: Record<string, {}>;
+    }
+  >;
+}
+
+export interface SheetProps {
+  workbook: WorkbookType;
   name: string;
-  // dispatcher?: EventDispatcher;
+  dispatcher?: EventDispatcherType;
 }
 
 const Sheet = ({
   workbook,
   name,
-  // dispatcher = new EventDispatcher(),
+  dispatcher = eventDispatcher(),
 }: SheetProps) => {
   const [el, setEl] = useState<HTMLElement | null>(null);
   const [id, setId] = useState<string>(generateId());
-  const [cells, setCells] = useState<{ [address: string]: Cell }>({});
+  const [cells, setCells] = useState<{ [address: string]: CellProps }>({});
   const [eventPaused, setEventPaused] = useState<boolean>(false);
   const [needCalculate, setNeedCalculate] = useState<string[]>([]);
   const [needRender, setNeedRender] = useState<string[]>([]);
@@ -32,6 +44,7 @@ const Sheet = ({
   /**
    * Set element where sheet should be mounted (optional)
    */
+  // change to zustand @jom @son
   function setElement(element: HTMLElement) {
     element.setAttribute("data-calx-id", id);
     setEl(element);
@@ -57,6 +70,7 @@ const Sheet = ({
   /**
    * Get specified cell object
    */
+  // change to zustand @jom @son
   const getCell = (address: string) => {
     if (!cells[address]) {
       // const cell = new Cell(address, this);
@@ -74,15 +88,16 @@ const Sheet = ({
   //   workbook.parser.yy.activeSheet = this;
   //   return workbook.parser.parse(formula);
   // }
+  // change to zustand @jom @son
   function evalFormula(formula: string, workbook: Workbook) {
     workbook.parser.yy.activeSheet = workbook;
     return workbook.parser.parse(formula);
   }
-
+// change to zustand @jom @son
   function pauseEvent() {
     setEventPaused(true);
   }
-
+// change to zustand @jom @son
   function resumeEvent() {
     setEventPaused(false);
   }
@@ -90,6 +105,7 @@ const Sheet = ({
   /**
    * Build dependency graph for all registered cells
    */
+  // change to zustand @jom @son
   function buildDependencyGraph() {}
 
   return {
