@@ -1,14 +1,14 @@
-type ListenerType = (eventData: any) => void;
+export type ListenerType = (eventData: any) => void;
 
-type ListenersType = {
+export type ListenersType = {
   [key: string]: ListenerType[];
 };
 
-type EventDataType = {
+export type EventDataType = {
   [key: string]: any;
 };
 
-type EventDispatcherType = {
+export type EventDispatcherType = {
   listen: (type: string, listener: ListenerType) => void;
   hasListener: (type: string, listener: ListenerType) => boolean;
   removeListener: (type: string, listener: ListenerType) => void;
