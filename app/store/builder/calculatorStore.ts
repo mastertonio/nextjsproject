@@ -132,13 +132,13 @@ export const useCalculatorStore = create<Cell>((set) => ({
       value: 0,
     },
     {
-        address: "A7",
-        forcedValue: "",
-        format: "",
-        formula: "A5 * 10",
-        formTags: "input",
-        label: "Total 4",
-        value: 0,
+      address: "A7",
+      forcedValue: "",
+      format: "",
+      formula: "A5 * 10",
+      formTags: "input",
+      label: "Total 4",
+      value: 0,
     },
   ],
   update: (cells: CellProps) =>
@@ -183,37 +183,43 @@ export const useCalculatorStore = create<Cell>((set) => ({
 }));
 
 export interface Sheet {
-    affectedCells: string[];
-    cells: Cell[];
-    elements: Cell[];
-    elementsToHide?: string[];
-    elementsToShow?: string[];
-    comparator?: {
-      equal: (a: number, b: number) => number;
-      greater: (a: number, b: number) => number;
-      greaterEqual: (a: number, b: number) => number;
-      less: (a: number, b: number) => number;
-      lessEqual: (a: number, b: number) => number;
-      notEqual: (a: number, b: number) => number;
-    };
-    lang?: string;
-    visibilities?: [];
-  }
-  
-  interface ISheetProps {
-    sheet: Sheet | null;
-    //   addSection: () => void;
-    //   reorder: (state: iSectionData[]) => void;
-    //   remove: (id: number) => void;
-  }
+  affectedCells: string[];
+  // cells: Cell[];
+  // elements: Cell[];
+  // elementsToHide?: string[];
+  // elementsToShow?: string[];
+  comparator: {
+    equal: (a: number, b: number) => boolean;
+    greater: (a: number, b: number) => boolean;
+    greaterEqual: (a: number, b: number) => boolean;
+    less: (a: number, b: number) => boolean;
+    lessEqual: (a: number, b: number) => boolean;
+    notEqual: (a: number, b: number) => boolean;
+  };
+  // lang?: string;
+  // visibilities?: [];
+}
 
+// interface ISheetProps {
+//   sheet: Sheet;
+//   //   addSection: () => void;
+//   //   reorder: (state: iSectionData[]) => void;
+//   //   remove: (id: number) => void;
+// }
 
-// export const useCalculatorSheetStore = create<Sheet>((set) => ({
-//     affectedCells: ,
-//     cells: ,
-//     elements: ,
-    
-//   }));
+export const useCalculatorSheetStore = create<Sheet>((set) => ({
+  affectedCells: [],
+  //     cells: ,
+  //     elements: ,
+  comparator: {
+    equal: (a: number, b: number) => a == b,
+    greater: (a: number, b: number) => a > b,
+    greaterEqual: (a: number, b: number) => a < b,
+    less: (a: number, b: number) => a <= b,
+    lessEqual: (a: number, b: number) => a >= b,
+    notEqual: (a: number, b: number) => a != b,
+  },
+}));
 
 const unsub1 = useCalculatorStore.subscribe(console.log);
 unsub1();
