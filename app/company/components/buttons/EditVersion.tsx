@@ -77,7 +77,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
         {
           name: values.name,
           notes: values.notes,
-          status: values.status=="active" ? 1 : 0,
+          status: values.status == "active" ? 1 : 0,
           version: parseInt(values.version),
         }
       );
@@ -117,12 +117,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] bg-[#073e52] text-white"
           align="center"
         >
           {name}
@@ -139,27 +134,27 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
               height: 450,
             })}
           >
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Name : </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 // defaultValue={myCompany.licenses}
                 placeholder="Enter New Name"
                 {...form.getInputProps("name")}
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Notes : </Text>
               <Textarea
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 // defaultValue={myCompany.licenses}
                 placeholder="Template Notes"
                 {...form.getInputProps("notes")}
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Status : </Text>
               <Select
                 data={[
@@ -168,14 +163,14 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
                 ]}
                 placeholder="Set Status"
                 {...form.getInputProps("status")}
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Versions : </Text>
               <NumberInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 // defaultValue={myCompany.licenses}
                 min={0}
                 max={10}
@@ -184,13 +179,13 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
               />
             </Grid>
           </Stack>
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Edit Template
@@ -199,11 +194,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-[gray]"
             >
               Close
             </Button>

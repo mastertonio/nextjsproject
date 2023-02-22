@@ -269,13 +269,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
             backgroundColor: "white",
           },
         }}
-        style={{
-          marginLeft: 50,
-          marginRight: 50,
-          marginTop: "auto",
-          marginBottom: "auto",
-          maxWidth: 1780,
-        }}
+        className="ml-[20px] mr-[20px] sm:ml-[50px] sm:mr-[50px] mt-auto mb-auto max-w-[1780px]"
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
@@ -286,19 +280,14 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
         header={<RoiNavbar />}
       >
         <Grid
-          style={{
-            marginTop: 20,
-            marginBottom: 20,
-            marginLeft: 10,
-            marginRight: 10,
-          }}
+          className="mt-[40px] ml-[10px] mr-[10px] mb-[30px]"
         >
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
           <AddCompanyButton refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
-            style={{ marginLeft: "auto" }}
+            className="ml-auto w-full sm:w-[unset] mt-[20px] sm:mt-0"
             onChange={(event: {
               target: { value: React.SetStateAction<string> };
             }) => {
@@ -307,18 +296,17 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           />
         </Grid>
         <ScrollArea
-          style={{ height: 650 }}
+          className="h-[650px]"
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
-            className={classes.table}
+            className={`${classes.table} w-[1200px] sm:w-[unset]`}
             highlightOnHover
             verticalSpacing="xs"
             fontSize="xs"
           >
             <thead
-              className={cx(classes.header, { [classes.scrolled]: scrolled })}
-              style={{ zIndex: 50 }}
+              className={`${cx(classes.header, { [classes.scrolled]: scrolled })} z-[50]`}
             >
               <tr>
                 <th className="w-[85px] !border-white !border-0"></th>
@@ -326,7 +314,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                   sorted={sortBy === "name"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("name")}
-                  style="w-[310px] !border-white !border-0"
+                  style="w-[510px] sm:w-[310px] !border-white !border-0 whitespace-nowrap sm:whitespace-normal"
                 >
                   Company Name
                 </Th>
@@ -334,7 +322,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                   sorted={sortBy === "alias"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("alias")}
-                  style="w-[225px] !border-white !border-0"
+                  style="w-[400px] sm:w-[225px] !border-white !border-0"
                 >
                   Alias
                 </Th>
@@ -342,7 +330,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                   sorted={sortBy === "licenses"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("licenses")}
-                  style="w-[160px] !border-white !border-0"
+                  style="w-[400px] sm:w-[160px] !border-white !border-0"
                 >
                   Licenses
                 </Th>
@@ -350,7 +338,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
                   sorted={sortBy === "templates"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("templates")}
-                  style="w-[170px] !border-white !border-0"
+                  style="w-[400px] sm:w-[170px] !border-white !border-0"
                 >
                   Templates
                 </Th>
@@ -371,20 +359,17 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
               <tbody>
                 {companies?.map((element: ICompanyElement) => (
                   <tr key={element.id}>
-                    <td style={{ width: 10 }}>{element.button}</td>
-                    <td
-                    >
+                    <td className="w-[10px]">{element.button}</td>
+                    <td>
                       {element.roiname}
                     </td>
-                    <td style={{ width: 240 }}>{element.alias}</td>
-                    <td style={{ width: 155 }}>{element.licenses}</td>
-                    <td style={{ width: 145, paddingLeft: 20 }}>
+                    <td className="w-[240px]">{element.alias}</td>
+                    <td className="w-[155px]">{element.licenses}</td>
+                    <td className="w-[145px] pl-[20px]" >
                       {element.templates}
                     </td>
                     <td
-                      style={{
-                        width: 190,
-                      }}
+                      className="w-[190px]"
                     >
                       {element.active}
                     </td>
@@ -395,7 +380,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
             )}
           </Table>
         </ScrollArea>
-        <div>
+        <div className="mb-[40px]">
           <Paginate
             refetch={refetch}
             page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}

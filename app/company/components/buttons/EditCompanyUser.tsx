@@ -98,7 +98,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         disallowClose: true,
         color: "teal",
       });
-      
+
       const response = await axios.patch(
         `/v1/company/${userZ?.company_id}/user/${id}`,
         {
@@ -123,7 +123,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           autoClose: 2500,
         });
       }
-      
+
     } catch (error) {
       updateNotification({
         id: "edit-comp",
@@ -187,12 +187,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] !bg-[#073e52] text-white"
           align="center"
         >
           {name}
@@ -206,22 +201,17 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
-              height: 450,
+              height: 350,
             })}
           >
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
               <div>
                 <Text>Email: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   // defaultValue={myCompany.name}
                   placeholder="Enter Email Address"
                   {...form.getInputProps("email")}
@@ -230,44 +220,44 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               <div style={{ marginLeft: "auto" }}>
                 <Text>Password: </Text>
                 <PasswordInput
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   defaultValue={password}
                   placeholder="Enter User Password"
                   {...form.getInputProps("password")}
                 />
               </div>
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30 }}>
+            <Grid className="ml-[30px] mr-[30px]">
               <div>
                 <Text>First Name: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   // defaultValue={myCompany.licenses}
                   placeholder="User First Name"
                   {...form.getInputProps("first_name")}
                 />
               </div>
-              <div style={{ marginLeft: "auto" }}>
+              <div className="ml-auto">
                 <Text>Last Name: </Text>
                 <TextInput
                   required
-                  style={{ width: 350, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   // defaultValue={myCompany.licenses}
                   placeholder="User Last Name"
                   {...form.getInputProps("last_name")}
                 />
               </div>
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <div>
                 <Text>Currency : </Text>
                 <Select
-                data={curData}
-                placeholder="Choose Currency"
-                {...form.getInputProps("currency")}
-                style={{ width: 550, marginLeft: "auto" }}
-              />
+                  data={curData}
+                  placeholder="Choose Currency"
+                  {...form.getInputProps("currency")}
+                  className="w-[350px] ml-auto"
+                />
                 {/* <TextInput
                   required
                   style={{ width: 350, marginLeft: "auto" }}
@@ -276,13 +266,11 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                   {...form.getInputProps("currency")}
                 /> */}
               </div>
-            </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-              <div>
+              <div className="ml-auto">
                 <Text>Update Manager: </Text>
                 <Select
                   placeholder="New Title Name"
-                  style={{ width: 550, marginLeft: "auto" }}
+                  className="w-[350px] ml-auto"
                   defaultValue={myCompany.manager_email}
                   data={transferlist?.length > 0 ? transferlist : []}
                   {...form.getInputProps("manager")}
@@ -290,13 +278,13 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               </div>
             </Grid>
           </Stack>
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Edit User
@@ -305,11 +293,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-gray-500"
             >
               Close
             </Button>

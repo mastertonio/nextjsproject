@@ -135,7 +135,7 @@ const Sidebar: React.FC = () => {
             variant="subtle"
             color="blue"
             fullWidth
-            className="mt-[5px] ml-[8x] text-[lightgray]"
+            className="mt-[5px] ml-[10px] text-[lightgray]"
             leftIcon={<MdLineWeight />}
             onClick={() => router.push(`/users`)}
           >

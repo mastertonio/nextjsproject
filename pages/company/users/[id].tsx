@@ -334,14 +334,10 @@ const Dashboard: React.FC = () => {
               ) : (
                 <tbody>
                   {companies?.map((element: ICompanyUsersElements) => (
-                    <tr key={element.id} style={{ height: 20 }}>
-                      <td style={{ width: 10 }}>{element.username}</td>
+                    <tr key={element.id} className="h-[20px]">
+                      <td className="w-[10px]">{element.username}</td>
                       <td
-                        style={{
-                          cursor: "pointer",
-                          width: 140,
-                          paddingLeft: 30,
-                        }}
+                        className="cursor-pointer pl-[30px] w-[140px]"
                       >
                         {element.created_rois}
                       </td>
@@ -349,19 +345,17 @@ const Dashboard: React.FC = () => {
                       <td>
                         {!!element.manager_email ? element.manager_email : "Unassigned"}
                       </td>
-                      <td style={{ width: 145, paddingLeft: 30 }}>
+                      <td className="pl-[30px] w-[145px]">
                         {element.currency}
                       </td>
                       <td
-                        style={{
-                          width: 110,
-                        }}
+                        className="w-[110px]"
                       >
                         <Badge color="green" variant="outline">
                           {element.status}
                         </Badge>
                       </td>
-                      <td>{element.actions}</td>
+                      <td className="flex">{element.actions}</td>
                     </tr>
                   ))}
                 </tbody>

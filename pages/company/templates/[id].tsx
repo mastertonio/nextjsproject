@@ -326,7 +326,7 @@ const TemplateDashboard: React.FC = () => {
                             {element.status}
                           </Badge>
                         </td>
-                        <td>{element.actions}</td>
+                        <td className="flex">{element.actions}</td>
                       </tr>
                     )
                   )}
