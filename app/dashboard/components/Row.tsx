@@ -205,6 +205,8 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     source: item.source,
   }));
 
+  console.log('roi', myroi)
+
   return (
     <div>
       <Grid className="m-0 sm:m-[20px]">

@@ -31,12 +31,20 @@ a {
 }
 
 .section-wrapper .mantine-Modal-header {
-  background: #073e52;
+  background: rgb(37 99 235);
   color: #fff;
   font-size: 24px;
   padding: 20px 40px 20px 40px;
   margin-right: 0;
   margin-bottom: 0;
+}
+
+.section-wrapper svg {
+  color: #fff !important;
+}
+
+.section-wrapper .mantine-Modal-close {
+  background-color: transparent !important;
 }
 
 .button-section .mantine-Button-root {
@@ -111,6 +119,11 @@ th {
   cursor: col-resize;
 }
 
+.remove-radius .mantine-NumberInput-input {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;
@@ -121,9 +134,9 @@ th {
   }
 
   .section-wrapper .mantine-Modal-header {
-    background: #073e52;
+    background: rgb(37 99 235);
     color: #fff;
-    font-size: 24px;
+    font-size: 20px;
     padding: 20px 20px 20px 20px;
     margin-right: 0;
     margin-bottom: 0;
@@ -132,5 +145,15 @@ th {
   .mantine-AppShell-main {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .login-auth span {
+    width: 100% !important;
+  }
+
+  .button-auth span {
+    width: unset !important;
   }
 }

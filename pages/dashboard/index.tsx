@@ -59,6 +59,8 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
 
     if (Date.now() > new Date(expireCookies).getTime()) {
       Cookies.remove('x-access-token')
+      Cookies.remove('session.sig')
+      Cookies.remove('session')
       router.push('/');
     }
   }, [router, expireCookies, tokenSet]);

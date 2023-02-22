@@ -20,7 +20,7 @@ export interface IStarProps {
   refetch: () => void;
   opened?: boolean;
   setOpened?: (open: boolean) => void;
-  size?: number;
+  size?: any;
   disabled?: boolean
 }
 
@@ -38,7 +38,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
   const [values, setValues] = useState<any>(`${cur_status}`);
   const router = useRouter();
   const p = router.query;
-  
+
   // useEffect(()=>{
   //   if(cur_status==null){
   //     setValues('0')
@@ -133,14 +133,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
         <Text
           weight={700}
           color="gray"
-          style={{
-            paddingTop: 30,
-            paddingLeft: 30,
-            paddingRight: 30,
-            fontSize: 30,
-            backgroundColor: "#051a3d",
-            color: "white",
-          }}
+          className="pt-[30px] pl-[30px] pr-[30px] text-[30px] bg-[#051a3d] text-white"
           align="center"
         >
           Congrats on winning this opportunity!
@@ -148,20 +141,12 @@ const SelectDropdown: React.FC<IStarProps> = ({
         <Text
           weight={100}
           color="gray"
-          style={{
-            paddingLeft: 30,
-            paddingRight: 30,
-            paddingBottom: 30,
-            marginBottom: 80,
-            fontSize: 30,
-            backgroundColor: "#051a3d",
-            color: "white",
-          }}
+          className="mb-0 pb-[30px] pl-[30px] pr-[30px] text-[30px] bg-[#051a3d] text-white"
           align="center"
         >
           Please rate how useful this tool was in the process
         </Text>
-        <Grid justify="center" m={50}>
+        <Grid justify="center" m={30}>
           <StarRating
             importance={importance}
             id={id}
@@ -173,12 +158,12 @@ const SelectDropdown: React.FC<IStarProps> = ({
             setStar={setStar}
             opened={opened}
             setOpened={setOpen}
-            size={50}
+            size="lg"
           />
         </Grid>
       </Modal>
       <Select
-        style={{ width: 130 }}
+        className="w-[130px]"
         value={values}
         data={[
           { value: "0", label: "Active" },
