@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import styles from "@styles/tiptap.module.scss";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { IconBold, IconItalic, IconStrikethrough, IconCode} from '@tabler/icons'
+import { IconBold, IconItalic, IconStrikethrough, IconCode } from '@tabler/icons'
 
 const MenuBar = ({
   editor,
@@ -49,6 +49,7 @@ const MenuBar = ({
         value={editor.getAttributes('textStyle').color ? editor.getAttributes('textStyle').color : ''}
       />
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("bold") ? "cyan" : "dark"}
@@ -62,6 +63,7 @@ const MenuBar = ({
         bold
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("italic") ? "cyan" : "dark"}
@@ -75,6 +77,7 @@ const MenuBar = ({
         italic
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("strike") ? "cyan" : "dark"}
@@ -88,6 +91,7 @@ const MenuBar = ({
         strike
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("code") ? "cyan" : "dark"}
@@ -101,6 +105,7 @@ const MenuBar = ({
         code
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -112,6 +117,7 @@ const MenuBar = ({
         clear marks
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -123,6 +129,7 @@ const MenuBar = ({
         clear nodes
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("paragraph") ? "cyan" : "dark"}
@@ -135,6 +142,7 @@ const MenuBar = ({
         paragraph
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 1 }) ? "cyan" : "dark"}
@@ -147,6 +155,7 @@ const MenuBar = ({
         h1
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 2 }) ? "cyan" : "dark"}
@@ -159,6 +168,7 @@ const MenuBar = ({
         h2
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 3 }) ? "cyan" : "dark"}
@@ -171,6 +181,7 @@ const MenuBar = ({
         h3
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 4 }) ? "cyan" : "dark"}
@@ -183,6 +194,7 @@ const MenuBar = ({
         h4
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("bulletList") ? "cyan" : "dark"}
@@ -195,6 +207,7 @@ const MenuBar = ({
         bullet list
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("orderedList") ? "cyan" : "dark"}
@@ -207,6 +220,7 @@ const MenuBar = ({
         ordered list
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("codeBlock") ? "cyan" : "dark"}
@@ -219,6 +233,7 @@ const MenuBar = ({
         code block
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("blockquote") ? "cyan" : "dark"}
@@ -231,6 +246,7 @@ const MenuBar = ({
         blockquote
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -242,6 +258,7 @@ const MenuBar = ({
         divider
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -254,6 +271,7 @@ const MenuBar = ({
       </Button>
 
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -263,6 +281,7 @@ const MenuBar = ({
         add image from URL
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -272,6 +291,7 @@ const MenuBar = ({
         add image from URL
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -283,6 +303,7 @@ const MenuBar = ({
         Add youtube video
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -295,6 +316,7 @@ const MenuBar = ({
         undo
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -307,6 +329,7 @@ const MenuBar = ({
         redo
       </Button>
       <Button
+        type="button"
         compact
         variant="filled"
         color="teal"

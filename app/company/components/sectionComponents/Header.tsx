@@ -38,7 +38,7 @@ const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
       {changeTitle ? (
         <div style={{ width: 900 }}>
           <React.Suspense fallback={"...Loading Rte"}>
-            <Tiptap titleValue={titleValue} setTitle={setTitle} setTitleChange={setTitleChange}/>
+            <Tiptap titleValue={titleValue} setTitle={setTitle} setTitleChange={setTitleChange} />
             {/* <Rte
               value={titleValue}
               onChange={setTitle}
@@ -50,6 +50,7 @@ const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
               ]}
             />
             <Button
+              type="button"
               style={{ marginLeft: "auto", display: "block" }}
               variant="subtle"
               color="teal"
@@ -71,8 +72,8 @@ const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
           /> */}
         </div>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'center'}} onClick={() => setTitleChange(true)}>
-            <div style={{ color: color}} dangerouslySetInnerHTML={{ __html: titleValue }} className={styles.ProseMirror}/>
+        <div style={{ display: 'flex', alignItems: 'center' }} onClick={() => setTitleChange(true)}>
+          <div style={{ color: color }} dangerouslySetInnerHTML={{ __html: titleValue }} className={styles.ProseMirror} />
           {/* <HoverCard
             shadow="md"
             withArrow

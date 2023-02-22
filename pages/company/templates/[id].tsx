@@ -161,7 +161,7 @@ const TemplateDashboard: React.FC = () => {
           name={item.name}
           key={shortUUID.generate()}
         />
-        <Button radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
+        <Button type="button" radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
           Delete
         </Button>
       </div>

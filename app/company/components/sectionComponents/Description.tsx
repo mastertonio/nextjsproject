@@ -37,7 +37,7 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
     <Container ml={40} style={{ margin: 40, padding: 0 }}>
       {changeDesc ? (
         <div style={{ width: 1000 }}>
-          <TiptapDescription descValue={descValue} setDesc={setDesc} setDescChange={setDescChange}/>
+          <TiptapDescription descValue={descValue} setDesc={setDesc} setDescChange={setDescChange} />
           {/* <React.Suspense fallback={"...Loading Rte"}>
             <Rte
               value={descValue}
@@ -46,6 +46,7 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
               id="rte"
             />
             <Button
+              type="button"
               style={{ marginLeft: "auto", display: "block" }}
               variant="subtle"
               color="teal"
@@ -67,7 +68,7 @@ const SectionDescription: React.FC<iSectionDescriptionProps> = ({
           /> */}
         </div>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'center'}}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <TypographyStylesProvider onClick={() => setDescChange(true)} mb={20}>
             <div
               style={{ width: 1000, color: color }}

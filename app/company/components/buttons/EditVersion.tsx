@@ -77,7 +77,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
         {
           name: values.name,
           notes: values.notes,
-          status: values.status=="active" ? 1 : 0,
+          status: values.status == "active" ? 1 : 0,
           version: parseInt(values.version),
         }
       );
@@ -196,6 +196,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
               Edit Template
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -212,6 +213,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineEdit />}
         radius="sm"
         size="xs"

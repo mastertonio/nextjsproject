@@ -59,6 +59,7 @@ const ActionList: React.FC = () => {
     <Menu trigger="hover" openDelay={100} closeDelay={400}>
       <Menu.Target>
         <Button
+          type="button"
           leftIcon={<ImProfile />}
           rightIcon={<AiFillCaretDown />}
           variant="subtle"

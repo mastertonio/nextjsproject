@@ -26,7 +26,7 @@ const ViewCount: React.FC<IViewCountProps> = ({ viewcount }) => {
 
   return (
     <>
-      <Button className="flex items-center" onClick={() => setOpen((o) => !o)}>
+      <Button type="button" className="flex items-center" onClick={() => setOpen((o) => !o)}>
         Viewed
       </Button>
 

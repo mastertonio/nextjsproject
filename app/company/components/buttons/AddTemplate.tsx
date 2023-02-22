@@ -177,6 +177,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
                 Save Template
               </Button>
               <Button
+                type="button"
                 radius="sm"
                 size="sm"
                 onClick={() => setOpened(false)}
@@ -192,6 +193,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiFillPlusCircle />}
         radius="sm"
         size="sm"

@@ -88,6 +88,7 @@ const Sidebar: React.FC = () => {
       </Text>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           fullWidth
           className="mt-[5px] text-[lightgray]"
@@ -100,6 +101,7 @@ const Sidebar: React.FC = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           color="blue"
           fullWidth
@@ -119,6 +121,7 @@ const Sidebar: React.FC = () => {
         >
           {user?.role == "admin" ? (
             <Button
+              type="button"
               variant="subtle"
               color="blue"
               fullWidth
@@ -132,6 +135,7 @@ const Sidebar: React.FC = () => {
             ""
           )}
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
@@ -145,6 +149,7 @@ const Sidebar: React.FC = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           color="blue"
           fullWidth
@@ -160,6 +165,7 @@ const Sidebar: React.FC = () => {
         </Button>
         <Collapse in={openTemplate}>
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
@@ -170,6 +176,7 @@ const Sidebar: React.FC = () => {
             Create Template
           </Button>
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
@@ -183,6 +190,7 @@ const Sidebar: React.FC = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           color="blue"
           fullWidth

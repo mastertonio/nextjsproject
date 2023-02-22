@@ -139,7 +139,7 @@ const InputVariable: React.FC<iGrayProps> = ({
               <Grid className="flex items-center">
                 <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}></Text>
                 {elem.toggle ? (
-                  <Button className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[40px]" color={value} onClick={() => toggle()} radius="md" size="md">
+                  <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[40px]" color={value} onClick={() => toggle()} radius="md" size="md">
                     {value == "red" ? "Exclude" : "Include"}
                   </Button>)
                   : ""
