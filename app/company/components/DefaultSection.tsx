@@ -103,7 +103,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
             width={200}
           >
             <Menu.Target>
-              <Button mr={"auto"} compact variant="subtle" color="#FFFFFF">
+              <Button type="button" mr={"auto"} compact variant="subtle" color="#FFFFFF">
                 <IconPlus size={20} />
               </Button>
             </Menu.Target>
@@ -153,7 +153,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
       {calc ? (
         <>
           <Divider my="md" />
-          <div style={{ marginTop: 50}}>
+          <div style={{ marginTop: 50 }}>
             <Modal
               opened={opened}
               onClose={() => setOpened(false)}
@@ -215,6 +215,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
             </Modal>
 
             <Button
+              type="button"
               mr={"auto"}
               leftIcon={<IconPlus size={20} />}
               compact
@@ -227,32 +228,32 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
             <div style={{ padding: 15, paddingRight: 30, width: "50%", borderWidth: 1, borderStyle: 'double', borderRadius: 2 }}>
               {variables
                 ? variables.map((vars) => (
-                    <ul key={vars.id}>
-                      {" "}
-                      {vars.type == "INPUT" ? (
-                        <Grid my={10}>
-                          <Text>{vars.var_name}</Text>
-                          <NumberInput
-                            hideControls
-                            defaultValue={vars.value}
-                            ml={"auto"}
-                          />
-                        </Grid>
-                      ) : vars.type == "FIXED" ? (
-                        <Grid my={10}>
-                          <Text>{vars.var_name}</Text>
-                          <Text ml={"auto"}>{vars.value}</Text>
-                        </Grid>
-                      ) : vars.type == "OUTPUT" ? (
-                        <Grid my={10}>
-                          <Text>{vars.var_name}</Text>
-                          <Text ml={"auto"}>{vars.value}</Text>
-                        </Grid>
-                      ) : (
-                        ""
-                      )}{" "}
-                    </ul>
-                  ))
+                  <ul key={vars.id}>
+                    {" "}
+                    {vars.type == "INPUT" ? (
+                      <Grid my={10}>
+                        <Text>{vars.var_name}</Text>
+                        <NumberInput
+                          hideControls
+                          defaultValue={vars.value}
+                          ml={"auto"}
+                        />
+                      </Grid>
+                    ) : vars.type == "FIXED" ? (
+                      <Grid my={10}>
+                        <Text>{vars.var_name}</Text>
+                        <Text ml={"auto"}>{vars.value}</Text>
+                      </Grid>
+                    ) : vars.type == "OUTPUT" ? (
+                      <Grid my={10}>
+                        <Text>{vars.var_name}</Text>
+                        <Text ml={"auto"}>{vars.value}</Text>
+                      </Grid>
+                    ) : (
+                      ""
+                    )}{" "}
+                  </ul>
+                ))
                 : ""}
             </div>
           </div>
@@ -269,6 +270,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
         }}
       >
         <Button
+          type="button"
           mt={2}
           style={{ position: "absolute", marginTop: 40 }}
           compact
@@ -282,6 +284,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
         <Transition transition="slide-up" mounted={scroll.y > 0}>
           {(transitionStyles) => (
             <Button
+              type="button"
               leftIcon={<IconArrowUp size={16} />}
               style={transitionStyles}
               onClick={() => scrollTo({ y: 0 })}

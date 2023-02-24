@@ -169,6 +169,7 @@ const Home: React.FC = () => {
             <div className={classes.forgot_password}>
               <Text className="text-[14px]">© The ROI Shop</Text>
               <Button
+                type="button"
                 variant="subtle"
                 radius="lg"
                 onClick={() => router.push("/forgot_password")}

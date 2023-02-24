@@ -95,6 +95,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                         </div>
                         <div className="ml-auto button-section">
                             <Button
+                                type="button"
                                 radius="sm"
                                 color="red"
                                 size="sm"

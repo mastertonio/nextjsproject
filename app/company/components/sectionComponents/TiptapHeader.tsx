@@ -33,6 +33,7 @@ const MenuBar = ({
         value=""
       />
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("bold") ? "cyan" : "dark"}
@@ -46,6 +47,7 @@ const MenuBar = ({
         bold
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("italic") ? "cyan" : "dark"}
@@ -59,6 +61,7 @@ const MenuBar = ({
         italic
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 1 }) ? "cyan" : "dark"}
@@ -71,6 +74,7 @@ const MenuBar = ({
         h1
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 2 }) ? "cyan" : "dark"}
@@ -83,6 +87,7 @@ const MenuBar = ({
         h2
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 3 }) ? "cyan" : "dark"}
@@ -95,6 +100,7 @@ const MenuBar = ({
         h3
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color={editor.isActive("heading", { level: 4 }) ? "cyan" : "dark"}
@@ -107,6 +113,7 @@ const MenuBar = ({
         h4
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -119,6 +126,7 @@ const MenuBar = ({
         undo
       </Button>
       <Button
+        type="button"
         compact
         variant="outline"
         color="dark"
@@ -131,6 +139,7 @@ const MenuBar = ({
         redo
       </Button>
       <Button
+        type="button"
         compact
         variant="filled"
         color="teal"

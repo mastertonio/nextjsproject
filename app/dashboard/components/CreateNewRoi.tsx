@@ -200,6 +200,7 @@ const CreateNewRoi: React.FC = () => {
                 Create ROI
               </Button>
               <Button
+                type="button"
                 radius="sm"
                 size="md"
                 onClick={() => setOpened(false)}
@@ -213,6 +214,7 @@ const CreateNewRoi: React.FC = () => {
 
         <Group position="center">
           <Button
+            type="button"
             fullWidth
             leftIcon={<FaPlusSquare />}
             radius="sm"

@@ -113,6 +113,7 @@ const GifsMedia = () => {
       </Dropzone>
 
       <Button
+        type="button"
         className={classes.control}
         size="md"
         radius="xl"

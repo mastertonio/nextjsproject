@@ -108,7 +108,7 @@ export default SectionContentDnd;
 
 const initialData = {
   tasks: {
-    "task-1": { id: "task-1", content: <Button>Test</Button> },
+    "task-1": { id: "task-1", content: <Button type="button">Test</Button> },
     "task-2": {
       id: "task-2",
       content: (

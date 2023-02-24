@@ -72,6 +72,7 @@ const MediaSelection: React.FC<IMediaSelectionModalProps> = ({
         </Text>
         <SimpleGrid cols={3} style={{ margin: 20 }}>
           <Button
+            type="button"
             variant="subtle"
             size="lg"
             onClick={() => setMediaType("image")}
@@ -79,6 +80,7 @@ const MediaSelection: React.FC<IMediaSelectionModalProps> = ({
             Image Type
           </Button>
           <Button
+            type="button"
             variant="subtle"
             size="lg"
             onClick={() => setMediaType("video")}
@@ -86,6 +88,7 @@ const MediaSelection: React.FC<IMediaSelectionModalProps> = ({
             Video Link
           </Button>
           <Button
+            type="button"
             variant="subtle"
             size="lg"
             onClick={() => setMediaType("gifs")}
@@ -104,6 +107,7 @@ const MediaSelection: React.FC<IMediaSelectionModalProps> = ({
             Add Section
           </Button> */}
           <Button
+            type="button"
             radius="sm"
             size="sm"
             onClick={() => setOpened(false)}
@@ -118,9 +122,10 @@ const MediaSelection: React.FC<IMediaSelectionModalProps> = ({
         </Grid>
       </Modal>
       <Button
+        type="button"
         ml={"auto"}
         variant="subtle"
-        style={ mediaType ? {} : { height: 220 }}
+        style={mediaType ? {} : { height: 220 }}
         onClick={() => setOpened(true)}
       >
         {mediaType ? (

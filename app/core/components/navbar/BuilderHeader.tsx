@@ -91,9 +91,8 @@ const useStyles = createStyles((theme) => ({
     marginTop: theme.spacing.sm,
     padding: `${theme.spacing.md}px ${theme.spacing.md * 2}px`,
     paddingBottom: theme.spacing.xl,
-    borderTop: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
-    }`,
+    borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
+      }`,
   },
 
   hiddenMobile: {
@@ -175,8 +174,9 @@ const HeaderMegaMenu = () => {
         <Group position="apart" sx={{ height: "100%" }}>
           <div>
             <Button
+              type="button"
               style={{ marginRight: "auto" }}
-              onClick={()=> builderCtx.buildDraggable()}
+              onClick={() => builderCtx.buildDraggable()}
               color={builderCtx.draggableDisabled ? 'gray' : 'blue'}
               variant="light"
             >
@@ -190,10 +190,10 @@ const HeaderMegaMenu = () => {
             className={classes.hiddenMobile}
           >
             {/* <AddSectionModal style={classes.link} /> */}
-            <Button className={classes.link} variant="subtle" onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "<p>Edit Section Description</p><p></p>"})}>
+            <Button type="button" className={classes.link} variant="subtle" onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "<p>Edit Section Description</p><p></p>" })}>
               Add Section
             </Button>
-            
+
             <Link href="/templates/builder/preview" className={classes.link} passHref>
               <a target={"_blank"}>Preview</a>
             </Link>
@@ -253,8 +253,8 @@ const HeaderMegaMenu = () => {
           />
 
           <Group position="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button type="button" variant="default">Log in</Button>
+            <Button type="button">Sign up</Button>
           </Group>
         </ScrollArea>
       </Drawer>

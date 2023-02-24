@@ -145,6 +145,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               Update Entry
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               color="red"
@@ -153,6 +154,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               Delete
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               color="gray"

@@ -41,7 +41,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [currency, setCurrency] = useState<string | null>(null);
-  
+
   const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
@@ -380,6 +380,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               Save User
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -396,6 +397,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiFillPlusCircle />}
         radius="sm"
         size="sm"

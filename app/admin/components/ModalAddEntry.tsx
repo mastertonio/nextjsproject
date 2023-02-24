@@ -124,6 +124,7 @@ const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionDat
                             Create Entry
                         </Button>
                         <Button
+                            type="button"
                             radius="sm"
                             size="sm"
                             color="gray"

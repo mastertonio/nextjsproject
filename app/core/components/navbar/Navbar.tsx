@@ -54,6 +54,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
           <DashboardDrawer user={user} />
         </Drawer>
         <Button
+          type="button"
           className="mr-auto !bg-[#00acac]"
           onClick={toggleDrawer}
         >
@@ -71,6 +72,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
             <DashboardDrawer user={user} />
           </Drawer>
           <Button
+            type="button"
             style={{ marginRight: "auto", backgroundColor: '#00acac' }}
             onClick={toggleDrawer}
           >
@@ -84,6 +86,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
       {router.route.includes("dashboard/manager") && user?.role == "company-manager" ? (
         <div className="ml-[10px]">
           <Button
+            type="button"
             className="mr-auto"
             onClick={() => router.push('/dashboard')}
           >
@@ -97,6 +100,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
       {router.route == "/dashboard" && user?.role == "company-manager" ? (
         <div className="ml-[10px]">
           <Button
+            type="button"
             className="mr-auto"
             onClick={() => router.push('/dashboard/manager')}
           >
