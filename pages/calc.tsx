@@ -2,6 +2,23 @@ import { createStyles, Image, Container, Title, Text, Button, SimpleGrid, Number
 import { useRouter } from 'next/router';
 import { Cell, CellProps, Sheet, UserState, useCalculatorStore, useCalculatorSheetStore } from "@app/store/builder/calculatorStore";
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import {
+    numToStr,
+    strToNum,
+    getCellsInRange,
+    isValidBinary,
+    strRepeat,
+    repeat,
+    unique,
+    initial,
+    rest,
+    arrayMerge,
+    toArray,
+    objectToArray,
+    trimEmptyCell,
+    rangeToTable,
+    transposeTable
+} from '@app/calculator/utils/Utility/Utility';
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -38,6 +55,15 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+interface RangeBoundary {
+    col: number;
+    row: number;
+}
+
+interface RangeBoundaries {
+    start: RangeBoundary;
+    end: RangeBoundary;
+}
 
 const Calc: React.FC = () => {
     const { classes } = useStyles();
@@ -62,6 +88,33 @@ const Calc: React.FC = () => {
         console.log('Less Than', sheetLess)
         console.log('Less Equal', sheetLessEqualFn)
         console.log('Not Equal', sheetNotEqualFn)
+
+        numToStr(4)
+        strToNum('j')
+        getCellsInRange('A1:B2')
+        isValidBinary('5')
+        strRepeat('Test ', 4)
+        repeat('Hello', 2, '+')
+        unique(['A1', 'B2', 'B2'])
+        initial([2, 1, 2], 1, 2)
+        rest([3, 2, 5], 3, 2)
+        arrayMerge(['A1', 'B2', 'C2', 5],)
+        toArray('1')
+        objectToArray({ id: 1, name: 'Test' })
+        trimEmptyCell({
+            A1: "   ",
+            A2: "Hello",
+            A3: "",
+            A4: 123,
+            A5: "   World   "
+        })
+        rangeToTable({ A1: '1', A2: '2', B1: '3', B2: '4' })
+        transposeTable(
+            [
+                [1, 2, 3, 4],
+                [1, 2, 3, 4],
+            ]
+        )
     }, [cells])
 
     return (
