@@ -2,23 +2,24 @@ import { createStyles, Image, Container, Title, Text, Button, SimpleGrid, Number
 import { useRouter } from 'next/router';
 import { Cell, CellProps, Sheet, UserState, useCalculatorStore, useCalculatorSheetStore } from "@app/store/builder/calculatorStore";
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
-import {
-    numToStr,
-    strToNum,
-    getCellsInRange,
-    isValidBinary,
-    strRepeat,
-    repeat,
-    unique,
-    initial,
-    rest,
-    arrayMerge,
-    toArray,
-    objectToArray,
-    trimEmptyCell,
-    rangeToTable,
-    transposeTable
-} from '@app/calculator/utils/Utility/Utility';
+import { useUtilityStore } from '@app/store/builder/utilityStore';
+// import {
+//     numToStr,
+//     strToNum,
+//     getCellsInRange,
+//     isValidBinary,
+//     strRepeat,
+//     repeat,
+//     unique,
+//     initial,
+//     rest,
+//     arrayMerge,
+//     toArray,
+//     objectToArray,
+//     trimEmptyCell,
+//     rangeToTable,
+//     transposeTable
+// } from '@app/calculator/utils/Utility/Utility';
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -70,6 +71,23 @@ const Calc: React.FC = () => {
     const router = useRouter();
     const cells = useCalculatorStore((state) => (state.cells))
     const update = useCalculatorStore((state) => (state.update))
+    // Utilities
+    const numToString = useUtilityStore((state) => (state.utility?.numToStr))
+    const strToNumber = useUtilityStore((state) => (state.utility?.strToNum))
+    const getCellsInRange = useUtilityStore((state) => (state.utility?.getCellsInRange))
+    const isValidBinary = useUtilityStore((state) => (state.utility?.isValidBinary))
+    const strRepeat = useUtilityStore((state) => (state.utility?.strRepeat))
+    const repeat = useUtilityStore((state) => (state.utility?.repeat))
+    const unique = useUtilityStore((state) => (state.utility?.unique))
+    const initial = useUtilityStore((state) => (state.utility?.initial))
+    const rest = useUtilityStore((state) => (state.utility?.rest))
+    const arrayMerge = useUtilityStore((state) => (state.utility?.arrayMerge))
+    const toArray = useUtilityStore((state) => (state.utility?.toArray))
+    const objectToArray = useUtilityStore((state) => (state.utility?.objectToArray))
+    const trimEmptyCell = useUtilityStore((state) => (state.utility?.trimEmptyCell))
+    const rangeToTable = useUtilityStore((state) => (state.utility?.rangeToTable))
+    const transposeTable = useUtilityStore((state) => (state.utility?.transposeTable))
+    // End of Utilities
     const sheetFn = useCalculatorSheetStore((state) => (state.comparator?.equal))
     const sheetGreaterThan = useCalculatorSheetStore((state) => (state.comparator?.greater))
     const sheetLessThan = useCalculatorSheetStore((state) => (state.comparator?.less))
@@ -89,12 +107,12 @@ const Calc: React.FC = () => {
         console.log('Less Equal', sheetLessEqualFn)
         console.log('Not Equal', sheetNotEqualFn)
 
-        numToStr(4)
-        strToNum('j')
+        numToString(4)
+        strToNumber('j')
         getCellsInRange('A1:B2')
-        isValidBinary('5')
-        strRepeat('Test ', 4)
-        repeat('Hello', 2, '+')
+        isValidBinary('6')
+        strRepeat('Hello ', 3)
+        repeat('Repeat This ', 3, '* ')
         unique(['A1', 'B2', 'B2'])
         initial([2, 1, 2], 1, 2)
         rest([3, 2, 5], 3, 2)
