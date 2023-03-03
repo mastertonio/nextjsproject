@@ -77,6 +77,17 @@ type Itest = {
   gray: iElemsProp
 }
 
+export type iSectionProps = {
+  id: number
+  title: string
+  type: string
+  format: string
+  tooltip: string
+  appendedText: string
+  formula: string
+  address: string
+}
+
 const InputVariable: React.FC<iGrayProps> = ({
   type,
   classes,
@@ -113,6 +124,8 @@ const InputVariable: React.FC<iGrayProps> = ({
 
 
   useEffect(() => {
+    const formValue = JSON.parse(localStorage.getItem("formValue") ?? '[]') as iSectionProps[];
+    console.log('localStorage', formValue);
     console.log(dataR)
   }, [dataR])
 
