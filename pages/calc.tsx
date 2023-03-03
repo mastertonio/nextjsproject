@@ -2,7 +2,25 @@ import { createStyles, Image, Container, Title, Text, Button, SimpleGrid, Number
 import { useRouter } from 'next/router';
 import { Cell, CellProps, Sheet, UserState, useCalculatorStore, useCalculatorSheetStore } from "@app/store/builder/calculatorStore";
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import { useUtilityStore } from '@app/store/builder/utilityStore';
 import InputTest from '@app/calculator/components/InputTest';
+// import {
+//     numToStr,
+//     strToNum,
+//     getCellsInRange,
+//     isValidBinary,
+//     strRepeat,
+//     repeat,
+//     unique,
+//     initial,
+//     rest,
+//     arrayMerge,
+//     toArray,
+//     objectToArray,
+//     trimEmptyCell,
+//     rangeToTable,
+//     transposeTable
+// } from '@app/calculator/utils/Utility/Utility';
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -39,6 +57,15 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+interface RangeBoundary {
+    col: number;
+    row: number;
+}
+
+interface RangeBoundaries {
+    start: RangeBoundary;
+    end: RangeBoundary;
+}
 
 const Calc: React.FC = () => {
     const { classes } = useStyles();
