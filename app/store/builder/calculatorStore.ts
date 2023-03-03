@@ -20,6 +20,7 @@ import {
 
 const FormulaParser = require("hot-formula-parser").Parser;
 
+
 import { iSectionData } from "@app/admin/components/Sections";
 
 export interface UserState {
@@ -54,6 +55,43 @@ export interface UserState {
 //   options: PersistOptions<IBuilderState>
 // ) => StateCreator<IBuilderState>;
 
+// {
+//   address: "A4",
+//   forcedValue: "",
+//   format: "",
+//   formula: "SUM(45,56,23,11)",
+//   formTags: "input",
+//   label: "C",
+//   value: 0,
+// },
+// {
+//   address: "A5",
+//   forcedValue: "",
+//   format: "",
+//   formula: "SUM(A1, A3, A4)",
+//   label: "Total2 = Total1 + C",
+//   formTags: "output",
+//   value: 0,
+// },
+// {
+//   address: "A6",
+//   forcedValue: "",
+//   format: "",
+//   formula: "A5 * 10",
+//   formTags: "output",
+//   label: "Total 3 = Total1 + total2",
+//   value: 0,
+// },
+// {
+//   address: "A7",
+//   forcedValue: "",
+//   format: "",
+//   formula: "A5 * 10",
+//   formTags: "input",
+//   label: "Total 4",
+//   value: 0,
+// },
+
 export type CellProps = {
   address: string;
   affected?: boolean;
@@ -75,6 +113,13 @@ export type Cell = {
   update: (cells: CellProps) => void;
 };
 
+export type CalculatorStore = {
+  cells: CellProps[];
+  update: (cells: CellProps) => void;
+};
+
+// ((A2+A1)*A1)-A3
+
 export const useCalculatorStore = create<Cell>((set) => ({
   cells: [
     {
@@ -84,7 +129,7 @@ export const useCalculatorStore = create<Cell>((set) => ({
       format: "0,0",
       formula: null,
       label: "A",
-      value: 10,
+      value: 0,
     },
     {
       address: "A2",
@@ -93,31 +138,31 @@ export const useCalculatorStore = create<Cell>((set) => ({
       formula: null,
       formTags: "input",
       label: "B",
-      value: 30,
+      value: 0,
     },
     {
       address: "A3",
       forcedValue: "",
       format: "$0,0",
-      formula: "A1 * A2 * 45.8",
+      formula: "A1*A2*10",
       formTags: "output",
-      label: "Total1",
+      label: "Total1 - A1*A2*10",
       value: 0,
     },
     {
       address: "A4",
       forcedValue: "",
       format: "",
-      formula: "SUM(45,56,23,11)",
-      formTags: "input",
-      label: "C",
-      value: 10,
+      formula: "A1+A2",
+      formTags: "output",
+      label: "C = A1+A2",
+      value: 0,
     },
     {
       address: "A5",
       forcedValue: "",
       format: "",
-      formula: "SUM(A1, A3, A4)",
+      formula: "A3+A4",
       label: "Total2 = Total1 + C",
       formTags: "output",
       value: 0,
@@ -126,68 +171,93 @@ export const useCalculatorStore = create<Cell>((set) => ({
       address: "A6",
       forcedValue: "",
       format: "",
-      formula: "A5 * 10",
+      formula: "A3+A5",
       formTags: "output",
-      label: "Total 3 = Total1 + total2",
+      label: "Total 3 = Total1 + total2 (A3+A5)",
       value: 0,
     },
-    {
-      address: "A7",
-      forcedValue: "",
-      format: "",
-      formula: "A5 * 10",
-      formTags: "input",
-      label: "Total 4",
-      value: 0,
-    },
+    // {
+    //   address: "A7",
+    //   forcedValue: "",
+    //   format: "",
+    //   formula: "A3+A5+A6",
+    //   formTags: "input",
+    //   label: "Total 4 - A3+A5+A6",
+    //   value: 0,
+    // },
+    // {
+    //   address: "A8",
+    //   forcedValue: "",
+    //   format: "",
+    //   formula: "((A2+A1)*A1)+A3",
+    //   formTags: "input",
+    //   label: "Total 5 - Total1*Total1",
+    //   value: 0,
+    // },
   ],
-  update: (cells: CellProps) =>
-    set((state) => ({
-      cells: state.cells.map((vars) => {
-        if (vars.address === cells.address) {
-          return {
-            ...vars,
-            value: cells.value,
-          };
+  update: (cells: CellProps) => {
+    set((state) => {
+      const updatedCells = state.cells.map((cell) => {
+        if (cell.address === cells.address) {
+          return { ...cell, value: cells.value };
         } else {
-          return vars;
+          return cell;
         }
-      }),
-    })),
-  eval: (cells: CellProps) =>
-    set((state) => ({
-      cells: state.cells.map((vars) => {
-        if (vars.address === cells.address) {
-          return {
-            ...vars,
-            value: cells.value,
-          };
-        } else {
-          return vars;
+      });
+
+      const updatedState: CalculatorStore = { ...state, cells: updatedCells };
+
+      updatedCells.forEach((cell) => {
+        if (cell.formula) {
+          const updatedCell = calculateFormula(cell, updatedState);
+          if (updatedCell) {
+            updatedState.cells = updatedState.cells.map((c) => {
+              if (c.address === updatedCell.address) {
+                return updatedCell;
+              } else {
+                return c;
+              }
+            });
+          }
         }
-      }),
-    })),
-  registerCell: (cells: CellProps) =>
-    set((state) => ({
-      cells: state.cells.map((vars) => {
-        if (vars.address === cells.address) {
-          return {
-            ...vars,
-            value: cells.value,
-          };
-        } else {
-          return vars;
-        }
-      }),
-    })),
+      });
+
+      return updatedState;
+    });
+  }
 }));
+
+function calculateFormula(cell: CellProps, state: CalculatorStore): CellProps | null {
+  const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
+    const dependentCell = state.cells.find((c) => c.address === match);
+    console.log(dependentCell)
+    if (dependentCell) {
+      return dependentCell.value.toString();
+    } else {
+      return "0";
+    }
+  });
+  // console.log(formula,'formula')
+  try {
+    // eslint-disable-next-line no-eval
+    const result = eval(formula);
+    console.log(result, 'cal')
+    return { ...cell, value: result };
+  } catch (error) {
+    console.error(`Error in formula: ${formula} - ${error}`);
+    return null;
+  }
+}
+
+
+
 
 export interface Sheet {
   affectedCells: string[];
-  // cells: Cell[];
-  // elements: Cell[];
-  // elementsToHide?: string[];
-  // elementsToShow?: string[];
+  cells: Cell[];
+  elements: Cell[];
+  elementsToHide?: string[];
+  elementsToShow?: string[];
   comparator: {
     equal: (a: number, b: number) => boolean;
     greater: (a: number, b: number) => boolean;
@@ -196,21 +266,16 @@ export interface Sheet {
     lessEqual: (a: number, b: number) => boolean;
     notEqual: (a: number, b: number) => boolean;
   };
-  // lang?: string;
-  // visibilities?: [];
+  lang?: string;
+  visibilities?: [];
 }
-
-// interface ISheetProps {
-//   sheet: Sheet;
-//   //   addSection: () => void;
-//   //   reorder: (state: iSectionData[]) => void;
-//   //   remove: (id: number) => void;
-// }
 
 export const useCalculatorSheetStore = create<Sheet>((set) => ({
   affectedCells: [],
-  //     cells: ,
-  //     elements: ,
+  cells: [],
+  elements: [],
+  elementsToHide: [],
+  elementsToShow: [],
   comparator: {
     equal: (a: number, b: number) => a == b,
     greater: (a: number, b: number) => a > b,
@@ -219,7 +284,35 @@ export const useCalculatorSheetStore = create<Sheet>((set) => ({
     lessEqual: (a: number, b: number) => a >= b,
     notEqual: (a: number, b: number) => a != b,
   },
+  lang: "",
+  visibilities: [],
+
 }));
 
-const unsub1 = useCalculatorStore.subscribe(console.log);
-unsub1();
+useCalculatorStore.subscribe((state) => {
+  const sheetStore = useCalculatorSheetStore.getState();
+  console.log(state)
+  console.log(sheetStore)
+})
+// useCalculatorStore.subscribe((state) => {
+//   const sheetStore = useCalculatorSheetStore.getState();
+//   const regex = /\(|\)/
+//   console.log(state)
+//     state.cells.forEach(cell => {
+//       if (cell.formula && !regex.test(cell.formula)) {
+//         const celltest = state.cells.filter(element => element.address == cell.address)
+//         const addresses = celltest[0].formula?.match(/A\d+/g)
+//         // console.log(addresses)
+//         if (addresses) {
+//             console.log(addresses)
+//             // replaceValues(addresses)
+
+//         }
+//     }
+//     })
+
+// })
+
+useCalculatorSheetStore.subscribe((state) => {
+  console.log("triggered")
+})

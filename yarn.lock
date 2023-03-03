@@ -350,14 +350,6 @@
   dependencies:
     "@floating-ui/dom" "^1.1.0"
 
-"@formulajs/formulajs@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@formulajs/formulajs/-/formulajs-4.2.0.tgz#e5c6a98fa5863442cb68f93b8b9b28d75070abc4"
-  integrity sha512-egxyvwj08iwOznFgxv7dvjgHUC7C8jdtznAs+15uThIti7TwDGhB3wsbJt1dlfhSHKvlRAiW4MDYxNkvgmyjyg==
-  dependencies:
-    bessel "^1.0.2"
-    jstat "^1.9.6"
-
 "@handsontable/formulajs@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@handsontable/formulajs/-/formulajs-2.0.2.tgz#5be4b9226cc47811f646ae46b1b985230cd82995"
@@ -2789,7 +2781,7 @@ json5@^2.2.2:
   resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
-jstat@^1.9.2, jstat@^1.9.6:
+jstat@^1.9.2:
   version "1.9.6"
   resolved "https://registry.yarnpkg.com/jstat/-/jstat-1.9.6.tgz#60e801b0d4c26e37aab0f375d1859fe9d60e10c0"
   integrity sha512-rPBkJbK2TnA8pzs93QcDDPlKcrtZWuuCo2dVR0TFLOJSxhqfWOVCSp8aV3/oSbn+4uY4yw1URtLpHQedtmXfug==
