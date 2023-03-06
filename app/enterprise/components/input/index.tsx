@@ -101,6 +101,7 @@ const InputVariable: React.FC<iGrayProps> = ({
   const FormulaParser = require('hot-formula-parser').Parser
   const parser = new FormulaParser()
 
+
   const hide = () => {
     setShow((prevState) => !prevState)
   }

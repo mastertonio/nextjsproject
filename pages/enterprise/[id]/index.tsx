@@ -4,7 +4,7 @@ import Projection from "@app/enterprise/Projection";
 import { AppShell, Navbar, Header, Grid, SimpleGrid, Flex } from "@mantine/core";
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
-import InputVariable, { iElemsProp } from "@app/enterprise/components/input";
+import InputVariable, { iElemsProp } from "@app/enterprise/components/input/NewInput";
 
 const Enterprise = () => {
 

@@ -68,6 +68,19 @@ const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionDat
                     address: values.formEntry[0].address
                 }
             ]);
+            setSectionData([
+                ...sectionData,
+                {
+                    id: Math.floor(Math.random() * 1000),
+                    title: values.formEntry[0].title,
+                    type: values.formEntry[0].type,
+                    format: values.formEntry[0].format,
+                    tooltip: values.formEntry[0].tooltip,
+                    appendedText: values.formEntry[0].appendedText,
+                    formula: values.formEntry[0].formula,
+                    address: values.formEntry[0].address
+                }
+            ])
             // form.insertListItem('formEntry', { ...values, key: Math.floor(Math.random() * 1000) })
             // setFormValue([...sectionData, { ...values, id: Math.floor(Math.random() * 1000) }])
             // setSectionData([...sectionData, { ...values, id: Math.floor(Math.random() * 1000) }])
