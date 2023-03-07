@@ -144,6 +144,8 @@ const Calc: React.FC = () => {
     console.log(result) //results to zero | answer should be 5
 
     console.log(formulajs.SUMPRODUCT([[1,2],[3,4]], [[1,0],[0,1]])) // results to 5
+
+    
     return (
         <Container className={`${classes.root} max-w-[100%] bg-gray-100`}>
 
