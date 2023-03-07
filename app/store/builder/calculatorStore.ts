@@ -18,8 +18,8 @@ import {
   animals,
 } from "unique-names-generator";
 
-const FormulaParser = require("hot-formula-parser").Parser;
-
+const FormulaParser = require("hot-formula-parser");
+const formulas = FormulaParser.SUPPORTED_FORMULAS
 
 import { iSectionData } from "@app/admin/components/Sections";
 
@@ -153,9 +153,9 @@ export const useCalculatorStore = create<Cell>((set) => ({
       address: "A4",
       forcedValue: "",
       format: "",
-      formula: "A1+A2",
+      formula: "SUM([[1, 2 , 3, 4], [5, 6, 7, 8]])",
       formTags: "output",
-      label: "C = A1+A2",
+      label: "SUM([[1, 2 , 3, 4], [5, 6, 7, 8]])",
       value: 0,
     },
     {
@@ -228,25 +228,59 @@ export const useCalculatorStore = create<Cell>((set) => ({
 }));
 
 function calculateFormula(cell: CellProps, state: CalculatorStore): CellProps | null {
-  const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
-    const dependentCell = state.cells.find((c) => c.address === match);
-    console.log(dependentCell)
-    if (dependentCell) {
-      return dependentCell.value.toString();
-    } else {
-      return "0";
+  console.log(cell.formula, 'im the formula', formulas)
+  const formulaRegex = new RegExp(`\\b(${formulas.join('|')})\\b`)
+  const parser = new FormulaParser.Parser()
+  
+  if (cell.formula) {
+    if(formulaRegex.test(cell.formula)){
+      const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
+        const dependentCell = state.cells.find((c) => c.address === match);
+        if (dependentCell) {
+          console.log('from dependentcell check', dependentCell.value.toString(), dependentCell.formula)
+          return dependentCell.value.toString();
+        } else {
+          return "0";
+        }
+      });
+
+      try {
+        // eslint-disable-next-line no-eval
+        const result = parser.parse(formula).result;
+        console.log(result, 'cal')
+        return { ...cell, value: result };
+      } catch (error) {
+        console.error(`Error in formula: ${formula} - ${error}`);
+        return null;
+      }
     }
-  });
-  // console.log(formula,'formula')
-  try {
-    // eslint-disable-next-line no-eval
-    const result = eval(formula);
-    console.log(result, 'cal')
-    return { ...cell, value: result };
-  } catch (error) {
-    console.error(`Error in formula: ${formula} - ${error}`);
-    return null;
+
+    const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
+      const dependentCell = state.cells.find((c) => c.address === match);
+      if (dependentCell) {
+        console.log('from dependentcell check', dependentCell.value.toString(), dependentCell.formula)
+        return dependentCell.value.toString();
+      } else {
+        return "0";
+      }
+    });
+
+
+    try {
+      // eslint-disable-next-line no-eval
+      console.log(formula, 'fromula from try')
+      const result = eval(formula);
+      console.log(result, 'cal')
+      return { ...cell, value: result };
+    } catch (error) {
+      console.error(`Error in formula: ${formula} - ${error}`);
+      return null;
+    }
   }
+
+  return null
+
+  // console.log(formula,'formula')
 }
 
 
