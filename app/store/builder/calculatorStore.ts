@@ -19,7 +19,7 @@ import {
 } from "unique-names-generator";
 
 const FormulaParser = require("hot-formula-parser");
-const formulas = FormulaParser.SUPPORTED_FORMULAS
+const formulas = FormulaParser.SUPPORTED_FORMULAS;
 
 import { iSectionData } from "@app/admin/components/Sections";
 
@@ -224,20 +224,27 @@ export const useCalculatorStore = create<Cell>((set) => ({
 
       return updatedState;
     });
-  }
+  },
 }));
 
-function calculateFormula(cell: CellProps, state: CalculatorStore): CellProps | null {
-  console.log(cell.formula, 'im the formula', formulas)
-  const formulaRegex = new RegExp(`\\b(${formulas.join('|')})\\b`)
-  const parser = new FormulaParser.Parser()
-  
+function calculateFormula(
+  cell: CellProps,
+  state: CalculatorStore
+): CellProps | null {
+  console.log(cell.formula, "im the formula", formulas);
+  const formulaRegex = new RegExp(`\\b(${formulas.join("|")})\\b`);
+  const parser = new FormulaParser.Parser();
+
   if (cell.formula) {
-    if(formulaRegex.test(cell.formula)){
+    if (formulaRegex.test(cell.formula)) {
       const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
         const dependentCell = state.cells.find((c) => c.address === match);
         if (dependentCell) {
-          console.log('from dependentcell check', dependentCell.value.toString(), dependentCell.formula)
+          console.log(
+            "from dependentcell check",
+            dependentCell.value.toString(),
+            dependentCell.formula
+          );
           return dependentCell.value.toString();
         } else {
           return "0";
@@ -247,7 +254,7 @@ function calculateFormula(cell: CellProps, state: CalculatorStore): CellProps | 
       try {
         // eslint-disable-next-line no-eval
         const result = parser.parse(formula).result;
-        console.log(result, 'cal')
+        console.log(result, "cal");
         return { ...cell, value: result };
       } catch (error) {
         console.error(`Error in formula: ${formula} - ${error}`);
@@ -258,19 +265,22 @@ function calculateFormula(cell: CellProps, state: CalculatorStore): CellProps | 
     const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
       const dependentCell = state.cells.find((c) => c.address === match);
       if (dependentCell) {
-        console.log('from dependentcell check', dependentCell.value.toString(), dependentCell.formula)
+        console.log(
+          "from dependentcell check",
+          dependentCell.value.toString(),
+          dependentCell.formula
+        );
         return dependentCell.value.toString();
       } else {
         return "0";
       }
     });
 
-
     try {
       // eslint-disable-next-line no-eval
-      console.log(formula, 'fromula from try')
+      console.log(formula, "fromula from try");
       const result = eval(formula);
-      console.log(result, 'cal')
+      console.log(result, "cal");
       return { ...cell, value: result };
     } catch (error) {
       console.error(`Error in formula: ${formula} - ${error}`);
@@ -278,13 +288,10 @@ function calculateFormula(cell: CellProps, state: CalculatorStore): CellProps | 
     }
   }
 
-  return null
+  return null;
 
   // console.log(formula,'formula')
 }
-
-
-
 
 export interface Sheet {
   affectedCells: string[];
@@ -320,14 +327,13 @@ export const useCalculatorSheetStore = create<Sheet>((set) => ({
   },
   lang: "",
   visibilities: [],
-
 }));
 
 useCalculatorStore.subscribe((state) => {
   const sheetStore = useCalculatorSheetStore.getState();
-  console.log(state)
-  console.log(sheetStore)
-})
+  console.log(state);
+  console.log(sheetStore);
+});
 // useCalculatorStore.subscribe((state) => {
 //   const sheetStore = useCalculatorSheetStore.getState();
 //   const regex = /\(|\)/
@@ -348,5 +354,5 @@ useCalculatorStore.subscribe((state) => {
 // })
 
 useCalculatorSheetStore.subscribe((state) => {
-  console.log("triggered")
-})
+  console.log("triggered");
+});
