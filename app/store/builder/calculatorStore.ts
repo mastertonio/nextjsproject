@@ -153,9 +153,9 @@ export const useCalculatorStore = create<Cell>((set) => ({
       address: "A4",
       forcedValue: "",
       format: "",
-      formula: "SUM([[1, 2 , 3, 4], [5, 6, 7, 8]])",
+      formula: "SUM(A1, A2)",
       formTags: "output",
-      label: "SUM([[1, 2 , 3, 4], [5, 6, 7, 8]])",
+      label: "SUM(A1, A2)",
       value: 0,
     },
     {
