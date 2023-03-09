@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Grid, Card } from '@mantine/core';
 import { DragNDrop } from '@app/core/components/dragdrop'
-import { IconBookmark } from '@tabler/icons';
+import { FcTodoList } from 'react-icons/fc'
 import ModalUpdateEntry from './ModalUpdateEntry';
 import ModalAddEntry from './ModalAddEntry';
 import { useModalEntryStore, useModalAddEntryStore } from '@app/store/builderStore';
@@ -32,15 +32,15 @@ const Sections: React.FC<iSectionProps> = () => {
     const addEmptySection = useBuilderStore((state) => state.addSection)
 
     return (
-        <div className="w-full mt-[70px]">
+        <div className="w-full mt-[40px]">
             <div className="bg-[#ffffff] shadow p-[10px]">
-                <h1 className="text-[28px] text-[#676a6c] font-bold flex flex-row items-center ml-[20px]">
-                    <IconBookmark size={30} stroke={3} />
+                <h1 className="text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
+                    <FcTodoList size={30} className="text-blue-600 mr-[10px]" />
                     <span>Current Sections</span>
                 </h1>
             </div>
 
-            <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem]">
+            <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px]">
                 <Card className="mt-[15px] mb-[20px]">
                     <div className="mt-[20px]">
                         <DragNDrop data={contentData} type="collapse" />
@@ -62,7 +62,7 @@ const Sections: React.FC<iSectionProps> = () => {
             </div>
 
             {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)
-            ) : (<div className="pl-[2rem] pr-[2rem]">No Sections Yet</div>)}
+            ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)}
         </div>
     )
 }

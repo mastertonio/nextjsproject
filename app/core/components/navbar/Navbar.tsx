@@ -124,8 +124,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // const data = 'from gssp'
   const cookies = context.req.cookies
   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    // headers: {
+    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    // }
     headers: {
-      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+      'Cookie': "x-access-token=" + cookies['x-access-token']
     }
   })
   const user = await res.json();

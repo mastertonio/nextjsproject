@@ -51,7 +51,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     "dashboardData",
     getDashboardData
   );
-
+  console.log('data', data);
   useEffect(() => {
     Cookies.set('x-access-token', tokenSet, {
       expires: new Date(expireCookies).getTime()
@@ -59,8 +59,8 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
 
     if (Date.now() > new Date(expireCookies).getTime()) {
       Cookies.remove('x-access-token')
-      Cookies.remove('session.sig')
-      Cookies.remove('session')
+      // Cookies.remove('session.sig')
+      // Cookies.remove('session')
       router.push('/');
     }
   }, [router, expireCookies, tokenSet]);
@@ -141,11 +141,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    // headers: {
+    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    // }
     headers: {
-      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+      'Cookie': "x-access-token=" + cookies['x-access-token']
     }
   })
   const user = await res.json();
+  console.log('user', user)
 
   if (Object.keys(user).length === 0 && user.constructor === Object) {
     // redirect to dashboard page if authenticated
