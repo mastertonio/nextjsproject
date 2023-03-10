@@ -4,10 +4,13 @@ import { useForm } from "@mantine/form"
 import { MdAddBox, MdModeEdit, MdClose } from 'react-icons/md'
 import { FcComboChart } from 'react-icons/fc'
 import AddSectionModal from './SectionModals/AddSectionModal';
+import { useCardStore } from '@app/store/builder/builderState';
 
 type iTemplateProps = {}
 
 const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
+    const cards = useCardStore((state) => state.cards);
+    const removeCard = useCardStore((state) => state.removeCard);
     const [opened, setOpened] = useState(false);
     const [update, setUpdate] = useState(false);
     const form = useForm({
@@ -41,15 +44,18 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
                 </Card>
 
                 <div className="grid grid-cols-3 gap-4 mt-[20px]">
-                    <Card className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
-                        <div className="flex flex-row items-center justify-between">
-                            <Text className="text-[20px] text-blue-600 font-semibold">New Section Here</Text>
-                            <div>
-                                <MdModeEdit className="text-blue-600 text-[25px] mr-[10px]" />
-                                <MdClose className="text-blue-600 text-[25px]" />
+                    {cards.map((card, index) => (
+                        <Card key={index} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
+                            <div className="flex flex-row items-center justify-between">
+                                <Text className="text-[20px] text-blue-600 font-semibold">{card.sectioName}</Text>
+                                <div>
+                                    <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
+                                    <MdClose className="text-blue-600 text-[25px] cursor-pointer" onClick={() => removeCard(card.id)} />
+                                </div>
                             </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    ))}
+
                     <Card className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder onClick={() => setUpdate(true)}>
                         <div className="flex flex-row items-center">
                             <MdAddBox className="text-blue-600 text-[30px] mr-[10px]" />

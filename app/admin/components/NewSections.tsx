@@ -12,6 +12,7 @@ import { uniqueNamesGenerator } from 'unique-names-generator';
 import SectionItems from './SectionItems';
 import SectionWriteUpModal from './SectionModals/SectionWriteUpModal';
 import SectionVideoModal from './SectionModals/SectionVideoModal';
+import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 
 type iSectionProps = {}
 
@@ -35,6 +36,8 @@ const NewSections: React.FC<iSectionProps> = () => {
     const [updateWriteUp, setUpdateWriteUp] = useState(false);
     const [openVideo, setOpenVideo] = useState(false);
     const [updateVideo, setUpdateVideo] = useState(false)
+    const [openQuestion, setOpenQuestion] = useState(false);
+    const [updateQuestion, setUpdateQuestion] = useState(false);
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
 
@@ -47,7 +50,7 @@ const NewSections: React.FC<iSectionProps> = () => {
                 </h1>
             </div>
 
-            <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px]">
+            <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px] mb-[40px]">
                 <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                     <Card.Section withBorder inheritPadding py="xs">
                         <div className="flex flex-row items-center justify-between">
@@ -87,7 +90,8 @@ const NewSections: React.FC<iSectionProps> = () => {
                             size="sm"
                             color="teal"
                             className="mr-0 sm:mr-[10px]"
-                            onClick={addEmptySection}
+                            onClick={() => setUpdateQuestion(true)}
+                        // onClick={addEmptySection}
                         >
                             Add New Entry
                         </Button>
@@ -95,11 +99,12 @@ const NewSections: React.FC<iSectionProps> = () => {
                 </Card>
             </div>
 
-            {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)
-            ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)}
+            {/* {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)
+            ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)} */}
 
             <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} />
             <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} />
+            <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} />
         </div>
     )
 }

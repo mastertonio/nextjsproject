@@ -3,7 +3,8 @@ import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
-import { useCardStore } from '@app/store/builder/builderState';
+import FormSelect from '@app/core/components/dropdown/FormSelect';
+import { useBuilderStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -11,20 +12,20 @@ interface IModalEntryProps {
     open: boolean
 }
 
-interface CardProps {
-    sectioName: string
-}
-
-const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
-    const newCardName = useCardStore((state) => state.newCardName);
-    const addCard = useCardStore((state) => state.addCard);
-    const setNewCardName = useCardStore((state) => state.setNewCardName);
+    const addEmptySection = useBuilderStore((state) => state.addSection)
     const form = useForm({
         initialValues: {
-            sectioName: "",
+            entryName: "",
+            addToSection: "",
         }
     })
+
+    const dataSelect = [
+        { value: 'section1', label: 'New Section' },
+        { value: 'section2', label: 'New Section 2' },
+    ]
 
     const ModalTitle = (title: string) => (
         <div className="flex flex-row items-center">
@@ -36,29 +37,33 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
-            addCard()
-            setOpened(false)
+            addEmptySection();
+            setOpened(false);
+            form.reset();
         } catch (error) {
             console.log('Error: ', error)
         }
     }
 
-
     return (
-        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Section')} padding={0} className="section-wrapper section-modal w-[700px] mx-auto">
+        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Entry')} padding={0} className="section-wrapper section-modal w-[700px] mx-auto">
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Name </Text>
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name </Text>
                         <TextInput
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("sectioName")}
-                            onChange={(event) => setNewCardName(event.target.value)}
-                            value={newCardName}
+                            {...form.getInputProps("entryName")}
                         />
                     </Grid>
 
+                    <Grid className="p-[10px] mt-[10px] sm:mt-0">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Add to Section: </Text>
+                        <div className="w-[100%] sm:w-[75%]">
+                            <FormSelect data={dataSelect} values={{ ...form.getInputProps(`addToSection`) }} />
+                        </div>
+                    </Grid>
 
                     <Divider className="mt-[40px] mb-[40px]" />
 
@@ -70,7 +75,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                             color="teal"
                             className="mr-0 sm:mr-[10px]"
                         >
-                            Create Section
+                            Create Entry
                         </Button>
                         <Button
                             type="button"
@@ -89,4 +94,4 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     )
 }
 
-export default AddSectionModal
+export default ModalAddQuestion
