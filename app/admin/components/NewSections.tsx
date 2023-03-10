@@ -57,7 +57,7 @@ const NewSections: React.FC<iSectionProps> = () => {
                             <Text className="text-[16px] text-blue-600 font-semibold">New Section Here</Text>
                             <div>
                                 <MdModeEdit className="text-blue-600 text-[20px] mr-[10px] cursor-pointer" onClick={() => setUpdateWriteUp(true)} />
-                                <MdClose className="text-blue-600 text-[20px] cursor-pointer" />
+                                <MdClose className="text-red-600 text-[20px] cursor-pointer" />
                             </div>
                         </div>
                     </Card.Section>
@@ -71,7 +71,7 @@ const NewSections: React.FC<iSectionProps> = () => {
                                     <Text className="text-[16px] text-slate-600 font-semibold">Section Video</Text>
                                     <div>
                                         <MdModeEdit className="text-blue-600 text-[20px] mr-[10px] cursor-pointer" onClick={() => setUpdateVideo(true)} />
-                                        <MdClose className="text-blue-600 text-[20px] cursor-pointer" />
+                                        <MdClose className="text-red-600 text-[20px] cursor-pointer" />
                                     </div>
                                 </div>
                             </div>

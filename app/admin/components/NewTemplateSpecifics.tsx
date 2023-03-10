@@ -50,7 +50,7 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
                                 <Text className="text-[20px] text-blue-600 font-semibold">{card.sectioName}</Text>
                                 <div>
                                     <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
-                                    <MdClose className="text-blue-600 text-[25px] cursor-pointer" onClick={() => removeCard(card.id)} />
+                                    <MdClose className="text-red-600 text-[25px] cursor-pointer" onClick={() => removeCard(card.id)} />
                                 </div>
                             </div>
                         </Card>

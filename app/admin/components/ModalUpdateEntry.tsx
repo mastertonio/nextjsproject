@@ -25,6 +25,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
       format: "",
       toolTip: "",
       append: "",
+      prefilled: "",
       formula: "",
       address: ""
     }
@@ -110,7 +111,14 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               <RichTextSection />
             </div> */}
           </Grid>
-
+          <Grid className="p-[10px] mt-[10px] sm:mt-0">
+            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
+            <TextInput
+              required
+              className="w-[100%] sm:w-[75%] ml-auto"
+              {...form.getInputProps("prefilled")}
+            />
+          </Grid>
           <Grid className="p-[10px] mt-[10px] sm:mt-0">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
             <TextInput
