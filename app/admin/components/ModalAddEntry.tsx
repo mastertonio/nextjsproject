@@ -136,7 +136,7 @@ const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionDat
                     </Grid>
 
                     <Grid className="p-[10px] mt-[10px] sm:mt-0">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Tooltip: </Text>
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
                         <Textarea
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
@@ -145,7 +145,7 @@ const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionDat
                     </Grid>
 
                     <Grid className="p-[10px] mt-[10px] sm:mt-0">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Appended Text: </Text>
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Appended Value: </Text>
                         <TextInput
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
@@ -162,18 +162,18 @@ const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionDat
                         />
                     </Grid>
 
-                    <Grid className="p-[10px] mt-[10px] sm:mt-0">
+                    {/* <Grid className="p-[10px] mt-[10px] sm:mt-0">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
                         <TextInput
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps(`formEntry.0.address`)}
                         />
-                    </Grid>
+                    </Grid> */}
 
                     <Divider className="mt-[30px] mb-[30px]" />
 
-                    <Code block>{JSON.stringify(form.values, null, 2)}</Code>
+                    {/* <Code block>{JSON.stringify(form.values, null, 2)}</Code> */}
 
                     <Grid justify="flex-end" className="mt-[20px] mb-[20px] sm:mb-0 flex flex-col sm:flex-row m-0 sm:m-[-8px] pt-0 sm:pt-[20px">
                         <Button
