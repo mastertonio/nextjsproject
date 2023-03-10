@@ -144,6 +144,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     link: item.link,
     button: (
       <Button
+        type="button"
         leftIcon={<AiOutlineFolderOpen />}
         color="blue"
         onClick={() => {
@@ -204,6 +205,8 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
     ),
     source: item.source,
   }));
+
+  console.log('roi', myroi)
 
   return (
     <div>

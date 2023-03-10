@@ -22,7 +22,7 @@ const Pophover: React.FC<iPophoverTypes> = ({ title }) => {
         </Text>
         <CopyButton value={title}>
           {({ copied, copy }) => (
-            <Button color={copied ? "teal" : "blue"} onClick={copy}>
+            <Button type="button" color={copied ? "teal" : "blue"} onClick={copy}>
               {copied ? "Copied url" : "Copy url"}
             </Button>
           )}

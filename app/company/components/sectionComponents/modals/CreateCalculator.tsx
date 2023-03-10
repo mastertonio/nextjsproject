@@ -78,6 +78,7 @@ const CreateCalculator: React.FC<IMediaSelectionModalProps> = ({ style }) => {
             Add Section
           </Button> */}
           <Button
+            type="button"
             radius="sm"
             size="sm"
             onClick={() => setOpened(false)}
@@ -92,7 +93,7 @@ const CreateCalculator: React.FC<IMediaSelectionModalProps> = ({ style }) => {
         </Grid>
       </Modal>
       <Button
-        
+        type="button"
         variant="subtle"
         onClick={() => setOpened(true)}
         leftIcon={<IconPlus />}

@@ -98,7 +98,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         disallowClose: true,
         color: "teal",
       });
-      
+
       const response = await axios.patch(
         `/v1/company/${userZ?.company_id}/user/${id}`,
         {
@@ -123,7 +123,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           autoClose: 2500,
         });
       }
-      
+
     } catch (error) {
       updateNotification({
         id: "edit-comp",
@@ -263,11 +263,11 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               <div>
                 <Text>Currency : </Text>
                 <Select
-                data={curData}
-                placeholder="Choose Currency"
-                {...form.getInputProps("currency")}
-                style={{ width: 550, marginLeft: "auto" }}
-              />
+                  data={curData}
+                  placeholder="Choose Currency"
+                  {...form.getInputProps("currency")}
+                  style={{ width: 550, marginLeft: "auto" }}
+                />
                 {/* <TextInput
                   required
                   style={{ width: 350, marginLeft: "auto" }}
@@ -302,6 +302,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               Edit User
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -318,6 +319,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineEdit />}
         radius="sm"
         size="xs"

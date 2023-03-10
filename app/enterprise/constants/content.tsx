@@ -365,6 +365,16 @@ export const finalData = {
                 disabled: false
               },
               {
+                id: "091372",
+                type: "inputB",
+                label: 'Opportunities lost to "no decision" and / or competition based on win rate',
+                formula: "TBD",
+                format: "0,0",
+                icon: null,
+                rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
+                disabled: false
+              },
+              {
                 id: "077890",
                 type: "textarea",
                 label: "What are the main reasons you lose to the outcome:",
@@ -389,7 +399,7 @@ export const finalData = {
                 disabled: false
               },
             ],
-            
+
           }, {
             id: "0117925",
             type: "text",
@@ -726,7 +736,7 @@ export const finalData = {
                 label:
                   "Estimated list price before discounting",
                 formula: "TBD",
-                format: ["05wghjd", "03asddsdaads", { operation: "SUM"} ],//if array, possible
+                format: ["05wghjd", "03asddsdaads", { operation: "SUM" }],//if array, possible
                 icon: null,
                 rightSection: (<Button variant="subtle" color="gray" radius="xs" size="xs" compact><IconCalculator size="18" /></Button>),
                 disabled: true

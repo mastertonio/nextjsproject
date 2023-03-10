@@ -99,6 +99,7 @@ function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
                         </div>
                         <div className="ml-auto button-section pr-[24px] z-!40">
                             <Button
+                                type="button"
                                 radius="sm"
                                 color="red"
                                 size="sm"

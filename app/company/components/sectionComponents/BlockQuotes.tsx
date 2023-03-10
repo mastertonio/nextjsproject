@@ -16,7 +16,7 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
 
   const [quoteValue, setQuote] = useState(quote || '');
   const [changeQuote, setQuoteChange] = useState(false);
-  
+
   const [color, setColor] = useState("");
   return (
     <div>
@@ -58,27 +58,28 @@ const SectionBlockQuotes: React.FC<IQuoteProps> = ({ author, quote }) => {
             }}
           />
           <Button
-              style={{ marginLeft: 'auto', display: 'block',}}
-              variant="subtle"
-              color="teal"
-              onClick={() => setQuoteChange(false)}
-            >
-              Save
-            </Button>
+            type="button"
+            style={{ marginLeft: 'auto', display: 'block', }}
+            variant="subtle"
+            color="teal"
+            onClick={() => setQuoteChange(false)}
+          >
+            Save
+          </Button>
         </div>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'start'}}>
-        <Blockquote
-          onClick={() => {
-            setAuthorChange(true);
-            setQuoteChange(true);
-          }}
-          cite={authorValue ? ("- " + authorValue) : ""}
-        >
-          
-          {quoteValue ? <div style={{ color: color }} dangerouslySetInnerHTML={{ __html: quoteValue }}></div> : "Insert Quotes Here"}
-        </Blockquote>
-        {/* <HoverCard
+        <div style={{ display: 'flex', alignItems: 'start' }}>
+          <Blockquote
+            onClick={() => {
+              setAuthorChange(true);
+              setQuoteChange(true);
+            }}
+            cite={authorValue ? ("- " + authorValue) : ""}
+          >
+
+            {quoteValue ? <div style={{ color: color }} dangerouslySetInnerHTML={{ __html: quoteValue }}></div> : "Insert Quotes Here"}
+          </Blockquote>
+          {/* <HoverCard
             shadow="md"
             withArrow
             openDelay={200}

@@ -44,7 +44,24 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
           mr="xl"
         />
       </MediaQuery>
-      {router.route.includes("dashboard") && user?.role == "admin" || user?.role == "company-admin" || user?.role == "company-manager" ? (
+      <div>
+        <Drawer
+          open={isOpen}
+          onClose={toggleDrawer}
+          direction='left'
+          className="!bg-[#2f4050] !p-[20px]"
+        >
+          <DashboardDrawer user={user} />
+        </Drawer>
+        <Button
+          type="button"
+          className="mr-auto !bg-[#00acac]"
+          onClick={toggleDrawer}
+        >
+          Navigate
+        </Button>
+      </div>
+      {/* {router.route.includes("dashboard") && user?.role == "admin" || user?.role == "company-admin" || user?.role == "company-manager" ? (
         <div>
           <Drawer
             open={isOpen}
@@ -55,6 +72,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
             <DashboardDrawer user={user} />
           </Drawer>
           <Button
+            type="button"
             style={{ marginRight: "auto", backgroundColor: '#00acac' }}
             onClick={toggleDrawer}
           >
@@ -64,10 +82,11 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
 
       ) : (
         ""
-      )}
+      )} */}
       {router.route.includes("dashboard/manager") && user?.role == "company-manager" ? (
         <div className="ml-[10px]">
           <Button
+            type="button"
             className="mr-auto"
             onClick={() => router.push('/dashboard')}
           >
@@ -81,6 +100,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
       {router.route == "/dashboard" && user?.role == "company-manager" ? (
         <div className="ml-[10px]">
           <Button
+            type="button"
             className="mr-auto"
             onClick={() => router.push('/dashboard/manager')}
           >
@@ -104,8 +124,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // const data = 'from gssp'
   const cookies = context.req.cookies
   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+    // headers: {
+    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+    // }
     headers: {
-      'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+      'Cookie': "x-access-token=" + cookies['x-access-token']
     }
   })
   const user = await res.json();

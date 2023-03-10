@@ -145,6 +145,7 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
             Delete
           </Button>
           <Button
+            type="button"
             radius="sm"
             size="sm"
             onClick={() => setOpened(false)}
@@ -159,6 +160,7 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
         </Grid>
       </Modal>
       <Button
+        type="button"
         leftIcon={<AiOutlineDelete />}
         radius="sm"
         size="xs"

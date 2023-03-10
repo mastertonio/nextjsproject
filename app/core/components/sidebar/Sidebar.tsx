@@ -3,7 +3,6 @@ import {
   Button,
   Collapse,
   Navbar,
-  Image,
   useMantineTheme,
   Text,
 } from "@mantine/core";
@@ -11,6 +10,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Image from 'next/image';
 import {
   MdSpaceDashboard,
   MdCalculate,
@@ -50,7 +50,17 @@ const Sidebar: React.FC = () => {
         expires: Date.now()
       });
 
+      Cookies.set('session.sig', ' ', {
+        expires: Date.now()
+      });
+
+      Cookies.set('session', ' ', {
+        expires: Date.now()
+      });
+
       Cookies.remove('x-access-token', { path: '/' })
+      Cookies.remove('session.sig', { path: '/' })
+      Cookies.remove('session', { path: '/' })
       router.push("/");
     } catch (error) {
       return error;
@@ -70,15 +80,18 @@ const Sidebar: React.FC = () => {
       height="100vh"
       className={`bg-[#2f4050] text-[lightgray] mt-[-70px] flex-col items-start ${navShow === false ? 'hidden' : ''} sm:flex`}
     >
-      <Image style={{ marginTop: 35 }} src="/logo.png" alt="random" />
-      <Text style={{ marginBottom: 150, marginLeft: 35, width: "full" }}>
+      <div className="mt-[35px]">
+        <Image src="/logo.png" alt="random" height={62} width={205} />
+      </div>
+      <Text className="mb-[100px] ml-[35px] w-full">
         Welcome {user?.name}
       </Text>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           fullWidth
-          style={{ marginTop: 5, color: "lightgray" }}
+          className="mt-[5px] text-[lightgray]"
           onClick={() => router.push(`/dashboard`)}
           leftIcon={<MdSpaceDashboard />}
           size="md"
@@ -88,10 +101,11 @@ const Sidebar: React.FC = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           color="blue"
           fullWidth
-          style={{ marginTop: 5, color: "lightgray" }}
+          className="mt-[5px] text-[lightgray]"
           onClick={() => setOpenCompany((o) => !o)}
           leftIcon={<MdCalculate />}
           rightIcon={
@@ -103,18 +117,15 @@ const Sidebar: React.FC = () => {
         </Button>
         <Collapse
           in={openCompany}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-          }}
+          className="flex flex-col items-end"
         >
           {user?.role == "admin" ? (
             <Button
+              type="button"
               variant="subtle"
               color="blue"
               fullWidth
-              style={{ marginTop: 5, marginLeft: 17, color: "lightgray" }}
+              className="mt-[5px] ml-[17px] text-[lightgray]"
               leftIcon={<MdLineWeight />}
               onClick={() => router.push(`/company`)}
             >
@@ -124,10 +135,11 @@ const Sidebar: React.FC = () => {
             ""
           )}
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
-            style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
+            className="mt-[5px] ml-[8x] text-[lightgray]"
             leftIcon={<MdLineWeight />}
             onClick={() => router.push(`/users`)}
           >
@@ -137,10 +149,11 @@ const Sidebar: React.FC = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           color="blue"
           fullWidth
-          style={{ marginTop: 5, color: "lightgray" }}
+          className="mt-[5px] text-[lightgray]"
           size="md"
           leftIcon={<MdAccessTimeFilled />}
           onClick={() => setOpenTemplate((o) => !o)}
@@ -152,20 +165,22 @@ const Sidebar: React.FC = () => {
         </Button>
         <Collapse in={openTemplate}>
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
-            style={{ marginTop: 5, marginLeft: 17, color: "lightgray" }}
+            className="mt-[5px] ml-[17px] text-[lightgray]"
             leftIcon={<MdLineWeight />}
             onClick={() => router.push(`/templates/builder`)}
           >
             Create Template
           </Button>
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
-            style={{ marginTop: 5, marginLeft: 8, color: "lightgray" }}
+            className="mt-[5px] ml-[8px] text-[lightgray]"
             leftIcon={<MdLineWeight />}
             onClick={() => router.push(`/templates`)}
           >
@@ -175,10 +190,11 @@ const Sidebar: React.FC = () => {
       </Navbar.Section>
       <Navbar.Section>
         <Button
+          type="button"
           variant="subtle"
           color="blue"
           fullWidth
-          style={{ marginTop: 5, color: "lightgray" }}
+          className="mt-[5px] text-[lightgray]"
           size="md"
           leftIcon={<MdLogout />}
           onClick={handleLogout}

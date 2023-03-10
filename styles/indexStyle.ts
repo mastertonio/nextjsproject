@@ -51,7 +51,8 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   button:{
       height: 44,
       width: '100%',
-      marginTop: 40
+      marginTop: 40,
+      textAlign: 'center'
   },
 
 
@@ -71,7 +72,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
   wrapper2: {
     minHeight: '100vh',
     backgroundSize: 'cover',
-    backgroundImage: `url("/login.jpg")`,
+    // backgroundImage: `url("/login.jpg")`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'top center'
   },
@@ -81,7 +82,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
     }`,
     minHeight: `100vh`,
-    maxWidth: 450,
+    maxWidth: 600,
     paddingTop: 80,
 
     [`@media (max-width: ${theme.breakpoints.sm}px)`]: {

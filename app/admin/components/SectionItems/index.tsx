@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form"
 import RichTextSection from '@app/core/components/richtext/RichTextSection'
 import { DragNDrop } from '@app/core/components/dragdrop'
 import { IconBookmark } from '@tabler/icons';
+import { FcTodoList } from 'react-icons/fc'
 import { useModalEntryStore, useModalAddEntryStore } from '@app/store/builderStore';
 import { customConfig, IBuilderSubState, useBuilderStore, useSectionsStore } from '@app/store/builder/builderState';
 import { uniqueNamesGenerator } from 'unique-names-generator';
@@ -47,13 +48,13 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
         <div className='pl-0 pr-0'>
             <div className="bg-[#ffffff] rounded-[5px] shadow p-[10px] mt-[50px]">
                 <h1 className="text-[28px] text-[#676a6c] font-bold flex flex-row items-center ml-[20px]">
-                    <IconBookmark size={30} stroke={3} />
+                    <FcTodoList size={30} className="text-blue-600 mr-[10px]" />
                     <span>{content.sectionName}</span>
                 </h1>
             </div>
 
             <div className="pl-[2rem] pr-[2rem]">
-                <Card className="mt-[20px] mb-[20px]">
+                <Card className="mt-[20px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                     <div className="mt-[20px]">
                         <SectionDnd data={sectData} type="modal" setUpdate={setUpdate} />
                     </div>

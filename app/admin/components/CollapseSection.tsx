@@ -66,6 +66,7 @@ const CollapseSection: React.FC<iCollapseProps> = ({ item }) => {
 
                 <Grid justify="flex-end" className="mt-[30px] sm:mt-[mt-20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[-8px] pt-0 sm:pt-[20px]">
                     <Button
+                        type="button"
                         radius="sm"
                         size="sm"
                         color="red"

@@ -51,7 +51,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
   ]
 
   return (
-    <Modal opened={open} onClose={() => setOpened(false)} size="920px" title="Update Entry" padding={0} className="section-wrapper">
+    <Modal opened={open} onClose={() => setOpened(false)} size="920px" title="Update Entry" padding={0} className="section-wrapper section-modal">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
           <Grid className="p-[10px]">
@@ -145,6 +145,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               Update Entry
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               color="red"
@@ -153,6 +154,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               Delete
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               color="gray"

@@ -100,6 +100,7 @@ const ImageDropzone = () => {
       </Dropzone>
 
       <Button
+        type="button"
         className={classes.control}
         size="md"
         radius="xl"

@@ -34,16 +34,16 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
 
   const getManagers = async () => {
     return await axios.get(
-        `/v1/company/${userZ?.company_id}/user`
-      );
+      `/v1/company/${userZ?.company_id}/user`
+    );
   };
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
     "getTransManagers",
     getManagers
   );
- 
-  const transferlist = data?.data.map((item: { _id: string; email: string; })=> ({key: item._id, value: item._id, label: item.email}))
+
+  const transferlist = data?.data.map((item: { _id: string; email: string; }) => ({ key: item._id, value: item._id, label: item.email }))
 
 
 
@@ -158,6 +158,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
               Transfer Templates
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -174,6 +175,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineSwap />}
         radius="sm"
         size="xs"
