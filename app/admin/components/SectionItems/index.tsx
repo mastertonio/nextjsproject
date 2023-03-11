@@ -6,7 +6,7 @@ import { DragNDrop } from '@app/core/components/dragdrop'
 import { IconBookmark } from '@tabler/icons';
 import { FcTodoList } from 'react-icons/fc'
 import { useModalEntryStore, useModalAddEntryStore } from '@app/store/builderStore';
-import { customConfig, IBuilderSubState, useBuilderStore, useSectionsStore } from '@app/store/builder/builderState';
+import { customConfig, IBuilderSubState, useNewStore } from '@app/store/builder/builderState';
 import { uniqueNamesGenerator } from 'unique-names-generator';
 import SectionDnd from '../SectionDnd'
 import ModalUpdateEntry from '../ModalUpdateEntry'
@@ -21,6 +21,7 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
     const showModalEntry = useModalEntryStore((state) => state.value);
     const showAddModalEntry = useModalAddEntryStore((state) => state.value);
     const showAddEntry = useModalAddEntryStore((state) => state.show);
+    const setUpdateChoice = useNewStore((state) => state.setUpdateChoice)
     const [opened, setOpened] = useState(false);
     const [update, setUpdate] = useState(false);
 
@@ -75,7 +76,7 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
                     </Grid>
                 </Card>
             </div>
-            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} />
+            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
             <ModalAddEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setOpened} open={opened} />
         </div>
     )

@@ -31,8 +31,8 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
     return (
         <div className="w-full">
             <div className="bg-[#ffffff] shadow p-[10px]">
-                <h1 className="text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
-                    <FcComboChart size={30} className="text-blue-600 mr-[10px]" />
+                <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
+                    <FcComboChart className="text-blue-600 mr-[10px] text-[40px] sm:text-[30px]" />
                     <span>ROI Dashboard | 2 Year Projection</span>
                 </h1>
             </div>
@@ -43,7 +43,7 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
                     <Text className="text-[14px] text-[#676a6c] font-light w-[100%]">To calculate return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left.</Text>
                 </Card>
 
-                <div className="grid grid-cols-3 gap-4 mt-[20px]">
+                <div className="flex flex-col sm:grid grid-cols-3 gap-4 mt-[20px]">
                     {cards.map((card, index) => (
                         <Card key={index} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
                             <div className="flex flex-row items-center justify-between">

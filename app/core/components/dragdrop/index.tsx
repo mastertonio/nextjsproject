@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react
 import { IconGripVertical, IconEdit, IconX } from '@tabler/icons';
 import CollapseSection from '@app/admin/components/CollapseSection';
 import { useModalEntryStore } from '@app/store/builderStore';
-import { IBuilderSubState, useBuilderStore } from '@app/store/builder/builderState';
+import { IBuilderSubState, useBuilderStore, useNewStore } from '@app/store/builder/builderState';
 import { iSectionData } from '../../../admin/components/Sections'
 import ModalUpdateEntry from '@app/admin/components/ModalUpdateEntry';
 
@@ -54,6 +54,7 @@ export interface DragNDropProps {
 export function DragNDrop({ data, type }: DragNDropProps) {
     const { classes, cx } = useStyles();
     const show = useModalEntryStore((state) => state.show);
+    const setUpdateChoice = useNewStore((state) => state.setUpdateChoice)
     const [hideShow, setHideShow] = useState<any>({});
     resetServerContext();
     const [display, setDisplay] = useState<any>(false)
@@ -138,7 +139,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                     </div>
                 )}
             </Droppable>
-            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} />
+            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
         </DragDropContext>
     )
 }

@@ -44,7 +44,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
           mr="xl"
         />
       </MediaQuery>
-      <div>
+      <div className="ml-auto sm:ml-[unset] mt-[-30px] sm:mt-0">
         <Drawer
           open={isOpen}
           onClose={toggleDrawer}

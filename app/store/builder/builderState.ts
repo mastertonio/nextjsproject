@@ -172,6 +172,24 @@ export const useCardStore = create<CardsProps>((set) => ({
   },
 }));
 
+interface NewChoice {
+  newChoice: boolean;
+  updateChoice: boolean;
+  choiceValue: string;
+  setChoiceValue: (char: string) => void;
+  setUpdateChoice: (b: boolean) => void;
+  setOpenChoice: (b: boolean) => void;
+}
+
+export const useNewStore = create<NewChoice>((set) => ({
+  newChoice: false,
+  updateChoice: false,
+  choiceValue: "",
+  setChoiceValue: (state) => set(() => ({ choiceValue: state })),
+  setUpdateChoice: (state) => set(() => ({ updateChoice: state })),
+  setOpenChoice: (state) => set(() => ({ newChoice: state })),
+}));
+
 interface ICalculatorState {
   val: number;
 }

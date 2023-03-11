@@ -9,10 +9,11 @@ import { useBuilderStore } from '@app/store/builder/builderState';
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
+    setUpdateEntry: (b: boolean) => void
     open: boolean
 }
 
-const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, setUpdateEntry }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
     const addEmptySection = useBuilderStore((state) => state.addSection)
     const form = useForm({
@@ -29,8 +30,8 @@ const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, op
 
     const ModalTitle = (title: string) => (
         <div className="flex flex-row items-center">
-            <HiOutlineDocumentText className="mr-[10px] text-[26px]" />
-            <Text className="text-[22px] mb-0 mt-[3px] font-semibold">{title}</Text>
+            <HiOutlineDocumentText className="mr-[10px] text-[36px] sm:text-[26px]" />
+            <Text className="text-[18px] sm:text-[22px] mb-0 mt-[3px] font-semibold">{title}</Text>
         </div>
     )
 
@@ -39,6 +40,7 @@ const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, op
             console.log('Values: ', values)
             addEmptySection();
             setOpened(false);
+            setUpdateEntry(true);
             form.reset();
         } catch (error) {
             console.log('Error: ', error)
@@ -46,7 +48,7 @@ const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, op
     }
 
     return (
-        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Entry')} padding={0} className="section-wrapper section-modal w-[700px] mx-auto">
+        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Entry')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[700px] mx-auto">
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
@@ -73,7 +75,7 @@ const ModalAddQuestion: React.FC<IModalEntryProps> = ({ showModal, setOpened, op
                             radius="sm"
                             size="sm"
                             color="teal"
-                            className="mr-0 sm:mr-[10px]"
+                            className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
                         >
                             Create Entry
                         </Button>
