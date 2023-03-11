@@ -9,7 +9,8 @@ import {
   MdKeyboardArrowRight,
   MdLineWeight,
   MdAccessTimeFilled,
-  MdLogout
+  MdLogout,
+  MdSpaceDashboard,
 } from "react-icons/md";
 import Cookies from 'js-cookie';
 
@@ -43,9 +44,21 @@ const DashboardDrawer = ({ user }: any) => {
           <Button
             type="button"
             variant="subtle"
-            color="blue"
             fullWidth
             className="mt-[100px] text-[lightgray] flex items-start"
+            onClick={() => router.push(`/dashboard`)}
+            leftIcon={<MdSpaceDashboard />}
+            size="md"
+          >
+            Dashboard
+          </Button>
+        </div>
+        <div>
+          <Button
+            variant="subtle"
+            color="blue"
+            fullWidth
+            className="mt-[5px] text-[lightgray] flex items-start"
             onClick={() => setOpenCompany((o) => !o)}
             leftIcon={<MdCalculate />}
             rightIcon={

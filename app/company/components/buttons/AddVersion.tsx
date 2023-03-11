@@ -116,12 +116,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] !bg-[#073e52] text-white"
           align="center"
         >
           Add Company Template
@@ -139,17 +134,12 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
             })}
           >
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
               <Text>Name: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter Template Name"
                 {...form.getInputProps("name")}
               />
@@ -164,22 +154,18 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
               <Text>Notes: </Text>
               <Textarea
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 placeholder="Enter Notes for Template"
                 {...form.getInputProps("notes")}
               />
             </Grid>
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mb-[15px]"
             >
               <Text>Version: </Text>
               <NumberInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 min={0}
                 max={10}
                 placeholder="Enter Version"
@@ -188,13 +174,13 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
             </Grid>
           </Stack>
 
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[20px]"
               onClick={() => setOpened(false)}
             >
               Save Template Version
@@ -204,11 +190,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-gray-500"
             >
               Close
             </Button>

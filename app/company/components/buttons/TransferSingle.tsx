@@ -111,12 +111,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] bg-[#073e52] text-white"
           align="center"
         >
           Transfer all of the user&apos;s ROIs to another user
@@ -134,30 +129,25 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
             })}
           >
             <Grid
-              style={{
-                marginLeft: 30,
-                marginRight: 30,
-                marginTop: 30,
-                marginBottom: 15,
-              }}
+              className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
               <Text>Email: </Text>
               <Select
                 placeholder="New Title Name"
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}
                 {...form.getInputProps("new_source")}
               />
             </Grid>
           </Stack>
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Transfer Templates
@@ -167,11 +157,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-[gray]"
             >
               Close
             </Button>

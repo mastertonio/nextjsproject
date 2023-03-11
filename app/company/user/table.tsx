@@ -137,11 +137,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
       unique_ip: item.unique_ip,
       actions: (
         <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
+          className="flex justify-end items-center"
         >
           <TransferSingleButton
             id={item.user_id}
@@ -161,13 +157,13 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
   if (isSuccess) {
     return (
       <div>
-        <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
-          <Grid style={{ margin: 20 }}>
+        <div className="m-[10px] bg-white p-[20px] sm:p-[50px]">
+          <Grid className="m-[20px]">
             <Text weight={700}> The ROI Shop User Calculators</Text>
             <Input
               variant="default"
               placeholder="Search for ROI"
-              style={{ marginLeft: "auto" }}
+              className="ml-auto w-full sm:w-[unset] mt-[20px] sm:mt-0"
               onChange={(event: {
                 target: { value: React.SetStateAction<string> };
               }) => {
@@ -176,18 +172,17 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
             />
           </Grid>
           <ScrollArea
-            style={{ height: 590 }}
+            className="h-[590px]"
             onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
           >
             <Table
-              className={classes.table}
+              className={`${classes.table} w-[1300px] sm:w-[unset]`}
               highlightOnHover
               verticalSpacing="xs"
               horizontalSpacing="xl"
             >
               <thead
-                className={cx(classes.header, { [classes.scrolled]: scrolled })}
-                style={{ zIndex: 50 }}
+                className={`${cx(classes.header, { [classes.scrolled]: scrolled })} z-[50]`}
               >
                 <tr>
                   <Th
@@ -202,7 +197,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "calculator_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("calculator_name")}
-                    style="w-[250px] !border-white !border-0"
+                    style="w-[300px] sm:w-[250px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                   >
                     Calculator Name
                   </Th>
@@ -226,7 +221,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "visits"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("visits")}
-                    style="w-[110px] !border-white !border-0"
+                    style="w-[300px] sm:w-[110px] !border-white !border-0"
                   >
                     Visits
                   </Th>
@@ -234,7 +229,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "unique_ip"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("unique_ip")}
-                    style="w-[130px] !border-white !border-0"
+                    style="w-[300px] sm:w-[130px] !border-white !border-0"
                   >
                     Unique
                   </Th>
@@ -246,26 +241,20 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
               ) : (
                 <tbody>
                   {companyUsers?.map((element: any) => (
-                    <tr key={shortUUID.generate()} style={{ height: 20 }}>
-                      <td style={{ width: 10 }}>{element.username}</td>
+                    <tr key={shortUUID.generate()} className="h-[20px]">
+                      <td className="w-[10px]">{element.username}</td>
                       <td
-                        style={{
-                          cursor: "pointer",
-                          width: 140,
-                          paddingLeft: 30,
-                        }}
+                        className="cursor-pointer w-[140px] pl-[30px]"
                       >
                         {element.calculator_name}
                       </td>
                       <td>{element.template_name}</td>
                       <td>{element.createdAt}</td>
-                      <td style={{ width: 145, paddingLeft: 30 }}>
+                      <td className="w-[145px] pl-[30px]">
                         {element.visits}
                       </td>
                       <td
-                        style={{
-                          width: 110,
-                        }}
+                        className="w-[110px]"
                       >
                         {element.unique_ip}
                       </td>
@@ -276,7 +265,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
               )}
             </Table>
           </ScrollArea>
-          <div>
+          <div className="mb-[40px]">
             <Paginate
               refetch={refetch}
               page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}

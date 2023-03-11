@@ -96,8 +96,6 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
     }
   };
 
-
-
   return (
     <>
       <Modal
@@ -110,12 +108,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[30px] text-[30px] !bg-[#073e52] text-white"
           align="center"
         >
           {name}
@@ -132,27 +125,27 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
               height: 350,
             })}
           >
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Name : </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 // defaultValue={myCompany.licenses}
                 placeholder="Enter New Name"
                 {...form.getInputProps("name")}
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Notes : </Text>
               <Textarea
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
                 // defaultValue={myCompany.licenses}
                 placeholder="Template Notes"
                 {...form.getInputProps("notes")}
               />
             </Grid>
-            <Grid style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+            <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Status : </Text>
               <Select
                 data={[
@@ -161,17 +154,17 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
                 ]}
                 placeholder="Set Status"
                 {...form.getInputProps("status")}
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-[550px] ml-auto"
               />
             </Grid>
           </Stack>
-          <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Grid justify="flex-end" className="m-[20px]">
             <Button
               type="submit"
               radius="sm"
               size="sm"
               color="teal"
-              style={{ marginRight: 10 }}
+              className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
               Edit Template
@@ -181,11 +174,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
+              className="bg-white text-black border-gray-500"
             >
               Close
             </Button>
@@ -201,6 +190,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         onClick={() => {
           setOpened(true);
         }}
+        className="mr-[5px]"
         color="yellow"
       >
         Edit
