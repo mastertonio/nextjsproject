@@ -11,12 +11,14 @@ interface IModalEntryProps {
     open: boolean
 }
 
-interface CardProps {
-    sectioName: string
+interface CardSection {
+    id: string;
+    sectioName: string;
 }
 
 const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
+    const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
     const addCard = useCardStore((state) => state.addCard);
     const setNewCardName = useCardStore((state) => state.setNewCardName);
@@ -42,7 +44,6 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
             console.log('Error: ', error)
         }
     }
-
 
     return (
         <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Section')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%] mx-auto">

@@ -164,11 +164,16 @@ export const useCardStore = create<CardsProps>((set) => ({
       cards: [...state.cards, newCard],
       newCardName: "",
     });
+    localStorage.setItem(
+      "valueBucket",
+      JSON.stringify([...state.cards, newCard])
+    );
   },
   removeCard: (id: string) => {
     const state = useCardStore.getState();
     const updatedCards = state.cards.filter((card) => card.id !== id);
     set({ cards: updatedCards });
+    localStorage.setItem("valueBucket", JSON.stringify(updatedCards));
   },
 }));
 
