@@ -126,6 +126,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
               Change ROI Name
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -142,6 +143,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineEdit />}
         radius="sm"
         size="xs"

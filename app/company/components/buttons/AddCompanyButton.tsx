@@ -225,6 +225,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
                   <FileButton onChange={setFile}>
                     {(props) => (
                       <Button
+                        type="button"
                         variant="light"
                         color="dark"
                         radius="xs"
@@ -289,6 +290,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
               Save Company
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -301,6 +303,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiFillPlusCircle />}
         radius="sm"
         size="sm"

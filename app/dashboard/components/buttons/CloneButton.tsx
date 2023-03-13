@@ -78,7 +78,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
     }
   })
 
- 
+
   return (
     <>
       <Modal
@@ -141,6 +141,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
               Change ROI Name
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -157,6 +158,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<FaRegClone />}
         radius="sm"
         color="teal"

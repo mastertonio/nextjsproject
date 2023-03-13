@@ -98,7 +98,7 @@ const ForgotPassword: React.FC = () => {
               </Box>
               <div className={classes.forgot_password}>
                 <Text className="text-[15px] font-semibold">© The ROI Shop</Text>
-                <Button variant="subtle" radius="lg" onClick={() => (router.push('/'))} className="text-[15px] font-semibold">
+                <Button type="button" variant="subtle" radius="lg" onClick={() => (router.push('/'))} className="text-[15px] font-semibold">
                   Login
                 </Button>
               </div>

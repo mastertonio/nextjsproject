@@ -148,6 +148,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
               Transfer Templates
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -160,6 +161,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineSwap />}
         radius="sm"
         size="xs"

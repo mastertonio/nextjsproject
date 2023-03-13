@@ -33,6 +33,8 @@ import { FaGripLinesVertical } from 'react-icons/fa'
 import { ReactNode, useEffect, useState } from "react";
 import styles from "@styles/tiptap.module.scss";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useModalCalculateStore } from "@app/store/builder/modalStores";
+import CalculationModal from "@app/core/components/modal";
 // import { useForm } from "@mantine/form";
 
 export type iVariableProp = {
@@ -75,6 +77,17 @@ type Itest = {
   gray: iElemsProp
 }
 
+export type iSectionProps = {
+  id: number
+  title: string
+  type: string
+  format: string
+  tooltip: string
+  appendedText: string
+  formula: string
+  address: string
+}
+
 const InputVariable: React.FC<iGrayProps> = ({
   type,
   classes,
@@ -82,8 +95,12 @@ const InputVariable: React.FC<iGrayProps> = ({
 }) => {
   const [show, setShow] = useState<boolean>(false)
   const [value, toggle] = useToggle(['teal', 'red']);
+  const showModalValue = useModalCalculateStore((state) => state.value)
+  const showModalCalculate = useModalCalculateStore((state) => state.show)
+  const hideModalCalculate = useModalCalculateStore((state) => state.hide)
   const FormulaParser = require('hot-formula-parser').Parser
   const parser = new FormulaParser()
+
 
   const hide = () => {
     setShow((prevState) => !prevState)
@@ -108,6 +125,8 @@ const InputVariable: React.FC<iGrayProps> = ({
 
 
   useEffect(() => {
+    const formValue = JSON.parse(localStorage.getItem("formValue") ?? '[]') as iSectionProps[];
+    console.log('localStorage', formValue);
     console.log(dataR)
   }, [dataR])
 
@@ -139,7 +158,7 @@ const InputVariable: React.FC<iGrayProps> = ({
               <Grid className="flex items-center">
                 <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.text }} color="dark" fz="xl" fw={700}></Text>
                 {elem.toggle ? (
-                  <Button className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[40px]" color={value} onClick={() => toggle()} radius="md" size="md">
+                  <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[40px]" color={value} onClick={() => toggle()} radius="md" size="md">
                     {value == "red" ? "Exclude" : "Include"}
                   </Button>)
                   : ""
@@ -153,7 +172,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                     key={state.id}
                     className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
                   >
-                    <Text className="w-[100%] md:w-[300px] 2xl:w-[500px]">{state.label}: </Text>
+                    <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{state.label}: </Text>
                     {state.type == "textarea" ? (
                       <Textarea
                         className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
@@ -213,7 +232,7 @@ const InputVariable: React.FC<iGrayProps> = ({
                         </>
                       ) : state.type == "input" ? (
                         <Input
-                          className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
+                          className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px] "
                           icon={state.icon ? state.icon : ""}
                           type="number"
                           key={state.id}
@@ -231,6 +250,33 @@ const InputVariable: React.FC<iGrayProps> = ({
                         // defaultValue={myCompany.name}
                         />) : state.type == "table" ? (
                           <div className={styles.ProseMirror} dangerouslySetInnerHTML={{ __html: state.content }}></div>
+                        ) : state.type == "inputB" ? (
+                          <div className="flex items-center ml-auto remove-radius" key={state.id}>
+                            <NumberInput
+                              className="w-[100px] md:w-[255px] 2xl:w-[255px]"
+                              icon={state.icon ? state.icon : ""}
+                              hideControls
+                              rightSection={state.rightSection ?
+                                <Tooltip label="Sample Tooltip on calculator, content will be populated in the future" events={{ hover: true, focus: true, touch: false }}>
+                                  {state.rightSection}
+                                </Tooltip> : ""
+                              }
+                              rightSectionProps={{
+                                onClick: showModalCalculate
+                              }}
+                              disabled
+                              value={result}
+                            />
+                            <Button
+                              type="submit"
+                              radius="xs"
+                              size="sm"
+                              className="w-[150px] sm:w-[unset] text-[12px] sm:text-[unset] rounded-l-none"
+                              disabled
+                            >
+                              Lost Opportunities
+                            </Button>
+                          </div>
                         ) : (
                         <NumberInput
                           className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
@@ -241,6 +287,9 @@ const InputVariable: React.FC<iGrayProps> = ({
                               {state.rightSection}
                             </Tooltip> : ""
                           }
+                          rightSectionProps={{
+                            onClick: showModalCalculate
+                          }}
                           key={state.id}
                           disabled
                           value={result}
@@ -260,6 +309,7 @@ const InputVariable: React.FC<iGrayProps> = ({
         <FloatingCard />
       </div>
 
+      <CalculationModal showModal={showModalValue} setClose={hideModalCalculate} />
     </Grid>
 
   );

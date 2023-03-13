@@ -68,8 +68,8 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
         >
           Choose a Section Layout
         </Text>
-        <SimpleGrid cols={3} style={{ margin: 20}}>
-        <Box
+        <SimpleGrid cols={3} style={{ margin: 20 }}>
+          <Box
             component="div"
             sx={(theme) => ({
               backgroundColor: "whitesmoke",
@@ -84,7 +84,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+            onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description" })}
           >
             <LeadGrid />
           </Box>
@@ -106,7 +106,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+            onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description" })}
           >
             <Option1 />
           </Box>
@@ -128,7 +128,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+            onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description" })}
           >
             <Option2 />
           </Box>
@@ -150,7 +150,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+            onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description" })}
           >
             <Option3 />
           </Box>
@@ -172,7 +172,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+            onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description" })}
           >
             <Option4 />
           </Box>
@@ -194,7 +194,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
                 backgroundColor: theme.colors.cyan[1]
               },
             })}
-            onClick={()=> builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description"})}
+            onClick={() => builderCtx.addSection({ id: shortUUID.generate(), name: shortUUID.generate(), title: 'Edit Section Title', description: "Edit Section Description" })}
           >
             <Option5 />
           </Box>
@@ -210,6 +210,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
             Add Section
           </Button> */}
           <Button
+            type="button"
             radius="sm"
             size="sm"
             onClick={() => setOpened(false)}
@@ -224,6 +225,7 @@ const AddSectionModal: React.FC<IAddSectionModalProps> = ({ style }) => {
         </Grid>
       </Modal>
       <Button
+        type="button"
         leftIcon={<IconPlus />}
         variant="subtle"
         className={style}

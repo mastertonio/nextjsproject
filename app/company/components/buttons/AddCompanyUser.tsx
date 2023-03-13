@@ -350,6 +350,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
               Save User
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -362,6 +363,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiFillPlusCircle />}
         radius="sm"
         size="sm"

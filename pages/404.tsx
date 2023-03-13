@@ -50,7 +50,7 @@ const FourOhFour: React.FC = () => {
               Page you are trying to open does not exist. You may have mistyped the address, or the
               page has been moved to another URL. If you think this is an error contact support.
             </Text>
-            <Button variant="outline" size="md" mt="xl" className={`${classes.control} mt-[40px]`} onClick={() => router.push('/')}>
+            <Button type="button" variant="outline" size="md" mt="xl" className={`${classes.control} mt-[40px]`} onClick={() => router.push('/')}>
               Get back to home page
             </Button>
           </div>
@@ -66,7 +66,7 @@ const FourOhFour: React.FC = () => {
             Page you are trying to open does not exist. You may have mistyped the address, or the
             page has been moved to another URL. If you think this is an error contact support.
           </Text>
-          <Button variant="outline" size="md" mt="xl" className={classes.control} onClick={() => { router.push('/dashboard') }}>
+          <Button type="button" variant="outline" size="md" mt="xl" className={classes.control} onClick={() => { router.push('/dashboard') }}>
             Get back to home page
           </Button>
         </div>

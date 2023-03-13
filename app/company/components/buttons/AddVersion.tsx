@@ -186,6 +186,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
               Save Template Version
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -198,6 +199,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiFillPlusCircle />}
         radius="sm"
         size="sm"

@@ -211,6 +211,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
     id: item._id,
     button: (
       <Button
+        type="button"
         leftIcon={<AiOutlineFolderOpen />}
         color="blue"
         onClick={() => {
@@ -230,6 +231,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
         className="flex justify-end items-center gap-2"
       >
         <Button
+          type="button"
           leftIcon={<HiTemplate />}
           size="xs"
           color="indigo"
@@ -240,6 +242,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           Templates
         </Button>
         <Button
+          type="button"
           leftIcon={<FiUsers />}
           size="xs"
           color="cyan"

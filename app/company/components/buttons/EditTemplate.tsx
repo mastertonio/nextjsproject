@@ -170,6 +170,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
               Edit Template
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -182,6 +183,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineEdit />}
         radius="sm"
         size="xs"

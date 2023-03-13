@@ -5,7 +5,7 @@ import { useLocalStorage } from "@mantine/hooks";
 
 interface ISegmentedProps {
   val: string;
-  refetch: ()=> void;
+  refetch: () => void;
   name: string
   id: string
 }
@@ -13,12 +13,12 @@ interface ISegmentedProps {
 const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id }) => {
   const [value, setValue] = useState(val);
   const [opened, setOpened] = useState(false);
-  
+
   const [values] = useLocalStorage({ key: "auth-token" });
 
   return (
     <>
-    <Modal
+      <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         withCloseButton={false}
@@ -37,60 +37,61 @@ const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id }) => {
           }}
           align="center"
         >
-          Are you sure you want to set <Text component="span" color="teal">{name}</Text> to {value=="active" ? <Text component="span" color="red">Inactive</Text> : <Text component="span" color="teal">Active</Text>} ?
+          Are you sure you want to set <Text component="span" color="teal">{name}</Text> to {value == "active" ? <Text component="span" color="red">Inactive</Text> : <Text component="span" color="teal">Active</Text>} ?
         </Text>
 
-          <Grid justify="flex-end" style={{ margin: 20 }}>
-            <Button
-              type="submit"
-              radius="sm"
-              size="sm"
-              color={value=="active" ? "red" : "teal"}
-              style={{ marginRight: 10 }}
-              onClick={async() => {
-                setOpened(false)
-                setValue(value=="active" ? "inactive" : "active")
-                const response = await axios.patch(
-                  `/v1/company/${id}`,
-                  {
-                    active: value=="active" ? 0 : 1
-                  }
-                );
-                if(response){
-                  refetch()
+        <Grid justify="flex-end" style={{ margin: 20 }}>
+          <Button
+            type="submit"
+            radius="sm"
+            size="sm"
+            color={value == "active" ? "red" : "teal"}
+            style={{ marginRight: 10 }}
+            onClick={async () => {
+              setOpened(false)
+              setValue(value == "active" ? "inactive" : "active")
+              const response = await axios.patch(
+                `/v1/company/${id}`,
+                {
+                  active: value == "active" ? 0 : 1
                 }
-              }}
-            >
-              Set to {value=="active" ? "Inactive" : "Active"}
-            </Button>
-            <Button
-              radius="sm"
-              size="sm"
-              onClick={() => setOpened(false)}
-              style={{
-                backgroundColor: "white",
-                color: "black",
-                borderColor: "gray",
-              }}
-            >
-              Close
-            </Button>
-          </Grid>
+              );
+              if (response) {
+                refetch()
+              }
+            }}
+          >
+            Set to {value == "active" ? "Inactive" : "Active"}
+          </Button>
+          <Button
+            type="button"
+            radius="sm"
+            size="sm"
+            onClick={() => setOpened(false)}
+            style={{
+              backgroundColor: "white",
+              color: "black",
+              borderColor: "gray",
+            }}
+          >
+            Close
+          </Button>
+        </Grid>
       </Modal>
       <SegmentedControl
-      size="xs"
-      onClick={()=> {
-        setOpened(true)
-      }}
-      value={value}
-      color={value == "active" ? "teal" : "gray"}
-      data={[
-        { label: "Inactive", value: "inactive" },
-        { label: "Active", value: "active" },
-      ]}
-    />
+        size="xs"
+        onClick={() => {
+          setOpened(true)
+        }}
+        value={value}
+        color={value == "active" ? "teal" : "gray"}
+        data={[
+          { label: "Inactive", value: "inactive" },
+          { label: "Active", value: "active" },
+        ]}
+      />
     </>
-    
+
   );
 };
 

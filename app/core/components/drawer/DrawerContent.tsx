@@ -42,6 +42,7 @@ const DashboardDrawer = ({ user }: any) => {
         </div>
         <div>
           <Button
+            type="button"
             variant="subtle"
             fullWidth
             className="mt-[100px] text-[lightgray] flex items-start"
@@ -70,6 +71,7 @@ const DashboardDrawer = ({ user }: any) => {
           <Collapse in={openCompany}>
             {user?.role == "admin" ? (
               <Button
+                type="button"
                 variant="subtle"
                 color="blue"
                 fullWidth
@@ -84,6 +86,7 @@ const DashboardDrawer = ({ user }: any) => {
             )}
 
             <Button
+              type="button"
               variant="subtle"
               color="blue"
               fullWidth
@@ -97,6 +100,7 @@ const DashboardDrawer = ({ user }: any) => {
         </div>
         <div>
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth
@@ -112,6 +116,7 @@ const DashboardDrawer = ({ user }: any) => {
           </Button>
           <Collapse in={openTemplate}>
             <Button
+              type="button"
               variant="subtle"
               color="blue"
               fullWidth
@@ -122,6 +127,7 @@ const DashboardDrawer = ({ user }: any) => {
               Create Template
             </Button>
             <Button
+              type="button"
               variant="subtle"
               color="blue"
               fullWidth
@@ -135,6 +141,7 @@ const DashboardDrawer = ({ user }: any) => {
         </div>
         <div>
           <Button
+            type="button"
             variant="subtle"
             color="blue"
             fullWidth

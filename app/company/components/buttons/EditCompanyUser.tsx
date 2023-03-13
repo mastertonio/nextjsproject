@@ -290,6 +290,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               Edit User
             </Button>
             <Button
+              type="button"
               radius="sm"
               size="sm"
               onClick={() => setOpened(false)}
@@ -302,6 +303,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       </Modal>
 
       <Button
+        type="button"
         leftIcon={<AiOutlineEdit />}
         radius="sm"
         size="xs"
