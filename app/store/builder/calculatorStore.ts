@@ -17,12 +17,10 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
+import { parse as mathparse, compile, evaluate } from "mathjs"
 
 const FormulaParser = require("hot-formula-parser");
 const formulas = FormulaParser.SUPPORTED_FORMULAS;
-
-import { iSectionData } from "@app/admin/components/Sections";
-
 export interface UserState {
   user: UserContextTypes | null;
   token: string;
@@ -31,66 +29,6 @@ export interface UserState {
   setToken: (token: string) => void;
   setRefresh: (refresh: string) => void;
 }
-
-// export interface IBuilderSubState {
-//   id: number;
-//   symbol: string;
-//   sectionName: string;
-
-//   sectionWriteUp: string;
-//   sectionVideo: string;
-//   sectionFormula: string;
-// }
-
-// interface IBuilderState {
-//   content: IBuilderSubState[];
-//   addSection: () => void;
-//   reorder: (state: IBuilderSubState[]) => void;
-//   remove: (id: number) => void;
-//   update: (variable: IBuilderSubState) => void
-// }
-
-// type MyPersist = (
-//   config: StateCreator<IBuilderState>,
-//   options: PersistOptions<IBuilderState>
-// ) => StateCreator<IBuilderState>;
-
-// {
-//   address: "A4",
-//   forcedValue: "",
-//   format: "",
-//   formula: "SUM(45,56,23,11)",
-//   formTags: "input",
-//   label: "C",
-//   value: 0,
-// },
-// {
-//   address: "A5",
-//   forcedValue: "",
-//   format: "",
-//   formula: "SUM(A1, A3, A4)",
-//   label: "Total2 = Total1 + C",
-//   formTags: "output",
-//   value: 0,
-// },
-// {
-//   address: "A6",
-//   forcedValue: "",
-//   format: "",
-//   formula: "A5 * 10",
-//   formTags: "output",
-//   label: "Total 3 = Total1 + total2",
-//   value: 0,
-// },
-// {
-//   address: "A7",
-//   forcedValue: "",
-//   format: "",
-//   formula: "A5 * 10",
-//   formTags: "input",
-//   label: "Total 4",
-//   value: 0,
-// },
 
 export type CellProps = {
   address: string;
@@ -118,8 +56,6 @@ export type CalculatorStore = {
   update: (cells: CellProps) => void;
 };
 
-// ((A2+A1)*A1)-A3
-
 export const useCalculatorStore = create<Cell>((set) => ({
   cells: [
     {
@@ -128,7 +64,7 @@ export const useCalculatorStore = create<Cell>((set) => ({
       formTags: "input",
       format: "0,0",
       formula: null,
-      label: "A",
+      label: "A1",
       value: 0,
     },
     {
@@ -137,7 +73,7 @@ export const useCalculatorStore = create<Cell>((set) => ({
       format: "0,0%",
       formula: null,
       formTags: "input",
-      label: "B",
+      label: "A2",
       value: 0,
     },
     {
@@ -153,47 +89,11 @@ export const useCalculatorStore = create<Cell>((set) => ({
       address: "A4",
       forcedValue: "",
       format: "",
-      formula: "MIN(SUM(A2, A3), SUM(A1, A3))-2",
+      formula: "SUM(A1:A3)-2",
       formTags: "output",
-      label: "MIN(SUM(A2, A3), SUM(A1, A3))-2",
+      label: "SUM(A1:A3)-2",
       value: 0,
     },
-    {
-      address: "A5",
-      forcedValue: "",
-      format: "",
-      formula: "A3+A4",
-      label: "Total2 = Total1 + C",
-      formTags: "output",
-      value: 0,
-    },
-    {
-      address: "A6",
-      forcedValue: "",
-      format: "",
-      formula: "A3+A5",
-      formTags: "output",
-      label: "Total 3 = Total1 + total2 (A3+A5)",
-      value: 0,
-    },
-    // {
-    //   address: "A7",
-    //   forcedValue: "",
-    //   format: "",
-    //   formula: "A3+A5+A6",
-    //   formTags: "input",
-    //   label: "Total 4 - A3+A5+A6",
-    //   value: 0,
-    // },
-    // {
-    //   address: "A8",
-    //   forcedValue: "",
-    //   format: "",
-    //   formula: "((A2+A1)*A1)+A3",
-    //   formTags: "input",
-    //   label: "Total 5 - Total1*Total1",
-    //   value: 0,
-    // },
   ],
   update: (cells: CellProps) => {
     set((state) => {
@@ -231,12 +131,79 @@ function calculateFormula(
   cell: CellProps,
   state: CalculatorStore
 ): CellProps | null {
-  console.log(cell.formula, "im the formula", formulas);
+  // console.log(cell.formula, "im the formula", formulas);
   const formulaRegex = new RegExp(`\\b(${formulas.join("|")})\\b`);
   const parser = new FormulaParser.Parser();
 
+  parser.on('callRangeValue', function (startCellCoord: { row: { index: number; }; column: { index: number; }; }, endCellCoord: { row: { index: number; }; column: { index: number; }; }, done: (arg0: number[][]) => void) {
+    const data = state.cells.filter(c => {
+      const col = c.address.charCodeAt(0) - 65;
+      const row = parseInt(c.address.substring(1)) - 1;
+      return row >= startCellCoord.row.index && row <= endCellCoord.row.index && col >= startCellCoord.column.index && col <= endCellCoord.column.index;
+    }).map(c => [c.value]);
+    var fragment = [];
+
+    for (var row = startCellCoord.row.index; row <= endCellCoord.row.index; row++) {
+      var rowData = data[row];
+      var colFragment = [];
+
+      for (var col = startCellCoord.column.index; col <= endCellCoord.column.index; col++) {
+        colFragment.push(rowData[col]);
+      }
+      fragment.push(colFragment);
+    }
+
+    if (fragment) {
+      done(fragment);
+    }
+  });
+
   if (cell.formula) {
     if (formulaRegex.test(cell.formula)) {
+      //can still be optimized @jr @js
+      if (cell.formula.includes(":")) {
+        const matches = cell.formula.match(/([A-Z]\d+):([A-Z]\d+)/);
+        if (matches) {
+          const [startAddress, endAddress] = matches.slice(1);
+          const startCol = startAddress.charCodeAt(0) - 65;
+          const endCol = endAddress.charCodeAt(0) - 65;
+          const startRow = parseInt(startAddress.substring(1)) - 1;
+          const endRow = parseInt(endAddress.substring(1)) - 1;
+          const data = state.cells.filter(c => {
+            const col = c.address.charCodeAt(0) - 65;
+            const row = parseInt(c.address.substring(1)) - 1;
+            return row >= startRow && row <= endRow && col >= startCol && col <= endCol && c.value !== null && c.value !== undefined;
+          }).map(c => [c.value]);
+          var fragment = [];
+          for (var row = startRow; row <= endRow; row++) {
+            var rowData = data[row - startRow];
+            var colFragment = [];
+            for (var col = startCol; col <= endCol; col++) {
+              colFragment.push(rowData[col - startCol]);
+            }
+            fragment.push(colFragment);
+          }
+          if (fragment) {
+            try {
+              const result = parser.parse('SUM(' + startAddress + ':' + endAddress + ')').evaluate({ A1: fragment });
+              return { ...cell, value: result - 2 };
+            } catch (error) {
+              console.error(`Error in formula: ${cell.formula} - ${error}`);
+              return null;
+            }
+          }
+        }
+        // try {
+        //   // eslint-disable-next-line no-eval
+        //   const result = parser.parse(cell.formula).result;
+        //   // console.log(result, "cal");
+        //   return { ...cell, value: result };
+        // } catch (error) {
+        //   console.error(`Error in formula: ${cell.formula} - ${error}`);
+        //   return null;
+        // }
+      }
+
       const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
         const dependentCell = state.cells.find((c) => c.address === match);
         if (dependentCell) {

@@ -40,6 +40,58 @@ const FourOhFour: React.FC = () => {
   const { classes } = useStyles();
   const router = useRouter();
 
+  const FormulaParser = require('hot-formula-parser');
+  const parser = new FormulaParser.Parser();
+
+  // Define a test data set
+  const data: { [key: string]: number } = {
+    A1: 1,
+    A2: 2,
+    A3: 3,
+    A4: 4,
+    A5: 5,
+  };
+
+  // Create a new parser instance
+
+  // Set up a custom variable resolver to fetch data from the test data set
+  parser.on('callVariable', (name: string) => {
+    return data[name];
+  });
+
+  parser.on('callRangeValue', function(startCellCoord: { row: { index: any; }; column: { index: any; }; }, endCellCoord: { row: { index: number; }; column: { index: number; }; }, done: (arg0: number[][]) => void) {
+    var data = [
+      [1, 2, 3, 4, 5],
+      [6, 7, 8, 9, 10],
+      [11, 12, 13, 14, 15],
+      [16, 17, 18, 19, 20],
+    ];
+    var fragment = [];
+  
+    for (var row = startCellCoord.row.index; row <= endCellCoord.row.index; row++) {
+      var rowData = data[row];
+      var colFragment = [];
+  
+      for (var col = startCellCoord.column.index; col <= endCellCoord.column.index; col++) {
+        colFragment.push(rowData[col]);
+      }
+      fragment.push(colFragment);
+    }
+  
+    if (fragment) {
+      done(fragment);
+    }
+  });
+  
+  
+  console.log(parser.parse('JOIN(A1:E2)')); // returns `"1,2,3,4,5,6,7,8,9,10"`
+  console.log(parser.parse('COLUMNS(A1:E2)')); // returns `5`
+  console.log(parser.parse('ROWS(A1:E2)')); // returns `2`
+  console.log(parser.parse('COUNT(A1:E2)')); // returns `10`
+  console.log(parser.parse('COUNTIF(A1:E2, ">5")'))
+  console.log(parser.parse('SUM(A1:E2)')); // returns `5`
+
+
   return (
     <Container className={`${classes.root} max-w-[100%] bg-gray-100`}>
       <div className='max-w-[85%] h-screen flex mx-auto pt-[50px] lg:pt-0 sm:pt-[50px]'>

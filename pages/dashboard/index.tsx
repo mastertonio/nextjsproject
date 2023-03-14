@@ -122,52 +122,52 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
   return <></>
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const data = 'from gssp'
-  const cookies = context.req.cookies
-  const sessionExpired = cookies['x-access-token'];
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   // const data = 'from gssp'
+//   const cookies = context.req.cookies
+//   const sessionExpired = cookies['x-access-token'];
 
-  console.log(cookies)
+//   console.log(cookies)
 
-  // check if the session has expired
-  if (Date.now() > new Date(sessionExpired).getTime()) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-      props: {}
-    }
-  }
+//   // check if the session has expired
+//   if (Date.now() > new Date(sessionExpired).getTime()) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//       props: {}
+//     }
+//   }
 
-  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-    // headers: {
-    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-    // }
-    headers: {
-      'Cookie': "x-access-token=" + cookies['x-access-token']
-    }
-  })
-  const user = await res.json();
-  console.log('user', user)
+//   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
+//     // headers: {
+//     //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
+//     // }
+//     headers: {
+//       'Cookie': "x-access-token=" + cookies['x-access-token']
+//     }
+//   })
+//   const user = await res.json();
+//   console.log('user', user)
 
-  if (Object.keys(user).length === 0 && user.constructor === Object) {
-    // redirect to dashboard page if authenticated
+//   if (Object.keys(user).length === 0 && user.constructor === Object) {
+//     // redirect to dashboard page if authenticated
 
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-      props: { user }
-    }
-  } else {
-    return {
-      props: { user }
-    }
-  }
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//       props: { user }
+//     }
+//   } else {
+//     return {
+//       props: { user }
+//     }
+//   }
 
-  // return { props: { user } }
-}
+//   // return { props: { user } }
+// }
 
 export default Dashboard;

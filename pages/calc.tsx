@@ -222,7 +222,7 @@ const Calc: React.FC = () => {
 
 
         for (const match of matches) {
-            console.log('match', match);
+            // console.log('match', match);
             const funcName = match[1];
 
             // const ttt = match[2]
@@ -242,7 +242,7 @@ const Calc: React.FC = () => {
             // @jom equal to sa formulajs.functionname example formulajs.SUMPRODUCT
             //kaso need natin na formulajs.SUMPRODUCT([[1,2],[3,4]], [[1,0],[0,1]]) maganto kesa ganto formulajs.SUMPRODUCT("[[1,2],[3,4]], [[1,0],[0,1]]") na string pa ang nasa loob
             const func = formulaFunctions[funcName];
-            console.log('func', match[2])
+            // console.log('func', match[2])
             if (func) {
                 result = func(...args);
             } else {
@@ -256,9 +256,9 @@ const Calc: React.FC = () => {
     const formulatest = 'SUMPRODUCT([[1, 2], [3, 4]], [[1, 0], [0, 1]])';
     const formula = `ABS(-4)`
     const result = evaluateFormula(formulatest);
-    console.log(result) //results to zero | answer should be 5
+    // console.log(result) //results to zero | answer should be 5
 
-    console.log(formulajs.SUMPRODUCT([[1, 2], [3, 4]], [[1, 0], [0, 1]])) // results to 5
+    // console.log(formulajs.SUMPRODUCT([[1, 2], [3, 4]], [[1, 0], [0, 1]])) // results to 5
 
 
     return (
