@@ -103,7 +103,7 @@ const AddNewChoiceModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
                     </Grid>
 
 
-                    <Grid className="p-[10px] mt-[20px] sm:mt-[40px]">
+                    {/* <Grid className="p-[10px] mt-[20px] sm:mt-[40px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
                         <TextInput
                             required
@@ -176,7 +176,7 @@ const AddNewChoiceModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
                         >
                             Cancel
                         </Button>
-                    </Grid>
+                    </Grid> */}
                 </div>
             </form>
         </Modal>

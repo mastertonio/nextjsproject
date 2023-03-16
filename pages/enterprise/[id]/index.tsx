@@ -73,7 +73,7 @@ const Enterprise = () => {
                         key={element.id}
                         label={element.title}
                         money={element.money}
-                        progress={element.value} 
+                        progress={element.value}
                       />
                     ))} */}
                   </SimpleGrid>

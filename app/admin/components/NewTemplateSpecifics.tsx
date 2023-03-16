@@ -47,7 +47,7 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
                     {cards.map((card, index) => (
                         <Card key={index} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
                             <div className="flex flex-row items-center justify-between">
-                                <Text className="text-[20px] text-blue-600 font-semibold">{card.sectioName}</Text>
+                                <Text className="text-[20px] text-blue-600 font-semibold">{card.sectionName}</Text>
                                 <div>
                                     <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
                                     <MdClose className="text-red-600 text-[25px] cursor-pointer" onClick={() => removeCard(card.id)} />

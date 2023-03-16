@@ -3,20 +3,25 @@ import { Modal, Button, Divider, Text, Textarea, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
+import { useCardStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
     open: boolean
+    cardID: string
 }
 
-const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
+    const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
     const form = useForm({
         initialValues: {
             sectioWriteUp: "",
         }
     })
+
+    console.log('card id: ', cardID)
 
     const ModalTitle = (title: string) => (
         <div className="flex flex-row items-center">
@@ -28,6 +33,8 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
+            setWriteup(cardID, values.sectioWriteUp)
+            setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
         }

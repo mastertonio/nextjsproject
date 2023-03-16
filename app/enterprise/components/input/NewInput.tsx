@@ -180,7 +180,7 @@ const NewInputVariable: React.FC<iGrayProps> = ({
                                             <Textarea
                                                 className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
                                                 withAsterisk
-                                            />) : state.type == "stars" ? (
+                                            />) : state.type == "ratings" ? (
                                                 <>
                                                     <Rating
                                                         defaultValue={5}
@@ -278,7 +278,8 @@ const NewInputVariable: React.FC<iGrayProps> = ({
                                             // defaultValue={myCompany.name}
                                             />)
                                         }
-                                    </Grid>)) : ""}
+                                    </Grid>
+                                )) : ""}
                             </Stack>
                         </div>)) : ""}
                     {/* <input type="submit" /> */}

@@ -1,11 +1,12 @@
 import React from 'react'
-import { Modal, Button, Divider, Text, TextInput, Textarea, Grid } from '@mantine/core';
+import { Modal, Button, Divider, Text, TextInput, Textarea, Grid, Select } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import FormSelect from '@app/core/components/dropdown/SelectChoice';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { useNewStore } from '@app/store/builder/builderState';
 import { iSectionData } from './Sections';
+import { useLocalStorage } from '@mantine/hooks';
 
 interface IModalEntryProps {
   showModal: boolean
@@ -16,27 +17,88 @@ interface IModalEntryProps {
   open: boolean
 }
 
+type iSectionProps = {
+  id: number
+  title: string
+  type: string
+  format: string
+  tooltip: string
+  appendedText: string
+  formula: string
+  address: string
+}
+
 const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, open, setOpenChoice }) => {
   const hideModal = useModalEntryStore((state) => state.hide);
   const choiceValue = useNewStore((state) => state.choiceValue);
   const form = useForm({
     initialValues: {
-      autoID: "",
-      title: "",
-      type: "",
-      choices: "",
-      format: "",
-      toolTip: "",
-      append: "",
-      prefilled: "",
-      formula: "",
-      address: ""
+      formEntry: [{
+        id: Math.floor(Math.random() * 1000),
+        title: "",
+        type: "",
+        choices: "",
+        format: "",
+        tooltip: "",
+        appendedText: "",
+        prefilled: "",
+        formula: "",
+        address: ""
+      }],
+      // id: "",
+      // title: "",
+      // type: "",
+      // choices: "",
+      // format: "",
+      // toolTip: "",
+      // append: "",
+      // prefilled: "",
+      // formula: "",
+      // address: ""
     }
   })
+  const [formValue, setFormValue] = useLocalStorage<iSectionProps[]>({ key: 'formValue', defaultValue: [] });
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      console.log('Values: ', values)
+      form.insertListItem('formEntry', {
+        id: Math.floor(Math.random() * 1000),
+        title: values.formEntry[0].title,
+        type: values.formEntry[0].type,
+        format: values.formEntry[0].format,
+        tooltip: values.formEntry[0].tooltip,
+        appendedText: values.formEntry[0].appendedText,
+        formula: values.formEntry[0].formula,
+        address: values.formEntry[0].address
+      })
+      setFormValue([
+        ...formValue,
+        {
+          id: Math.floor(Math.random() * 1000),
+          title: values.formEntry[0].title,
+          type: values.formEntry[0].type,
+          format: values.formEntry[0].format,
+          tooltip: values.formEntry[0].tooltip,
+          appendedText: values.formEntry[0].appendedText,
+          formula: values.formEntry[0].formula,
+          address: values.formEntry[0].address
+        }
+      ]);
+      setSectionData([
+        ...sectionData,
+        {
+          id: Math.floor(Math.random() * 1000),
+          title: values.formEntry[0].title,
+          type: values.formEntry[0].type,
+          format: values.formEntry[0].format,
+          tooltip: values.formEntry[0].tooltip,
+          appendedText: values.formEntry[0].appendedText,
+          formula: values.formEntry[0].formula,
+          address: values.formEntry[0].address
+        }
+      ])
+      setOpened(false)
+      form.reset();
     } catch (error) {
       console.log('Error: ', error)
     }
@@ -57,6 +119,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
     { value: 'slider', label: 'Slider' },
     { value: 'header', label: 'Header' },
     { value: 'html', label: 'HTML' },
+    { value: 'ratings', label: 'Ratings' },
   ]
 
   return (
@@ -68,24 +131,38 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("autoID")}
+              {...form.getInputProps("formEntry.0.id")}
+              disabled={true}
+              value={2}
             />
           </Grid>
 
           <Grid className="p-[10px] mt-[20px] sm:mt-[20px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Title: </Text>
-            <div className="w-[100%] sm:w-[75%] ml-auto">
+            <Textarea
+              required
+              className="w-[100%] sm:w-[75%] ml-auto"
+              {...form.getInputProps(`formEntry.0.title`)}
+            />
+            {/* <div className="w-[100%] sm:w-[75%] ml-auto">
               <RichTextSection />
-            </div>
+            </div> */}
           </Grid>
 
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Type: </Text>
             <div className="w-[100%] sm:w-[75%]">
-              <FormSelect
+              <div className="ml-auto">
+                <Select
+                  placeholder="Choose"
+                  data={dataSelect}
+                  {...form.getInputProps("formEntry.0.type")}
+                />
+              </div>
+              {/* <FormSelect
                 data={dataSelect}
-                values={{ ...form.getInputProps("type") }}
-              />
+                values={{ ...form.getInputProps("formEntry.0.type") }}
+              /> */}
             </div>
           </Grid>
 
@@ -110,7 +187,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("format")}
+              {...form.getInputProps("formEntry.0.format")}
             />
           </Grid>
 
@@ -119,7 +196,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("tooltip")}
+              {...form.getInputProps("formEntry.0.tooltip")}
             />
             {/* <div className="w-[100%] sm:w-[75%] ml-auto">
               <RichTextSection />
@@ -130,7 +207,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("prefilled")}
+              {...form.getInputProps("formEntry.0.prefilled")}
             />
           </Grid>
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
@@ -138,7 +215,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("append")}
+              {...form.getInputProps("formEntry.0.appendedText")}
             />
           </Grid>
 
@@ -146,7 +223,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
             <Textarea
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formula")}
+              {...form.getInputProps("formEntry.0.formula")}
             />
           </Grid>
 
@@ -155,7 +232,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("address")}
+              {...form.getInputProps("formEntry.0.address")}
             />
           </Grid>
 
