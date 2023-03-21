@@ -93,7 +93,7 @@ const NewSections: React.FC<iSectionProps> = () => {
                                         </div>
                                         <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                             <div className="flex flex-row items-center justify-between">
-                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video</Text>
+                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500">{card.sectionVideoLink}</span></Text>
                                                 <div>
                                                     <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => setUpdateVideo(true)} />
                                                     <MdClose className="text-red-600 text-[16px] cursor-pointer" />
@@ -128,7 +128,7 @@ const NewSections: React.FC<iSectionProps> = () => {
             ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)} */}
 
                         <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} cardID={getID} />
-                        <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} />
+                        <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} cardID={getID} />
                         <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                         <ModalUpdateEntry showModal={entry} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} />
                         <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />

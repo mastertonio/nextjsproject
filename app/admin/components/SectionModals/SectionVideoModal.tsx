@@ -2,19 +2,22 @@ import React from 'react'
 import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
-import { HiOutlineDocumentText } from 'react-icons/hi'
+import { HiOutlineDocumentText } from 'react-icons/hi';
+import { useCardStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
     open: boolean
+    cardID: string
 }
 
-const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
+    const setVideoLink = useCardStore((state) => state.updateSectionVideoLink)
     const form = useForm({
         initialValues: {
-            sectioVideo: "",
+            sectionVideo: "",
         }
     })
 
@@ -28,6 +31,8 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
+            setVideoLink(cardID, values.sectionVideo)
+            setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
         }
@@ -43,7 +48,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
                         <TextInput
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("sectioVideo")}
+                            {...form.getInputProps("sectionVideo")}
                         />
                     </Grid>
 

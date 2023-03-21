@@ -10,7 +10,7 @@ import InputVariable, { iElemsProp } from "@app/enterprise/components/input/NewI
 
 interface CardSection {
   id: string;
-  sectioName: string;
+  sectionName: string;
 }
 
 const Enterprise = () => {
@@ -65,7 +65,7 @@ const Enterprise = () => {
                     {valueBucketState.map((card) => (
                       <NewValueBucket
                         key={card.id}
-                        label={card.sectioName}
+                        label={card.sectionName}
                       />
                     ))}
                     {/* {contentData.sections.sliders.elements.map((element) => (
