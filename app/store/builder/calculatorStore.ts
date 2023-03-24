@@ -56,6 +56,33 @@ export type CalculatorStore = {
   update: (cells: CellProps) => void;
 };
 
+
+// const data = transformData(state.cells);
+
+
+
+// const data = state.cells.filter(c => {
+//   const col = c.address.charCodeAt(0) - 65;
+//   const row = parseInt(c.address.substring(1)) - 1;
+//   return row >= startCellCoord.row.index && row <= endCellCoord.row.index && col >= startCellCoord.column.index && col <= endCellCoord.column.index;
+// }).map(c => [c.value]);
+
+// var fragment = [];
+
+// for (var row = startCellCoord.row.index; row <= endCellCoord.row.index; row++) {
+//   var rowData = data[row];
+//   var colFragment = [];
+
+//   for (var col = startCellCoord.column.index; col <= endCellCoord.column.index; col++) {
+//     colFragment.push(rowData[col]);
+//   }
+//   fragment.push(colFragment);
+// }
+
+// if (fragment) {
+//   done(fragment);
+// }
+
 export const useCalculatorStore = create<Cell>((set) => ({
   cells: [
     {
@@ -77,23 +104,41 @@ export const useCalculatorStore = create<Cell>((set) => ({
       value: 0,
     },
     {
-      address: "A3",
+      address: "B1",
       forcedValue: "",
       format: "$0,0",
       formula: "",
       formTags: "input",
-      label: "A3",
+      label: "B1",
       value: 0,
     },
     {
-      address: "A4",
+      address: "B2",
       forcedValue: "",
-      format: "",
-      formula: "SUM(A1:A3)-2",
-      formTags: "output",
-      label: "SUM(A1:A3)-2",
+      format: "$0,0",
+      formula: "",
+      formTags: "input",
+      label: "B2",
       value: 0,
     },
+    {
+      address: "A5",
+      forcedValue: "",
+      format: "",
+      formula: "SUM(A2:B2)*10",
+      formTags: "output",
+      label: "A5",
+      value: 0,
+    },
+    {
+      address: "C6",
+      forcedValue: "",
+      format: "",
+      formula: "SUM(A1:A5)*10",
+      formTags: "output",
+      label: "C6",
+      value: 0,
+    }
   ],
   update: (cells: CellProps) => {
     set((state) => {
@@ -127,29 +172,39 @@ export const useCalculatorStore = create<Cell>((set) => ({
   },
 }));
 
-function calculateFormula(
-  cell: CellProps,
-  state: CalculatorStore
-): CellProps | null {
-  // console.log(cell.formula, "im the formula", formulas);
-  const formulaRegex = new RegExp(`\\b(${formulas.join("|")})\\b`);
+
+
+function parseFormula(formula: string, cellObject?: any): number | null {
   const parser = new FormulaParser.Parser();
 
-  parser.on('callRangeValue', function (startCellCoord: { row: { index: number; }; column: { index: number; }; }, endCellCoord: { row: { index: number; }; column: { index: number; }; }, done: (arg0: number[][]) => void) {
-    const data = state.cells.filter(c => {
-      const col = c.address.charCodeAt(0) - 65;
-      const row = parseInt(c.address.substring(1)) - 1;
-      return row >= startCellCoord.row.index && row <= endCellCoord.row.index && col >= startCellCoord.column.index && col <= endCellCoord.column.index;
-    }).map(c => [c.value]);
-    var fragment = [];
+  parser.on("callCellValue", function (cellCoord: { column: { index: number; }; row: { index: number; }; }, done: (arg0: number) => void) {
+    const address = `${String.fromCharCode(65 + cellCoord.column.index)}${cellCoord.row.index + 1}`;
 
-    for (var row = startCellCoord.row.index; row <= endCellCoord.row.index; row++) {
-      var rowData = data[row];
-      var colFragment = [];
+    if (cellObject && cellObject.address === address) {
+      done(cellObject.value);
+    } else {
+      done(0);
+    }
+  });
 
-      for (var col = startCellCoord.column.index; col <= endCellCoord.column.index; col++) {
+  parser.on("callRangeValue", function (startCellCoord: { row: { index: any; }; column: { index: any; }; }, endCellCoord: { row: { index: number; }; column: { index: number; }; }, done: (arg0: number[][]) => void) {
+    const data = [
+      [1, 2, 3, 4, 5],
+      [6, 7, 8, 9, 10],
+      [11, 12, 13, 14, 15],
+      [16, 17, 18, 19, 20],
+    ];
+
+    const fragment = [];
+
+    for (let row = startCellCoord.row.index; row <= endCellCoord.row.index; row++) {
+      const rowData = data[row];
+      const colFragment = [];
+
+      for (let col = startCellCoord.column.index; col <= endCellCoord.column.index; col++) {
         colFragment.push(rowData[col]);
       }
+
       fragment.push(colFragment);
     }
 
@@ -158,50 +213,177 @@ function calculateFormula(
     }
   });
 
+  try {
+    const result = parser.parse(formula);
+    return typeof result === "number" ? result : null;
+  } catch (error) {
+    console.error(`Error in formula: ${formula} - ${error}`);
+    return null;
+  }
+}
+
+type CellObject = {
+  address: string;
+  forcedValue: string;
+  formTags: string;
+  format: string;
+  formula: string | null;
+  label: string;
+  value: number;
+}
+
+function cellObjectsTo2DArray(cellObjects: CellProps[], numRows: number, numCols: number): number[][] {
+  const data: number[][] = [];
+  let index = 0;
+
+  for (let i = 0; i < numRows; i++) {
+    const row: number[] = [];
+    for (let j = 0; j < numCols; j++) {
+      const cellObject = cellObjects[index];
+      row.push(cellObject ? cellObject.value : 0);
+      index++;
+    }
+    data.push(row);
+  }
+
+  return data;
+}
+
+
+export function transformData(data: CellProps[]) {
+  const result = [];
+
+  for (const obj of data) {
+    const row = [
+      obj.address,
+      null,
+      obj.formTags,
+      obj.format,
+      obj.formula,
+      obj.label,
+      obj.value,
+    ];
+
+    result.push(row);
+  }
+
+  return result;
+}
+
+interface DataRow {
+  [index: number]: string | null | number;
+}
+
+
+function calculateFormula(
+  cell: CellProps,
+  state: CalculatorStore
+): CellProps | null {
+  // console.log(cell.formula, "im the formula", formulas);
+  const formulaRegex = new RegExp(`\\b(${formulas.join("|")})\\b`);
+  const parser = new FormulaParser.Parser();
+
+  //   parser.on('callFunction', function (name: string, params: any, done: (arg0: number) => void) {
+  //     if (name === 'VLOOKUP') {
+  //         const data = transformData(state.cells)
+  //         const vlookupvalue = params[0];
+  //         const vlookupcolumn: number | null = params[2]
+  //         console.log(params, 'pararara')
+
+  //         let fragment: any;
+
+  //         const matches = params[1].split(":")
+  //         let start, end;
+  //         if (matches) {
+  //             start = matches[0]
+  //             end = matches[1]
+  //         }
+
+  //         let startIndex = -1;
+  //         let endIndex = -1;
+
+  //         for (let i = 0; i < data.length; i++) {
+  //             if (data[i][0] === start) {
+  //                 startIndex = i;
+  //             }
+  //             if (data[i][0] === end) {
+  //                 endIndex = i;
+  //             }
+  //         }
+
+  //         if (startIndex !== -1 && endIndex !== -1) {
+  //             const result = data.slice(Math.min(startIndex, endIndex), Math.max(startIndex, endIndex) + 1).find(a => a[0] === vlookupvalue);
+  //             fragment = result;
+  //         }
+  //         if (fragment && vlookupcolumn) {
+  //             done(fragment[vlookupcolumn - 1])
+  //         }
+  //     }
+  // });
+
+  const numCols = 5;
+  const numRows = Math.ceil(state.cells.length / numCols);
+
+  //cellrange area
+
+  parser.on('callRangeValue', function (
+    startCellCoord: {
+      row: { index: number; };
+      column: { index: number; };
+      label: string
+    },
+    endCellCoord: {
+      row: { index: number; };
+      column: { index: number; };
+      label: string
+    }, done: (arg0: number[][]) => void) {
+    const data = transformData(state.cells);
+
+    const start = startCellCoord.label;
+    const end = endCellCoord.label;
+
+    let startIndex = -1;
+    let endIndex = -1;
+    let fragment: (string | number | null)[][] = [];
+
+    // Find the indices of the start and end elements
+    for (let i = 0; i < data.length; i++) {
+      if (data[i][0] === start) {
+        startIndex = i;
+      }
+      if (data[i][0] === end) {
+        endIndex = i;
+      }
+    }
+
+    if (startIndex !== -1 && endIndex !== -1) {
+      const result = data.slice(Math.min(startIndex, endIndex), Math.max(startIndex, endIndex) + 1).map(a => a[6]);
+      fragment.push(result); // Output: [3, 4, 2]
+    }
+
+    if (fragment) {
+      // Use type assertion to convert null/undefined to 0
+      const result = fragment.map(row => row.map(val => (val === null || val === undefined ? 0 : +val)));
+      done(result);
+    }
+  });
+
+
   if (cell.formula) {
     if (formulaRegex.test(cell.formula)) {
+
+
       //can still be optimized @jr @js
       if (cell.formula.includes(":")) {
-        const matches = cell.formula.match(/([A-Z]\d+):([A-Z]\d+)/);
-        if (matches) {
-          const [startAddress, endAddress] = matches.slice(1);
-          const startCol = startAddress.charCodeAt(0) - 65;
-          const endCol = endAddress.charCodeAt(0) - 65;
-          const startRow = parseInt(startAddress.substring(1)) - 1;
-          const endRow = parseInt(endAddress.substring(1)) - 1;
-          const data = state.cells.filter(c => {
-            const col = c.address.charCodeAt(0) - 65;
-            const row = parseInt(c.address.substring(1)) - 1;
-            return row >= startRow && row <= endRow && col >= startCol && col <= endCol && c.value !== null && c.value !== undefined;
-          }).map(c => [c.value]);
-          var fragment = [];
-          for (var row = startRow; row <= endRow; row++) {
-            var rowData = data[row - startRow];
-            var colFragment = [];
-            for (var col = startCol; col <= endCol; col++) {
-              colFragment.push(rowData[col - startCol]);
-            }
-            fragment.push(colFragment);
-          }
-          if (fragment) {
-            try {
-              const result = parser.parse('SUM(' + startAddress + ':' + endAddress + ')').evaluate({ A1: fragment });
-              return { ...cell, value: result - 2 };
-            } catch (error) {
-              console.error(`Error in formula: ${cell.formula} - ${error}`);
-              return null;
-            }
-          }
+        try {
+          // eslint-disable-next-line no-eval
+          const result = parser.parse(cell.formula).result;
+          // console.log(result, "cal");
+          return { ...cell, value: result };
+        } catch (error) {
+          console.error(`Error in formula: ${cell.formula} - ${error}`);
+          return null;
         }
-        // try {
-        //   // eslint-disable-next-line no-eval
-        //   const result = parser.parse(cell.formula).result;
-        //   // console.log(result, "cal");
-        //   return { ...cell, value: result };
-        // } catch (error) {
-        //   console.error(`Error in formula: ${cell.formula} - ${error}`);
-        //   return null;
-        // }
       }
 
       const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
@@ -227,34 +409,44 @@ function calculateFormula(
         console.error(`Error in formula: ${formula} - ${error}`);
         return null;
       }
-    }
-
-    const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
-      const dependentCell = state.cells.find((c) => c.address === match);
-      if (dependentCell) {
-        console.log(
-          "from dependentcell check",
-          dependentCell.value.toString(),
-          dependentCell.formula
-        );
-        return dependentCell.value.toString();
-      } else {
-        return "0";
+    } else if (cell.formula.includes('VLOOK')) {
+      try {
+        // eslint-disable-next-line no-eval
+        const result = parser.parse('VLOOKUP("B2", "A2:VL7", 7, false)').result;
+        return { ...cell, value: result };
+      } catch (error) {
+        console.error(`Error in formula: - ${error}`);
+        return null;
       }
-    });
+    } else {
 
-    try {
-      // eslint-disable-next-line no-eval
-      console.log(formula, "fromula from try");
-      const result = eval(formula);
-      console.log(result, "cal");
-      return { ...cell, value: result };
-    } catch (error) {
-      console.error(`Error in formula: ${formula} - ${error}`);
-      return null;
+      const formula = cell.formula.replace(/([A-Z][0-9]+)/g, (match) => {
+        const dependentCell = state.cells.find((c) => c.address === match);
+        if (dependentCell) {
+          console.log(
+            "from dependentcell check",
+            dependentCell.value.toString(),
+            dependentCell.formula
+          );
+          return dependentCell.value.toString();
+        } else {
+          return "0";
+        }
+      });
+
+      try {
+        // eslint-disable-next-line no-eval
+        console.log(formula, 'form')
+        console.log(formula, "fromula from try");
+        const result = eval(formula);
+        console.log(result, "cal");
+        return { ...cell, value: result };
+      } catch (error) {
+        console.error(`Error in formula: ${formula} - ${error}`);
+        return null;
+      }
     }
   }
-
   return null;
 
   // console.log(formula,'formula')
@@ -298,8 +490,46 @@ export const useCalculatorSheetStore = create<Sheet>((set) => ({
 
 useCalculatorStore.subscribe((state) => {
   const sheetStore = useCalculatorSheetStore.getState();
-  console.log(state);
-  console.log(sheetStore);
+  const parser = new FormulaParser.Parser();
+  parser.on('callFunction', function (name: string, params: any, done: (arg0: number) => void) {
+    if (name === 'VLOOKUP') {
+      const data = transformData(state.cells)
+      const vlookupvalue = params[0];
+      const vlookupcolumn: number | null = params[2]
+      // console.log(params)
+
+      let fragment: any;
+
+      const matches = params[1].split(":")
+      let start, end;
+      if (matches) {
+        start = matches[0]
+        end = matches[1]
+      }
+
+      let startIndex = -1;
+      let endIndex = -1;
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i][0] === start) {
+          startIndex = i;
+        }
+        if (data[i][0] === end) {
+          endIndex = i;
+        }
+      }
+
+      if (startIndex !== -1 && endIndex !== -1) {
+        const result = data.slice(Math.min(startIndex, endIndex), Math.max(startIndex, endIndex) + 1).find(a => a[0] === vlookupvalue);
+        fragment = result;
+      }
+      if (fragment && vlookupcolumn) {
+        done(fragment[vlookupcolumn - 1])
+      }
+    }
+  });
+
+  console.log(parser.parse('VLOOKUP("B2", "A2:C6", 7, "false")').result, "vlook that reads inputs");
 });
 // useCalculatorStore.subscribe((state) => {
 //   const sheetStore = useCalculatorSheetStore.getState();

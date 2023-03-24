@@ -43,53 +43,70 @@ const FourOhFour: React.FC = () => {
   const FormulaParser = require('hot-formula-parser');
   const parser = new FormulaParser.Parser();
 
-  // Define a test data set
-  const data: { [key: string]: number } = {
-    A1: 1,
-    A2: 2,
-    A3: 3,
-    A4: 4,
-    A5: 5,
-  };
-
-  // Create a new parser instance
-
-  // Set up a custom variable resolver to fetch data from the test data set
-  parser.on('callVariable', (name: string) => {
-    return data[name];
+  parser.setFunction('VLOOKUP', (params: number[]) => {
+    // Get the row index of the search value
+    // let rowIndex = -1;
+    // for (let i = 0; i < range.length; i++) {
+    //   if (range[i][0] === searchValue) {
+    //     rowIndex = i;
+    //     break;
+    //   }
+    // }
+  
+    // // If exactMatch is true and the search value is not found, return #N/A
+    // if (exactMatch && rowIndex === -1) {
+    //   return '#N/A';
+    // }
+  
+    // // If exactMatch is false and the search value is not found, find the nearest value
+    // if (!exactMatch && rowIndex === -1) {
+    //   rowIndex = 0;
+    //   let minDiff = Math.abs(range[rowIndex][0] - searchValue);
+    //   for (let i = 1; i < range.length; i++) {
+    //     const diff = Math.abs(range[i][0] - searchValue);
+    //     if (diff < minDiff) {
+    //       rowIndex = i;
+    //       minDiff = diff;
+    //     }
+    //   }
+    // }
+  
+    // // Return the value at the specified index
+    // if (range[rowIndex] && range[rowIndex][index - 1]) {
+    //   return range[rowIndex][index - 1];
+    // } else {
+    //   return '#N/A';
+    // }
+    return params[0] + 5;
   });
 
-  parser.on('callRangeValue', function(startCellCoord: { row: { index: any; }; column: { index: any; }; }, endCellCoord: { row: { index: number; }; column: { index: number; }; }, done: (arg0: number[][]) => void) {
-    var data = [
-      [1, 2, 3, 4, 5],
-      [6, 7, 8, 9, 10],
-      [11, 12, 13, 14, 15],
-      [16, 17, 18, 19, 20],
-    ];
-    var fragment = [];
-  
-    for (var row = startCellCoord.row.index; row <= endCellCoord.row.index; row++) {
-      var rowData = data[row];
-      var colFragment = [];
-  
-      for (var col = startCellCoord.column.index; col <= endCellCoord.column.index; col++) {
-        colFragment.push(rowData[col]);
-      }
-      fragment.push(colFragment);
-    }
-  
-    if (fragment) {
-      done(fragment);
+  parser.on('callFunction', function(name: string, params: number[], done: (arg0: any) => void) {
+    if (name === 'VLOOKUP') {
+      console.log(name, params)
+      // done(params[0] + 5);
     }
   });
+
+  const data = [
+    ['TLB4', null, "Incumbent Solution", "text", null, null, "Avamar", null, "749"],
+    ["TLC4", null, "Price", "text", "$0,0.00", null, "1267.00", null, "749"],
+    ["TLD4", null, "Unit", "text", null, null, "per TB", null, "749"],
+    ["TLE4", null, "Discount %", "text", null, null, "80.0%", null, "749"],
+];
+
+  // parser.parse('SUM(4, ADD_5(1))')
   
+  // Add the data to the parser
+  parser.setVariable('A1', 1);
+  parser.setVariable('A2', 3);
+  parser.setVariable('B1', 4);
+  parser.setVariable('B2', 2);
   
-  console.log(parser.parse('JOIN(A1:E2)')); // returns `"1,2,3,4,5,6,7,8,9,10"`
-  console.log(parser.parse('COLUMNS(A1:E2)')); // returns `5`
-  console.log(parser.parse('ROWS(A1:E2)')); // returns `2`
-  console.log(parser.parse('COUNT(A1:E2)')); // returns `10`
-  console.log(parser.parse('COUNTIF(A1:E2, ">5")'))
-  console.log(parser.parse('SUM(A1:E2)')); // returns `5`
+  // Parse a VLOOKUP formula
+  const formula = 'VLOOKUP(3, A1:B2, 2, true)';
+  const result = parser.parse(formula);
+  
+  console.log(parser.parse('SUM(4, VLOOKUP(1))')); // Output: 2
 
 
   return (
