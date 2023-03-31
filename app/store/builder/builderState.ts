@@ -18,8 +18,8 @@ import {
   animals,
 } from "unique-names-generator";
 
-const FormulaParser = require('hot-formula-parser').Parser
-const parser = new FormulaParser()
+const FormulaParser = require("hot-formula-parser").Parser;
+const parser = new FormulaParser();
 
 import { iSectionData } from "@app/admin/components/Sections";
 
@@ -47,7 +47,7 @@ interface IBuilderState {
   addSection: () => void;
   reorder: (state: IBuilderSubState[]) => void;
   remove: (id: number) => void;
-  update: (variable: IBuilderSubState) => void
+  update: (variable: IBuilderSubState) => void;
 }
 
 type MyPersist = (
@@ -70,7 +70,7 @@ export const useBuilderStore = create<IBuilderState>((set) => ({
         {
           id: Date.now(),
           symbol: "1" + Math.floor(Math.random() * 100),
-          sectionName: "New Section", 
+          sectionName: "New Section",
           //uniqueNamesGenerator(customConfig),
           sectionWriteUp: "",
           sectionFormula: "",
@@ -103,8 +103,6 @@ export const useBuilderStore = create<IBuilderState>((set) => ({
     })),
 }));
 
-
-
 export type iSectionSubState = {
   id: number;
   symbol: string;
@@ -112,9 +110,7 @@ export type iSectionSubState = {
   sectionWriteUp: string;
   sectionVideo: string;
   sectionFormula: string;
-}
-
-
+};
 
 interface ISectionState {
   section: iSectionData[];
@@ -127,9 +123,7 @@ export const useSectionsStore = create<ISectionState>((set) => ({
   section: [],
   addSection: () =>
     set((state) => ({
-      section: [
-        ...state.section,
-      ],
+      section: [...state.section],
     })),
   reorder: (order: iSectionData[]) =>
     set({
@@ -141,6 +135,60 @@ export const useSectionsStore = create<ISectionState>((set) => ({
     })),
 }));
 
+interface CardSection {
+  id: string;
+  sectioName: string;
+}
+
+interface CardsProps {
+  cards: CardSection[];
+  newCardName: string;
+  setCards: (cards: CardSection[]) => void;
+  setNewCardName: (sectioName: string) => void;
+  addCard: () => void;
+  removeCard: (id: string) => void;
+}
+
+export const useCardStore = create<CardsProps>((set) => ({
+  cards: [],
+  newCardName: "",
+  setCards: (cards) => set({ cards }),
+  setNewCardName: (sectioName) => set({ newCardName: sectioName }),
+  addCard: () => {
+    const state = useCardStore.getState();
+    const newCard = {
+      id: Date.now().toString(),
+      sectioName: state.newCardName,
+    };
+    set({
+      cards: [...state.cards, newCard],
+      newCardName: "",
+    });
+  },
+  removeCard: (id: string) => {
+    const state = useCardStore.getState();
+    const updatedCards = state.cards.filter((card) => card.id !== id);
+    set({ cards: updatedCards });
+  },
+}));
+
+interface NewChoice {
+  newChoice: boolean;
+  updateChoice: boolean;
+  choiceValue: string;
+  setChoiceValue: (char: string) => void;
+  setUpdateChoice: (b: boolean) => void;
+  setOpenChoice: (b: boolean) => void;
+}
+
+export const useNewStore = create<NewChoice>((set) => ({
+  newChoice: false,
+  updateChoice: false,
+  choiceValue: "",
+  setChoiceValue: (state) => set(() => ({ choiceValue: state })),
+  setUpdateChoice: (state) => set(() => ({ updateChoice: state })),
+  setOpenChoice: (state) => set(() => ({ newChoice: state })),
+}));
 
 interface ICalculatorState {
   val: number;
@@ -149,4 +197,3 @@ interface ICalculatorState {
 export const useCalculationStore = create<ICalculatorState>((set) => ({
   val: 0,
 }));
-

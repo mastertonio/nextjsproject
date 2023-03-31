@@ -39,7 +39,11 @@ a {
   margin-bottom: 0;
 }
 
-.section-wrapper svg {
+.section-wrapper-svg svg {
+  color: #fff !important;
+}
+
+.section-modal svg {
   color: #fff !important;
 }
 

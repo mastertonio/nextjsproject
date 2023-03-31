@@ -11,8 +11,8 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 import RoiNavbar from "@core/components/navbar/Navbar";
-import TemplateSpecifics from "@app/admin/components/TemplateSpecifics";
-import Sections from "@app/admin/components/Sections";
+import TemplateSpecifics from "@app/admin/components/NewTemplateSpecifics";
+import Sections from "@app/admin/components/NewSections";
 import { useRouter } from "next/router";
 import { UserState, useUserStore } from "@app/store/userState";
 

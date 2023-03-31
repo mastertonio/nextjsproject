@@ -8,7 +8,7 @@ interface ModalProps {
 
 const CalculationModal: React.FC<ModalProps> = ({ showModal, setClose }) => {
     return (
-        <Modal opened={showModal} onClose={setClose} size="920px" title="Deals needed per rep to hit the sales goal ( deals / qtr)" className="section-wrapper" padding={0}>
+        <Modal opened={showModal} onClose={setClose} size="920px" title="Deals needed per rep to hit the sales goal ( deals / qtr)" className="section-wrapper section-wrapper-svg" padding={0}>
             <div className="bg-[#ECEFF1] p-[10px] sm:p-[40px] mt-0">
                 <Grid className="w-full m-0 pt-[20px] sm:pt-0">
                     <Card className="flex justify-between items-center w-full" p="sm">

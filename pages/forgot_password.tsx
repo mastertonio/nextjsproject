@@ -10,12 +10,13 @@ import {
   Container,
   useMantineTheme,
   Checkbox,
-  Image
+  // Image
 } from "@mantine/core";
 import { IconLock } from '@tabler/icons'
 import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
 import React, { useEffect } from "react";
+import Image from 'next/image';
 import { useRouter } from "next/router";
 import { useLocalStorage } from "@mantine/hooks";
 
@@ -67,7 +68,7 @@ const ForgotPassword: React.FC = () => {
       <div className="flex flex-row">
         <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 gap-40 items-center">
           <div className="text-center block order-last xl:order-1">
-            <Image src="/forgot.png" alt="forgot" width={500} height="auto" />
+            <Image src="/forgot.png" alt="forgot" width={500} height={500} />
           </div>
           <div className="order-1 block  xl:order-1">
             <Container size="xs" px="xs" className={`flex flex-col items-center justify-center m-w-[100px] w-full h-[450px] bg-white p-[30px] rounded-lg shadow-lg border-0`}>
