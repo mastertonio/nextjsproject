@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { RichTextEditor, Link } from '@mantine/tiptap';
-import { useEditor } from '@tiptap/react';
+import { useEditor, Editor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -21,7 +21,10 @@ import { IconTable, IconTableOff, IconTableExport, IconTableImport, IconVideo } 
 type iRichTextProps = {}
 
 const RichTextSection: React.FC<iRichTextProps> = () => {
-    const editor = useEditor({
+    const initialValue =
+        "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+    const [value, setValue] = useState<string>(initialValue)
+    const editor: Editor | null = useEditor({
         extensions: [
             StarterKit,
             Underline,
@@ -43,7 +46,8 @@ const RichTextSection: React.FC<iRichTextProps> = () => {
             TableHeader,
             TableCell,
         ],
-        content: ``
+        content: value
+
     });
 
     const addTable = () => {
@@ -62,8 +66,14 @@ const RichTextSection: React.FC<iRichTextProps> = () => {
         }
     }
 
+    useEffect(() => {
+        const html = editor?.getHTML()
+        console.log('Editor', value)
+    }, [])
+
+
     return (
-        <RichTextEditor editor={editor}>
+        <RichTextEditor editor={editor} onChange={() => setValue}>
             <RichTextEditor.Toolbar sticky stickyOffset={60}>
                 <RichTextEditor.ControlsGroup>
                     <RichTextEditor.Bold />

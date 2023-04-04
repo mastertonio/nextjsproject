@@ -135,18 +135,37 @@ export const useSectionsStore = create<ISectionState>((set) => ({
     })),
 }));
 
+// Section Writeup
+interface SectionWriteup {
+  sectionWriteUp: string;
+  setSectionWriteup: (writeup: string) => void;
+}
+
+export const useSectionWriteupStore = create<SectionWriteup>((set) => ({
+  sectionWriteUp: "",
+  setSectionWriteup: (writeup: string) => set({ sectionWriteUp: writeup }),
+}));
+
 interface CardSection {
   id: string;
-  sectioName: string;
+  sectionName: string;
+  sectionWriteUp: string;
+  sectionVideoLink: string;
 }
 
 interface CardsProps {
   cards: CardSection[];
   newCardName: string;
+  sectionWriteUp: string;
+  sectionVideoLink: string;
   setCards: (cards: CardSection[]) => void;
   setNewCardName: (sectioName: string) => void;
   addCard: () => void;
   removeCard: (id: string) => void;
+  setSectionWriteup: (writeup: string) => void;
+  setSectionVideoLink: (videoLink: string) => void;
+  updateSectionWriteUp: (id: string, writeup: string) => void;
+  updateSectionVideoLink: (id: string, videoLink: string) => void;
 }
 
 export const useCardStore = create<CardsProps>((set) => ({
@@ -154,23 +173,73 @@ export const useCardStore = create<CardsProps>((set) => ({
   newCardName: "",
   setCards: (cards) => set({ cards }),
   setNewCardName: (sectioName) => set({ newCardName: sectioName }),
+  sectionWriteUp: "",
+  sectionVideoLink: "",
+  setSectionWriteup: (writeup) => set({ sectionWriteUp: writeup }),
+  setSectionVideoLink: (videoLink) => set({ sectionVideoLink: videoLink }),
   addCard: () => {
     const state = useCardStore.getState();
     const newCard = {
       id: Date.now().toString(),
-      sectioName: state.newCardName,
+      sectionName: state.newCardName,
+      sectionWriteUp: "",
+      sectionVideoLink: "",
     };
     set({
       cards: [...state.cards, newCard],
       newCardName: "",
+      sectionWriteUp: "",
+      sectionVideoLink: "",
     });
+    localStorage.setItem(
+      "valueBucket",
+      JSON.stringify([...state.cards, newCard])
+    );
+  },
+  updateSectionWriteUp: (id, writeup) => {
+    const state = useCardStore.getState();
+    const updatedCards = state.cards.map((card) => {
+      console.log("card id", card.id);
+      console.log("id", id);
+      console.log("writeup", writeup);
+      if (card.id === id) {
+        return { ...card, sectionWriteUp: writeup };
+      } else {
+        return card;
+      }
+    });
+    set({ cards: updatedCards });
+    localStorage.setItem("valueBucket", JSON.stringify(updatedCards));
+  },
+  updateSectionVideoLink: (id, videoLink) => {
+    const state = useCardStore.getState();
+    const updatedCards = state.cards.map((card) => {
+      console.log("card id", card.id);
+      console.log("id", id);
+      console.log("writeup", videoLink);
+      if (card.id === id) {
+        return { ...card, sectionVideoLink: videoLink };
+      } else {
+        return card;
+      }
+    });
+    set({ cards: updatedCards });
+    localStorage.setItem("valueBucket", JSON.stringify(updatedCards));
   },
   removeCard: (id: string) => {
     const state = useCardStore.getState();
     const updatedCards = state.cards.filter((card) => card.id !== id);
     set({ cards: updatedCards });
+    localStorage.setItem("valueBucket", JSON.stringify(updatedCards));
   },
 }));
+
+// useSectionWriteupStore.subscribe((state: SectionWriteup) => {
+//   useCardStore.setState((prev) => ({
+//     ...prev,
+//     sectionWriteUp: state.sectionWriteUp,
+//   }));
+// });
 
 interface NewChoice {
   newChoice: boolean;
@@ -189,6 +258,8 @@ export const useNewStore = create<NewChoice>((set) => ({
   setUpdateChoice: (state) => set(() => ({ updateChoice: state })),
   setOpenChoice: (state) => set(() => ({ newChoice: state })),
 }));
+
+// richtext
 
 interface ICalculatorState {
   val: number;

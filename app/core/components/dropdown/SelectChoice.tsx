@@ -14,7 +14,6 @@ const SelectChoice: React.FC<iFormSelectProps> = ({ data, values }) => {
     // const [choiceValue, setChoiceValue] = useState<string | null>(null);
     const choiceValue = useNewStore((state) => state.choiceValue)
     const setChoiceValue = useNewStore((state) => state.setChoiceValue)
-    console.log('values', choiceValue)
     return (
         <div className="ml-auto">
             <Select

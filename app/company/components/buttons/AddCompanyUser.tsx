@@ -26,14 +26,14 @@ import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
 }
 
-const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
-  refetch,
-}) => {
+const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -46,13 +46,21 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${userZ?.company_id}/manager`
+      `/v1/company/${user?.company_id}/manager`,{
+        headers: {
+          Authorization: `Bearer ${tokens?.access.token}`,
+        },
+      }
     );
   };
 
   const getTemplates = async () => {
     return await axios.get(
-      `/v1/dashboard/template/list`
+      `/v1/dashboard/template/list`,{
+        headers: {
+          Authorization: `Bearer ${tokens?.access.token}`,
+        },
+      }
     );
   };
 
@@ -126,7 +134,7 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${userZ?.company_id}/user`,
+        `/v1/company/${user?.company_id}/user`,
         {
           first_name: values.first_name,
           last_name: values.last_name,
@@ -138,7 +146,6 @@ const AddCompanyUserButton: React.FC<IButtonAddCompanyProps> = ({
           template: filter,
         });
       if (response) {
-        refetch();
         updateNotification({
           id: "edit-comp",
           color: "teal",

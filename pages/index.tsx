@@ -1,5 +1,6 @@
 import Head from "next/head";
 import axios from "axios";
+import { NextPage } from "next";
 import {
   TextInput,
   Text,
@@ -23,23 +24,15 @@ import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 import { redirect } from "next/dist/server/api-utils";
+import { getSession, signIn, useSession } from 'next-auth/react';
+import { useMutation } from "react-query";
 
-const Home: React.FC = () => {
+const Home: NextPage = (test) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
+  const { data , status } = useSession()
   const router = useRouter();
-  const [value, setValue] = useLocalStorage({ key: "auth-token" });
-  const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [loading, setLoading] = useState(false);
-  const userCtx = useContext(UserContext);
-
-
-  const setUserZ = useUserStore((state) => (state.login))
-  const setExpire = useUserStore((state) => (state.setExpires))
-  const setTokenZ = useUserStore((state) => (state.setToken))
 
   const form = useForm({
     initialValues: {
@@ -56,40 +49,47 @@ const Home: React.FC = () => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      const payload = {
+      const res = await signIn('credentials', {
         email: values.email,
         password: values.password,
-      };
-      const res = await axios.post(
-        `/v1/auth/login`,
-        payload
-      );
-      if (res) {
-        console.log('res', res);
-        // userCtx.login(res.data);
-        // setValue(res.data.tokens.access.token);
-        // setRefresh(res.data.tokens.refresh.token);
-        // sessionStorage.setItem("auth-token", value);
-        // setUserInfo(res.data.user);
-        // setCurrent(res.data.user.id);
-        // setCompany(res.data.user.company_id);
+        redirect: false,
+      })
 
-        // router.push(`/dashboard`);
-        setUserZ(res.data.user)
-        setExpire(res.data.tokens.access.expires)
-        setTokenZ(res.data.tokens.access.token)
-        // setExpire(res.data.tokens.access.expires)
-        // setTokenZ(res.data.tokens.access.token)
-        // if (res.data.user.role == "company-manager") {
-        //   router.push("/dashboard/manager");
-        // } else {
-        //   router.push(`/dashboard`);
-        // }
+      console.log(res, 'ress')
+      // const payload = {
+      //   email: values.email,
+      //   password: values.password,
+      // };
+      // const res = await axios.post(
+      //   `/v1/auth/login`,
+      //   payload
+      // );
+      // if (res) {
+      //   console.log('res', res);
+      //   // userCtx.login(res.data);
+      //   // setValue(res.data.tokens.access.token);
+      //   // setRefresh(res.data.tokens.refresh.token);
+      //   // sessionStorage.setItem("auth-token", value);
+      //   // setUserInfo(res.data.user);
+      //   // setCurrent(res.data.user.id);
+      //   // setCompany(res.data.user.company_id);
 
-        router.push(`/dashboard`);
-      }
+      //   // router.push(`/dashboard`);
+      //   setUserZ(res.data.user)
+      //   setExpire(res.data.tokens.access.expires)
+      //   setTokenZ(res.data.tokens.access.token)
+      //   // setExpire(res.data.tokens.access.expires)
+      //   // setTokenZ(res.data.tokens.access.token)
+      //   // if (res.data.user.role == "company-manager") {
+      //   //   router.push("/dashboard/manager");
+      //   // } else {
+      //   //   router.push(`/dashboard`);
+      //   // }
 
-      router.push(`/dashboard`);
+      //   router.push(`/dashboard`);
+      // }
+
+      // router.push(`/dashboard`);
     } catch (error: any) {
 
       showNotification({
@@ -117,6 +117,24 @@ const Home: React.FC = () => {
     }
   };
 
+  type UserProp = {
+    email: string,
+    password: string
+  }
+
+  const loginUserMutation = useMutation({
+    mutationFn: (values: UserProp) => signIn('credentials', { redirect: false, email: values.email, password: values.password }),
+    onSuccess: () => {
+      router.push('/dashboard')
+    },
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        return error
+      }
+      return error
+    }
+  })
+
 
   if (loading) return <LoadingOverlay visible={!loading} />;
 
@@ -135,7 +153,7 @@ const Home: React.FC = () => {
               The ROI Shop Login
             </Title>
 
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit((values) => loginUserMutation.mutate(values))}>
               <TextInput
                 required
                 label="Email Address"
@@ -186,24 +204,5 @@ const Home: React.FC = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   // const data = 'from gssp'
-//   const cookies = context.req.cookies
-//   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-//     headers: {
-//       'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-//     }
-//   })
-//   const user = await res.json();
-
-
-//   // if (Object.keys(user).length === 0 && user.constructor === Object) {
-//   // redirect to dashboard page if authenticated
-//   return {
-//     props: { user }
-//   }
-
-//   // return { props: { user } }
-// }
 
 export default Home;

@@ -12,6 +12,7 @@ import { BuilderContextProvider } from "@app/context/builder.context";
 import Head from "next/head";
 import axios, { AxiosError } from "axios";
 import router, { useRouter } from "next/router";
+import { SessionProvider } from "next-auth/react"
 
 
 process.env.NODE_ENV == "production" ? axios.defaults.baseURL = process.env.NEXT_PUBLIC_PROD_PORT : axios.defaults.baseURL = process.env.NEXT_PUBLIC_DEV_PORT
@@ -20,24 +21,24 @@ axios.defaults.withCredentials = true
 
 const queryClient = new QueryClient(
   {
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: true,
-      retry: false,
-      onError: (error) => {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 401){
-            router.push('/401')
-          } else if(error.response?.status === 403) {
-            router.push('/403')
-          }
-        }
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
+        // onError: (error) => {
+        //   if (error instanceof AxiosError) {
+        //     if (error.response?.status === 401) {
+        //       router.push('/401')
+        //     } else if (error.response?.status === 403) {
+        //       router.push('/403')
+        //     }
+        //   }
+        // },
       },
     },
-  },
-});
+  });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
       <Head>
@@ -58,19 +59,22 @@ function MyApp({ Component, pageProps }: AppProps) {
           headings: { fontFamily: "Greycliff CF, sans-serif" },
         }}
       >
-        <NotificationsProvider position="bottom-right" zIndex={2077}>
-          <UserContextProvider>
-            <DashboardContextProvider>
-              <BuilderContextProvider>
-                <QueryClientProvider client={queryClient}>
-                  <Hydrate state={pageProps.dehydratedState}>
-                    <Component {...pageProps} />
-                  </Hydrate>
-                </QueryClientProvider>
-              </BuilderContextProvider>
-            </DashboardContextProvider>
-          </UserContextProvider>
-        </NotificationsProvider>
+        <SessionProvider session={pageProps.session}>
+          <NotificationsProvider position="bottom-right" zIndex={2077}>
+
+            <UserContextProvider>
+              <DashboardContextProvider>
+                <BuilderContextProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <Hydrate state={pageProps.dehydratedState}>
+                      <Component {...pageProps} />
+                    </Hydrate>
+                  </QueryClientProvider>
+                </BuilderContextProvider>
+              </DashboardContextProvider>
+            </UserContextProvider>
+          </NotificationsProvider>
+        </SessionProvider>
       </MantineProvider>
     </>
   );

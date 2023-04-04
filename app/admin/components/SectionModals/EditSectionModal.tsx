@@ -16,7 +16,7 @@ interface CardSection {
     sectioName: string;
 }
 
-const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const EditSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
@@ -25,6 +25,9 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const form = useForm({
         initialValues: {
             sectioName: "",
+            sectionWriteup: "",
+            sectionVideo: "",
+            sectionFormula: ""
         }
     })
 
@@ -60,6 +63,32 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                         />
                     </Grid>
 
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
+                        <TextInput
+                            required
+                            className="w-[100%] sm:w-[75%] ml-auto"
+                            {...form.getInputProps("sectionWriteup")}
+                        />
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Video: </Text>
+                        <TextInput
+                            required
+                            className="w-[100%] sm:w-[75%] ml-auto"
+                            {...form.getInputProps("sectionVideo")}
+                        />
+                    </Grid>
+
+                    <Grid className="p-[10px]">
+                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Formula: </Text>
+                        <TextInput
+                            required
+                            className="w-[100%] sm:w-[75%] ml-auto"
+                            {...form.getInputProps("sectionFormula")}
+                        />
+                    </Grid>
 
                     <Divider className="mt-[40px] mb-[40px]" />
 
@@ -71,7 +100,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                             color="teal"
                             className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
                         >
-                            Create Section
+                            Update Section
                         </Button>
                         <Button
                             type="button"
@@ -90,4 +119,4 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     )
 }
 
-export default AddSectionModal
+export default EditSectionModal

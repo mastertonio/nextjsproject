@@ -33,37 +33,54 @@ import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
 import Cookies from 'js-cookie';
 import FourOhFour from "pages/404";
+import { getSession } from "next-auth/react";
+
+type UserGSSP = {
+  exp: number,
+  iat: number,
+  jti: string,
+  tokens: {
+    access: {
+      expires: string,
+      token: string
+    },
+    refresh: {
+      expires: string,
+      token: string
+    }
+  },
+  user: UserContextTypes
+}
+
+interface DProps {
+  expires: string,
+  user: UserGSSP
+
+}
 //
-const Dashboard: React.FC<UserState> = ({ user }) =>
-// message
-{
+const Dashboard: React.FC<any> = (
+  login
+) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const expireCookies = useUserStore((state) => (state.expires))
-  const tokenSet = useUserStore((state) => (state.token))
-  const userZ = useUserStore((state) => (state.user))
+  const userZ = useUserStore((state) => (state))
   const getDashboardData = async () => {
-    return await axios.get(`/v1/dashboard`);
+    return await axios.get(`/v1/dashboard`,{
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    });
   };
 
   const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
     "dashboardData",
     getDashboardData
   );
-  console.log('data', data);
-  useEffect(() => {
-    Cookies.set('x-access-token', tokenSet, {
-      expires: new Date(expireCookies).getTime()
-    });
 
-    if (Date.now() > new Date(expireCookies).getTime()) {
-      Cookies.remove('x-access-token')
-      // Cookies.remove('session.sig')
-      // Cookies.remove('session')
-      router.push('/');
-    }
-  }, [router, expireCookies, tokenSet]);
+  useEffect(()=> {
+    console.log(login.data.user.user, "tetete")
+  }, [login])
 
 
   if (isLoading) return <MainLoader />;
@@ -83,7 +100,7 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar user={userZ} />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       // footer={<RoiFooter />}
       >
         <div className={`${classes.body} flex-col sm:flex-row relative h-auto`}>
@@ -96,78 +113,37 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
             <ViewCount viewcount={data?.data.viewcount} />
           </div>
           <div className={`${classes.dashboard_graph} w-full sm:w-[900px] mt-[30px] sm:mt-0`}>
-            <DashboardGraph />
+            <DashboardGraph  token={login.data.user.tokens.access.token} />
           </div>
           <div className={`${classes.roi_ranking} w-full sm:w-[400px] relative`}>
-            <CreateNewRoi />
-            <RoiRanking />
+            <CreateNewRoi user={login.data.user.user} tokens={login.data.user.tokens}/>
+            <RoiRanking user={login.data.user.user} tokens={login.data.user.tokens} />
           </div>
         </div>
         <div className={`${classes.bar_graph_wrapper} mt-[30px] sm:mt-0 relative`}>
           <Text size="lg" className="mb-[20px] sm:mb-0">My ROIs</Text>
-          <Row my_roi={data?.data.my_roi} refetch={refetch} />
+          <Row my_roi={data?.data.my_roi} refetch={refetch} user={login.data.user} />
         </div>
       </AppShell>
     );
   }
 
-  // if (Date.now() > new Date(expireCookies).getTime()) {
-  //   router.push(`/`);
-  // }
-
-  if (isError) {
-    return <FourOhFour />;
-  }
-
   return <></>
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const data = 'from gssp'
-  const cookies = context.req.cookies
-  const sessionExpired = cookies['x-access-token'];
-
-  console.log(cookies)
-
-  // check if the session has expired
-  if (Date.now() > new Date(sessionExpired).getTime()) {
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
         permanent: false,
       },
-      props: {}
-    }
+    };
   }
-
-  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-    // headers: {
-    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-    // }
-    headers: {
-      'Cookie': "x-access-token=" + cookies['x-access-token']
-    }
-  })
-  const user = await res.json();
-  console.log('user', user)
-
-  if (Object.keys(user).length === 0 && user.constructor === Object) {
-    // redirect to dashboard page if authenticated
-
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-      props: { user }
-    }
-  } else {
-    return {
-      props: { user }
-    }
-  }
-
-  // return { props: { user } }
+  console.log(session, 'sezsion')
+  // Pass data to the page via props
+  return { props: { data: session } }
 }
 
 export default Dashboard;

@@ -18,12 +18,12 @@ import 'react-modern-drawer/dist/index.css'
 import DashboardDrawer from "../drawer/DrawerContent";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
-import UserContext, { UserContextTypes } from "@context/user.context";
+import UserContext, { UserContextTypes, UserDataProp } from "@context/user.context";
 
 import { UserState, useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 
-const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
+const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -112,7 +112,7 @@ const RoiNavbar: React.FC<Partial<UserState>> = ({ user }, cookies) => {
         ""
       )}
       <Group position="right" className={`${opened === true ? 'flex' : 'hidden'} ml-[unset] sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
-        <AdminList />
+        <AdminList tokens={tokens} user={user}/>
         <PoweredByRoi />
         <ActionList />
       </Group>

@@ -1,12 +1,27 @@
+import React, { useEffect, useState } from 'react';
 import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
 import NavbarSimple from "@app/core/components/sidebar/EnterpriseSidebar";
 import Projection from "@app/enterprise/Projection";
 import { AppShell, Navbar, Header, Grid, SimpleGrid, Flex } from "@mantine/core";
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
+import NewValueBucket from "@app/core/components/card/NewValueBucket";
 import InputVariable, { iElemsProp } from "@app/enterprise/components/input/NewInput";
 
+interface CardSection {
+  id: string;
+  sectionName: string;
+}
+
 const Enterprise = () => {
+  const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
+
+  useEffect(() => {
+    const formValue = JSON.parse(localStorage.getItem("valueBucket") ?? '[]') as CardSection[];
+    setValueBucketState(formValue)
+    console.log('storage value bucket', valueBucketState)
+  }, [])
+
 
   return (
     <AppShell
@@ -47,14 +62,20 @@ const Enterprise = () => {
                     pr={20}
                     className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
                   >
-                    {contentData.sections.sliders.elements.map((element) => (
+                    {valueBucketState.map((card) => (
+                      <NewValueBucket
+                        key={card.id}
+                        label={card.sectionName}
+                      />
+                    ))}
+                    {/* {contentData.sections.sliders.elements.map((element) => (
                       <SliderCard
                         key={element.id}
                         label={element.title}
                         money={element.money}
                         progress={element.value}
                       />
-                    ))}
+                    ))} */}
                   </SimpleGrid>
                 ) : section.GrayContent.type == "variables" ? (
                   <div className="bg-[#e9ecef]">

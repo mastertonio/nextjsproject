@@ -15,11 +15,6 @@ import Cookies from 'js-cookie';
 
 const ActionList: React.FC = () => {
   const router = useRouter();
-  const expireCookies = useUserStore((state) => (state.expires))
-  const tokenSet = useUserStore((state) => (state.token))
-  const [value, setValue] = useLocalStorage({ key: "auth-token" });
-  const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const p = router.query;
   const [values, setValues] = useState<any>("");
   // const cookies = new Cookies();

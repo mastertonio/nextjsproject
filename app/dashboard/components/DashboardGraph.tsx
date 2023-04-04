@@ -16,6 +16,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";
 import UserContext from "@app/context/user.context";
+import { getSession } from "next-auth/react";
 
 ChartJS.register(
   CategoryScale,
@@ -43,12 +44,20 @@ export interface IDashboardData {
 export interface IDashboardGraphData {
   chartData: IDashboardData;
 }
-const DashboardGraph: React.FC = () => {
+
+type Token = {
+  token: string
+}
+const DashboardGraph: React.FC<Token> = ({token}) => {
   const [graphData, setGraphData] = useState<IDashboardData>();
 
   const getGraphData = async () => {
     return await axios.get(
-        `/v1/dashboard/data/graph`
+        `/v1/dashboard/data/graph`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
   };
 

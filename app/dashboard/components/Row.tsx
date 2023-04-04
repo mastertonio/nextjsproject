@@ -35,7 +35,7 @@ import { sortData, sortFilterData } from "./table/utils/tableMethods";
 import Th from "./table/Thead";
 import SkeletonLoader from "@core/components/loader/SkeletonLoader";
 import TempList from "@core/components/dropdown/TemplateTags";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@app/context/user.context";
 
 export interface iDashRowProp {
   id: string;
@@ -72,9 +72,10 @@ export interface ISearchableDashProp {
 export interface iDashboardRowProps {
   my_roi: iDashRowProp[] | null;
   refetch: () => void;
+  user: UserDataProp
 }
 
-const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
+const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
   const [rating, setRating] = useState<number>(0);
   const [star, setStar] = useState<boolean>(true);
   const { classes, cx } = useStyles();
@@ -83,7 +84,11 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   const userCtx = useContext(UserContext)
 
   const getRoiListAll = async () => {
-    return await axios.get(`/v1/dashboard/roi/list`);
+    return await axios.get(`/v1/dashboard/roi/list`, {
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    });
   };
 
   const { isLoading, isError, error, data, refetch, isFetching } = useQuery(
@@ -211,7 +216,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi }) => {
   return (
     <div>
       <Grid className="m-0 sm:m-[20px]">
-        <TempList filter={filter} handleFilter={handleFilterChange} />
+        <TempList filter={filter} handleFilter={handleFilterChange} user={user}/>
         {/* <MultiSelect
           style={{ width: 450 }}
           placeholder="Filter"

@@ -21,6 +21,20 @@ export interface UserContextTypes {
   id: string;
 }
 
+export interface UserDataProp {
+  user: UserContextTypes
+  tokens: {
+    access: {
+      token: string,
+      expires: string
+    },
+    refresh: {
+      token: string,
+      expires: string
+    }
+  }
+}
+
 export interface State {
   user: UserContextTypes;
   token: string;
