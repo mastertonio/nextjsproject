@@ -2,33 +2,12 @@ import { NextApiRequest } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios, { AxiosResponse } from "axios";
+import { useUserStore } from "@app/store/userState";
 
 interface Credentials {
   email?: string | undefined;
   password?: string | undefined;
 }
-
-interface User {
-  verification_code: string | null;
-  phone: string;
-  manager: string;
-  first_name: string;
-  last_name: string;
-  currency: string;
-  email_verified_at: string | null;
-  remember_token: string | null;
-  role: string;
-  isEmailVerified: boolean;
-  avatar: string;
-  status: number;
-  name: string;
-  email: string;
-  company_id: string;
-  created_by: string;
-  id: string;
-}
-
-type AuthorizeReturnType = { user: User } | null;
 
 const authOptions: NextAuthOptions = {
   session: {
@@ -47,20 +26,28 @@ const authOptions: NextAuthOptions = {
 
         const payload = { email, password };
 
-        const user = await axios.post(`/v1/auth/login`, payload);
-
-        console.log("user", user.data);
+        const user = await axios.post(`https://api.theroishop.com/v1/auth/login`, payload); //external link
+        console.log(user.data, "userData")
 
         if (user) {
-          return user.data.user;
+          useUserStore.setState({ user: user.data})
+          return user.data;
+
         } else {
           return null;
         }
       },
     }),
   ],
-  pages: {
-    signIn: "/",
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      // Send properties to the client, like an access_token from a provider.
+      session.user = token;
+      return session;
+    },
   },
 };
 

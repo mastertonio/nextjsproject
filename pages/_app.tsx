@@ -23,24 +23,24 @@ const queryClient = new QueryClient(
   {
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus: true,
+        refetchOnWindowFocus: false,
         retry: false,
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            if (error.response?.status === 401) {
-              router.push('/401')
-            } else if (error.response?.status === 403) {
-              router.push('/403')
-            }
-          }
-        },
+        // onError: (error) => {
+        //   if (error instanceof AxiosError) {
+        //     if (error.response?.status === 401) {
+        //       router.push('/401')
+        //     } else if (error.response?.status === 403) {
+        //       router.push('/403')
+        //     }
+        //   }
+        // },
       },
     },
   });
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider>
+    <>
       <Head>
         <title>The Roi Shop</title>
         <meta
@@ -59,21 +59,24 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           headings: { fontFamily: "Greycliff CF, sans-serif" },
         }}
       >
-        <NotificationsProvider position="bottom-right" zIndex={2077}>
-          <UserContextProvider>
-            <DashboardContextProvider>
-              <BuilderContextProvider>
-                <QueryClientProvider client={queryClient}>
-                  <Hydrate state={pageProps.dehydratedState}>
-                    <Component {...pageProps} />
-                  </Hydrate>
-                </QueryClientProvider>
-              </BuilderContextProvider>
-            </DashboardContextProvider>
-          </UserContextProvider>
-        </NotificationsProvider>
+        <SessionProvider session={pageProps.session}>
+          <NotificationsProvider position="bottom-right" zIndex={2077}>
+
+            <UserContextProvider>
+              <DashboardContextProvider>
+                <BuilderContextProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <Hydrate state={pageProps.dehydratedState}>
+                      <Component {...pageProps} />
+                    </Hydrate>
+                  </QueryClientProvider>
+                </BuilderContextProvider>
+              </DashboardContextProvider>
+            </UserContextProvider>
+          </NotificationsProvider>
+        </SessionProvider>
       </MantineProvider>
-    </SessionProvider>
+    </>
   );
 }
 

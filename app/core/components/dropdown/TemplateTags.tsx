@@ -5,7 +5,7 @@ import { AiFillCaretDown } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@app/context/user.context";
 
 export interface ITemplateList {
   active: string;
@@ -17,13 +17,18 @@ export interface ITemplateList {
 interface ITempList {
   filter: string[]
   handleFilter: (e: SetStateAction<string[]>) => void
+  user: UserDataProp
 }
 
-const TempList: React.FC<ITempList> = ({ filter, handleFilter }) => {
+const TempList: React.FC<ITempList> = ({ filter, handleFilter, user }) => {
 
   const getTemplateList = async () => {
      return await axios.get(
-        `/v1/dashboard/template/list`
+        `/v1/dashboard/template/list`, {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
+        }
       );
   };
 

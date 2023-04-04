@@ -5,7 +5,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useQuery } from "react-query";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@app/context/user.context";
 
 interface IRankCount {
   _id: string;
@@ -13,14 +13,15 @@ interface IRankCount {
   totalROIS: number;
 }
 
-export interface IRankCountProps {
-  rankings?: IRankCount[];
-}
 
-const RoiRanking: React.FC<IRankCountProps> = () => {
+const RoiRanking: React.FC<UserDataProp> = ({ tokens, user }) => {
   const getRankings = async () => {
     return await axios.get(
-      `/v1/dashboard/ranking/list`
+      `/v1/dashboard/ranking/list`, {
+      headers: {
+        Authorization: `Bearer ${tokens.access.token}`,
+      },
+    }
     );
   };
 
