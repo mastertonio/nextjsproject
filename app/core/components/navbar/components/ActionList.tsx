@@ -11,6 +11,7 @@ import { AiFillCaretDown } from "react-icons/ai";
 import UserContext from "@app/context/user.context";
 import { useUserStore } from "@app/store/userState";
 import Cookies from 'js-cookie';
+import { signOut } from "next-auth/react";
 
 
 const ActionList: React.FC = () => {
@@ -79,7 +80,10 @@ const ActionList: React.FC = () => {
           Profile
         </Menu.Item>
         <Divider />
-        <Menu.Item onClick={handleLogout} color="red">
+        <Menu.Item onClick={async () => {
+          const data = await signOut({ redirect: false, callbackUrl: "/" })
+          router.push(data.url)
+        }} color="red">
           Logout
         </Menu.Item>
       </Menu.Dropdown>

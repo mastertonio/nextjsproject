@@ -25,8 +25,9 @@ import { useNavShowStore } from "@app/store/builderStore";
 import { IAdminListProps } from "../navbar/components/AdminList";
 import Cookies from 'js-cookie';
 import { UserDataProp } from "@app/context/user.context";
+import { signOut } from "next-auth/react";
 
-const Sidebar: React.FC<UserDataProp> = ({ tokens, user}) => {
+const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
   const router = useRouter();
   const navShow = useNavShowStore((state) => state.value);
   const [openCompany, setOpenCompany] = useState(false);
@@ -202,7 +203,10 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user}) => {
           className="mt-[5px] text-[lightgray]"
           size="md"
           leftIcon={<MdLogout />}
-          onClick={handleLogout}
+          onClick={async () => {
+            const data = await signOut({ redirect: false, callbackUrl: "/" })
+            router.push(data.url)
+          }}
         >
           Logout
         </Button>
