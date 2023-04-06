@@ -33,8 +33,9 @@ import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
 import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
 import { useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
 
-const TemplatesDashboard: React.FC = () => {
+const TemplatesDashboard: React.FC<any> = (login) => {
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 60,
   });
@@ -43,11 +44,14 @@ const TemplatesDashboard: React.FC = () => {
   const { classes, cx } = useStyles();
   const p = router.query;
 
-  const userZ = useUserStore((state) => (state.user))
 
   const getCompanyTemplates = async () => {
     return await axios.get(
-      `/v1/company/${userZ?.company_id}/template`
+      `/v1/company/${login.data.user.user.company_id}/template`,{
+        headers: {
+          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+        },
+      }
     );
   };
 
@@ -141,6 +145,7 @@ const TemplatesDashboard: React.FC = () => {
           refetch={refetch}
           name={item.name}
           key={shortUUID.generate()}
+          user={login.data.user}
         />
         <Button type="button" radius="sm" size="xs" color="red" className="ml-[10px]">
           Delete
@@ -166,12 +171,12 @@ const TemplatesDashboard: React.FC = () => {
       className=""
       fixed
       header={<RoiNavbar />}
-      navbar={<Sidebar />}
+      navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <div className="m-[10px] bg-white p-[10px] sm:p-[25px]">
         <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddTemplateButton refetch={refetch} />
+          <AddTemplateButton user={login.data.user} refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
@@ -323,10 +328,11 @@ const TemplatesDashboard: React.FC = () => {
             <TemplateVersion
               refTarget={targetRef}
               update={refetch}
-              comp_id={userZ?.company_id ? userZ.company_id : ""}
+              comp_id={login.data.user.user.company_id ? login.data.user.user.company_id : ""}
               temp_id={temp_id}
               first_temp={data?.data[0]._id}
               name={name}
+              user={login.data.user}
             />
           </>
         ) : (
@@ -339,14 +345,18 @@ const TemplatesDashboard: React.FC = () => {
   );
 };
 
-// export async function getServerSideProps(ctx: any) {
-//   // Fetch data from external API
-//   console.log(ctx.req.cookies)
-//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
-//   const data = await res.json()
-
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
 export default TemplatesDashboard;

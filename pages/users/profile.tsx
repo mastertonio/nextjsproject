@@ -26,8 +26,9 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons'
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
 
-const UserProfile: React.FC = () => {
+const UserProfile: React.FC<any> = (login) => {
   const theme = useMantineTheme();
   const [error, setError] = useState("");
   const router = useRouter();
@@ -51,7 +52,11 @@ const UserProfile: React.FC = () => {
   })
 
   const getCurrentUser = async () => {
-    return await axios.get(`/v1/users/${userZ?.id}`);
+    return await axios.get(`/v1/users/${login.data.user.user.id}`, {
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    });
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -72,12 +77,17 @@ const UserProfile: React.FC = () => {
         color: 'teal'
       })
       const res = await axios.patch(
-        `/v1/users/${userZ?.id}`,
+        `/v1/users/${login.data.user.user.id}`,
         {
           email: values.email,
           first_name: values.first_name,
           last_name: values.last_name,
           phone: values.phone_number,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+          },
         }
       );
       // const res = await axios.patch(
@@ -142,7 +152,7 @@ const UserProfile: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar />}
+      navbar={<Sidebar tokens={login.data.user.user} user={login.data.user.tokens} />}
       // footer={
       //   <RoiFooter />
       // }
@@ -227,5 +237,19 @@ const UserProfile: React.FC = () => {
     </AppShell>
   );
 };
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
 export default UserProfile;

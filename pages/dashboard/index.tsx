@@ -78,10 +78,6 @@ const Dashboard: React.FC<any> = (
     getDashboardData
   );
 
-  useEffect(()=> {
-    console.log(login.data.user.user, "tetete")
-  }, [login])
-
 
   if (isLoading) return <MainLoader />;
 

@@ -19,6 +19,7 @@ import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 type IManagerTypes = {
   _id: string;
@@ -44,6 +45,7 @@ export interface IButtonCompanyUserProps {
   refetch: () => void;
   name: string;
   myCompany: ICompanyUserTypes;
+  user: UserDataProp
 }
 
 const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
@@ -51,6 +53,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   refetch,
   name,
   myCompany,
+  user
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -60,7 +63,11 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
-    return await axios.get(`/v1/company/${userZ?.company_id}/manager`);
+    return await axios.get(`/v1/company/${user.user.company_id}/manager`, {
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    });
   };
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
@@ -100,7 +107,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       });
 
       const response = await axios.patch(
-        `/v1/company/${userZ?.company_id}/user/${id}`,
+        `/v1/company/${user.user.company_id}/user/${id}`,
         {
           first_name: values.first_name,
           last_name: values.last_name,
@@ -109,7 +116,11 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           currency: values.currency,
           manager: values.manager,
           role: values.role,
-        }
+        }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
 
       if (response) {

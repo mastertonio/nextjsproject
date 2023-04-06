@@ -26,6 +26,7 @@ import shortUUID from "short-uuid";
 import AddVersion from "./buttons/AddVersion";
 import EditVersion from "./buttons/EditVersion";
 import FourOhFour from "pages/404";
+import { UserDataProp } from "@app/context/user.context";
 
 interface ITemplateVersionType {
   update: () => void;
@@ -34,12 +35,18 @@ interface ITemplateVersionType {
   first_temp: string;
   name: string;
   refTarget: any;
+  user: UserDataProp
 }
 const getTemplatesVersions = async (
   comp: string,
-  temp: string
+  temp: string,
+  token: string
 ) => {
-  return await axios.get(`/v1/company/${comp}/template/${temp}/version`);
+  return await axios.get(`/v1/company/${comp}/template/${temp}/version`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const TemplateVersion: React.FC<ITemplateVersionType> = ({
@@ -49,6 +56,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   first_temp,
   name,
   refTarget,
+  user
 }) => {
   const router = useRouter();
   const theme = useMantineTheme();
@@ -57,7 +65,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const { isLoading, isError, error, data, refetch, isFetching, isSuccess } =
     useQuery(
       ["get_all_company_templates_versions", temp_id],
-      () => getTemplatesVersions(comp_id, temp_id),
+      () => getTemplatesVersions(comp_id, temp_id, user.tokens.access.token),
       { refetchOnWindowFocus: false, enabled: temp_id.length > 0 }
     );
 
@@ -142,6 +150,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             status={item.status}
             version={item.versions}
             key={shortUUID.generate()}
+            user={user}
           />
           <Button radius="sm" size="xs" color="red" className="ml-[10px]">
             Delete
@@ -167,7 +176,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
 
         <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddVersion update={refetch} comp_id={comp_id} temp_id={temp_id} />
+          <AddVersion user={user} update={refetch} comp_id={comp_id} temp_id={temp_id} />
           <Text
             color="teal"
             weight={900}

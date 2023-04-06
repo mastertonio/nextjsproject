@@ -168,6 +168,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
         refetch={refetch}
         setStar={setStar}
         setRating={setRating}
+        user={user}
       />
     ),
     importance:
@@ -181,6 +182,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
           setRating={setRating}
           readOnly={false}
           setStar={setStar}
+          user={user}
         />
       ) : (
         <StarRating
@@ -192,6 +194,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
           setRating={setRating}
           readOnly={true}
           setStar={setStar}
+          user={user}
         />
       ),
     roiname: item.name,
@@ -203,9 +206,9 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
       <div
         className="flex justify-end items-center gap-2"
       >
-        <EditButton id={item.id} refetch={refetch} name={item.name} />
-        <CloneButton id={item.id} refetch={refetch} name={item.name} />
-        <DeleteButton id={item.id} refetch={refetch} name={item.name} />
+        <EditButton user={user} id={item.id} refetch={refetch} name={item.name} />
+        <CloneButton user={user} id={item.id} refetch={refetch} name={item.name} />
+        <DeleteButton user={user} id={item.id} refetch={refetch} name={item.name} />
       </div>
     ),
     source: item.source,

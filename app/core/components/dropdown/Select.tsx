@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
 import { Rating } from "react-simple-star-rating";
 import StarRating from "../rating/Star";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IStarProps {
   cur_status: number;
@@ -22,6 +23,7 @@ export interface IStarProps {
   setOpened?: (open: boolean) => void;
   size?: any;
   disabled?: boolean
+  user: UserDataProp
 }
 
 const SelectDropdown: React.FC<IStarProps> = ({
@@ -32,6 +34,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
   setRating,
   refetch,
   setStar,
+  user
 }) => {
   const [opened, setOpen] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
@@ -159,6 +162,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
             opened={opened}
             setOpened={setOpen}
             size="lg"
+            user={user}
           />
         </Grid>
       </Modal>

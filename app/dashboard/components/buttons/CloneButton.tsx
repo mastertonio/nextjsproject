@@ -10,7 +10,7 @@ import { IconCheck } from "@tabler/icons";
 import { useMutation, useQueryClient } from "react-query";
 import { useUserStore } from "@app/store/userState";
 
-const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
+const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch, user }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const p = router.query;
@@ -28,7 +28,11 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch }) => {
   }
 
   const cloneRoi = useMutation({
-    mutationFn: (roi: iCloneProp) => axios.post(`/v1/dashboard/roi/${id}/${userZ?.id}`, roi).then((response) => response.data),
+    mutationFn: (roi: iCloneProp) => axios.post(`/v1/dashboard/roi/${id}/${user.user.id}`, roi,{
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }).then((response) => response.data),
     onMutate: (roi: iCloneProp) => {
       showNotification({
         id: "clone-row",
