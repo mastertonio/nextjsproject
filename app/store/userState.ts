@@ -1,4 +1,8 @@
-import { State, UserContextTypes } from "@app/context/user.context";
+import {
+  State,
+  UserContextTypes,
+  UserDataProp,
+} from "@app/context/user.context";
 import { setegid } from "process";
 import { StateCreator, create } from "zustand";
 import {
@@ -8,6 +12,18 @@ import {
   PersistOptions,
 } from "zustand/middleware";
 
+interface TokenTypes {
+  tokens: {
+    access: {
+      token: string;
+      expires: string;
+    };
+    refresh: {
+      token: string;
+      expires: string;
+    };
+  };
+}
 export interface UserState {
   user: UserContextTypes | null | undefined;
   token: string;
@@ -61,6 +77,10 @@ export const useUserStore = create<UserState>(
     }
   )
 );
+
+useUserStore.subscribe((state) => {
+  console.log(state.user?.tokens, "state from subscribe");
+});
 
 type VarState = {
   id: string;

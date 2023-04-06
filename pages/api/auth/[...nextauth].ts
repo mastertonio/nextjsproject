@@ -2,6 +2,7 @@ import { NextApiRequest } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios, { AxiosResponse } from "axios";
+import { useUserStore } from "@app/store/userState";
 
 interface Credentials {
   email?: string | undefined;
@@ -25,15 +26,17 @@ const authOptions: NextAuthOptions = {
 
         const payload = { email, password };
 
-        try {
-          const user = await axios.post(`/v1/auth/login`, payload);
-          // console.log("user auth", user);
+        const user = await axios.post(
+          `https://api.theroishop.com/v1/auth/login`,
+          payload
+        ); //external link
+        console.log(user.data, "userData");
 
-          if (user) {
-            return user.data.user;
-          }
-        } catch (error) {
-          console.error(error);
+        if (user) {
+          useUserStore.setState({ user: user.data });
+          return user.data;
+        } else {
+          return null;
         }
 
         return null;
@@ -57,12 +60,8 @@ const authOptions: NextAuthOptions = {
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
       session.user = token;
-
       return session;
     },
-  },
-  pages: {
-    signIn: "/",
   },
 };
 

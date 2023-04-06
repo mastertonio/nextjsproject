@@ -24,19 +24,14 @@ import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 import { redirect } from "next/dist/server/api-utils";
-import { signIn } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
+import { useMutation } from "react-query";
 
-
-const Home: NextPage = () => {
+const Home: NextPage = (test) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  // const { data: session } = useSession()
+  const { data, status } = useSession()
   const router = useRouter();
-  const [value, setValue] = useLocalStorage({ key: "auth-token" });
-  const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
-  const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [userInfo, setUserInfo] = useLocalStorage({ key: "user-info" });
-  const [company, setCompany] = useLocalStorage({ key: "my-company" });
   const [loading, setLoading] = useState(false);
   const userCtx = useContext(UserContext);
 
@@ -155,6 +150,24 @@ const Home: NextPage = () => {
     }
   };
 
+  type UserProp = {
+    email: string,
+    password: string
+  }
+
+  const loginUserMutation = useMutation({
+    mutationFn: (values: UserProp) => signIn('credentials', { redirect: false, email: values.email, password: values.password }),
+    onSuccess: () => {
+      router.push('/dashboard')
+    },
+    onError: (error: any) => {
+      if (error instanceof Error) {
+        return error
+      }
+      return error
+    }
+  })
+
 
   if (loading) return <LoadingOverlay visible={!loading} />;
 
@@ -173,7 +186,7 @@ const Home: NextPage = () => {
               The ROI Shop Login
             </Title>
 
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit((values) => loginUserMutation.mutate(values))}>
               <TextInput
                 required
                 label="Email Address"
@@ -224,24 +237,5 @@ const Home: NextPage = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   // const data = 'from gssp'
-//   const cookies = context.req.cookies
-//   const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-//     headers: {
-//       'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-//     }
-//   })
-//   const user = await res.json();
-
-
-//   // if (Object.keys(user).length === 0 && user.constructor === Object) {
-//   // redirect to dashboard page if authenticated
-//   return {
-//     props: { user }
-//   }
-
-//   // return { props: { user } }
-// }
 
 export default Home;

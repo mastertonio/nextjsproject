@@ -19,11 +19,11 @@ import { FaPlusSquare } from "react-icons/fa";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@app/context/user.context";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useUserStore } from "@app/store/userState";
 
-const CreateNewRoi: React.FC = () => {
+const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
   const router = useRouter();
@@ -32,7 +32,11 @@ const CreateNewRoi: React.FC = () => {
 
   const getTemplateButtonList = async () => {
     return await axios.get(
-      `/v1/dashboard/template/list`
+      `/v1/dashboard/template/list`,{
+        headers: {
+          Authorization: `Bearer ${tokens?.access.token}`,
+        },
+      }
     );
   };
 
@@ -55,7 +59,7 @@ const CreateNewRoi: React.FC = () => {
 
   const createRoi = useMutation({
     mutationFn: (roi: iCreateTemplateProp) =>
-      axios.post(`/v1/dashboard/${userZ?.id}`, roi).then((response) => response.data),
+      axios.post(`/v1/dashboard/${user?.id}`, roi).then((response) => response.data),
     onMutate: (roi: iCreateTemplateProp) => {
       showNotification({
         id: "create-row",

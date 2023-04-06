@@ -5,7 +5,8 @@ import { AiFillCaretDown } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@app/context/user.context";
+import { useUserStore } from "@app/store/userState";
 
 type iAdminData = {
   verification_code: string | null;
@@ -33,12 +34,16 @@ export interface IAdminListProps {
   user?: iAdminData;
 }
 
-const AdminList: React.FC = () => {
+const AdminList: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
   const { classes } = useStyles();
   const [values, setValues] = useState<any>("Admin");
 
   const getAdminList = async () => {
-    return await axios.get(`/v1/dashboard/admin/list`);
+    return await axios.get(`/v1/dashboard/admin/list`,{
+      headers: {
+        Authorization: `Bearer ${tokens?.access.token}`,
+      },
+    });
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
