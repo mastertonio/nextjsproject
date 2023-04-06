@@ -24,18 +24,24 @@ import { useQuery } from "react-query";
 import { useNavShowStore } from "@app/store/builderStore";
 import { IAdminListProps } from "../navbar/components/AdminList";
 import Cookies from 'js-cookie';
+import { UserDataProp } from "@app/context/user.context";
+import { signOut } from "next-auth/react";
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
   const router = useRouter();
   const navShow = useNavShowStore((state) => state.value);
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  const [user, setUser] = useState<any>({});
+  const [userData, setUser] = useState<any>({});
   const userZ = useUserStore((state) => (state.user))
 
   const getCurrentUser = async () => {
-    return await axios.get(`/v1/users/${userZ?.id}`);
+    return await axios.get(`/v1/users/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${tokens.access.token}`,
+      },
+    });
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -84,7 +90,7 @@ const Sidebar: React.FC = () => {
         <Image src="/logo.png" alt="random" height={62} width={205} />
       </div>
       <Text className="mb-[100px] ml-[35px] w-full">
-        Welcome {user?.name}
+        Welcome {userData?.name}
       </Text>
       <Navbar.Section>
         <Button
@@ -119,7 +125,7 @@ const Sidebar: React.FC = () => {
           in={openCompany}
           className="flex flex-col items-end"
         >
-          {user?.role == "admin" ? (
+          {userData?.role == "admin" ? (
             <Button
               type="button"
               variant="subtle"
@@ -197,7 +203,10 @@ const Sidebar: React.FC = () => {
           className="mt-[5px] text-[lightgray]"
           size="md"
           leftIcon={<MdLogout />}
-          onClick={handleLogout}
+          onClick={async () => {
+            const data = await signOut({ redirect: false, callbackUrl: "/" })
+            router.push(data.url)
+          }}
         >
           Logout
         </Button>

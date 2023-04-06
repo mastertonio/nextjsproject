@@ -26,19 +26,22 @@ import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonAddVersion {
   update: () => void;
   temp_id: string;
   comp_id: string;
   first_temp?: string
+  user: UserDataProp
 }
 
 const AddVersion: React.FC<IButtonAddVersion> = ({
   update,
   comp_id,
   first_temp,
-  temp_id
+  temp_id,
+  user
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -71,12 +74,16 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${userZ?.company_id}/template/${temp_id}/version`,
+        `/v1/company/${user.user.company_id}/template/${temp_id}/version`,
         {
           name: values.name,
           version: values.stage,
           notes: values.notes,
-        });
+        }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      });
       if (response) {
         update();
         updateNotification({

@@ -18,14 +18,16 @@ import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface ITransferButton {
   id: string;
   refetch: () => void;
   name: string;
+  user: UserDataProp
 }
 
-const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
+const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const p = router.query;
@@ -34,7 +36,11 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${userZ?.company_id}/user`
+      `/v1/company/${user.user.company_id}/user`, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
     );
   };
 
@@ -65,10 +71,14 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${userZ?.company_id}/roi/transfer/all`,
+        `/v1/company/${user.user.company_id}/roi/transfer/all`,
         {
           roi_source_uid: id,
           roi_new_uid: values.new_source,
+        }, {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
         }
       );
       if (response) {

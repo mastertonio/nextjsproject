@@ -8,12 +8,14 @@ import { useRouter } from "next/router";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonCompanyProps {
   id: string;
   refetch: () => void;
   name: string;
   myCompany: ICompanyProps;
+  user: UserDataProp
 }
 
 const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
@@ -21,6 +23,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
   refetch,
   name,
   myCompany,
+  user
 }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
@@ -64,6 +67,10 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
           contact_lname: values.last_name,
           contact_email: values.email,
           contact_phone: values.phone,
+        }, {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
         }
       );
       if (response) {

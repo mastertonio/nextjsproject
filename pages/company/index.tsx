@@ -40,6 +40,7 @@ import RoiNavbar from "@app/core/components/navbar/Navbar";
 import Segmented from "@app/core/components/buttons/Segmented";
 import AddCompanyButton from "@app/company/components/buttons/AddCompanyButton";
 import MainLoader from "@app/core/components/loader/MainLoader";
+import { getSession } from "next-auth/react";
 
 export interface iDashRowProp {
   id: string;
@@ -145,13 +146,17 @@ export interface iDashboardRowProps {
   refetch: () => void;
 }
 
-const CompanyList: React.FC<iDashboardRowProps> = () => {
+const CompanyList: React.FC<any> = (login) => {
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
   const router = useRouter();
 
   const getCompanies = async () => {
-    return await axios.get(`/v1/company`);
+    return await axios.get(`/v1/company`, {
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    });
   };
 
   const { isLoading, isError, error, data, refetch, isFetching, isSuccess } = useQuery(
@@ -257,6 +262,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
           refetch={refetch}
           name={item.name}
           myCompany={item}
+          user={login.data.user}
         />
       </div>
     ),
@@ -276,7 +282,7 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
-        navbar={<Sidebar />}
+        navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens}/>}
         // footer={
         //   <RoiFooter />
         // }
@@ -401,6 +407,20 @@ const CompanyList: React.FC<iDashboardRowProps> = () => {
   };
 
   return <></>
+}
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
 }
 
 

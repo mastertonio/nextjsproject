@@ -44,10 +44,11 @@ import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
 import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
 import FourOhFour from "pages/404";
+import { getSession } from "next-auth/react";
 
 
 
-const TemplateDashboard: React.FC = () => {
+const TemplateDashboard: React.FC<any> = (login) => {
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({ offset: 60 });
   const router = useRouter();
   const theme = useMantineTheme();
@@ -58,7 +59,11 @@ const TemplateDashboard: React.FC = () => {
 
   const getCompanyTemplate = async (_id: string) => {
     return await axios.get(
-      `/v1/company/${_id}/template`
+      `/v1/company/${_id}/template`, {
+        headers: {
+          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+        }
+      }
     );
   };
 
@@ -160,6 +165,7 @@ const TemplateDashboard: React.FC = () => {
           refetch={refetch}
           name={item.name}
           key={shortUUID.generate()}
+          user={login.data.user}
         />
         <Button type="button" radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
           Delete
@@ -191,12 +197,12 @@ const TemplateDashboard: React.FC = () => {
         className=""
         fixed
         header={<RoiNavbar />}
-        navbar={<Sidebar />}
+        navbar={<Sidebar tokens={login.data.user.tokens} user={login.data.user.user} />}
       >
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
           <Grid style={{ margin: 20 }}>
             {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-            <AddTemplateButton refetch={refetch} />
+            <AddTemplateButton user={login.data.user} refetch={refetch} />
             <Input
               variant="default"
               placeholder="Search for ROI"
@@ -358,6 +364,7 @@ const TemplateDashboard: React.FC = () => {
                 temp_id={temp_id}
                 first_temp={data?.data[0]._id}
                 name={name}
+                user={login.data.user}
               />
             </>
           ) : (
@@ -375,14 +382,18 @@ const TemplateDashboard: React.FC = () => {
   return <></>;
 };
 
-// export async function getServerSideProps(ctx: any) {
-//   // Fetch data from external API
-//   console.log(ctx.req.cookies)
-//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
-//   const data = await res.json()
-
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
 export default TemplateDashboard;

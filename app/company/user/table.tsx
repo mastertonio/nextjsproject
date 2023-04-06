@@ -33,6 +33,7 @@ import TransferSingleButton from "../components/buttons/TransferSingle";
 import shortUUID from "short-uuid";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import FourOhFour from "pages/404";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface ICompanyUserTable {
   user_id: string;
@@ -48,6 +49,7 @@ export interface ICompanyUserTable {
 export interface ICompanyUserTableProps {
   update: () => void;
   company: string;
+  user: UserDataProp
 }
 
 
@@ -55,6 +57,7 @@ export interface ICompanyUserTableProps {
 const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
   company,
   update,
+  user
 }) => {
   const { classes, cx } = useStyles();
   const [value] = useLocalStorage({ key: "auth-token" });
@@ -144,6 +147,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
             name={item.username}
             refetch={update}
             tempId={item.template_id}
+            user={user}
           />
         </div>
       ),

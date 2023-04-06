@@ -26,12 +26,14 @@ import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
+  user: UserDataProp
 }
 
-const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
+const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const p = router.query;
@@ -67,12 +69,16 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${userZ?.company_id}/template`,
+        `/v1/company/${user.user.company_id}/template`,
         {
           name: values.name,
           status: "1",
           notes: values.notes,
           projection: values.year !== 0 ? year : values.month !== 0 ? month : year
+        }, {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
         });
       if (response) {
         refetch();

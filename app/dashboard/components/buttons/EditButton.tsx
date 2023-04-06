@@ -9,14 +9,16 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { useMutation, useQueryClient } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonRoiNameProps {
   id: string;
   refetch: () => void;
   name: string;
+  user: UserDataProp
 }
 
-const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
+const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
@@ -35,7 +37,11 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   }
 
   const editRoi = useMutation({
-    mutationFn: (roi: iEditTempProp) => axios.patch(`/v1/dashboard/roi/${id}/${userZ?.id}`, roi).then((response) => response.data),
+    mutationFn: (roi: iEditTempProp) => axios.patch(`/v1/dashboard/roi/${id}/${user.user.id}`, roi,{
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }).then((response) => response.data),
     onMutate: (roi: iEditTempProp) => {
       showNotification({
         id: "edit-row",

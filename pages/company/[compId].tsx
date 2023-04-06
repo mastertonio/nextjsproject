@@ -21,8 +21,9 @@ import { useQuery } from "react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
 
-const Company: React.FC = () => {
+const Company: React.FC<any> = (login) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const [user, setUser] = useState<any>({});
@@ -45,7 +46,7 @@ const Company: React.FC = () => {
   };
 
   const getCurrentUser = async () => {
-    return await axios.get(`/v1/users/${userZ?.id}`);
+    return await axios.get(`/v1/users/${login.data.user.user.id}`);
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(
@@ -73,7 +74,7 @@ const Company: React.FC = () => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar  />}
+      navbar={<Sidebar tokens={login.data.user.tokens} user={login.data.user.user} />}
       // footer={
       //   <RoiFooter />
       // }
@@ -83,5 +84,19 @@ const Company: React.FC = () => {
     </AppShell>
   );
 };
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
 export default Company;

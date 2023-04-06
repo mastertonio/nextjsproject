@@ -23,6 +23,7 @@ import {
 } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonTemplateProps {
   id: string;
@@ -30,6 +31,7 @@ export interface IButtonTemplateProps {
   name: string;
   notes: string;
   status: string;
+  user: UserDataProp
 }
 
 const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
@@ -38,11 +40,10 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
   name,
   notes,
   status,
+  user
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
-  const p = router.query;
-  const userZ = useUserStore((state) => (state.user))
 
   const form = useForm({
     initialValues: {
@@ -65,12 +66,16 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
       });
 
       const response = await axios.patch(
-        `/v1/company/${userZ?.company_id}/template/${id}`,
+        `/v1/company/${user.user.company_id}/template/${id}`,
         {
           name: values.name,
           notes: values.notes,
           status: parseInt(values.status),
-        }
+        }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
 
       if (response) {
