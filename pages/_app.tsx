@@ -39,8 +39,9 @@ const queryClient = new QueryClient(
   });
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  console.log('pageProps', pageProps)
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
       <Head>
         <title>The Roi Shop</title>
         <meta

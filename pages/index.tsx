@@ -24,12 +24,13 @@ import Image from "next/image";
 import { useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 import { redirect } from "next/dist/server/api-utils";
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
+
 
 const Home: NextPage = () => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const { data: session, status } = useSession()
+  // const { data: session } = useSession()
   const router = useRouter();
   const [value, setValue] = useLocalStorage({ key: "auth-token" });
   const [refresh, setRefresh] = useLocalStorage({ key: "refresh-token" });
@@ -42,8 +43,6 @@ const Home: NextPage = () => {
   const setUserZ = useUserStore((state) => (state.login))
   const setExpire = useUserStore((state) => (state.setExpires))
   const setTokenZ = useUserStore((state) => (state.setToken))
-
-  console.log('session', session)
 
   const form = useForm({
     initialValues: {
@@ -60,45 +59,73 @@ const Home: NextPage = () => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      const res = await signIn('credentials', {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      })
-
-      console.log('handle submit', res);
-      // const payload = {
+      // const res = await signIn('credentials', {
       //   email: values.email,
       //   password: values.password,
-      // };
-      // const res = await axios.post(
-      //   `/v1/auth/login`,
-      //   payload
-      // );
-      // if (res) {
-      //   console.log('res', res);
-      //   // userCtx.login(res.data);
-      //   // setValue(res.data.tokens.access.token);
-      //   // setRefresh(res.data.tokens.refresh.token);
-      //   // sessionStorage.setItem("auth-token", value);
-      //   // setUserInfo(res.data.user);
-      //   // setCurrent(res.data.user.id);
-      //   // setCompany(res.data.user.company_id);
+      //   redirect: false,
+      // })
+      // const sessionData: UserContextTypes = session?.user ?? {
+      //   verification_code: null,
+      //   phone: null,
+      //   manager: null,
+      //   first_name: null,
+      //   last_name: null,
+      //   currency: null,
+      //   email_verified_at: null,
+      //   remember_token: null,
+      //   role: null,
+      //   isEmailVerified: null,
+      //   avatar: null,
+      //   status: null,
+      //   name: null,
+      //   email: null,
+      //   company_id: null,
+      //   created_by: null,
+      //   id: null,
+      //   exp: null,
+      //   iat: null,
+      //   jti: null,
+      //   sub: null,
+      // }
 
-      //   // router.push(`/dashboard`);
-      //   setUserZ(res.data.user)
-      //   setExpire(res.data.tokens.access.expires)
-      //   setTokenZ(res.data.tokens.access.token)
-      //   // setExpire(res.data.tokens.access.expires)
-      //   // setTokenZ(res.data.tokens.access.token)
-      //   // if (res.data.user.role == "company-manager") {
-      //   //   router.push("/dashboard/manager");
-      //   // } else {
-      //   //   router.push(`/dashboard`);
-      //   // }
+      // console.log('handle submit', res);
 
+      // if (res?.ok) {
+      //   // setUserZ(sessionData)
       //   router.push(`/dashboard`);
       // }
+      const payload = {
+        email: values.email,
+        password: values.password,
+      };
+      const res = await axios.post(
+        `/v1/auth/login`,
+        payload
+      );
+      if (res) {
+        console.log('res', res);
+        // userCtx.login(res.data);
+        // setValue(res.data.tokens.access.token);
+        // setRefresh(res.data.tokens.refresh.token);
+        // sessionStorage.setItem("auth-token", value);
+        // setUserInfo(res.data.user);
+        // setCurrent(res.data.user.id);
+        // setCompany(res.data.user.company_id);
+
+        // router.push(`/dashboard`);
+        setUserZ(res.data.user)
+        setExpire(res.data.tokens.access.expires)
+        setTokenZ(res.data.tokens.access.token)
+        // setExpire(res.data.tokens.access.expires)
+        // setTokenZ(res.data.tokens.access.token)
+        // if (res.data.user.role == "company-manager") {
+        //   router.push("/dashboard/manager");
+        // } else {
+        //   router.push(`/dashboard`);
+        // }
+
+        router.push(`/dashboard`);
+      }
 
       // router.push(`/dashboard`);
     } catch (error: any) {

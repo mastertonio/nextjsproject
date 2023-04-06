@@ -3,7 +3,7 @@ import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
-import { useCardStore } from '@app/store/builder/builderState';
+import { useCardStore, useSectionContentStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -20,8 +20,11 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
+    const valueBucketName = useSectionContentStore((state) => state.valueBucketName);
+    const addSection = useSectionContentStore((state) => state.addSection)
     const addCard = useCardStore((state) => state.addCard);
     const setNewCardName = useCardStore((state) => state.setNewCardName);
+    const setValueBucketName = useSectionContentStore((state) => state.setValueBucketName);
     const form = useForm({
         initialValues: {
             sectioName: "",
@@ -38,7 +41,8 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
-            addCard()
+            // addCard()
+            addSection()
             setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
@@ -55,8 +59,10 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioName")}
-                            onChange={(event) => setNewCardName(event.target.value)}
-                            value={newCardName}
+                            onChange={((event) => setValueBucketName(event.target.value))}
+                            value={valueBucketName}
+                        // onChange={(event) => setNewCardName(event.target.value)}
+                        // value={newCardName}
                         />
                     </Grid>
 

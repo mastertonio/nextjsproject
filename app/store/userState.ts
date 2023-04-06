@@ -1,10 +1,15 @@
 import { State, UserContextTypes } from "@app/context/user.context";
 import { setegid } from "process";
 import { StateCreator, create } from "zustand";
-import { createJSONStorage, devtools, persist, PersistOptions } from "zustand/middleware";
+import {
+  createJSONStorage,
+  devtools,
+  persist,
+  PersistOptions,
+} from "zustand/middleware";
 
 export interface UserState {
-  user: UserContextTypes | null;
+  user: UserContextTypes | null | undefined;
   token: string;
   refresh: string;
   expires: string;
@@ -22,7 +27,7 @@ type MyPersist = (
 export const useUserStore = create<UserState>(
   (persist as MyPersist)(
     (set, get) => ({
-      user: null
+      user: null,
       // {
       //   verification_code: "",
       //   company_id: "",
@@ -42,12 +47,10 @@ export const useUserStore = create<UserState>(
       //   role: "",
       //   status: 1
       // }
-      ,
       token: "",
       refresh: "",
       expires: "",
-      login: (user: UserContextTypes) =>
-      set((state) => ({ ...state, user })),
+      login: (user: UserContextTypes) => set((state) => ({ ...state, user })),
       setToken: (token: string) => set({ token }),
       setExpires: (expires: string) => set({ expires }),
       setRefresh: (refresh: string) => set({ refresh }),

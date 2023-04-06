@@ -8,37 +8,15 @@ interface Credentials {
   password?: string | undefined;
 }
 
-interface User {
-  verification_code: string | null;
-  phone: string;
-  manager: string;
-  first_name: string;
-  last_name: string;
-  currency: string;
-  email_verified_at: string | null;
-  remember_token: string | null;
-  role: string;
-  isEmailVerified: boolean;
-  avatar: string;
-  status: number;
-  name: string;
-  email: string;
-  company_id: string;
-  created_by: string;
-  id: string;
-}
-
-type AuthorizeReturnType = { user: User } | null;
-
 const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
   providers: [
     CredentialsProvider({
-      type: "credentials",
+      name: "Credentials",
       credentials: {},
-      authorize: async (credentials: any, req) => {
+      async authorize(credentials: any, req) {
         const { email, password } = credentials as Credentials;
 
         if (!email || !password) {
@@ -47,18 +25,42 @@ const authOptions: NextAuthOptions = {
 
         const payload = { email, password };
 
-        const user = await axios.post(`/v1/auth/login`, payload);
+        try {
+          const user = await axios.post(`/v1/auth/login`, payload);
+          // console.log("user auth", user);
 
-        console.log("user", user.data);
-
-        if (user) {
-          return user.data.user;
-        } else {
-          return null;
+          if (user) {
+            return user.data.user;
+          }
+        } catch (error) {
+          console.error(error);
         }
+
+        return null;
+
+        // const user = await axios.post(`/v1/auth/login`, payload);
+
+        // console.log("user auth", user);
+
+        // if (user) {
+        //   return user.data.user;
+        // } else {
+        //   return null;
+        // }
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      // Send properties to the client, like an access_token from a provider.
+      session.user = token;
+
+      return session;
+    },
+  },
   pages: {
     signIn: "/",
   },

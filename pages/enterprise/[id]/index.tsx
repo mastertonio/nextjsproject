@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
 import NavbarSimple from "@app/core/components/sidebar/EnterpriseSidebar";
-import Projection from "@app/enterprise/Projection";
+import Projection from "@app/enterprise/NewProjection";
 import { AppShell, Navbar, Header, Grid, SimpleGrid, Flex } from "@mantine/core";
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
@@ -13,11 +13,75 @@ interface CardSection {
   sectionName: string;
 }
 
+interface Quote {
+  text: string;
+  author: string;
+}
+
+interface ContentElement {
+  type: string;
+  span: string;
+  text: string;
+}
+
+interface HeaderTitle {
+  type: string;
+  mainTitle: {
+    type: string;
+    style: string;
+    text: string;
+  };
+  subTitle: {
+    type: string;
+    text: string;
+  };
+  description: string;
+  quotes: {
+    type: string;
+    position: string;
+    elements: {
+      type: string;
+      quote: Quote;
+    }[];
+  };
+  content: {
+    type: string;
+    elements: any[];
+  };
+}
+
+interface Slider {
+  type: string;
+  classes: string;
+  title: string;
+  sliderType: string;
+  money: number;
+  label: string;
+  value: number;
+  step: number;
+  id: string;
+}
+
+interface GrayContent {
+  type: string;
+  classes: string;
+  elements: Slider[];
+}
+
+interface Section {
+  id: string;
+  order: number;
+  headers: {
+    title: HeaderTitle;
+  };
+  GrayContent: GrayContent;
+}
+
 const Enterprise = () => {
-  const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
+  const [valueBucketState, setValueBucketState] = useState<Section[]>([])
 
   useEffect(() => {
-    const formValue = JSON.parse(localStorage.getItem("valueBucket") ?? '[]') as CardSection[];
+    const formValue = JSON.parse(localStorage.getItem("valueBucket") ?? '[]') as Section[];
     setValueBucketState(formValue)
     console.log('storage value bucket', valueBucketState)
   }, [])
@@ -40,8 +104,8 @@ const Enterprise = () => {
       className="m-0 p-0"
     >
       <>
-        {finalData
-          ? finalData.sections.map((section) => (
+        {valueBucketState
+          ? valueBucketState.map((section) => (
             <div className="w-full text-[#676a6c]" key={section.id}>
               <Projection
                 title={section.headers.title.mainTitle.text}
@@ -62,12 +126,26 @@ const Enterprise = () => {
                     pr={20}
                     className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
                   >
-                    {valueBucketState.map((card) => (
+                    {/* {valueBucketState.map((card) => (
                       <NewValueBucket
                         key={card.id}
                         label={card.sectionName}
                       />
-                    ))}
+                    ))} */}
+                    {valueBucketState.map((item) => {
+                      return (
+                        <>
+                          {item.GrayContent.elements.map((element) => (
+                            <SliderCard
+                              key={element.id}
+                              label={element.title}
+                              money={element.money}
+                              progress={element.value}
+                            />
+                          ))}
+                        </>
+                      )
+                    })}
                     {/* {contentData.sections.sliders.elements.map((element) => (
                       <SliderCard
                         key={element.id}
@@ -87,7 +165,8 @@ const Enterprise = () => {
                       w={"100%"}
                       style={{ marginTop: 10, marginBottom: 10, padding: 10 }}
                     > */}
-                    <InputVariable elements={section.GrayContent.elements as iElemsProp[]} type={section.GrayContent.type} />
+                    <InputVariable elements={section.GrayContent.elements as any[]} type={section.GrayContent.type} />
+                    {/* <InputVariable elements={section.GrayContent.elements as iElemsProp[]} type={section.GrayContent.type} /> */}
                     {/* </Flex> */}
                   </div>
                 ) : (

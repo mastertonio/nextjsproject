@@ -3,7 +3,7 @@ import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi';
-import { useCardStore } from '@app/store/builder/builderState';
+import { useCardStore, useSectionContentStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -14,7 +14,8 @@ interface IModalEntryProps {
 
 const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
-    const setVideoLink = useCardStore((state) => state.updateSectionVideoLink)
+    const setVideoLink = useSectionContentStore((state) => state.setVideoLink)
+    // const setVideoLink = useCardStore((state) => state.updateSectionVideoLink)
     const form = useForm({
         initialValues: {
             sectionVideo: "",

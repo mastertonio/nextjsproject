@@ -33,6 +33,7 @@ import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
 import Cookies from 'js-cookie';
 import FourOhFour from "pages/404";
+import { getSession } from "next-auth/react";
 //
 const Dashboard: React.FC<UserState> = ({ user }) =>
 // message
@@ -52,18 +53,20 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
     getDashboardData
   );
   console.log('data', data);
-  useEffect(() => {
-    Cookies.set('x-access-token', tokenSet, {
-      expires: new Date(expireCookies).getTime()
-    });
+  console.log('userz', user);
+  console.log('status', isSuccess);
+  // useEffect(() => {
+  //   Cookies.set('x-access-token', tokenSet, {
+  //     expires: new Date(expireCookies).getTime()
+  //   });
 
-    if (Date.now() > new Date(expireCookies).getTime()) {
-      Cookies.remove('x-access-token')
-      // Cookies.remove('session.sig')
-      // Cookies.remove('session')
-      router.push('/');
-    }
-  }, [router, expireCookies, tokenSet]);
+  //   if (Date.now() > new Date(expireCookies).getTime()) {
+  //     Cookies.remove('x-access-token')
+  //     // Cookies.remove('session.sig')
+  //     // Cookies.remove('session')
+  //     router.push('/');
+  //   }
+  // }, [router, expireCookies, tokenSet]);
 
 
   if (isLoading) return <MainLoader />;
@@ -122,12 +125,33 @@ const Dashboard: React.FC<UserState> = ({ user }) =>
   return <></>
 };
 
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await getSession(context);
+
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false
+//       },
+//       props: {},
+//     }
+//   }
+
+//   return {
+//     props: {
+//       user: session.user,
+//     },
+//   }
+// }
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // const data = 'from gssp'
   const cookies = context.req.cookies
-  const sessionExpired = cookies['x-access-token'];
+  console.log('dashboard context', context);
 
-  console.log(cookies)
+  const sessionExpired = cookies['x-access-token'];
+  // const sessionExpired = cookies['next-auth.session-token'];
 
   // check if the session has expired
   if (Date.now() > new Date(sessionExpired).getTime()) {
@@ -149,7 +173,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   })
   const user = await res.json();
-  console.log('user', user)
 
   if (Object.keys(user).length === 0 && user.constructor === Object) {
     // redirect to dashboard page if authenticated

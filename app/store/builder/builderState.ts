@@ -146,11 +146,357 @@ export const useSectionWriteupStore = create<SectionWriteup>((set) => ({
   setSectionWriteup: (writeup: string) => set({ sectionWriteUp: writeup }),
 }));
 
+// Type for sections
+
+interface Quote {
+  text: string;
+  author: string;
+}
+
+interface ContentElement {
+  type: string;
+  span: string;
+  text: string;
+}
+
+interface HeaderTitle {
+  type: string;
+  mainTitle: {
+    type: string;
+    style: string;
+    text: string;
+  };
+  subTitle: {
+    type: string;
+    text: string;
+  };
+  description: string;
+  quotes: {
+    type: string;
+    position: string;
+    elements: {
+      type: string;
+      quote: Quote;
+    }[];
+  };
+  content: {
+    type: string;
+    elements: any[];
+  };
+}
+
+interface Slider {
+  type: string;
+  classes: string;
+  title: string;
+  sliderType: string;
+  money: number;
+  label: string;
+  value: number;
+  step: number;
+  id: string;
+}
+
+interface GrayContent {
+  type: string;
+  classes: string;
+  elements: any[];
+}
+
+interface Section {
+  id: string;
+  order: number;
+  headers: {
+    title: HeaderTitle;
+  };
+  GrayContent: GrayContent;
+}
+
+interface FinalData {
+  sections: Section[];
+  valueBucketName: string;
+  sectionWriteUp: string;
+  setSectionWriteUp: (id: string, writeup: string) => void;
+  setVideoLink: (id: string, link: string) => void;
+  setValueBucketName: (name: string) => void;
+  setQuestions: (id: string, questions: string) => void;
+  setSections: (section: Section[]) => void;
+  addSection: () => void;
+}
+
+export const useSectionContentStore = create<FinalData>((set) => ({
+  sections: [],
+  valueBucketName: "",
+  sectionWriteUp: "",
+  setValueBucketName: (bucketName) => set({ valueBucketName: bucketName }),
+  setSections: (sections) => set({ sections }),
+  addSection: () => {
+    const state = useSectionContentStore.getState();
+    const newSection = {
+      id: Date.now().toString(),
+      type: "card",
+      classes: "col-lg-4",
+      title: state.valueBucketName,
+      sliderType: "stacked",
+      money: 0,
+      label: "",
+      value: 0,
+      step: 0,
+    };
+
+    set({
+      sections: [
+        {
+          id: Date.now().toString(),
+          order: Math.floor(Math.random() * 100) + 1,
+          headers: {
+            title: {
+              type: "element",
+              mainTitle: {
+                type: "text",
+                style: "",
+                text: `<h1 class="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">ROI DASHBOARD | 2 Year Projection <span class="float-right text-[#216C2A] font-bold">$0</span></h1>`,
+              },
+              subTitle: {
+                type: "text",
+                text: `<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>`,
+              },
+              description: `<p class="text-[16px]">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left. <br><br></p>`,
+              quotes: {
+                type: "revolver",
+                position: "bottom", //top , bottom of writeup, outside = outside entire section header
+                elements: [
+                  // {
+                  //   type: "",
+                  //   quote: {
+                  //     text: "",
+                  //     author: "",
+                  //   },
+                  // },
+                ],
+              },
+              content: {
+                type: "",
+                elements: [],
+              },
+            },
+          },
+          GrayContent: {
+            type: "sliders",
+            classes: "row border-bottom gray-bg dashboard-header",
+            elements: [newSection],
+          },
+        },
+        ...state.sections,
+      ],
+    });
+
+    localStorage.setItem(
+      "valueBucket",
+      JSON.stringify([
+        {
+          id: Date.now().toString(),
+          order: Math.floor(Math.random() * 100) + 1,
+          headers: {
+            title: {
+              type: "element",
+              mainTitle: {
+                type: "text",
+                style: "",
+                text: `<h1 class="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">ROI DASHBOARD | 2 Year Projection <span class="float-right text-[#216C2A] font-bold">$0</span></h1>`,
+              },
+              subTitle: {
+                type: "text",
+                text: `<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>`,
+              },
+              description: `<p class="text-[16px]">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left. <br><br></p>`,
+              quotes: {
+                type: "revolver",
+                position: "bottom", //top , bottom of writeup, outside = outside entire section header
+                elements: [
+                  // {
+                  //   type: "",
+                  //   quote: {
+                  //     text: "",
+                  //     author: "",
+                  //   },
+                  // },
+                ],
+              },
+              content: {
+                type: "",
+                elements: [],
+              },
+            },
+          },
+          GrayContent: {
+            type: "sliders",
+            classes: "row border-bottom gray-bg dashboard-header",
+            elements: [newSection],
+          },
+        },
+        ...state.sections,
+      ])
+    );
+  },
+  setSectionWriteUp: (id, writeup) => {
+    const state = useSectionContentStore.getState();
+    // const updatedSections = state.sections.map((section) => {
+    //   if (section.id === id) {
+    //     return {
+    //       type: "description",
+    //       span: "auto",
+    //       text: writeup,
+    //     };
+    //   } else {
+    //     return section;
+    //   }
+    // });
+
+    const updatedContentElements =
+      state.sections.find((section) => section.id === id)?.headers?.title
+        ?.content?.elements || [];
+
+    const updatedSections = {
+      type: "description",
+      span: "auto",
+      text: writeup,
+    };
+
+    updatedContentElements.push(updatedSections);
+
+    set((prev) => {
+      const updatedSections = prev.sections.map((section) => {
+        if (section.id === id) {
+          return {
+            ...section,
+            headers: {
+              ...section.headers,
+              content: {
+                ...section.headers.title.content,
+                elements: updatedContentElements,
+              },
+            },
+          };
+        } else {
+          return section;
+        }
+      });
+
+      localStorage.setItem("valueBucket", JSON.stringify(updatedSections));
+
+      return {
+        ...prev,
+        sections: updatedSections,
+      };
+    });
+  },
+  setVideoLink: (id, link) => {
+    const state = useSectionContentStore.getState();
+    // const updateLink = state.sections.map((section) => {
+    //   if (section.id === id) {
+    //     return {
+    //       type: "media",
+    //       class: "col-lg-5",
+    //       span: "auto",
+    //       mediaOrigin: "video",
+    //       link: link,
+    //     };
+    //   } else {
+    //     return section;
+    //   }
+    // });
+
+    const updatedContentLink =
+      state.sections.find((section) => section.id === id)?.headers?.title
+        ?.content?.elements || [];
+
+    const updateLink = {
+      type: "media",
+      class: "col-lg-5",
+      span: "auto",
+      mediaOrigin: "video",
+      link: link,
+    };
+
+    updatedContentLink.push(updateLink);
+
+    set((prev) => {
+      const updatedVidSections = prev.sections.map((section) => {
+        if (section.id === id) {
+          return {
+            ...section,
+            headers: {
+              ...section.headers,
+              content: {
+                ...section.headers.title.content,
+                elements: updatedContentLink,
+              },
+            },
+          };
+        } else {
+          return section;
+        }
+      });
+
+      localStorage.setItem("valueBucket", JSON.stringify(updatedVidSections));
+
+      return {
+        ...prev,
+        sections: updatedVidSections,
+      };
+    });
+  },
+  setQuestions: (id) => {
+    const state = useSectionContentStore.getState();
+
+    const updatedQuestions: any =
+      state.sections.find((section) => section.id === id)?.GrayContent || [];
+
+    const questionsObj = {
+      id: Date.now().toString(),
+      type: "text",
+      text: "<h4>Please tell us a little about your sales organization</h4>",
+      toggle: true,
+      elements: [],
+    };
+
+    updatedQuestions.push(questionsObj);
+
+    set((prev) => {
+      const updatedQuesSections: any = prev.sections.map((section) => {
+        if (section.id === id) {
+          return {
+            ...section,
+            headers: {
+              ...section.headers,
+              content: {
+                ...section.headers.title.content,
+              },
+            },
+            GrayContent: updatedQuestions,
+          };
+        } else {
+          return section;
+        }
+      });
+
+      return {
+        ...prev,
+        sections: updatedQuesSections,
+      };
+    });
+  },
+}));
+
+// End of Definitions
+
 interface CardSection {
   id: string;
   sectionName: string;
   sectionWriteUp: string;
   sectionVideoLink: string;
+  type: string;
 }
 
 interface CardsProps {
@@ -158,12 +504,14 @@ interface CardsProps {
   newCardName: string;
   sectionWriteUp: string;
   sectionVideoLink: string;
+  type: string;
   setCards: (cards: CardSection[]) => void;
   setNewCardName: (sectioName: string) => void;
   addCard: () => void;
   removeCard: (id: string) => void;
   setSectionWriteup: (writeup: string) => void;
   setSectionVideoLink: (videoLink: string) => void;
+  setType: (typeChar: string) => void;
   updateSectionWriteUp: (id: string, writeup: string) => void;
   updateSectionVideoLink: (id: string, videoLink: string) => void;
 }
@@ -175,8 +523,10 @@ export const useCardStore = create<CardsProps>((set) => ({
   setNewCardName: (sectioName) => set({ newCardName: sectioName }),
   sectionWriteUp: "",
   sectionVideoLink: "",
+  type: "",
   setSectionWriteup: (writeup) => set({ sectionWriteUp: writeup }),
   setSectionVideoLink: (videoLink) => set({ sectionVideoLink: videoLink }),
+  setType: (typeChar) => set({ type: typeChar }),
   addCard: () => {
     const state = useCardStore.getState();
     const newCard = {
@@ -184,12 +534,14 @@ export const useCardStore = create<CardsProps>((set) => ({
       sectionName: state.newCardName,
       sectionWriteUp: "",
       sectionVideoLink: "",
+      type: "media",
     };
     set({
       cards: [...state.cards, newCard],
       newCardName: "",
       sectionWriteUp: "",
       sectionVideoLink: "",
+      type: "media",
     });
     localStorage.setItem(
       "valueBucket",

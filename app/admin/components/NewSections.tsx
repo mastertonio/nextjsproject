@@ -7,7 +7,7 @@ import ModalUpdateEntry from './ModalUpdateEntry';
 import ModalAddEntry from './ModalAddEntry';
 import { useModalEntryStore, useModalAddEntryStore, } from '@app/store/builderStore';
 import { useNewStore, useSectionWriteupStore } from '@app/store/builder/builderState';
-import { customConfig, IBuilderSubState, useBuilderStore, useSectionsStore, useCardStore } from '@app/store/builder/builderState';
+import { customConfig, IBuilderSubState, useBuilderStore, useSectionsStore, useCardStore, useSectionContentStore } from '@app/store/builder/builderState';
 import SectionDnd from './SectionDnd';
 import { uniqueNamesGenerator } from 'unique-names-generator';
 import SectionItems from './SectionItems';
@@ -49,6 +49,8 @@ const NewSections: React.FC<iSectionProps> = () => {
     const [entry, setEntry] = useState(false)
     const [updateEntry, setUpdateEntry] = useState(false)
     const [getID, setGetID] = useState('');
+    // new state
+    const section = useSectionContentStore((state) => state.sections)
     // const [newChoice, setNewChoice] = useState(false)
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
@@ -58,14 +60,14 @@ const NewSections: React.FC<iSectionProps> = () => {
 
     return (
         <>
-            {cardSection.map((card) => {
-                console.log('card', typeof card.id)
+            {section.map((section) => {
+                console.log('card', typeof section.id)
                 return (
-                    <div className="w-full mt-[40px]" key={card.id}>
+                    <div className="w-full mt-[40px]" key={section.id}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
                             <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                                 <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
-                                <span>{card.sectionName}</span>
+                                <span>{section.GrayContent.elements[0]?.title}</span>
                             </h1>
                         </div>
 
@@ -73,13 +75,13 @@ const NewSections: React.FC<iSectionProps> = () => {
                             <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <Card.Section withBorder inheritPadding py="xs">
                                     <div className="flex flex-row items-center justify-between">
-                                        <Text className="text-[16px] text-blue-600 font-semibold">{card.sectionName}</Text>
+                                        <Text className="text-[16px] text-blue-600 font-semibold">{section.GrayContent.elements[0]?.title}</Text>
                                         <div>
                                             <MdModeEdit
                                                 className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
                                                 onClick={() => {
                                                     setUpdateWriteUp(true)
-                                                    setGetID(card.id)
+                                                    setGetID(section.id)
                                                 }}
                                             />
                                             <MdClose className="text-red-600 text-[20px] cursor-pointer" />
@@ -89,11 +91,13 @@ const NewSections: React.FC<iSectionProps> = () => {
                                 <div className="mt-[20px] mb-[40px]">
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-auto w-full sm:w-[50%]">
-                                            <Text>{card.sectionWriteUp}</Text>
+                                            <Text>{section.headers.title.content.elements[0]?.text}</Text>
                                         </div>
                                         <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                             <div className="flex flex-row items-center justify-between">
-                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500">{card.sectionVideoLink}</span></Text>
+                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500">
+                                                    {section.headers.title.content.elements[1]?.link}
+                                                </span></Text>
                                                 <div>
                                                     <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => setUpdateVideo(true)} />
                                                     <MdClose className="text-red-600 text-[16px] cursor-pointer" />

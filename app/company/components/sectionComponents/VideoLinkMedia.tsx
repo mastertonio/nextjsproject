@@ -2,13 +2,13 @@ import { Text, Image, Container } from "@mantine/core";
 import ReactPlayer from 'react-player/lazy'
 
 type IMediaProps = {
-  media?: string
+  media?: string | undefined;
 }
 
 const VideoLinkMedia: React.FC<IMediaProps> = ({ media }) => {
   return (
     <div>
-      <div style={{ height: 280, margin: 30}}>
+      <div style={{ height: 280, margin: 30 }}>
         <ReactPlayer
           controls
           playing

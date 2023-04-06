@@ -2,23 +2,27 @@ import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useEffect, useMemo, useReducer, useState } from "react";
 
 export interface UserContextTypes {
-  verification_code: string | null;
-  phone: string;
-  manager: string;
-  first_name: string;
-  last_name: string;
-  currency: string;
-  email_verified_at: string | null;
-  remember_token: string | null;
-  role: string;
-  isEmailVerified: boolean;
-  avatar: string;
-  status: number;
-  name: string;
-  email: string;
-  company_id: string;
-  created_by: string;
-  id: string;
+  verification_code?: string | null | undefined;
+  phone?: string | null | undefined;
+  manager?: string | null | undefined;
+  first_name?: string | null | undefined;
+  last_name?: string | null | undefined;
+  currency?: string | null | undefined;
+  email_verified_at?: string | null | undefined;
+  remember_token?: string | null | undefined;
+  role?: string | null | undefined;
+  isEmailVerified?: boolean | null | undefined;
+  avatar?: string | null | undefined;
+  status?: number | null | undefined;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  company_id?: string | null | undefined;
+  created_by?: string | null | undefined;
+  id?: string | null | undefined;
+  exp?: number | null | undefined;
+  iat?: number | null | undefined;
+  jti?: string | null | undefined;
+  sub?: string | null | undefined;
 }
 
 export interface State {

@@ -3,7 +3,7 @@ import { Modal, Button, Divider, Text, Textarea, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
-import { useCardStore } from '@app/store/builder/builderState';
+import { useCardStore, useSectionContentStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -14,7 +14,8 @@ interface IModalEntryProps {
 
 const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
-    const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
+    const setWriteup = useSectionContentStore((state) => state.setSectionWriteUp)
+    // const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
     const form = useForm({
         initialValues: {
             sectioWriteUp: "",
