@@ -78,9 +78,9 @@ export const useUserStore = create<UserState>(
   )
 );
 
-useUserStore.subscribe((state) => {
-  console.log(state.user?.tokens, "state from subscribe");
-});
+// useUserStore.subscribe((state) => {
+//   console.log(state.user?.tokens, "state from subscribe");
+// });
 
 type VarState = {
   id: string;
