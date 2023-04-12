@@ -146,6 +146,71 @@ export const useSectionWriteupStore = create<SectionWriteup>((set) => ({
   setSectionWriteup: (writeup: string) => set({ sectionWriteUp: writeup }),
 }));
 
+// New Update by Joemari 04-12-2023
+interface QuestionProps {
+  id: number;
+  title: string;
+  type: string;
+  format: string;
+  decimalPlace: string;
+  currency: string;
+  tooltip: string;
+  appendedText: string;
+  prefilled: string;
+  formula: string;
+  address: string;
+  sections: string;
+}
+
+interface SecionQuestionProps {
+  questions: QuestionProps[];
+  addQuestions: ({ values }: any) => void;
+  updateQuestions: ({ id, values }: any) => void;
+}
+
+export const useQuestionPropsStore = create<SecionQuestionProps>((set) => ({
+  questions: [],
+  addQuestions: ({ values }: any) => {
+    console.log("values state", values?.formEntry[0].title);
+    const state = useQuestionPropsStore.getState();
+    const newQuestion = {
+      id: Math.floor(Math.random() * 100),
+      title: values?.formEntry[0].title,
+      type: values?.formEntry[0].type,
+      format: values?.formEntry[0].format,
+      decimalPlace: values?.formEntry[0].decimalPlace,
+      currency: values?.formEntry[0].currency,
+      tooltip: values?.formEntry[0].tooltip,
+      prefilled: values?.formEntry[0].prefilled,
+      appendedText: values?.formEntry[0].appendedText,
+      formula: values?.formEntry[0].formula,
+      address: values?.formEntry[0].address,
+      sections: values?.formEntry[0].sections,
+    };
+
+    set({
+      questions: [...state.questions, newQuestion],
+    });
+  },
+  updateQuestions: ({ values }: any) => {
+    const state = useQuestionPropsStore.getState();
+    const updatedQuestions = state.questions.map((question) => {
+      if (question.id === values?.formEntry[0].id) {
+        return {
+          ...question,
+          ...values.formEntry[0],
+        };
+      }
+      return question;
+    });
+
+    set({
+      questions: updatedQuestions,
+    });
+  },
+}));
+// End Question
+
 interface CardSection {
   id: string;
   sectionName: string;
@@ -242,12 +307,17 @@ export const useCardStore = create<CardsProps>((set) => ({
 // });
 
 interface NewChoice {
+  // Choice
   newChoice: boolean;
   updateChoice: boolean;
   choiceValue: string;
   setChoiceValue: (char: string) => void;
   setUpdateChoice: (b: boolean) => void;
   setOpenChoice: (b: boolean) => void;
+
+  // Format
+  formatChoice: string;
+  setFormatValue: (char: string) => void;
 }
 
 export const useNewStore = create<NewChoice>((set) => ({
@@ -257,6 +327,9 @@ export const useNewStore = create<NewChoice>((set) => ({
   setChoiceValue: (state) => set(() => ({ choiceValue: state })),
   setUpdateChoice: (state) => set(() => ({ updateChoice: state })),
   setOpenChoice: (state) => set(() => ({ newChoice: state })),
+  // format
+  formatChoice: "",
+  setFormatValue: (state) => set(() => ({ formatChoice: state })),
 }));
 
 // richtext

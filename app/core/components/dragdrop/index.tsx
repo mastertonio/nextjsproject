@@ -7,7 +7,7 @@ import CollapseSection from '@app/admin/components/CollapseSection';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { IBuilderSubState, useBuilderStore, useNewStore } from '@app/store/builder/builderState';
 import { iSectionData } from '../../../admin/components/Sections'
-import ModalUpdateEntry from '@app/admin/components/ModalUpdateEntry';
+import EditQuestions from '@app/admin/components/SectionModals/EditQuestions';
 
 const useStyles = createStyles((theme) => ({
     item: {
@@ -47,8 +47,19 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface DragNDropProps {
-    data: IBuilderSubState[],
+    data: iSectionProps[],
+    type: string,
+}
+
+type iSectionProps = {
+    id: number
+    title: string
     type: string
+    format: string
+    tooltip: string
+    appendedText: string
+    formula: string
+    address: string
 }
 
 export function DragNDrop({ data, type }: DragNDropProps) {
@@ -61,6 +72,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
     const [sectData, setSectData] = useState<iSectionData[]>([])
     const [opened, setOpened] = useState(false);
     const [update, setUpdate] = useState(false);
+    const [getID, setGetID] = useState(0);
 
     const equalsCheck = (a: IBuilderSubState[], b: IBuilderSubState[]) => a.length === b.length && a.every((v, i) => v === b[i])
 
@@ -79,50 +91,55 @@ export function DragNDrop({ data, type }: DragNDropProps) {
         }))
     };
 
-    const items = state.map((item, index) => (
-        <Draggable key={item.id} index={index} draggableId={`${item.id}-sectionName`}>
-            {(provided, snapshot) => (
-                <div>
-                    <div
-                        className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        onClick={() => setUpdate(true)}
-                    // onClick={() => type === "collapse" ? handleShow(item.id) : show()}
-                    >
-                        <div {...provided.dragHandleProps} className={classes.dragHandle}>
-                            <IconGripVertical size={18} stroke={1.5} />
-                        </div>
-                        <div>
-                            <div className="h-[20px] flex flex-row">
-                                <IconEdit size={18} stroke={1.5} />
-                                <Text className="text-[14px] ml-[5px]">{item.sectionName}</Text>
+    const items = state.map((item, index) => {
+        return (
+            <Draggable key={item.id} index={index} draggableId={`${item.id}-sectionName`}>
+                {(provided, snapshot) => (
+                    <div>
+                        <div
+                            className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            onClick={() => {
+                                setGetID(item.id);
+                                setUpdate(true)
+                            }}
+                        // onClick={() => type === "collapse" ? handleShow(item.id) : show()}
+                        >
+                            <div {...provided.dragHandleProps} className={classes.dragHandle}>
+                                <IconGripVertical size={18} stroke={1.5} />
+                            </div>
+                            <div>
+                                <div className="h-[20px] flex flex-row">
+                                    <IconEdit size={18} stroke={1.5} />
+                                    <Text className="text-[14px] ml-[5px]">{item.title}</Text>
+                                </div>
+                            </div>
+                            <div className="ml-auto button-section">
+                                <Button
+                                    type="button"
+                                    radius="sm"
+                                    color="red"
+                                    size="sm"
+                                    className="h-[20px] w-full"
+                                    onClick={() => remove(item.id)}
+                                >
+                                    <IconX size={12} stroke={1.5} />
+                                </Button>
                             </div>
                         </div>
-                        <div className="ml-auto button-section">
-                            <Button
-                                type="button"
-                                radius="sm"
-                                color="red"
-                                size="sm"
-                                className="h-[20px] w-full"
-                                onClick={() => remove(item.id)}
-                            >
-                                <IconX size={12} stroke={1.5} />
-                            </Button>
-                        </div>
-                    </div>
+                        <EditQuestions items={item} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
 
-
-                    {hideShow[item.id] && (
+                        {/* {hideShow[item.id] && (
                         <CollapseSection item={item} />
-                    )}
+                    )} */}
 
-                </div>
-            )}
-        </Draggable >
-    ))
+                    </div>
+                )}
+            </Draggable >
+        )
+    })
 
     return (
         <DragDropContext
@@ -139,7 +156,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                     </div>
                 )}
             </Droppable>
-            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
+            {/* <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} /> */}
         </DragDropContext>
     )
 }

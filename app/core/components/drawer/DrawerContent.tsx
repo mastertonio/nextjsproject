@@ -122,7 +122,8 @@ const DashboardDrawer = ({ user }: any) => {
               fullWidth
               className="mt-[5px] ml-[8px] text-[lightgray]"
               leftIcon={<MdLineWeight />}
-              onClick={() => router.push(`/templates/builder`)}
+              onClick={() => router.push(`/admin/builder`)}
+            // onClick={() => router.push(`/templates/builder`)}
             >
               Create Template
             </Button>

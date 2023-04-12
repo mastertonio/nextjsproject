@@ -4,13 +4,13 @@ import { DragNDrop } from '@app/core/components/dragdrop'
 import { FcTodoList } from 'react-icons/fc'
 import { MdModeEdit, MdClose } from 'react-icons/md'
 import ModalUpdateEntry from './ModalUpdateEntry';
-import ModalAddEntry from './ModalAddEntry';
+// import ModalAddEntry from './ModalAddEntry';
 import { useModalEntryStore, useModalAddEntryStore, } from '@app/store/builderStore';
-import { useNewStore, useSectionWriteupStore } from '@app/store/builder/builderState';
+import { useNewStore, useSectionWriteupStore, useQuestionPropsStore } from '@app/store/builder/builderState';
 import { customConfig, IBuilderSubState, useBuilderStore, useSectionsStore, useCardStore } from '@app/store/builder/builderState';
-import SectionDnd from './SectionDnd';
-import { uniqueNamesGenerator } from 'unique-names-generator';
-import SectionItems from './SectionItems';
+// import SectionDnd from './SectionDnd';
+// import { uniqueNamesGenerator } from 'unique-names-generator';
+// import SectionItems from './SectionItems';
 import SectionWriteUpModal from './SectionModals/SectionWriteUpModal';
 import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
@@ -30,6 +30,7 @@ export type iSectionData = {
 }
 
 const NewSections: React.FC<iSectionProps> = () => {
+    const questions = useQuestionPropsStore((state) => state.questions)
     const writeup = useSectionWriteupStore((state) => state.sectionWriteUp)
     const cardSection = useCardStore((state) => state.cards)
     const newChoice = useNewStore((state) => state.newChoice)
@@ -53,8 +54,8 @@ const NewSections: React.FC<iSectionProps> = () => {
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    console.log('card section', cardSection)
-    console.log('log', writeup)
+    console.log('question section', sectData[0])
+    console.log('questions', questions)
 
     return (
         <>
@@ -105,7 +106,8 @@ const NewSections: React.FC<iSectionProps> = () => {
                             </Card>
                             <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <div className="mt-[20px]">
-                                    <DragNDrop data={contentData} type="collapse" />
+                                    <DragNDrop data={questions} type="collapse" />
+                                    {/* <DragNDrop data={contentData} type="collapse" /> */}
                                 </div>
 
                                 <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
@@ -115,7 +117,8 @@ const NewSections: React.FC<iSectionProps> = () => {
                                         size="sm"
                                         color="teal"
                                         className="mr-0 sm:mr-[10px]"
-                                        onClick={() => setUpdateQuestion(true)}
+                                        // onClick={() => setUpdateQuestion(true)}
+                                        onClick={() => setUpdateEntry(true)}
                                     // onClick={addEmptySection}
                                     >
                                         Add New Entry

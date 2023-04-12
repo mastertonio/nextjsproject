@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   createStyles,
   Navbar,
@@ -6,12 +6,15 @@ import {
   // Code,
   ScrollArea,
   Image,
+  Box,
+  Text,
+  UnstyledButton
 } from "@mantine/core";
 import {
   IconBellRinging,
   // IconFingerprint,
   // IconKey,
-  // IconSettings,
+  IconSettings,
   // Icon2fa,
   // IconDatabaseImport,
   // IconReceipt2,
@@ -56,7 +59,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
     },
 
     linksInner: {
-      paddingTop: theme.spacing.xl,
+      // paddingTop: theme.spacing.xl,
       paddingBottom: theme.spacing.xl,
     },
 
@@ -68,6 +71,19 @@ const useStyles = createStyles((theme, _params, getRef) => {
         : theme.colors.gray[3]
         }`,
     },
+    control: {
+      fontWeight: 500,
+      display: "block",
+      width: "100%",
+      padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+      color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+      fontSize: theme.fontSizes.sm,
+
+      "&:hover": {
+        backgroundColor: "teal",
+        color: theme.colorScheme === "dark" ? theme.white : theme.black,
+      },
+    },
   };
 });
 
@@ -78,6 +94,12 @@ const mockdata = {
       title: "The ROI Shop",
     },
     navigationMenu: [
+      {
+        label: "Dashboard",
+        icon: IconSettings,
+        menuSequence: 2,
+        link: "/dashboard",
+      },
       {
         label: "ROI Sections",
         icon: IconCategory,
@@ -145,31 +167,53 @@ const mockdata = {
   },
 };
 
-const NavbarSimple = () => {
+
+const NavbarSimple = ({ sidebarData }: any) => {
   const { classes, cx } = useStyles();
   const navShow = useNavShowStore((state) => state.value);
   const hide = useNavShowStore((state) => state.hide);
   const [active, setActive] = useState("Billing");
+  const [logo, setLogo] = useState<string>("");
 
-  const links = mockdata.sidebar.navigationMenu.map((item) => (
-    <LinksGroup {...item} key={item.label} icon={item.icon} />
-  ));
+  const links = sidebarData?.navigationMenu.map((item: any) => (
+    <LinksGroup {...item} key={item.title} icon={item.icon} />
+  )); ``
+
+  // const links = mockdata.sidebar.navigationMenu.map((item) => (
+  //   <LinksGroup {...item} key={item.label} icon={item.icon} />
+  // )); ``
+
+  useEffect(() => {
+    setLogo(sidebarData?.brand?.logo)
+  }, [sidebarData])
+
 
   return (
     <Navbar width={{ sm: 220 }} p="md" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
-      <Group position="apart">
+      <Group position="apart" className="mb-[30px]">
         <div className="ml-auto flex sm:hidden">
           <IconX className="w-[30px] h-[30px]" onClick={() => hide()} />
         </div>
 
         <Image
           className="mt-[15px] sm:mt-[35px]"
-          src="https://www.theroishop.com/company_specific_files/547/logo/logo.png"
+          src={logo}
           alt="random"
         />
       </Group>
 
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
+        <UnstyledButton
+          className={classes.control}
+        >
+          <Group position="apart" spacing={0}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box ml="md">
+                <Text color={"white"}>Dashboard</Text>
+              </Box>
+            </Box>
+          </Group>
+        </UnstyledButton>
         <div className={classes.linksInner}>{links}</div>
       </Navbar.Section>
     </Navbar>

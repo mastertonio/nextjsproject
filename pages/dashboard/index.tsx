@@ -66,7 +66,7 @@ const Dashboard: React.FC<any> = (
   const { classes } = useStyles();
   const userZ = useUserStore((state) => (state))
   const getDashboardData = async () => {
-    return await axios.get(`/v1/dashboard`,{
+    return await axios.get(`/v1/dashboard`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       },
@@ -78,8 +78,8 @@ const Dashboard: React.FC<any> = (
     getDashboardData
   );
 
-  useEffect(()=> {
-    console.log(login.data.user.user, "tetete")
+  useEffect(() => {
+    console.log(login.data, "tetete")
   }, [login])
 
 
@@ -113,10 +113,10 @@ const Dashboard: React.FC<any> = (
             <ViewCount viewcount={data?.data.viewcount} />
           </div>
           <div className={`${classes.dashboard_graph} w-full sm:w-[900px] mt-[30px] sm:mt-0`}>
-            <DashboardGraph  token={login.data.user.tokens.access.token} />
+            <DashboardGraph token={login.data.user.tokens.access.token} />
           </div>
           <div className={`${classes.roi_ranking} w-full sm:w-[400px] relative`}>
-            <CreateNewRoi user={login.data.user.user} tokens={login.data.user.tokens}/>
+            <CreateNewRoi user={login.data.user.user} tokens={login.data.user.tokens} />
             <RoiRanking user={login.data.user.user} tokens={login.data.user.tokens} />
           </div>
         </div>

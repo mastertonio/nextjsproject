@@ -10,24 +10,22 @@ type iFormSelectProps = {
     values: any;
 }
 
-const SelectChoice: React.FC<iFormSelectProps> = ({ data, values }) => {
+const SelectFormat: React.FC<iFormSelectProps> = ({ data, values }, props) => {
     // const [choiceValue, setChoiceValue] = useState<string | null>(null);
-    const choiceValue = useNewStore((state) => state.choiceValue)
-    const setChoiceValue = useNewStore((state) => state.setChoiceValue)
-    console.log('values choice', values)
+    const formatChoice = useNewStore((state) => state.formatChoice)
+    const setFormatValue = useNewStore((state) => state.setFormatValue)
+    console.log('values choice', props)
     return (
         <div className="ml-auto">
             <Select
                 placeholder="Choose"
                 data={data}
                 {...values}
-                onChange={setChoiceValue}
-                value={choiceValue}
-            // value={valueData}
-            // onChange={handleChange}
+                onChange={setFormatValue}
+                value={formatChoice}
             />
         </div>
     )
 }
 
-export default SelectChoice
+export default SelectFormat
