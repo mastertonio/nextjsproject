@@ -23,6 +23,7 @@ import {
   ICompanyTemplatesProps,
 } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonTemplateProps {
   id: string;
@@ -33,6 +34,7 @@ export interface IButtonTemplateProps {
   version: string;
   comp_id: string;
   temp_id: string;
+  user: UserDataProp
 }
 
 const EditVersion: React.FC<IButtonTemplateProps> = ({
@@ -44,6 +46,7 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
   version,
   comp_id,
   temp_id,
+  user
 }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
@@ -79,7 +82,11 @@ const EditVersion: React.FC<IButtonTemplateProps> = ({
           notes: values.notes,
           status: values.status == "active" ? 1 : 0,
           version: parseInt(values.version),
-        }
+        }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
 
       if (response) {

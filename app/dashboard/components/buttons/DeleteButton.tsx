@@ -12,7 +12,7 @@ import { IconCheck } from "@tabler/icons";
 import { useUserStore } from "@app/store/userState";
 import { useMutation, useQueryClient } from "react-query";
 
-const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
+const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
@@ -31,7 +31,11 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name }) => {
   }
 
   const deleteRoi = useMutation({
-    mutationFn: () => axios.delete(`/v1/dashboard/roi/${id}/${userZ?.id}`).then((response) => response.data),
+    mutationFn: () => axios.delete(`/v1/dashboard/roi/${id}/${user.user.id}`,{
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }).then((response) => response.data),
     onMutate: (roi) => {
       console.log(roi, "roi")
       showNotification({

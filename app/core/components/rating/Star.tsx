@@ -21,6 +21,7 @@ const StarRating: React.FC<IStarProps> = ({
   setOpened,
   size,
   disabled,
+  user
 }) => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const userZ = useUserStore((state) => (state.user))
@@ -34,8 +35,12 @@ const StarRating: React.FC<IStarProps> = ({
       setR(rate);
       setOpened?.(false);
       const res = await axios.patch(
-        `/v1/dashboard/roi/${id}/${userZ?.id}`,
-        { importance: rate }
+        `/v1/dashboard/roi/${id}/${user.user.id}`,
+        { importance: rate }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
       if (res) {
         refetch();

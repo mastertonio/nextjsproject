@@ -24,6 +24,7 @@ import CompanyUserTable from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import ManagerDashboardGraph from "@app/dashboard/components/ManagerDashboardGraph";
 import { useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
 
 interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -92,7 +93,7 @@ interface ICompanyUsersElements {
   | undefined;
 }
 
-const ManagerDashboard: React.FC = () => {
+const ManagerDashboard: React.FC<any> = (login) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
@@ -102,7 +103,11 @@ const ManagerDashboard: React.FC = () => {
 
   const getCompanyUsers = async () => {
     return await axios.get(
-      `/v1/company/${userZ?.company_id}/user`
+      `/v1/company/${login.data.user.user.company_id}/user`, {
+        headers: {
+          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+        },
+      }
     );
   };
 
@@ -185,8 +190,9 @@ const ManagerDashboard: React.FC = () => {
           myCompany={item}
           refetch={refetch}
           name={item.email}
+          user={login.data.user}
         />
-        <TransferButton id={item._id} name={item.email} refetch={refetch} />
+        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} />
       </div>
     ),
   }));
@@ -215,12 +221,26 @@ const ManagerDashboard: React.FC = () => {
           <ManagerDashboardGraph />
         </div>
         <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
-          <CompanyUserTable company={userZ?.company_id ? userZ.company_id : ""} update={refetch} />
+          <CompanyUserTable user={login.data.user} company={login.data.user.user ? login.data.user.user.company_id : ""} update={refetch} />
         </div>
       </AppShell>
     );
   }
   return <></>
 };
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
 export default ManagerDashboard;

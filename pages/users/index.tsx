@@ -38,6 +38,7 @@ import TransferButton from "@app/company/components/buttons/Transfer";
 import CompanyUserTable from "@app/company/user/table";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
 
 export interface ICompanyUsersElements {
   id: React.Key | null | undefined;
@@ -106,7 +107,7 @@ export interface ICompanyUsersElements {
   | undefined;
 }
 
-const UsersDashboard: React.FC = () => {
+const UsersDashboard: React.FC<any> = (login) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
@@ -115,7 +116,11 @@ const UsersDashboard: React.FC = () => {
 
   const getCompanyUsers = async () => {
     return await axios.get(
-      `/v1/company/${userZ?.company_id}/user`
+      `/v1/company/${login.data.user.user.company_id}/user`, {
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    }
     );
   };
 
@@ -193,8 +198,8 @@ const UsersDashboard: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        <EditCompanyUserButton id={item._id} myCompany={item} refetch={refetch} name={item.email} />
-        <TransferButton id={item._id} name={item.email} refetch={refetch} />
+        <EditCompanyUserButton user={login.data.user} id={item._id} myCompany={item} refetch={refetch} name={item.email} />
+        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} />
       </div>
     ),
   }));
@@ -214,12 +219,12 @@ const UsersDashboard: React.FC = () => {
       className=""
       fixed
       header={<RoiNavbar />}
-      navbar={<Sidebar />}
+      navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens}/>}
     >
       <div className="m-[20px] bg-white p-[10px] sm:p-[50px]">
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddCompanyUserButton refetch={refetch} />
+          <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} />
           <Input
             variant="default"
             placeholder="Search for ROI"
@@ -343,18 +348,23 @@ const UsersDashboard: React.FC = () => {
           />
         </div>
       </div>
-      <CompanyUserTable company={userZ?.company_id ? userZ.company_id : ''} update={refetch} />
+      <CompanyUserTable user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} />
     </AppShell>
   );
 };
 
-// export async function getServerSideProps(ctx: any) {
-//   // Fetch data from external API
-//   console.log(ctx.req.cookies)
-//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`)
-//   const data = await res.json()
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
-//   // Pass data to the page via props
-//   return { props: { data } }
-// }
 export default UsersDashboard

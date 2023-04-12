@@ -204,5 +204,22 @@ const Home: NextPage = (test) => {
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req });
+
+  if (!session) {
+    return {
+      props: { user: null }
+    };
+  }
+
+  return {
+    props: { session },
+    redirect: {
+      destination: '/dashboard',
+      permanent: false,
+    },
+  };
+}
 
 export default Home;

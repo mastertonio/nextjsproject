@@ -13,6 +13,7 @@ import {
   MdSpaceDashboard,
 } from "react-icons/md";
 import Cookies from 'js-cookie';
+import { signOut } from "next-auth/react";
 
 const DashboardDrawer = ({ user }: any) => {
   const [openCompany, setOpenCompany] = useState(false);
@@ -149,7 +150,10 @@ const DashboardDrawer = ({ user }: any) => {
             className="mt-[5px] text-[lightgray] flex items-start"
             size="md"
             leftIcon={<MdLogout />}
-            onClick={handleLogout}
+            onClick={async () => {
+              const data = await signOut({ redirect: false, callbackUrl: "/" })
+              router.push(data.url)
+            }}
           >
             Logout
           </Button>

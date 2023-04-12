@@ -18,14 +18,16 @@ import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface ITransferButton {
   id: string;
   refetch: () => void;
   name: string;
+  user: UserDataProp
 }
 
-const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
+const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const p = router.query;
@@ -34,7 +36,11 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name }) => {
 
   const getManagers = async () => {
     return await axios.get(
-        `/v1/company/${userZ?.company_id}/manager`
+        `/v1/company/${user.user.company_id}/manager`, {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
+        }
       );
   };
 

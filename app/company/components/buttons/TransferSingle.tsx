@@ -18,15 +18,17 @@ import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface ITransferSingleButton {
   id: string;
   refetch: () => void;
   name: string;
   tempId: string
+  user: UserDataProp
 }
 
-const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, name, tempId }) => {
+const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, name, tempId, user }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const [value] = useLocalStorage({ key: "auth-token" });
@@ -38,7 +40,11 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${userZ?.company_id}/user`
+      `/v1/company/${user.user.company_id}/user`, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
     );
   };
 
@@ -74,6 +80,10 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
           roi_source_uid: id,
           roi_new_uid: values.new_source,
           template_id: tempId
+        }, {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
         }
       );
       if (response) {
