@@ -45,6 +45,7 @@ export interface IBuilderSubState {
 interface IBuilderState {
   content: IBuilderSubState[];
   addSection: () => void;
+  addSectionParam: (cont: IBuilderSubState) => void;
   reorder: (state: IBuilderSubState[]) => void;
   remove: (id: number) => void;
   update: (variable: IBuilderSubState) => void;
@@ -69,12 +70,27 @@ export const useBuilderStore = create<IBuilderState>((set) => ({
         ...state.content,
         {
           id: Date.now(),
-          symbol: "1" + Math.floor(Math.random() * 100),
+          symbol: "A" + Math.floor(Math.random() * 100),
           sectionName: "New Section",
           //uniqueNamesGenerator(customConfig),
           sectionWriteUp: "",
           sectionFormula: "",
           sectionVideo: "",
+        },
+      ],
+    })),
+  addSectionParam: (cont: IBuilderSubState) =>
+    set((state) => ({
+      content: [
+        ...state.content,
+        {
+          id: Date.now(),
+          symbol: "A" + Math.floor(Math.random() * 100),
+          sectionName: cont.sectionName,
+          //uniqueNamesGenerator(customConfig),
+          sectionWriteUp: cont.sectionWriteUp,
+          sectionFormula: cont.sectionFormula,
+          sectionVideo: cont.sectionVideo,
         },
       ],
     })),

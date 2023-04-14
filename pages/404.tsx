@@ -40,6 +40,75 @@ const FourOhFour: React.FC = () => {
   const { classes } = useStyles();
   const router = useRouter();
 
+  const FormulaParser = require('hot-formula-parser');
+  const parser = new FormulaParser.Parser();
+
+  parser.setFunction('VLOOKUP', (params: number[]) => {
+    // Get the row index of the search value
+    // let rowIndex = -1;
+    // for (let i = 0; i < range.length; i++) {
+    //   if (range[i][0] === searchValue) {
+    //     rowIndex = i;
+    //     break;
+    //   }
+    // }
+  
+    // // If exactMatch is true and the search value is not found, return #N/A
+    // if (exactMatch && rowIndex === -1) {
+    //   return '#N/A';
+    // }
+  
+    // // If exactMatch is false and the search value is not found, find the nearest value
+    // if (!exactMatch && rowIndex === -1) {
+    //   rowIndex = 0;
+    //   let minDiff = Math.abs(range[rowIndex][0] - searchValue);
+    //   for (let i = 1; i < range.length; i++) {
+    //     const diff = Math.abs(range[i][0] - searchValue);
+    //     if (diff < minDiff) {
+    //       rowIndex = i;
+    //       minDiff = diff;
+    //     }
+    //   }
+    // }
+  
+    // // Return the value at the specified index
+    // if (range[rowIndex] && range[rowIndex][index - 1]) {
+    //   return range[rowIndex][index - 1];
+    // } else {
+    //   return '#N/A';
+    // }
+    return params[0] + 5;
+  });
+
+  parser.on('callFunction', function(name: string, params: number[], done: (arg0: any) => void) {
+    if (name === 'VLOOKUP') {
+      console.log(name, params)
+      // done(params[0] + 5);
+    }
+  });
+
+  const data = [
+    ['TLB4', null, "Incumbent Solution", "text", null, null, "Avamar", null, "749"],
+    ["TLC4", null, "Price", "text", "$0,0.00", null, "1267.00", null, "749"],
+    ["TLD4", null, "Unit", "text", null, null, "per TB", null, "749"],
+    ["TLE4", null, "Discount %", "text", null, null, "80.0%", null, "749"],
+];
+
+  // parser.parse('SUM(4, ADD_5(1))')
+  
+  // Add the data to the parser
+  parser.setVariable('A1', 1);
+  parser.setVariable('A2', 3);
+  parser.setVariable('B1', 4);
+  parser.setVariable('B2', 2);
+  
+  // Parse a VLOOKUP formula
+  const formula = 'VLOOKUP(3, A1:B2, 2, true)';
+  const result = parser.parse(formula);
+  
+  console.log(parser.parse('SUM(4, VLOOKUP(1))')); // Output: 2
+
+
   return (
     <Container className={`${classes.root} max-w-[100%] bg-gray-100`}>
       <div className='max-w-[85%] h-screen flex mx-auto pt-[50px] lg:pt-0 sm:pt-[50px]'>
