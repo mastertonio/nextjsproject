@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, Button, Divider, Text, TextInput, Textarea, Grid, Select } from '@mantine/core';
 import { useForm } from '@mantine/form';
-// import RichTextSection from '@app/core/components/richtext/RichTextSection';
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
 // import FormSelect from '@app/core/components/dropdown/SelectChoice';
 // import { useModalEntryStore } from '@app/store/builderStore';
 import { useQuestionPropsStore } from '@app/store/builder/builderState';
@@ -128,10 +128,9 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
   ];
 
   const format = [
-    { value: "Text", label: "Text" },
+    { value: "Number", label: "Number" },
     { value: "Currency", label: "Currency" },
     { value: "Percent", label: "Percent" },
-    { value: "Number", label: "Number" },
   ];
 
   const currencyFormat = [
@@ -163,9 +162,9 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               className="w-[100%] sm:w-[75%] ml-auto"
               {...form.getInputProps(`formEntry.0.title`)}
             />
-            {/* <div className="w-[100%] sm:w-[75%] ml-auto">
+            <div className="w-[100%] sm:w-[75%] ml-auto">
               <RichTextSection />
-            </div> */}
+            </div>
           </Grid>
 
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
@@ -195,16 +194,18 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             </Grid>
           ) : null}
 
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
-            <div className="w-[100%] sm:w-[75%]">
-              <Select
-                placeholder="Choose"
-                data={format}
-                {...form.getInputProps("formEntry.0.format")}
-              />
-            </div>
-          </Grid>
+          {form.values.formEntry[0].type !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
+              <div className="w-[100%] sm:w-[75%]">
+                <Select
+                  placeholder="Choose"
+                  data={format}
+                  {...form.getInputProps("formEntry.0.format")}
+                />
+              </div>
+            </Grid>
+          ) : null}
 
           {form.values.formEntry[0].format === "Number" || form.values.formEntry[0].format === "Percent" || form.values.formEntry[0].format === "Currency" ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
@@ -241,6 +242,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               <RichTextSection />
             </div> */}
           </Grid>
+
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
             <TextInput
@@ -249,14 +251,17 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               {...form.getInputProps("formEntry.0.prefilled")}
             />
           </Grid>
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
-            <TextInput
-              required
-              className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.appendedText")}
-            />
-          </Grid>
+
+          {form.values.formEntry[0].formula !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
+              <TextInput
+                required
+                className="w-[100%] sm:w-[75%] ml-auto"
+                {...form.getInputProps("formEntry.0.appendedText")}
+              />
+            </Grid>
+          ) : null}
 
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
@@ -267,24 +272,28 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             />
           </Grid>
 
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
-            <Textarea
-              className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.formula")}
-            />
-          </Grid>
-
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
-            <div className="w-[100%] sm:w-[75%]">
-              <Select
-                placeholder="Choose"
-                data={sections}
-                {...form.getInputProps("formEntry.0.sections")}
+          {form.values.formEntry[0].formula !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
+              <Textarea
+                className="w-[100%] sm:w-[75%] ml-auto"
+                {...form.getInputProps("formEntry.0.formula")}
               />
-            </div>
-          </Grid>
+            </Grid>
+          ) : null}
+
+          {form.values.formEntry[0].type !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
+              <div className="w-[100%] sm:w-[75%]">
+                <Select
+                  placeholder="Choose"
+                  data={sections}
+                  {...form.getInputProps("formEntry.0.sections")}
+                />
+              </div>
+            </Grid>
+          ) : null}
 
           <Divider className="mt-[30px] mb-[30px]" />
 

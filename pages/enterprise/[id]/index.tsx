@@ -89,7 +89,7 @@ const Enterprise: React.FC<any> = (login) => {
   const { id } = router.query;
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const getEnterpriseData = async () => {
-    return await axios.get(`/v1/templateBuilder/628779c3ec4e045f4806f775/637766339ecaa37f5165cae8`, {
+    return await axios.get(`/v1/templateBuilder/64368eebd9ff1b8e24aa6323/64368eebd9ff1b8e24aa6325`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       },
@@ -109,7 +109,7 @@ const Enterprise: React.FC<any> = (login) => {
   );
 
   useEffect(() => {
-    console.log("login", login.data.user.user.company_id);
+    console.log("login", data);
   }, [data, login])
 
 
