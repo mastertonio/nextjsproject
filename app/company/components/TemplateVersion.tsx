@@ -152,8 +152,10 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             key={shortUUID.generate()}
             user={user}
           />
-          <Button radius="sm" size="xs" color="red" className="ml-[10px]">
-            Delete
+          <Button radius="sm" size="xs" color="blue" className="ml-[10px]" onClick={()=>{
+            router.push(`/admin/builder/${item._id}`)
+          }}>
+            Open
           </Button>
         </div>
       ),

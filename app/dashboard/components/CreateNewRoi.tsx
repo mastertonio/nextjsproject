@@ -59,7 +59,11 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
 
   const createRoi = useMutation({
     mutationFn: (roi: iCreateTemplateProp) =>
-      axios.post(`/v1/dashboard/${user?.id}`, roi).then((response) => response.data),
+      axios.post(`/v1/dashboard/${user?.id}`,  roi,{
+        headers: {
+          Authorization: `Bearer ${tokens?.access.token}`,
+        },
+      }).then((response) => response.data),
     onMutate: (roi: iCreateTemplateProp) => {
       showNotification({
         id: "create-row",
@@ -71,7 +75,6 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
       });
     },
     onSuccess: (newRoi) => {
-      console.log(newRoi)
       Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
@@ -90,7 +93,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
           autoClose: 2500,
         });
 
-        router.push(`/templates`);
+        router.push(`/admin/builder/${newRoi.id}`);
       }
       updateNotification({
         id: "create-row",
