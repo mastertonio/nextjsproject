@@ -79,10 +79,10 @@ const NewSections: React.FC<any> = ({ data }) => {
                                         <div>
                                             <MdModeEdit
                                                 className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
-                                            // onClick={() => {
-                                            //     setUpdateWriteUp(true)
-                                            //     setGetID(card.id)
-                                            // }}
+                                                onClick={() => {
+                                                    setUpdateWriteUp(true)
+                                                    // setGetID(card.id)
+                                                }}
                                             />
                                             <MdClose className="text-red-600 text-[20px] cursor-pointer" />
                                         </div>
