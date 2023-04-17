@@ -423,11 +423,13 @@ interface FinalData {
   sections: Section[];
   valueBucketName: string;
   addSection: () => void;
+  setValueBucketName: (name: string) => void;
 }
 
 export const useSectionBuilderStore = create<FinalData>((set) => ({
   sections: [],
   valueBucketName: "",
+  setValueBucketName: (bucketName) => set({ valueBucketName: bucketName }),
   addSection: async () => {
     const state = useSectionBuilderStore.getState();
     const tokenState = useTokenStore.getState();
@@ -480,6 +482,9 @@ export const useSectionBuilderStore = create<FinalData>((set) => ({
         Authorization: `Bearer ${tokenState.tokenChar}`,
       },
     };
+
+    console.log("token", tokenState.tokenChar);
+    console.log("Value Bukcet", state.valueBucketName);
 
     try {
       const res = await axios.put(

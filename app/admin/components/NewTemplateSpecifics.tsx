@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from "axios";
+import { useQuery } from "react-query";
 import { Card, Grid, Text, TextInput, Button } from '@mantine/core'
 import { useForm } from "@mantine/form"
 import { MdAddBox, MdModeEdit, MdClose } from 'react-icons/md'
@@ -8,7 +10,7 @@ import { useCardStore } from '@app/store/builder/builderState';
 
 type iTemplateProps = {}
 
-const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
+const NewTemplateSpecifics: React.FC<any> = ({ data }) => {
     const cards = useCardStore((state) => state.cards);
     const removeCard = useCardStore((state) => state.removeCard);
     const [opened, setOpened] = useState(false);
@@ -19,6 +21,8 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
             returnPeriod: "",
         }
     });
+
+    console.log("data specific", data)
 
     const handleSubmit = async (values: typeof form.values) => {
         try {
@@ -44,7 +48,30 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
                 </Card>
 
                 <div className="flex flex-col sm:grid grid-cols-3 gap-4 mt-[20px]">
-                    {cards.map((card, index) => (
+                    {data?.sections.map((section: any) => {
+                        console.log('section tool', section)
+                        return (
+                            <>
+                                {section.grayContent.dataType === 'sliders' ? section.grayContent.elements.map((item: any, indexItem: any) => {
+                                    console.log('section card', item)
+                                    return (
+                                        <Card key={indexItem} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
+                                            <div className="flex flex-row items-center justify-between">
+                                                <Text className="text-[20px] text-blue-600 font-semibold">
+                                                    {item.text}
+                                                </Text>
+                                                <div>
+                                                    <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
+                                                    <MdClose className="text-red-600 text-[25px] cursor-pointer" />
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    )
+                                }) : null}
+                            </>
+                        )
+                    })}
+                    {/* {cards.map((card, index) => (
                         <Card key={index} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
                             <div className="flex flex-row items-center justify-between">
                                 <Text className="text-[20px] text-blue-600 font-semibold">{card.sectionName}</Text>
@@ -54,7 +81,7 @@ const NewTemplateSpecifics: React.FC<iTemplateProps> = () => {
                                 </div>
                             </div>
                         </Card>
-                    ))}
+                    ))} */}
 
                     <Card className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder onClick={() => setUpdate(true)}>
                         <div className="flex flex-row items-center">
