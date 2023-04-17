@@ -29,7 +29,7 @@ export type iSectionData = {
     address: string
 }
 
-const NewSections: React.FC<iSectionProps> = () => {
+const NewSections: React.FC<any> = ({ data }) => {
     const questions = useQuestionPropsStore((state) => state.questions)
     const writeup = useSectionWriteupStore((state) => state.sectionWriteUp)
     const cardSection = useCardStore((state) => state.cards)
@@ -54,19 +54,18 @@ const NewSections: React.FC<iSectionProps> = () => {
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    console.log('question section', sectData[0])
-    console.log('questions', questions)
+    console.log('new section', data)
 
     return (
         <>
-            {cardSection.map((card) => {
-                console.log('card', typeof card.id)
+            {data?.sections.map((section: any, index: any) => {
+                console.log('question drag', section)
                 return (
-                    <div className="w-full mt-[40px]" key={card.id}>
+                    <div className="w-full mt-[40px]" key={index}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
                             <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                                 <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
-                                <span>{card.sectionName}</span>
+                                <span>{section.sectionTitle}</span>
                             </h1>
                         </div>
 
@@ -74,14 +73,16 @@ const NewSections: React.FC<iSectionProps> = () => {
                             <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <Card.Section withBorder inheritPadding py="xs">
                                     <div className="flex flex-row items-center justify-between">
-                                        <Text className="text-[16px] text-blue-600 font-semibold">{card.sectionName}</Text>
+                                        <Text className="text-[16px] text-blue-600 font-semibold">
+                                            {section.sectionTitle}
+                                        </Text>
                                         <div>
                                             <MdModeEdit
                                                 className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
-                                                onClick={() => {
-                                                    setUpdateWriteUp(true)
-                                                    setGetID(card.id)
-                                                }}
+                                            // onClick={() => {
+                                            //     setUpdateWriteUp(true)
+                                            //     setGetID(card.id)
+                                            // }}
                                             />
                                             <MdClose className="text-red-600 text-[20px] cursor-pointer" />
                                         </div>
@@ -90,11 +91,11 @@ const NewSections: React.FC<iSectionProps> = () => {
                                 <div className="mt-[20px] mb-[40px]">
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-auto w-full sm:w-[50%]">
-                                            <Text>{card.sectionWriteUp}</Text>
+                                            <Text></Text>
                                         </div>
                                         <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                             <div className="flex flex-row items-center justify-between">
-                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500">{card.sectionVideoLink}</span></Text>
+                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
                                                 <div>
                                                     <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => setUpdateVideo(true)} />
                                                     <MdClose className="text-red-600 text-[16px] cursor-pointer" />
@@ -104,27 +105,29 @@ const NewSections: React.FC<iSectionProps> = () => {
                                     </div>
                                 </div>
                             </Card>
-                            <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
-                                <div className="mt-[20px]">
-                                    <DragNDrop data={questions} type="collapse" />
-                                    {/* <DragNDrop data={contentData} type="collapse" /> */}
-                                </div>
+                            {section.grayContent.dataType === 'variables' ? (
+                                <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
+                                    <div className="mt-[20px]">
+                                        <DragNDrop data={section?.grayContent.elements[0].elements} type={section.grayContent.dataType} />
+                                        {/* <DragNDrop data={contentData} type="collapse" /> */}
+                                    </div>
 
-                                <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
-                                    <Button
-                                        type="submit"
-                                        radius="sm"
-                                        size="sm"
-                                        color="teal"
-                                        className="mr-0 sm:mr-[10px]"
-                                        // onClick={() => setUpdateQuestion(true)}
-                                        onClick={() => setUpdateEntry(true)}
-                                    // onClick={addEmptySection}
-                                    >
-                                        Add New Entry
-                                    </Button>
-                                </Grid>
-                            </Card>
+                                    <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
+                                        <Button
+                                            type="submit"
+                                            radius="sm"
+                                            size="sm"
+                                            color="teal"
+                                            className="mr-0 sm:mr-[10px]"
+                                            // onClick={() => setUpdateQuestion(true)}
+                                            onClick={() => setUpdateEntry(true)}
+                                        // onClick={addEmptySection}
+                                        >
+                                            Add New Entry
+                                        </Button>
+                                    </Grid>
+                                </Card>
+                            ) : null}
                         </div>
 
                         {/* {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)

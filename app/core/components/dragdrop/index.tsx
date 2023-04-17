@@ -47,8 +47,27 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface DragNDropProps {
-    data: iSectionProps[],
+    data: iSectionNewProps[],
     type: string,
+}
+
+type iSectionNewProps = {
+    _id: string;
+    label: string;
+    classes: string;
+    forcedValue: number;
+    icon: string;
+    isDisabled: boolean | null;
+    isProcess: boolean | null;
+    rightSection: string;
+    sliderType: string;
+    value: number;
+    dataType: string;
+    format: string;
+    tooltip: string;
+    appendedText: string;
+    formula: string;
+    address: string;
 }
 
 type iSectionProps = {
@@ -92,8 +111,9 @@ export function DragNDrop({ data, type }: DragNDropProps) {
     };
 
     const items = state.map((item, index) => {
+        console.log('item drag', item)
         return (
-            <Draggable key={item.id} index={index} draggableId={`${item.id}-sectionName`}>
+            <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`}>
                 {(provided, snapshot) => (
                     <div>
                         <div
@@ -101,10 +121,10 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            onClick={() => {
-                                setGetID(item.id);
-                                setUpdate(true)
-                            }}
+                        // onClick={() => {
+                        //     setGetID(item.id);
+                        //     setUpdate(true)
+                        // }}
                         // onClick={() => type === "collapse" ? handleShow(item.id) : show()}
                         >
                             <div {...provided.dragHandleProps} className={classes.dragHandle}>
@@ -113,7 +133,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                             <div>
                                 <div className="h-[20px] flex flex-row">
                                     <IconEdit size={18} stroke={1.5} />
-                                    <Text className="text-[14px] ml-[5px]">{item.title}</Text>
+                                    <Text className="text-[14px] ml-[5px]">{item.label}</Text>
                                 </div>
                             </div>
                             <div className="ml-auto button-section">
@@ -123,7 +143,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                                     color="red"
                                     size="sm"
                                     className="h-[20px] w-full"
-                                    onClick={() => remove(item.id)}
+                                // onClick={() => remove(item.id)}
                                 >
                                     <IconX size={12} stroke={1.5} />
                                 </Button>

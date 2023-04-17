@@ -15,21 +15,32 @@ import TemplateSpecifics from "@app/admin/components/NewTemplateSpecifics";
 import Sections from "@app/admin/components/NewSections";
 import { useRouter } from "next/router";
 import { UserState, useUserStore } from "@app/store/userState";
+import { getSession } from "next-auth/react";
+import { useTokenStore } from "@app/store/builder/builderState"
 
-const AdminBuilder: React.FC<UserState> = () => {
+const AdminBuilder: React.FC<any> = (login) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const userZ = useUserStore((state) => (state.user))
+  const tokenChar = useTokenStore((state) => (state.tokenChar))
 
-  //   const getDashboardData = async () => {
-  //     return await axios.get(`/v1/dashboard`);
-  //   };
+  const getAdminToolData = async () => {
+    return await axios.get(`/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool`, {
+      headers: {
+        Authorization: `Bearer ${tokenChar}`
+      },
+    });
+  }
 
-  //   const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
-  //     "dashboardData",
-  //     getDashboardData
-  //   );
+  const { isLoading, status, data, isFetching, refetch, isSuccess } = useQuery('adminToolData', getAdminToolData);
+
+  useEffect(() => {
+    console.log("token admin tool", tokenChar)
+    console.log("admin tool data", data?.data)
+  }, [data])
+
+
 
   //   if (isLoading) return <MainLoader />;
 
@@ -52,8 +63,8 @@ const AdminBuilder: React.FC<UserState> = () => {
     >
       <div className="flex-col sm:flex-row relative h-auto">
         {/* Template Specifics */}
-        <TemplateSpecifics />
-        <Sections />
+        <TemplateSpecifics data={data?.data.adminTool} />
+        <Sections data={data?.data.adminTool} />
       </div>
     </AppShell>
   );

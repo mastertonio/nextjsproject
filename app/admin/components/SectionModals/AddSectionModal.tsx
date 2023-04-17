@@ -3,7 +3,7 @@ import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
-import { useCardStore } from '@app/store/builder/builderState';
+import { useCardStore, useSectionBuilderStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -21,6 +21,9 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
     const addCard = useCardStore((state) => state.addCard);
+    const valueBucketName = useSectionBuilderStore((state) => state.valueBucketName);
+    const addSection = useSectionBuilderStore((state) => state.addSection)
+    const setValueBucketName = useSectionBuilderStore((state) => state.setValueBucketName)
     const setNewCardName = useCardStore((state) => state.setNewCardName);
     const form = useForm({
         initialValues: {
@@ -38,7 +41,8 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
-            addCard()
+            // addCard()
+            addSection();
             setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
@@ -55,8 +59,8 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioName")}
-                            onChange={(event) => setNewCardName(event.target.value)}
-                            value={newCardName}
+                            onChange={(event) => setValueBucketName(event.target.value)}
+                            value={valueBucketName}
                         />
                     </Grid>
 
