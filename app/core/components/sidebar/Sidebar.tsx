@@ -170,7 +170,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
           Template
         </Button>
         <Collapse in={openTemplate}>
-          <Button
+          {/* <Button
             type="button"
             variant="subtle"
             color="blue"
@@ -180,7 +180,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             onClick={() => router.push(`/templates/builder`)}
           >
             Create Template
-          </Button>
+          </Button> */}
           <Button
             type="button"
             variant="subtle"

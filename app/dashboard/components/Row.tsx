@@ -48,6 +48,7 @@ export interface iDashRowProp {
   uniqueViews: number;
   status: number;
   source_name: string;
+  source_id: string;
 }
 
 export interface iDashRowProp2 {
@@ -61,6 +62,7 @@ export interface iDashRowProp2 {
   uniqueViews: string;
   status: string;
   source_name: string;
+  source_id: string;
 }
 
 export interface ISearchableDashProp {
@@ -144,7 +146,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
     );
   };
 
-  const myroi = currentPosts?.map((item: any) => ({
+  const myroi = currentPosts?.map((item: iDashRowProp) => ({
     id: item.id,
     link: item.link,
     button: (
@@ -153,7 +155,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
         leftIcon={<AiOutlineFolderOpen />}
         color="blue"
         onClick={() => {
-          router.push(`/enterprise/${item.id}`);
+          router.push({ pathname: `/enterprise/${item.source_id}`, query: { temp_ver: item.source_id, id: item.id }});
         }}
       >
         Open
@@ -201,6 +203,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
     source_name: item.source_name,
     dates: item.dateCreated,
     views: item.views,
+    source_id: item.source_id,
     uniqueViews: item.uniqueViews,
     actions: (
       <div

@@ -5,11 +5,14 @@ import axios from 'axios';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
 import { useCardStore, useSectionBuilderStore, useTokenStore } from '@app/store/builder/builderState';
+import { UserDataProp } from '@app/context/user.context';
+import { useRouter } from 'next/router';
 
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
-    open: boolean
+    open: boolean,
+    user: UserDataProp
 }
 
 interface CardSection {
@@ -17,7 +20,7 @@ interface CardSection {
     sectioName: string;
 }
 
-const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, user }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
@@ -27,6 +30,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     const addSection = useSectionBuilderStore((state) => state.addSection)
     const setValueBucketName = useSectionBuilderStore((state) => state.setValueBucketName)
     const setNewCardName = useCardStore((state) => state.setNewCardName);
+    const router = useRouter()
     const form = useForm({
         initialValues: {
             sectioName: "",
@@ -49,53 +53,22 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 text: values.sectioName,
                 sliderType: "stacked",
                 toggle: false,
-                address: "CON1940",
+                address: "CON1942",
                 elements: []
             }
 
-            const data = {
-                sections: [
-                    {
-                        address: "3c681809-0e2d-45fd-8603-124d6cde3cb2",
-                        sectionTitle: "test title entry",
-                        order: 1,
-                        headers: {
-                            dataType: "element",
-                            mainTitle: {
-                                dataType: "text",
-                                style: "",
-                                text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
-                            },
-                            subTitle: {
-                                dataType: "text",
-                                text: '<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>',
-                            },
-                            description: "",
-                            quotes: {
-                                dataType: "",
-                                position: "",
-                                elements: [],
-                            },
-                        },
-                        grayContent: {
-                            dataType: "sliders",
-                            classes: "row border-bottom gray-bg dashboard-header",
-                            elements: [newGrayContent],
-                        },
-                    },
-                ],
-            };
+            const data = {}
 
             const config = {
                 headers: {
-                    Authorization: `Bearer ${tokenChar}`,
+                    Authorization: `Bearer ${user.tokens.access.token}`,
                 },
             };
 
 
             try {
                 const res = await axios.put(
-                    "/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool",
+                    `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
                     data,
                     config
                 );

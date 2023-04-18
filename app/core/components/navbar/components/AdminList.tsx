@@ -51,6 +51,8 @@ const AdminList: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
     getAdminList
   );
 
+  console.log(data)
+
   const adminList = data?.data.map((a: { name: string }) => a.name);
   adminList?.unshift("Admin");
 

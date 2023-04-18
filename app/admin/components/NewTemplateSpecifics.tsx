@@ -10,7 +10,7 @@ import { useCardStore } from '@app/store/builder/builderState';
 
 type iTemplateProps = {}
 
-const NewTemplateSpecifics: React.FC<any> = ({ data }) => {
+const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
     const cards = useCardStore((state) => state.cards);
     const removeCard = useCardStore((state) => state.removeCard);
     const [opened, setOpened] = useState(false);
@@ -104,7 +104,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data }) => {
                 </div>
 
             </div>
-            <AddSectionModal showModal={opened} setOpened={setUpdate} open={update} />
+            <AddSectionModal showModal={opened} setOpened={setUpdate} open={update} user={user} />
         </div>
     )
 }

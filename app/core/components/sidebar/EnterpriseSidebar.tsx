@@ -175,9 +175,13 @@ const NavbarSimple = ({ sidebarData }: any) => {
   const [active, setActive] = useState("Billing");
   const [logo, setLogo] = useState<string>("");
 
-  const links = sidebarData?.navigationMenu.map((item: any) => (
-    <LinksGroup {...item} key={item.title} icon={item.icon} />
-  )); ``
+  let links;
+
+  if(sidebarData?.navigationMenu) {
+    links = sidebarData?.navigationMenu.map((item: any) => (
+      <LinksGroup {...item} key={item.title} icon={item.icon} />
+    )); 
+  }
 
   // const links = mockdata.sidebar.navigationMenu.map((item) => (
   //   <LinksGroup {...item} key={item.label} icon={item.icon} />

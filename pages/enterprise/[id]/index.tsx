@@ -89,7 +89,7 @@ const Enterprise: React.FC<any> = (login) => {
   const { id } = router.query;
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const getEnterpriseData = async () => {
-    return await axios.get(`/v1/templateBuilder/64368eebd9ff1b8e24aa6323/64368eebd9ff1b8e24aa6325`, {
+    return await axios.get(`/v1/templateBuilder/${router.query.temp_ver}`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       },
@@ -109,7 +109,7 @@ const Enterprise: React.FC<any> = (login) => {
   );
 
   useEffect(() => {
-    console.log("login", data);
+    console.log("data?.data", data);
   }, [data, login])
 
 
@@ -117,13 +117,14 @@ const Enterprise: React.FC<any> = (login) => {
     const formValue = JSON.parse(localStorage.getItem("valueBucket") ?? '[]') as CardSection[];
     setValueBucketState(formValue)
     console.log('storage value bucket', valueBucketState)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
   return (
     <AppShell
       padding={0}
-      navbar={<NavbarSimple sidebarData={data?.data.sidebar} />}
+      navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} />}
       header={<EnterpriseNavbar />}
       styles={(theme) => ({
         main: {
@@ -138,11 +139,11 @@ const Enterprise: React.FC<any> = (login) => {
     >
       <>
         {data?.data
-          ? data?.data?.content?.sections.map((section: any) => (
+          ? data?.data.data.content.sections.map((section: any) => (
             <div className="w-full text-[#676a6c]" key={section.id}>
               <Projection
-                title={section.elements['dashboard-header'].title}
-                description={section.elements['dashboard-header'].writeUp}
+                title={section.headers.title.mainTitle.text}
+                description={section.headers.description}
                 // subTitle={section.headers.title.subTitle.text}
                 // content={section.headers.title.content}
                 // length={section.headers.title.content.elements.length}
@@ -156,7 +157,7 @@ const Enterprise: React.FC<any> = (login) => {
                 pr={20}
                 className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
               >
-                {section.elements['dashboard-cards'].map((element: any) => (
+                {section.grayContent.elements.map((element: any) => (
                   <SliderCard
                     key={element.element_id}
                     label={element?.header?.title}
@@ -165,8 +166,8 @@ const Enterprise: React.FC<any> = (login) => {
                   />
                 ))}
               </SimpleGrid>
-              {/* <div>
-                {section.GrayContent.type == "sliders" ? (
+              <div>
+                {section.grayContent.dataType == "sliders" ? (
                   <SimpleGrid
                     cols={3}
                     p={10}
@@ -182,16 +183,16 @@ const Enterprise: React.FC<any> = (login) => {
                       />
                     ))}
                   </SimpleGrid>
-                ) : section.GrayContent.type == "variables" ? (
+                ) : section.grayContent.dataType == "variables" ? (
                   <div className="bg-[#e9ecef]">
-                    <InputVariable elements={section.GrayContent.elements as iElemsProp[]} type={section.GrayContent.type} />
+                    <InputVariable elements={section.grayContent.elements as iElemsProp[]} type={section.grayContent.dataType} />
                   </div>
                 ) : (
                   <div className="bg-[#e9ecef]">
                     <br></br>
                   </div>
                 )}
-              </div> */}
+              </div>
             </div>
           ))
           : ""}

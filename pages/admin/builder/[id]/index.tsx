@@ -26,9 +26,9 @@ const AdminBuilder: React.FC<any> = (login) => {
   const tokenChar = useTokenStore((state) => (state.tokenChar))
 
   const getAdminToolData = async () => {
-    return await axios.get(`/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool`, {
+    return await axios.get(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`, {
       headers: {
-        Authorization: `Bearer ${tokenChar}`
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`
       },
     });
   }
@@ -36,8 +36,8 @@ const AdminBuilder: React.FC<any> = (login) => {
   const { isLoading, status, data, isFetching, refetch, isSuccess } = useQuery('adminToolData', getAdminToolData);
 
   useEffect(() => {
-    console.log("token admin tool", tokenChar)
-    console.log("admin tool data", data?.data)
+    console.log("admin tool data", data)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
 
@@ -59,15 +59,30 @@ const AdminBuilder: React.FC<any> = (login) => {
       asideOffsetBreakpoint="sm"
       className="p-0 m-0 "
       fixed
-      header={<RoiNavbar />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <div className="flex-col sm:flex-row relative h-auto">
         {/* Template Specifics */}
-        <TemplateSpecifics data={data?.data.adminTool} />
+        <TemplateSpecifics data={data?.data.adminTool} user={login.data.user} />
         <Sections data={data?.data.adminTool} />
       </div>
     </AppShell>
   );
 };
+
+export async function getServerSideProps(ctx: any) {
+  const session = await getSession({ req: ctx.req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  console.log(session, 'sezsion')
+  // Pass data to the page via props
+  return { props: { data: session } }
+}
 
 export default AdminBuilder;
