@@ -104,7 +104,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                 </div>
 
             </div>
-            <AddSectionModal showModal={opened} setOpened={setUpdate} open={update} user={user} />
+            <AddSectionModal showModal={opened} setOpened={setUpdate} open={update} user={user} data={data} />
         </div>
     )
 }

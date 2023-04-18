@@ -87,6 +87,7 @@ const Dashboard: React.FC<any> = (
   useEffect(() => {
     setToken(login.data.user.tokens.access.token)
     console.log(login.data.user, "tetete")
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [login])
 
   if (isLoading) return <MainLoader />;

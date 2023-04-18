@@ -13,6 +13,7 @@ interface IModalEntryProps {
     setOpened: (b: boolean) => void
     open: boolean,
     user: UserDataProp
+    data: any
 }
 
 interface CardSection {
@@ -20,7 +21,7 @@ interface CardSection {
     sectioName: string;
 }
 
-const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, user }) => {
+const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, user, data }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
@@ -57,7 +58,69 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 elements: []
             }
 
-            const data = {}
+            const data = {
+                sectionTitle: values.sectioName,
+                order: 1,
+                headers: {
+                    title: {
+                        dataType: "element",
+                        mainTitle: {
+                            dataType: "text",
+                            style: "",
+                            text: "<h1 class=\"text-left text-[green] text-[26px] sm:text-[2em]\">ROI DASHBOARD | 2 Year Projection <span class=\"float-right\">$0</span></h1>"
+                        },
+                        subTitle: {
+                            dataType: "text",
+                            text: "<hr><h3 class=\"text-[22px] font-bold\">Select a section below to review your ROI</h3>"
+                        },
+                        description: "<p class=\"text-[16px]\">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left. <br><br></p>",
+                        quotes: {
+                            dataType: "revolver",
+                            position: "bottom",
+                            elements: [
+                                {
+                                    dataType: "quote",
+                                    qoute: {
+                                        text: "We love the tool! It is changing the conversation we have with our existing customers.",
+                                        author: "David Verhaag, Vice President Customer Success"
+                                    }
+                                },
+                                {
+                                    dataType: "quote",
+                                    qoute: {
+                                        text: "Hey McDonaldx, I created an ROI for my first client yesterday and we closed today. The ROI Shop made getting approval from the CFO a piece of cake and resulted in my first sale!",
+                                        author: "Natalie Grant - Sales Rep"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                grayContent: {
+                    dataType: "sliders",
+                    classes: "row border-bottom gray-bg dashboard-header",
+                    elements: [
+                        {
+                            dataType: "card",
+                            label: "Conservative Factor:",
+                            classes: "col-lg-4",
+                            title: "Improve Win Rate",
+                            sliderType: "stacked",
+                            value: 50,
+                            address: "CON1940"
+                        },
+                        {
+                            dataType: "card",
+                            label: "Reduce:",
+                            classes: "col-lg-4",
+                            title: "Improve Win Rate",
+                            sliderType: "stacked",
+                            value: 100,
+                            address: "CON1941"
+                        }
+                    ]
+                }
+            }
 
             const config = {
                 headers: {
@@ -68,7 +131,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
 
             try {
                 const res = await axios.put(
-                    `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+                    `https://api.theroishop.com/v1/company/628778331f0d2a1dec275404/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool`,
                     data,
                     config
                 );
