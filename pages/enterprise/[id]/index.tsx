@@ -119,7 +119,7 @@ const Enterprise: React.FC<any> = (login) => {
     }
 
     console.log("is section empty", sectionEmpty);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
 
@@ -149,20 +149,27 @@ const Enterprise: React.FC<any> = (login) => {
       className="m-0 p-0"
     >
       <>
+        <div className="w-full text-[#676a6c]">
+          <div className="ml-[22px] mr-[22px]">
+            <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">ROI DASHBOARD | 2 Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
+          </div>
+        </div>
         {data?.data
-          ? data?.data.data.content.sections.map((section: any) => (
-            <div className="w-full text-[#676a6c]" key={section.id}>
-              <Projection
-                title={section.headers.title.mainTitle.text}
-                description={section.headers.description}
-                // subTitle={section.headers.title.subTitle.text}
-                // content={section.headers.title.content}
-                // length={section.headers.title.content.elements.length}
-                // quotes={section.headers.title.quotes}
-                key={section.order}
-              />
+          ? data?.data.data.content.sections.map((section: any) => {
+            console.log('enterprise section', section)
+            return (
+              <div className="w-full text-[#676a6c]" key={section.id}>
+                <Projection
+                  title={section.headers.title.mainTitle.text}
+                  description={section.headers.description}
+                  // subTitle={section.headers.title.subTitle.text}
+                  // content={section.headers.title.content}
+                  // length={section.headers.title.content.elements.length}
+                  // quotes={section.headers.title.quotes}
+                  key={section.order}
+                />
 
-              {/* <SimpleGrid
+                {/* <SimpleGrid
                 cols={3}
                 p={10}
                 pr={20}
@@ -177,36 +184,53 @@ const Enterprise: React.FC<any> = (login) => {
                   />
                 ))}
               </SimpleGrid> */}
-              <div>
-                {section.grayContent.dataType == "sliders" ? (
-                  <SimpleGrid
-                    cols={3}
-                    p={10}
-                    pr={20}
-                    className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
-                  >
-                    {section.grayContent.elements.map((element: any) => (
-                      <SliderCard
-                        key={element.element_id}
+                <div>
+                  {section.grayContent.dataType == "sliders" ? (
+                    <SimpleGrid
+                      cols={3}
+                      p={10}
+                      pr={20}
+                      className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
+                    >
+                      {/* <SliderCard
+                        key={section._id}
                         label={section.sectionTitle}
-                        money={element?.body?.total}
-                        progress={element?.footer?.value}
+                        money={0}
+                        progress={0}
                         isSectionEmpty={sectionEmpty}
-                      />
-                    ))}
-                  </SimpleGrid>
-                ) : section.grayContent.dataType == "variables" ? (
-                  <div className="bg-[#e9ecef]">
-                    <InputVariable elements={section.grayContent.elements as iElemsProp[]} type={section.grayContent.dataType} />
-                  </div>
-                ) : (
-                  <div className="bg-[#e9ecef]">
-                    <br></br>
-                  </div>
-                )}
+                      /> */}
+                      {data?.data.data.content.sections.map((element: any) => (
+                        <SliderCard
+                          key={element._id}
+                          label={element.sectionTitle}
+                          money={0}
+                          progress={0}
+                          isSectionEmpty={sectionEmpty}
+                        />
+                      ))}
+                      {/* {section.grayContent.elements.map((element: any) => (
+                        <SliderCard
+                          key={element.element_id}
+                          label={section.sectionTitle}
+                          money={element?.body?.total}
+                          progress={element?.footer?.value}
+                          isSectionEmpty={sectionEmpty}
+                        />
+                      ))} */}
+                    </SimpleGrid>
+                  ) : section.grayContent.dataType == "variables" ? (
+                    <div className="bg-[#e9ecef]">
+                      <InputVariable elements={section.grayContent.elements as iElemsProp[]} type={section.grayContent.dataType} />
+                    </div>
+                  ) : (
+                    <div className="bg-[#e9ecef]">
+                      <br></br>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))
+            )
+          })
           : ""}
 
         {sectionEmpty && (

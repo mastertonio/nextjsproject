@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
 import { useCardStore, useTokenStore } from '@app/store/builder/builderState';
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -96,15 +97,18 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
 
 
     return (
-        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[800px] mx-auto">
+        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto">
             <form onSubmit={form.onSubmit(handleSubmit)}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
-                        <Textarea
+                        {/* <Textarea
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioWriteUp")}
-                        />
+                        /> */}
+                        <div className="w-[100%] sm:w-[75%] ml-auto">
+                            <RichTextSection />
+                        </div>
                     </Grid>
 
 
