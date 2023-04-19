@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Grid, Card, Text } from '@mantine/core';
-import { DragNDrop } from '@app/core/components/dragdrop'
+import { DragNDrop } from '@app/admin/components/dragdrop'
 import { FcTodoList } from 'react-icons/fc'
 import { MdModeEdit, MdClose } from 'react-icons/md'
 import ModalUpdateEntry from './ModalUpdateEntry';
@@ -15,8 +15,12 @@ import SectionWriteUpModal from './SectionModals/SectionWriteUpModal';
 import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
+import { UserDataProp } from '@app/context/user.context';
 
-type iSectionProps = {}
+type iSectionProps = {
+    data: any,
+    user: UserDataProp
+}
 
 export type iSectionData = {
     id: number
@@ -29,7 +33,7 @@ export type iSectionData = {
     address: string
 }
 
-const NewSections: React.FC<any> = ({ data }) => {
+const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     const questions = useQuestionPropsStore((state) => state.questions)
     const writeup = useSectionWriteupStore((state) => state.sectionWriteUp)
     const cardSection = useCardStore((state) => state.cards)
@@ -108,7 +112,7 @@ const NewSections: React.FC<any> = ({ data }) => {
                             <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <div className="mt-[20px]">
                                     {/* <DragNDrop data={section?.grayContent.elements[0].elements && [ "Null"]} type={section.grayContent.dataType} /> */}
-                                    {/* <DragNDrop data={contentData} type="collapse" /> */}
+                                    <DragNDrop data={[]} type="collapse" />
                                 </div>
 
                                 <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
@@ -134,7 +138,7 @@ const NewSections: React.FC<any> = ({ data }) => {
                         <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} cardID={getID} />
                         <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} cardID={getID} />
                         <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
-                        <ModalUpdateEntry showModal={entry} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} />
+                        <ModalUpdateEntry showModal={entry} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user}/>
                         <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
                     </div>
                 )

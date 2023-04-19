@@ -65,7 +65,7 @@ const AdminBuilder: React.FC<any> = (login) => {
       <div className="flex-col sm:flex-row relative h-auto">
         {/* Template Specifics */}
         <TemplateSpecifics data={data?.data.adminTool} user={login.data.user} />
-        <Sections data={data?.data.adminTool} />
+        <Sections user={login.data.user} data={data?.data.adminTool} />
       </div>
     </AppShell>
   );
