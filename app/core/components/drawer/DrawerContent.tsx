@@ -116,17 +116,18 @@ const DashboardDrawer = ({ user }: any) => {
             Template
           </Button>
           <Collapse in={openTemplate}>
-            <Button
+            {/* <Button
               type="button"
               variant="subtle"
               color="blue"
               fullWidth
               className="mt-[5px] ml-[8px] text-[lightgray]"
               leftIcon={<MdLineWeight />}
-              onClick={() => router.push(`/templates/builder`)}
+              onClick={() => router.push(`/admin/builder`)}
+            // onClick={() => router.push(`/templates/builder`)}
             >
               Create Template
-            </Button>
+            </Button> */}
             <Button
               type="button"
               variant="subtle"
