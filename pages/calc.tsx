@@ -4,7 +4,6 @@ import { Cell, CellProps, Sheet, UserState, useCalculatorStore, useCalculatorShe
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import { useUtilityStore } from '@app/store/builder/utilityStore';
 import InputTest from '@app/calculator/components/InputTest';
-import * as formulajs from '@formulajs/formulajs';
 
 // import {
 //     numToStr,
@@ -355,128 +354,128 @@ const Calc: React.FC = () => {
         return result;
     }
 
-    const formulaFunctions: FormulaJSFunctions = {
-        // MATH
-        ABS: formulajs.ABS,
-        ACOS: formulajs.ACOS,
-        ACOSH: formulajs.ACOSH,
-        ACOT: formulajs.ACOT,
-        ACOTH: formulajs.ACOTH,
-        AGGREGATE: formulajs.AGGREGATE,
-        ARABIC: formulajs.ARABIC,
-        ASIN: formulajs.ASIN,
-        ASINH: formulajs.ASINH,
-        ATAN: formulajs.ATAN,
-        ATAN2: formulajs.ATAN2,
-        ATANH: formulajs.ATANH,
-        BASE: formulajs.BASE,
-        CEILING: formulajs.CEILING,
-        CEILINGPRECISE: formulajs.CEILINGPRECISE,
-        COMBIN: formulajs.COMBIN,
-        COMBINA: formulajs.COMBINA,
-        COS: formulajs.COS,
-        SUM: formulajs.SUM,
-        SUMPRODUCT: formulajs.SUMPRODUCT,
-        // Date
-        DATE: formulajs.DATE,
-        DATEVALUE: formulajs.DATEVALUE,
-        DAY: formulajs.DAY,
-        DAYS: formulajs.DAYS,
-        DAYS360: formulajs.DAYS360,
-        EDATE: formulajs.EDATE,
-        EOMONTH: formulajs.EOMONTH,
-        HOUR: formulajs.HOUR,
-        MINUTE: formulajs.MINUTE,
-        NETWORKDAYSINTL: formulajs.NETWORKDAYSINTL,
-        NOW: formulajs.NOW,
-        SECOND: formulajs.SECOND,
-        TIME: formulajs.TIME,
-        TIMEVALUE: formulajs.TIMEVALUE,
-        TODAY: formulajs.TODAY,
-        WEEKDAY: formulajs.WEEKDAY,
-        YEAR: formulajs.YEAR,
-        WEEKNUM: formulajs.WEEKNUM,
-        WORKDAY: formulajs.WORKDAY,
-        WORKDAYINTL: formulajs.WORKDAYINTL,
-        YEARFRAC: formulajs.YEARFRAC,
-        // FINANCIAL
-        ACCRINT: formulajs.ACCRINT,
-        CUMIPMT: formulajs.CUMIPMT,
-        CUMPRINC: formulajs.CUMPRINC,
-        DB: formulajs.DB,
-        DOLLARDE: formulajs.DOLLARDE,
-        DOLLARFR: formulajs.DOLLARFR,
-        EFFECT: formulajs.EFFECT,
-        FV: formulajs.FV,
-        FVSCHEDULE: formulajs.FVSCHEDULE,
-        IPMT: formulajs.IPMT,
-        IRR: formulajs.IRR,
-        ISPMT: formulajs.ISPMT,
-        MIRR: formulajs.MIRR,
-        NOMINAL: formulajs.NOMINAL,
-        NPER: formulajs.NPER,
-        NPV: formulajs.NPV,
-        PDURATION: formulajs.PDURATION,
-        PMT: formulajs.PMT,
-        PV: formulajs.PV,
-        RATE: formulajs.RATE,
-        // LOGICAL
-        AND: formulajs.AND,
-        false: formulajs.FALSE,
-        IF: formulajs.IF,
-        IFS: formulajs.IFS,
-        IFERROR: formulajs.IFERROR,
-        IFNA: formulajs.IFNA,
-        NOT: formulajs.NOT,
-        OR: formulajs.OR,
-        SWITCH: formulajs.SWITCH,
-        true: formulajs.TRUE,
-        XOR: formulajs.XOR,
-        // add more formula names and functions here
-    };
+    // const formulaFunctions: FormulaJSFunctions = {
+    //     // MATH
+    //     ABS: formulajs.ABS,
+    //     ACOS: formulajs.ACOS,
+    //     ACOSH: formulajs.ACOSH,
+    //     ACOT: formulajs.ACOT,
+    //     ACOTH: formulajs.ACOTH,
+    //     AGGREGATE: formulajs.AGGREGATE,
+    //     ARABIC: formulajs.ARABIC,
+    //     ASIN: formulajs.ASIN,
+    //     ASINH: formulajs.ASINH,
+    //     ATAN: formulajs.ATAN,
+    //     ATAN2: formulajs.ATAN2,
+    //     ATANH: formulajs.ATANH,
+    //     BASE: formulajs.BASE,
+    //     CEILING: formulajs.CEILING,
+    //     CEILINGPRECISE: formulajs.CEILINGPRECISE,
+    //     COMBIN: formulajs.COMBIN,
+    //     COMBINA: formulajs.COMBINA,
+    //     COS: formulajs.COS,
+    //     SUM: formulajs.SUM,
+    //     SUMPRODUCT: formulajs.SUMPRODUCT,
+    //     // Date
+    //     DATE: formulajs.DATE,
+    //     DATEVALUE: formulajs.DATEVALUE,
+    //     DAY: formulajs.DAY,
+    //     DAYS: formulajs.DAYS,
+    //     DAYS360: formulajs.DAYS360,
+    //     EDATE: formulajs.EDATE,
+    //     EOMONTH: formulajs.EOMONTH,
+    //     HOUR: formulajs.HOUR,
+    //     MINUTE: formulajs.MINUTE,
+    //     NETWORKDAYSINTL: formulajs.NETWORKDAYSINTL,
+    //     NOW: formulajs.NOW,
+    //     SECOND: formulajs.SECOND,
+    //     TIME: formulajs.TIME,
+    //     TIMEVALUE: formulajs.TIMEVALUE,
+    //     TODAY: formulajs.TODAY,
+    //     WEEKDAY: formulajs.WEEKDAY,
+    //     YEAR: formulajs.YEAR,
+    //     WEEKNUM: formulajs.WEEKNUM,
+    //     WORKDAY: formulajs.WORKDAY,
+    //     WORKDAYINTL: formulajs.WORKDAYINTL,
+    //     YEARFRAC: formulajs.YEARFRAC,
+    //     // FINANCIAL
+    //     ACCRINT: formulajs.ACCRINT,
+    //     CUMIPMT: formulajs.CUMIPMT,
+    //     CUMPRINC: formulajs.CUMPRINC,
+    //     DB: formulajs.DB,
+    //     DOLLARDE: formulajs.DOLLARDE,
+    //     DOLLARFR: formulajs.DOLLARFR,
+    //     EFFECT: formulajs.EFFECT,
+    //     FV: formulajs.FV,
+    //     FVSCHEDULE: formulajs.FVSCHEDULE,
+    //     IPMT: formulajs.IPMT,
+    //     IRR: formulajs.IRR,
+    //     ISPMT: formulajs.ISPMT,
+    //     MIRR: formulajs.MIRR,
+    //     NOMINAL: formulajs.NOMINAL,
+    //     NPER: formulajs.NPER,
+    //     NPV: formulajs.NPV,
+    //     PDURATION: formulajs.PDURATION,
+    //     PMT: formulajs.PMT,
+    //     PV: formulajs.PV,
+    //     RATE: formulajs.RATE,
+    //     // LOGICAL
+    //     AND: formulajs.AND,
+    //     false: formulajs.FALSE,
+    //     IF: formulajs.IF,
+    //     IFS: formulajs.IFS,
+    //     IFERROR: formulajs.IFERROR,
+    //     IFNA: formulajs.IFNA,
+    //     NOT: formulajs.NOT,
+    //     OR: formulajs.OR,
+    //     SWITCH: formulajs.SWITCH,
+    //     true: formulajs.TRUE,
+    //     XOR: formulajs.XOR,
+    //     // add more formula names and functions here
+    // };
 
-    function evaluateFormula(formula: string) {
-        const regex = /([A-Z]+)\(([^\)]+)\)/g;
-        const matches = formula.matchAll(regex);
+    // function evaluateFormula(formula: string) {
+    //     const regex = /([A-Z]+)\(([^\)]+)\)/g;
+    //     const matches = formula.matchAll(regex);
 
-        let result: any = null;
+    //     let result: any = null;
 
 
-        for (const match of matches) {
-            // console.log('match', match);
-            const funcName = match[1];
+    //     for (const match of matches) {
+    //         // console.log('match', match);
+    //         const funcName = match[1];
 
-            // const ttt = match[2]
-            // const items = ttt.replace(/\[|\]/g, '').split(',')
+    //         // const ttt = match[2]
+    //         // const items = ttt.replace(/\[|\]/g, '').split(',')
 
-            const args = match[2].split(',').map(arg => {
-                if (arg.trim().startsWith('[') && arg.trim().endsWith(']')) {
-                    // Parse array argument
-                    return JSON.parse(arg.trim());
-                } else {
-                    // Parse number argument
-                    return parseFloat(arg.trim());
-                }
-            });
+    //         const args = match[2].split(',').map(arg => {
+    //             if (arg.trim().startsWith('[') && arg.trim().endsWith(']')) {
+    //                 // Parse array argument
+    //                 return JSON.parse(arg.trim());
+    //             } else {
+    //                 // Parse number argument
+    //                 return parseFloat(arg.trim());
+    //             }
+    //         });
 
-            // Call the appropriate formula function based on the function name
-            // @jom equal to sa formulajs.functionname example formulajs.SUMPRODUCT
-            //kaso need natin na formulajs.SUMPRODUCT([[1,2],[3,4]], [[1,0],[0,1]]) maganto kesa ganto formulajs.SUMPRODUCT("[[1,2],[3,4]], [[1,0],[0,1]]") na string pa ang nasa loob
-            const func = formulaFunctions[funcName];
-            // console.log('func', match[2])
-            if (func) {
-                result = func(...args);
-            } else {
-                throw new Error(`Unknown formula: ${funcName}`);
-            }
-        }
+    //         // Call the appropriate formula function based on the function name
+    //         // @jom equal to sa formulajs.functionname example formulajs.SUMPRODUCT
+    //         //kaso need natin na formulajs.SUMPRODUCT([[1,2],[3,4]], [[1,0],[0,1]]) maganto kesa ganto formulajs.SUMPRODUCT("[[1,2],[3,4]], [[1,0],[0,1]]") na string pa ang nasa loob
+    //         const func = formulaFunctions[funcName];
+    //         // console.log('func', match[2])
+    //         if (func) {
+    //             result = func(...args);
+    //         } else {
+    //             throw new Error(`Unknown formula: ${funcName}`);
+    //         }
+    //     }
 
-        return result;
-    }
+    //     return result;
+    // }
 
     const formulatest = 'SUMPRODUCT([[1, 2], [3, 4]], [[1, 0], [0, 1]])';
     const formula = `ABS(-4)`
-    const result = evaluateFormula(formulatest);
+    // const result = evaluateFormula(formulatest);
     // console.log(result) //results to zero | answer should be 5
 
     // console.log(formulajs.SUMPRODUCT([[1, 2], [3, 4]], [[1, 0], [0, 1]])) // results to 5

@@ -4,11 +4,6 @@ import { Cell, CellProps, Sheet, UserState, useCalculatorStore, useCalculatorShe
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import { useUtilityStore } from '@app/store/builder/utilityStore';
 import InputTest from '@app/calculator/components/InputTest';
-import * as formulajs from '@formulajs/formulajs';
-import { HyperFormula } from 'hyperformula';
-const options = {
-    licenseKey: 'gpl-v3',
-};
 
 // import {
 //     numToStr,

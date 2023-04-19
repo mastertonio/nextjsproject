@@ -17,7 +17,6 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
-import { parse as mathparse, compile, evaluate } from "mathjs"
 
 const FormulaParser = require("hot-formula-parser");
 const formulas = FormulaParser.SUPPORTED_FORMULAS;

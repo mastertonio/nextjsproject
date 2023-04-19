@@ -17,7 +17,6 @@ import Sections from "@app/admin/components/Sections";
 import { useRouter } from "next/router";
 import { UserState, useUserStore } from "@app/store/userState";
 import { useForm } from "react-hook-form";
-import Cell from "../../../app/calculator/utils/Cell";
 
 
 const AdminBuilder: React.FC<UserState> = () => {
