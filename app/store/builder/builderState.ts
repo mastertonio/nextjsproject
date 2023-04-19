@@ -17,6 +17,7 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
+import axios from "axios";
 
 const FormulaParser = require("hot-formula-parser").Parser;
 const parser = new FormulaParser();
@@ -356,4 +357,195 @@ interface ICalculatorState {
 
 export const useCalculationStore = create<ICalculatorState>((set) => ({
   val: 0,
+}));
+
+// Types for section builder
+
+// set token
+interface TokenProps {
+  tokenChar: string;
+  setTokenChar: (char: string) => void;
+}
+
+export const useTokenStore = create<TokenProps>((set) => ({
+  tokenChar: "",
+  setTokenChar: (state) => set(() => ({ tokenChar: state })),
+}));
+
+interface Quote {
+  text: string;
+  author: string;
+}
+
+interface ContentElement {
+  type: string;
+  span: string;
+  text: string;
+}
+
+interface HeaderTitle {
+  dataType: string;
+  mainTitle: {
+    dataType: string;
+    style: string;
+    text: string;
+  };
+  subTitle: {
+    dataType: string;
+    text: string;
+  };
+  description: string;
+  quotes: {
+    dataType: string;
+    position: string;
+    elements: {
+      dataType: string;
+      quote: Quote;
+    }[];
+  };
+  // content: {
+  //   dataType: string;
+  //   elements: any[];
+  // };
+}
+
+interface Slider {
+  type: string;
+  classes: string;
+  title: string;
+  sliderType: string;
+  money: number;
+  label: string;
+  value: number;
+  step: number;
+  id: string;
+}
+
+interface GrayContent {
+  dataType: string;
+  classes: string;
+  elements: any[];
+}
+
+interface Section {
+  address: string;
+  sectionTitle: string;
+  order: number;
+  headers: HeaderTitle;
+  grayContent: GrayContent;
+}
+
+interface FinalData {
+  sections: Section[];
+  valueBucketName: string;
+  addSection: () => void;
+  setValueBucketName: (name: string) => void;
+}
+
+export const useSectionBuilderStore = create<FinalData>((set) => ({
+  sections: [],
+  valueBucketName: "",
+  setValueBucketName: (bucketName) => set({ valueBucketName: bucketName }),
+  addSection: async () => {
+    const state = useSectionBuilderStore.getState();
+    const tokenState = useTokenStore.getState();
+    const newGrayContent = {
+      dataType: "card",
+      label: "",
+      classes: "col-lg-4",
+      title: state.valueBucketName,
+      sliderType: "stacked",
+      value: 0,
+      address: "CON1940",
+    };
+
+    const data = {
+      sections: [
+        {
+          address: "3c681809-0e2d-45fd-8603-124d6cde3cb2",
+          sectionTitle: "test title entry",
+          order: 1,
+          headers: {
+            dataType: "element",
+            mainTitle: {
+              dataType: "text",
+              style: "",
+              text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
+            },
+            subTitle: {
+              dataType: "text",
+              text: '<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>',
+            },
+            description: "",
+            quotes: {
+              dataType: "",
+              position: "",
+              elements: [],
+            },
+          },
+          grayContent: {
+            dataType: "sliders",
+            classes: "row border-bottom gray-bg dashboard-header",
+            elements: [newGrayContent],
+          },
+        },
+        ...state.sections,
+      ],
+    };
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${tokenState.tokenChar}`,
+      },
+    };
+
+    console.log("token", tokenState.tokenChar);
+    console.log("Value Bukcet", state.valueBucketName);
+
+    try {
+      const res = await axios.put(
+        "/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool",
+        data,
+        config
+      );
+      console.log("PUT response", res);
+      set({ sections: res.data });
+    } catch (error) {
+      console.log("PUT ERROR", error);
+    }
+
+    // set({
+    //   sections: [
+    //     {
+    //       address: "3c681809-0e2d-45fd-8603-124d6cde3cb2",
+    //       sectionTitle: "test title entry",
+    //       order: 1,
+    //       headers: {
+    //         dataType: "element",
+    //         mainTitle: {
+    //           dataType: "text",
+    //           style: "",
+    //           text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
+    //         },
+    //         subTitle: {
+    //           dataType: "text",
+    //           text: '<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>',
+    //         },
+    //         description: "",
+    //         quotes: {
+    //           dataType: "",
+    //           position: "",
+    //           elements: [],
+    //         },
+    //       },
+    //       grayContent: {
+    //         dataType: "sliders",
+    //         classes: "row border-bottom gray-bg dashboard-header",
+    //         elements: [newGrayContent],
+    //       },
+    //     },
+    //     ...state.sections,
+    //   ],
+    // });
+  },
 }));

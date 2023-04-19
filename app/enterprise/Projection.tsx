@@ -64,6 +64,7 @@ const Projection = ({
   // length,
   // quotes,
 }: iProjectionProps) => {
+  console.log(title)
   // const columns =
   //   content.elements.length > 0
   //     ? content.elements
@@ -86,7 +87,7 @@ const Projection = ({
   //           </Suspense>
   //         ) : (
   //           ""
-  //         )
+  //         )4
   //       )
   //     : null;
 

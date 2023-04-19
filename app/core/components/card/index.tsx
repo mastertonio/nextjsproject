@@ -6,6 +6,7 @@ export type iSliderCardProps = {
   label: string
   money: number
   progress: number
+  isSectionEmpty: boolean
 }
 
 const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress }) => {

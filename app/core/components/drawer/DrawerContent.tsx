@@ -116,7 +116,7 @@ const DashboardDrawer = ({ user }: any) => {
             Template
           </Button>
           <Collapse in={openTemplate}>
-            <Button
+            {/* <Button
               type="button"
               variant="subtle"
               color="blue"
@@ -127,7 +127,7 @@ const DashboardDrawer = ({ user }: any) => {
             // onClick={() => router.push(`/templates/builder`)}
             >
               Create Template
-            </Button>
+            </Button> */}
             <Button
               type="button"
               variant="subtle"

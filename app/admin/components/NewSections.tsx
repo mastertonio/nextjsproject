@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Grid, Card, Text } from '@mantine/core';
-import { DragNDrop } from '@app/core/components/dragdrop'
+import { DragNDrop } from '@app/admin/components/dragdrop'
 import { FcTodoList } from 'react-icons/fc'
 import { MdModeEdit, MdClose } from 'react-icons/md'
 import ModalUpdateEntry from './ModalUpdateEntry';
@@ -15,8 +15,12 @@ import SectionWriteUpModal from './SectionModals/SectionWriteUpModal';
 import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
+import { UserDataProp } from '@app/context/user.context';
 
-type iSectionProps = {}
+type iSectionProps = {
+    data: any,
+    user: UserDataProp
+}
 
 export type iSectionData = {
     id: number
@@ -29,7 +33,7 @@ export type iSectionData = {
     address: string
 }
 
-const NewSections: React.FC<iSectionProps> = () => {
+const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     const questions = useQuestionPropsStore((state) => state.questions)
     const writeup = useSectionWriteupStore((state) => state.sectionWriteUp)
     const cardSection = useCardStore((state) => state.cards)
@@ -54,19 +58,18 @@ const NewSections: React.FC<iSectionProps> = () => {
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    console.log('question section', sectData[0])
-    console.log('questions', questions)
+    console.log('new section', data)
 
     return (
         <>
-            {cardSection.map((card) => {
-                console.log('card', typeof card.id)
+            {data?.sections.map((section: any, index: any) => {
+                console.log('question drag', section?.grayContent)
                 return (
-                    <div className="w-full mt-[40px]" key={card.id}>
+                    <div className="w-full mt-[40px]" key={index}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
                             <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                                 <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
-                                <span>{card.sectionName}</span>
+                                <span>{section.sectionTitle}</span>
                             </h1>
                         </div>
 
@@ -74,13 +77,15 @@ const NewSections: React.FC<iSectionProps> = () => {
                             <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <Card.Section withBorder inheritPadding py="xs">
                                     <div className="flex flex-row items-center justify-between">
-                                        <Text className="text-[16px] text-blue-600 font-semibold">{card.sectionName}</Text>
+                                        <Text className="text-[16px] text-blue-600 font-semibold">
+                                            {section.sectionTitle}
+                                        </Text>
                                         <div>
                                             <MdModeEdit
                                                 className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
                                                 onClick={() => {
                                                     setUpdateWriteUp(true)
-                                                    setGetID(card.id)
+                                                    // setGetID(card.id)
                                                 }}
                                             />
                                             <MdClose className="text-red-600 text-[20px] cursor-pointer" />
@@ -90,11 +95,11 @@ const NewSections: React.FC<iSectionProps> = () => {
                                 <div className="mt-[20px] mb-[40px]">
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-auto w-full sm:w-[50%]">
-                                            <Text>{card.sectionWriteUp}</Text>
+                                            <Text></Text>
                                         </div>
                                         <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                             <div className="flex flex-row items-center justify-between">
-                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500">{card.sectionVideoLink}</span></Text>
+                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
                                                 <div>
                                                     <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => setUpdateVideo(true)} />
                                                     <MdClose className="text-red-600 text-[16px] cursor-pointer" />
@@ -106,8 +111,8 @@ const NewSections: React.FC<iSectionProps> = () => {
                             </Card>
                             <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <div className="mt-[20px]">
-                                    <DragNDrop data={questions} type="collapse" />
-                                    {/* <DragNDrop data={contentData} type="collapse" /> */}
+                                    {/* <DragNDrop data={section?.grayContent.elements[0].elements && [ "Null"]} type={section.grayContent.dataType} /> */}
+                                    <DragNDrop data={[]} type="collapse" />
                                 </div>
 
                                 <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
@@ -133,7 +138,7 @@ const NewSections: React.FC<iSectionProps> = () => {
                         <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} cardID={getID} />
                         <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} cardID={getID} />
                         <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
-                        <ModalUpdateEntry showModal={entry} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} />
+                        <ModalUpdateEntry showModal={entry} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user}/>
                         <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
                     </div>
                 )

@@ -31,6 +31,7 @@ import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
+import { useTokenStore } from "@app/store/builder/builderState"
 import Cookies from 'js-cookie';
 import FourOhFour from "pages/404";
 import { getSession } from "next-auth/react";
@@ -65,6 +66,7 @@ const Dashboard: React.FC<any> = (
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const userZ = useUserStore((state) => (state))
+  const setToken = useTokenStore((state) => state.setTokenChar)
   const getDashboardData = async () => {
     return await axios.get(`/v1/dashboard`, {
       headers: {
@@ -73,13 +75,19 @@ const Dashboard: React.FC<any> = (
     });
   };
 
+  // const getCompanyData = async () => {
+  //   return await axios.get(`/`)
+  // }
+
   const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
     "dashboardData",
     getDashboardData
   );
 
   useEffect(() => {
-    console.log(login.data, "tetete")
+    setToken(login.data.user.tokens.access.token)
+    console.log(login.data.user, "tetete")
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [login])
 
   if (isLoading) return <MainLoader />;

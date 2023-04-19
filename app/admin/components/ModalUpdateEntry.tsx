@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Button, Divider, Text, TextInput, Textarea, Grid, Select } from '@mantine/core';
 import { useForm } from '@mantine/form';
-// import RichTextSection from '@app/core/components/richtext/RichTextSection';
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
 // import FormSelect from '@app/core/components/dropdown/SelectChoice';
 // import { useModalEntryStore } from '@app/store/builderStore';
 import { useQuestionPropsStore } from '@app/store/builder/builderState';
 import { iSectionData } from './Sections';
 import { useLocalStorage } from '@mantine/hooks';
+import { useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
+import router from 'next/router';
+import { UserDataProp } from '@app/context/user.context';
 
 interface IModalEntryProps {
   showModal: boolean
@@ -15,6 +19,7 @@ interface IModalEntryProps {
   setOpened: (b: boolean) => void
   setOpenChoice: (b: boolean) => void
   open: boolean
+  user: UserDataProp
 }
 
 type iSectionProps = {
@@ -28,8 +33,11 @@ type iSectionProps = {
   address: string
 }
 
-const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, open, setOpenChoice }) => {
+const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, open, setOpenChoice, user }) => {
   const addQuestions = useQuestionPropsStore((state) => state.addQuestions);
+  const initialValue =
+    "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+  const [value, setValue] = useState<string>(initialValue)
   const form = useForm({
     initialValues: {
       formEntry: [{
@@ -47,22 +55,12 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
         address: "",
         section: "",
       }],
-      // Add Dropdown to other Entries from other value buckets
-      // Add Tooltip and format change to dropdown text, currency, percent, number
     }
   })
   const [formValue, setFormValue] = useLocalStorage<iSectionProps[]>({ key: 'formValue', defaultValue: [] });
+  const queryClient = useQueryClient()
 
-  const handleSubmit = async (values: typeof form.values) => {
-    try {
-      console.log('entries', form.values.formEntry[0].type);
-      addQuestions({ values })
-      setOpened(false)
-      form.reset();
-    } catch (error) {
-      console.log(error);
-    }
-  }
+
 
   // const handleSubmit = async (values: typeof form.values) => {
   //   try {
@@ -128,10 +126,9 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
   ];
 
   const format = [
-    { value: "Text", label: "Text" },
+    { value: "Number", label: "Number" },
     { value: "Currency", label: "Currency" },
     { value: "Percent", label: "Percent" },
-    { value: "Number", label: "Number" },
   ];
 
   const currencyFormat = [
@@ -142,16 +139,59 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
     { value: "Average Salary", label: "Average Salary" },
   ]
 
+  const addEntry = useMutation({
+    mutationFn: (roi: any) =>
+      axios.put(
+        `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+        {
+          "_id": "643f36cc92ecfde71079db69",
+          "sectionTitle": "test jjjjj", //nullable
+          "order": 1,
+          "grayContent": { //nullable
+            "dataType": "sliders",
+            "classes": "row border-bottom gray-bg dashboard-header",
+            "elements": roi
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.tokens.access.token}`,
+          },
+        }
+      ).then((response) => response.data),
+    onMutate: (roi) => {
+      console.log(roi, "roiroriiro")
+    },
+    onSuccess: (newRoi) => {
+      setOpened(false)
+      Promise.all(
+        [
+          queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+          queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+          // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+        ]
+      )
+
+
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+
+      }
+
+    }
+  })
+
   return (
     <Modal opened={open} onClose={() => setOpened(false)} size="920px" title="Add Entry" padding={0} className="section-wrapper">
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit((values) => addEntry.mutate(values.formEntry))}>
         <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
           <Grid className="p-[10px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.id")}
+              {...form.getInputProps("id")}
               disabled={true}
             />
           </Grid>
@@ -164,7 +204,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               {...form.getInputProps(`formEntry.0.title`)}
             />
             {/* <div className="w-[100%] sm:w-[75%] ml-auto">
-              <RichTextSection />
+              <RichTextSection value={value} setValue={setValue} />
             </div> */}
           </Grid>
 
@@ -174,7 +214,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               <Select
                 placeholder="Choose"
                 data={dataSelect}
-                {...form.getInputProps("formEntry.0.type")}
+                {...form.getInputProps("type")}
               />
             </div>
           </Grid>
@@ -195,16 +235,18 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             </Grid>
           ) : null}
 
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
-            <div className="w-[100%] sm:w-[75%]">
-              <Select
-                placeholder="Choose"
-                data={format}
-                {...form.getInputProps("formEntry.0.format")}
-              />
-            </div>
-          </Grid>
+          {form.values.formEntry[0].type !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
+              <div className="w-[100%] sm:w-[75%]">
+                <Select
+                  placeholder="Choose"
+                  data={format}
+                  {...form.getInputProps("format")}
+                />
+              </div>
+            </Grid>
+          ) : null}
 
           {form.values.formEntry[0].format === "Number" || form.values.formEntry[0].format === "Percent" || form.values.formEntry[0].format === "Currency" ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
@@ -212,7 +254,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               <TextInput
                 required
                 className="w-[100%] sm:w-[75%] ml-auto"
-                {...form.getInputProps("formEntry.0.decimalPlace")}
+                {...form.getInputProps("decimalPlace")}
               />
             </Grid>
           ) : null}
@@ -224,7 +266,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
                 <Select
                   placeholder="Choose"
                   data={currencyFormat}
-                  {...form.getInputProps("formEntry.0.currency")}
+                  {...form.getInputProps("currency")}
                 />
               </div>
             </Grid>
@@ -235,56 +277,64 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.tooltip")}
+              {...form.getInputProps("tooltip")}
             />
             {/* <div className="w-[100%] sm:w-[75%] ml-auto">
               <RichTextSection />
             </div> */}
           </Grid>
+
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.prefilled")}
+              {...form.getInputProps("prefilled")}
             />
           </Grid>
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
-            <TextInput
-              required
-              className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.appendedText")}
-            />
-          </Grid>
+
+          {form.values.formEntry[0].formula !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
+              <TextInput
+                required
+                className="w-[100%] sm:w-[75%] ml-auto"
+                {...form.getInputProps("appendedText")}
+              />
+            </Grid>
+          ) : null}
 
           <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
             <TextInput
               required
               className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.address")}
+              {...form.getInputProps("address")}
             />
           </Grid>
 
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
-            <Textarea
-              className="w-[100%] sm:w-[75%] ml-auto"
-              {...form.getInputProps("formEntry.0.formula")}
-            />
-          </Grid>
-
-          <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
-            <div className="w-[100%] sm:w-[75%]">
-              <Select
-                placeholder="Choose"
-                data={sections}
-                {...form.getInputProps("formEntry.0.sections")}
+          {form.values.formEntry[0].formula !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
+              <Textarea
+                className="w-[100%] sm:w-[75%] ml-auto"
+                {...form.getInputProps("formula")}
               />
-            </div>
-          </Grid>
+            </Grid>
+          ) : null}
+
+          {form.values.formEntry[0].type !== 'Textarea' ? (
+            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
+              <div className="w-[100%] sm:w-[75%]">
+                <Select
+                  placeholder="Choose"
+                  data={sections}
+                  {...form.getInputProps("sections")}
+                />
+              </div>
+            </Grid>
+          ) : null}
 
           <Divider className="mt-[30px] mb-[30px]" />
 

@@ -1,9 +1,10 @@
 import React from 'react'
 import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import axios from 'axios';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi';
-import { useCardStore } from '@app/store/builder/builderState';
+import { useCardStore, useTokenStore } from '@app/store/builder/builderState';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -14,6 +15,7 @@ interface IModalEntryProps {
 
 const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
+    const tokenChar = useTokenStore((state) => state.tokenChar);
     const setVideoLink = useCardStore((state) => state.updateSectionVideoLink)
     const form = useForm({
         initialValues: {
@@ -31,7 +33,74 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
-            setVideoLink(cardID, values.sectionVideo)
+            // setVideoLink(cardID, values.sectionVideo)
+            setOpened(false)
+
+            const newMedia = {
+                dataType: "media",
+                span: "auto",
+                class: "col-lg-5",
+                mediaOrigin: "video",
+                text: null,
+                link: values.sectionVideo,
+            }
+
+            const data = {
+                sections: [
+                    {
+                        address: "3c681809-0e2d-45fd-8603-124d6cde3cb2",
+                        sectionTitle: "test title entry",
+                        order: 1,
+                        headers: {
+                            title: {
+                                mainTitle: {
+                                    dataType: "text",
+                                    style: "",
+                                    text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
+                                },
+                                subTitle: {
+                                    dataType: "text",
+                                    text: '<hr><h3 class="text-[22px] font-bold">Select a section below to review your ROI</h3>',
+                                },
+                                description: "",
+                                quotes: {
+                                    dataType: "",
+                                    position: "",
+                                    elements: [],
+                                },
+                                content: {
+                                    dataType: "headerElements",
+                                    elements: [newMedia]
+                                }
+                            },
+                        },
+                        grayContent: {
+                            dataType: "sliders",
+                            classes: "row border-bottom gray-bg dashboard-header",
+                            elements: [],
+                        },
+                    },
+                ],
+            };
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${tokenChar}`,
+                },
+            };
+
+
+            try {
+                const res = await axios.put(
+                    "/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool",
+                    data,
+                    config
+                );
+                console.log("PUT response", res);
+            } catch (error) {
+                console.log("PUT ERROR", error);
+            }
+
             setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
