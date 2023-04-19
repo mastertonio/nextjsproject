@@ -24,6 +24,7 @@ import {
 } from "@tabler/icons";
 import { useNavShowStore } from "@app/store/builderStore";
 import { LinksGroup } from "@app/core/components/sidebar/BuilderSidebar";
+import router from "next/router";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -212,7 +213,9 @@ const NavbarSimple = ({ sidebarData }: any) => {
         >
           <Group position="apart" spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Box ml="md">
+              <Box ml="md" onClick={()=> {
+                router.push('/dashboard')
+              }}>
                 <Text color={"white"}>Dashboard</Text>
               </Box>
             </Box>

@@ -50,15 +50,15 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                 <div className="flex flex-col sm:grid grid-cols-3 gap-4 mt-[20px]">
                     {data?.sections.map((section: any) => {
                         console.log('section tool', section)
-                        return (
-                            <>
-                                {section.grayContent.dataType === 'sliders' ? section.grayContent.elements.map((item: any, indexItem: any) => {
-                                    console.log('section card', item)
+                        // return (
+                        //     <>
+                        //         {section.grayContent.dataType === 'sliders' ? section.grayContent.elements.map((item: any, indexItem: any) => {
+                        //             console.log('section card', item)
                                     return (
-                                        <Card key={indexItem} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
+                                        <Card key={section._id} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
                                             <div className="flex flex-row items-center justify-between">
                                                 <Text className="text-[20px] text-blue-600 font-semibold">
-                                                    {item.text}
+                                                    {section.sectionTitle}
                                                 </Text>
                                                 <div>
                                                     <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
@@ -67,9 +67,9 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                                             </div>
                                         </Card>
                                     )
-                                }) : null}
-                            </>
-                        )
+                        //         }) : null}
+                        //     </>
+                        // )
                     })}
                     {/* {cards.map((card, index) => (
                         <Card key={index} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>

@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { UserState, useUserStore } from "@app/store/userState";
 import { getSession } from "next-auth/react";
 import { useTokenStore } from "@app/store/builder/builderState"
+import MainLoader from "@app/core/components/loader/MainLoader";
 
 const AdminBuilder: React.FC<any> = (login) => {
   const router = useRouter();
@@ -42,7 +43,7 @@ const AdminBuilder: React.FC<any> = (login) => {
 
 
 
-  //   if (isLoading) return <MainLoader />;
+    if (isLoading) return <MainLoader />;
 
   //   if (isSuccess) {
   return (

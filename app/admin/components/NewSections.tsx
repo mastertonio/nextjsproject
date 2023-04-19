@@ -59,7 +59,7 @@ const NewSections: React.FC<any> = ({ data }) => {
     return (
         <>
             {data?.sections.map((section: any, index: any) => {
-                console.log('question drag', section)
+                console.log('question drag', section?.grayContent)
                 return (
                     <div className="w-full mt-[40px]" key={index}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
@@ -105,29 +105,27 @@ const NewSections: React.FC<any> = ({ data }) => {
                                     </div>
                                 </div>
                             </Card>
-                            {section.grayContent.dataType === 'variables' ? (
-                                <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
-                                    <div className="mt-[20px]">
-                                        <DragNDrop data={section?.grayContent.elements[0].elements} type={section.grayContent.dataType} />
-                                        {/* <DragNDrop data={contentData} type="collapse" /> */}
-                                    </div>
+                            <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
+                                <div className="mt-[20px]">
+                                    {/* <DragNDrop data={section?.grayContent.elements[0].elements && [ "Null"]} type={section.grayContent.dataType} /> */}
+                                    {/* <DragNDrop data={contentData} type="collapse" /> */}
+                                </div>
 
-                                    <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
-                                        <Button
-                                            type="submit"
-                                            radius="sm"
-                                            size="sm"
-                                            color="teal"
-                                            className="mr-0 sm:mr-[10px]"
-                                            // onClick={() => setUpdateQuestion(true)}
-                                            onClick={() => setUpdateEntry(true)}
-                                        // onClick={addEmptySection}
-                                        >
-                                            Add New Entry
-                                        </Button>
-                                    </Grid>
-                                </Card>
-                            ) : null}
+                                <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
+                                    <Button
+                                        type="submit"
+                                        radius="sm"
+                                        size="sm"
+                                        color="teal"
+                                        className="mr-0 sm:mr-[10px]"
+                                        // onClick={() => setUpdateQuestion(true)}
+                                        onClick={() => setUpdateEntry(true)}
+                                    // onClick={addEmptySection}
+                                    >
+                                        Add New Entry
+                                    </Button>
+                                </Grid>
+                            </Card>
                         </div>
 
                         {/* {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)

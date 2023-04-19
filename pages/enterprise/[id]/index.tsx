@@ -11,6 +11,7 @@ import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
 import NewValueBucket from "@app/core/components/card/NewValueBucket";
 import InputVariable, { iElemsProp } from "@app/enterprise/components/input/NewInput";
+import MainLoader from '@app/core/components/loader/MainLoader';
 
 interface CardSection {
   id: string;
@@ -118,7 +119,8 @@ const Enterprise: React.FC<any> = (login) => {
     }
 
     console.log("is section empty", sectionEmpty);
-  }, [data, login])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
 
   useEffect(() => {
@@ -128,6 +130,7 @@ const Enterprise: React.FC<any> = (login) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  if (isLoading) return <MainLoader />;
 
   return (
     <AppShell
@@ -185,7 +188,7 @@ const Enterprise: React.FC<any> = (login) => {
                     {section.grayContent.elements.map((element: any) => (
                       <SliderCard
                         key={element.element_id}
-                        label={element?.header?.title}
+                        label={section.sectionTitle}
                         money={element?.body?.total}
                         progress={element?.footer?.value}
                         isSectionEmpty={sectionEmpty}

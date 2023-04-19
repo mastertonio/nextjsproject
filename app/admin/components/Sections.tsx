@@ -43,7 +43,7 @@ const Sections: React.FC<iSectionProps> = () => {
             <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px]">
                 <Card className="mt-[15px] mb-[20px]">
                     <div className="mt-[20px]">
-                        <DragNDrop data={contentData} type="collapse" />
+                        {/* <DragNDrop data={contentData} type="collapse" /> */}
                     </div>
 
                     <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
