@@ -106,9 +106,9 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioWriteUp")}
                         /> */}
-                        <div className="w-[100%] sm:w-[75%] ml-auto">
+                        {/* <div className="w-[100%] sm:w-[75%] ml-auto">
                             <RichTextSection />
-                        </div>
+                        </div> */}
                     </Grid>
 
 

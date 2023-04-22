@@ -38,9 +38,10 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
   const initialValue =
     "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
   const [value, setValue] = useState<string>(initialValue)
+  const [sel, setSel] = useState<string | null>(null);
+  const [drop, setDrop] = useState<string | null>(null)
   const form = useForm({
-    initialValues: {
-      formEntry: [{
+    initialValues:{
         id: 0,
         title: "",
         type: "",
@@ -54,8 +55,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
         formula: "",
         address: "",
         section: "",
-      }],
-    }
+      },
   })
   const [formValue, setFormValue] = useLocalStorage<iSectionProps[]>({ key: 'formValue', defaultValue: [] });
   const queryClient = useQueryClient()
@@ -184,7 +184,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
 
   return (
     <Modal opened={open} onClose={() => setOpened(false)} size="920px" title="Add Entry" padding={0} className="section-wrapper">
-      <form onSubmit={form.onSubmit((values) => addEntry.mutate(values.formEntry))}>
+      <form onSubmit={form.onSubmit((values) => addEntry.mutate(values))}>
         <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
           <Grid className="p-[10px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
@@ -219,7 +219,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             </div>
           </Grid>
 
-          {form.values.formEntry[0].type === 'Dropdown' || form.values.formEntry[0].type === 'Radio' || form.values.formEntry[0].type === 'Checkbox' ? (
+          {form.values.type === 'Dropdown' || form.values.type === 'Radio' || form.values.type === 'Checkbox' ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Choices: </Text>
               <Button
@@ -235,7 +235,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             </Grid>
           ) : null}
 
-          {form.values.formEntry[0].type !== 'Textarea' ? (
+          {form.values.type !== 'Textarea' ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
               <div className="w-[100%] sm:w-[75%]">
@@ -248,7 +248,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             </Grid>
           ) : null}
 
-          {form.values.formEntry[0].format === "Number" || form.values.formEntry[0].format === "Percent" || form.values.formEntry[0].format === "Currency" ? (
+          {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
               <TextInput
@@ -259,7 +259,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             </Grid>
           ) : null}
 
-          {form.values.formEntry[0].format === "Currency" ? (
+          {form.values.format === "Currency" ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Currency: </Text>
               <div className="w-[100%] sm:w-[75%]">
@@ -293,7 +293,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             />
           </Grid>
 
-          {form.values.formEntry[0].formula !== 'Textarea' ? (
+          {form.values.formula !== 'Textarea' ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
               <TextInput
@@ -313,24 +313,34 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
             />
           </Grid>
 
-          {form.values.formEntry[0].formula !== 'Textarea' ? (
+          {form.values.formula !== 'Textarea' ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
               <Textarea
                 className="w-[100%] sm:w-[75%] ml-auto"
                 {...form.getInputProps("formula")}
+                disabled={form.values.type !== "Output"}
               />
             </Grid>
           ) : null}
 
-          {form.values.formEntry[0].type !== 'Textarea' ? (
+          {form.values.type !== 'Textarea' ? (
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
               <div className="w-[100%] sm:w-[75%]">
                 <Select
                   placeholder="Choose"
-                  data={sections}
+                  data={[
+                    { value: 'React', label: 'React' },
+                    { value: 'Angular', label: 'Angular' },
+                    { value: 'Svelte', label: 'Svelte' },
+                    { value: 'Vue', label: 'Vue' },
+                  ]}
                   {...form.getInputProps("sections")}
+                  onChange={(val)=> {
+                    form.setFieldValue('formula', `${form.values.formula} ${val}`)}
+                  }
+                  disabled={form.values.type !== "Output"}
                 />
               </div>
             </Grid>

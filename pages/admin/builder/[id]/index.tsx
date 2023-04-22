@@ -81,7 +81,6 @@ export async function getServerSideProps(ctx: any) {
       },
     };
   }
-  console.log(session, 'sezsion')
   // Pass data to the page via props
   return { props: { data: session } }
 }

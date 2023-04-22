@@ -9,8 +9,11 @@ import { customConfig, IBuilderSubState, useBuilderStore, useSectionsStore } fro
 import SectionDnd from './SectionDnd';
 import { uniqueNamesGenerator } from 'unique-names-generator';
 import SectionItems from './SectionItems';
+import { UserDataProp } from '@app/context/user.context';
 
-type iSectionProps = {}
+type iSectionProps = {
+    user: UserDataProp
+}
 
 export type iSectionData = {
     id: number
@@ -23,7 +26,7 @@ export type iSectionData = {
     address: string
 }
 
-const Sections: React.FC<iSectionProps> = () => {
+const Sections: React.FC<iSectionProps> = ({ user }) => {
     const showModalEntry = useModalEntryStore((state) => state.value);
     const showAddModalEntry = useModalAddEntryStore((state) => state.value);
     const showAddEntry = useModalAddEntryStore((state) => state.show);
@@ -61,7 +64,7 @@ const Sections: React.FC<iSectionProps> = () => {
                 </Card>
             </div>
 
-            {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)
+            {contentData.length > 0 ? contentData.map((content) => (<SectionItems user={user} key={content.id} content={content} />)
             ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)}
         </div>
     )

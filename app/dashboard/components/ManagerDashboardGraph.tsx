@@ -43,12 +43,19 @@ export interface IDashboardData {
 export interface IDashboardGraphData {
   chartData: IDashboardData;
 }
-const ManagerDashboardGraph: React.FC = () => {
+type Token = {
+  token: string
+}
+const ManagerDashboardGraph: React.FC<Token> = ({ token }) => {
   const [graphData, setGraphData] = useState<IDashboardData>();
 
   const getGraphData = async () => {
     return await axios.get(
-        `/v1/dashboard/data/company/graph`
+        `/v1/dashboard/data/company/graph`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
   };
 
