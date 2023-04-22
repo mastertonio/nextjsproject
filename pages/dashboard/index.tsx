@@ -84,12 +84,6 @@ const Dashboard: React.FC<any> = (
     getDashboardData
   );
 
-  useEffect(() => {
-    setToken(login.data.user.tokens.access.token)
-    console.log(login.data.user, "tetete")
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [login])
-
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {
@@ -138,8 +132,23 @@ const Dashboard: React.FC<any> = (
   return <></>
 };
 
+interface User {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+  user?: {
+    user?: {
+      role: string | null | undefined;
+    }
+  }
+}
+
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession({ req: ctx.req });
+  const session = await getSession({ req: ctx.req }) as User;
+  console.log(session?.user?.user?.role, "session?.usersss")
+
+
+
   if (!session) {
     return {
       redirect: {
@@ -148,7 +157,24 @@ export async function getServerSideProps(ctx: any) {
       },
     };
   }
-  console.log(session, 'sezsion')
+
+  if (session.user?.user?.role?.includes("manager")) {
+    return {
+      redirect: {
+        destination: '/dashboard/manager',
+        permanent: false,
+      },
+    };
+  } else if (session.user?.user?.role?.includes('admin')){
+    return {
+      redirect: {
+        destination: '/users',
+        permanent: false,
+      },
+    };
+  }
+
+
   // Pass data to the page via props
   return { props: { data: session } }
 }

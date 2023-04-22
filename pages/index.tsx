@@ -16,16 +16,24 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { useStyles } from "../styles/indexStyle";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { useLocalStorage } from "@mantine/hooks";
-import UserContext, { UserContextTypes } from "@context/user.context";
 import Image from "next/image";
-import { useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
-import { redirect } from "next/dist/server/api-utils";
 import { getSession, signIn, useSession } from 'next-auth/react';
 import { useMutation } from "react-query";
+
+
+interface User {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+  user?: {
+    user?: {
+      role: string | null | undefined;
+    }
+  }
+}
 
 const Home: NextPage = (test) => {
   const { classes } = useStyles();
@@ -124,7 +132,13 @@ const Home: NextPage = (test) => {
 
   const loginUserMutation = useMutation({
     mutationFn: (values: UserProp) => signIn('credentials', { redirect: false, email: values.email, password: values.password }),
-    onSuccess: () => {
+    onSuccess: (user) => {
+      const session = data as User;
+      if(session.user?.user?.role?.includes('manager')){
+        router.push('/dashboard/manager')
+      } else if(session.user?.user?.role?.includes('admin')){
+        router.push('/users')
+      }
       router.push('/dashboard')
     },
     onError: (error: any) => {
@@ -204,12 +218,29 @@ const Home: NextPage = (test) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req }) as User;
+  
   if (!session) {
     return {
       props: { user: null }
+    };
+  }
+
+  if (session.user?.user?.role?.includes("manager")) {
+    return {
+      redirect: {
+        destination: '/dashboard/manager',
+        permanent: false,
+      },
+    };
+  } else if (session.user?.user?.role?.includes('admin')){
+    return {
+      redirect: {
+        destination: '/users',
+        permanent: false,
+      },
     };
   }
 
