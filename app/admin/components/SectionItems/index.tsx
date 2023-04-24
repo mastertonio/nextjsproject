@@ -12,12 +12,14 @@ import SectionDnd from '../SectionDnd'
 import ModalUpdateEntry from '../ModalUpdateEntry'
 import ModalAddEntry from '../ModalAddEntry'
 import { iSectionData } from '../Sections'
+import { UserDataProp } from '@app/context/user.context'
 
 interface ICollapseProps {
     content: IBuilderSubState
+    user: UserDataProp
 }
 
-const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
+const SectionItems: React.FC<ICollapseProps> = ({ content, user }) => {
     const showModalEntry = useModalEntryStore((state) => state.value);
     const showAddModalEntry = useModalAddEntryStore((state) => state.value);
     const showAddEntry = useModalAddEntryStore((state) => state.show);
@@ -76,7 +78,7 @@ const SectionItems: React.FC<ICollapseProps> = ({ content }) => {
                     </Grid>
                 </Card>
             </div>
-            <ModalUpdateEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
+            <ModalUpdateEntry user={user} showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
             <ModalAddEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setOpened} open={opened} />
         </div>
     )
