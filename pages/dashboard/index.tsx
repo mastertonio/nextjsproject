@@ -114,7 +114,7 @@ const Dashboard: React.FC<any> = (
             <ViewCount viewcount={data?.data.viewcount} />
           </div>
           <div className={`${classes.dashboard_graph} w-full sm:w-[900px] mt-[30px] sm:mt-0`}>
-            <DashboardGraph token={login.data.user.tokens.access.token} />
+            <DashboardGraph user={login.data.user.user} tokens={login.data.user.tokens} />
           </div>
           <div className={`${classes.roi_ranking} w-full sm:w-[400px] relative`}>
             <CreateNewRoi user={login.data.user.user} tokens={login.data.user.tokens} />
