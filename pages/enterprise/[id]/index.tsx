@@ -222,8 +222,8 @@ const Enterprise: React.FC<any> = (login) => {
           </div>
         </div>
 
-        {data?.data.data.content.sections.map((section: any) => (
-          <div>
+        {data?.data.data.content.sections.map((section: any, index: any) => (
+          <div key={index}>
             {section.grayContent.dataType === "variables" ? (
               <div className="bg-[#e9ecef]">
                 <InputVariable elements={section.grayContent.elements as iElemsProp[]} type={section.grayContent.dataType} />
