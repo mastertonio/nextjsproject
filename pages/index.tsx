@@ -133,13 +133,15 @@ const Home: NextPage = (test) => {
   const loginUserMutation = useMutation({
     mutationFn: (values: UserProp) => signIn('credentials', { redirect: false, email: values.email, password: values.password }),
     onSuccess: (user) => {
-      const session = data as User;
-      if(session.user?.user?.role?.includes('manager')){
-        router.push('/dashboard/manager')
-      } else if(session.user?.user?.role?.includes('admin')){
-        router.push('/users')
-      }
-      router.push('/dashboard')
+      console.log(user, "onSuccess")
+      router.reload()
+      // const session = data as User;
+      // if(session.user?.user?.role?.includes('manager')){
+      //   router.push('/dashboard/manager')
+      // } else if(session.user?.user?.role?.includes('admin')){
+      //   router.push('/users')
+      // }
+      // router.push('/dashboard')
     },
     onError: (error: any) => {
       if (error instanceof Error) {
