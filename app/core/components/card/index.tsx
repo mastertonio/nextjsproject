@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Card, Image, Text, Badge, Button, Group, Divider } from '@mantine/core';
 import { StringDecoder } from 'string_decoder';
 import RoiSlider from '../slider';
@@ -10,6 +11,7 @@ export type iSliderCardProps = {
 }
 
 const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress }) => {
+  const [progressValue, setProgressValue] = useState(progress)
 
   const Summary = () => (
     <div className="flex flex-col">
@@ -42,7 +44,7 @@ const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress }) => {
       </Text>
       <Divider />
       <div className="mt-[30px]">
-        {label !== "Summary" ? (<RoiSlider addLabel={label == "Summary" ? false : true} progress={progress} />) : (<Summary />)}
+        {label !== "Summary" ? (<RoiSlider addLabel={label == "Summary" ? false : true} progress={progressValue} setProgressValue={setProgressValue} />) : (<Summary />)}
       </div>
 
     </Card>

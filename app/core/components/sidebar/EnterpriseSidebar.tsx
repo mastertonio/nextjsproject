@@ -170,7 +170,7 @@ const mockdata = {
 };
 
 
-const NavbarSimple = ({ sidebarData, sectionEmpty }: any) => {
+const NavbarSimple = ({ sidebarData, sectionEmpty, scroll }: any) => {
   const { classes, cx } = useStyles();
   const navShow = useNavShowStore((state) => state.value);
   const hide = useNavShowStore((state) => state.hide);
@@ -181,7 +181,7 @@ const NavbarSimple = ({ sidebarData, sectionEmpty }: any) => {
 
   if (sidebarData?.navigationMenu) {
     links = sidebarData?.navigationMenu.map((item: any) => (
-      <LinksGroup {...item} key={item.title} icon={item.icon} />
+      <LinksGroup {...item} key={item.title} icon={item.icon} scroll={scroll} />
     ));
   }
 

@@ -63,6 +63,25 @@ export const useNavShowStore = create<NavShowState>((set) => ({
   hide: () => set(() => ({ value: false })),
 }));
 
+//
+type TargetRefType = {
+  targetRef: any;
+  scrollableRef: any;
+  setTargetRef: (ref: any) => void;
+  setScrollableRef: (ref: any) => void;
+};
+
+export const useTargetRefStore = create<TargetRefType>((set) => ({
+  targetRef: null,
+  scrollableRef: null,
+  setTargetRef: (ref: any) => {
+    set({ targetRef: ref });
+  },
+  setScrollableRef: (ref: any) => {
+    set({ scrollableRef: ref });
+  },
+}));
+
 type VarState = {
   id: string;
   var_name: string;

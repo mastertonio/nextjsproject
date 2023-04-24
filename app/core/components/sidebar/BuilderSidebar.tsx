@@ -106,6 +106,7 @@ const useStyles = createStyles((theme) => ({
       backgroundColor: "teal",
       color: "white",
     },
+    cursor: "pointer"
   },
 
   hov: {
@@ -128,6 +129,7 @@ interface LinksGroupProps {
   title: string;
   initiallyOpened?: boolean;
   navigationlist?: { title: string; link: string }[];
+  scroll: any;
 }
 
 export function LinksGroup({
@@ -135,6 +137,7 @@ export function LinksGroup({
   title,
   initiallyOpened,
   navigationlist,
+  scroll
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(navigationlist);
@@ -146,7 +149,9 @@ export function LinksGroup({
       className={classes.link}
       href={link.link}
       key={link.title}
-    // onClick={(event) => event.preventDefault()}
+      onClick={() => {
+        scroll();
+      }}
     >
       {link.title}
     </Text>
@@ -188,7 +193,7 @@ const NavbarNested = () => {
   const { classes } = useStyles();
 
   const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.title} />
+    <LinksGroup {...item} key={item.title} scroll />
   ));
 
   return (

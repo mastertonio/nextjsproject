@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useQuery } from "react-query";
 import { useRouter } from 'next/router';
@@ -7,11 +7,13 @@ import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
 import NavbarSimple from "@app/core/components/sidebar/EnterpriseSidebar";
 import Projection from "@app/enterprise/Projection";
 import { AppShell, Group, Badge, SimpleGrid, Card, Text, Grid, Stack } from "@mantine/core";
+import { useScrollIntoView } from '@mantine/hooks';
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
 import NewValueBucket from "@app/core/components/card/NewValueBucket";
 import InputVariable, { iElemsProp } from "@app/enterprise/components/input/NewInput";
 import MainLoader from '@app/core/components/loader/MainLoader';
+import { useTargetRefStore } from "@app/store/builderStore"
 
 interface CardSection {
   id: string;
@@ -90,6 +92,10 @@ const Enterprise: React.FC<any> = (login) => {
   const { id } = router.query;
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const [sectionEmpty, setSectionEmpty] = useState<boolean>(false);
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
+    HTMLDivElement,
+    HTMLDivElement
+  >({ offset: 30, isList: true });
   const getEnterpriseData = async () => {
     return await axios.get(`/v1/templateBuilder/${router.query.temp_ver}`, {
       headers: {
@@ -97,6 +103,15 @@ const Enterprise: React.FC<any> = (login) => {
       },
     });
   };
+
+  const handleScroll = () => {
+    console.log('scroll', targetRef)
+    scrollIntoView({
+      alignment: 'center',
+    })
+  }
+
+  console.log('temp version', router.query.temp_ver)
   // const getEnterpriseData = async () => {
   //   return await axios.get(`/v1/templateBuilder/${login.data.user.user.company_id}/${id}`, {
   //     headers: {
@@ -135,7 +150,7 @@ const Enterprise: React.FC<any> = (login) => {
   return (
     <AppShell
       padding={0}
-      navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} sectionEmpty={sectionEmpty} />}
+      navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} sectionEmpty={sectionEmpty} scroll={handleScroll} />}
       header={<EnterpriseNavbar />}
       styles={(theme) => ({
         main: {
@@ -158,17 +173,18 @@ const Enterprise: React.FC<any> = (login) => {
           ? data?.data.data.content.sections.map((section: any) => {
             console.log('enterprise section', section)
             return (
-              <div className="w-full text-[#676a6c]" key={section.id}>
+              <div className="w-full text-[#676a6c]" key={section.id} ref={targetRef}>
                 <Projection
-                  title={section.headers.title.mainTitle.text}
+                  title={section.sectionTitle}
                   description={section.headers.description}
                   // subTitle={section.headers.title.subTitle.text}
                   // content={section.headers.title.content}
                   // length={section.headers.title.content.elements.length}
                   // quotes={section.headers.title.quotes}
                   key={section.order}
+
                 />
-                {/* <div>
+                <div className="">
                   {section.grayContent.dataType == "sliders" ? (
                     <SimpleGrid
                       cols={3}
@@ -195,13 +211,13 @@ const Enterprise: React.FC<any> = (login) => {
                       <br></br>
                     </div>
                   )}
-                </div> */}
+                </div>
               </div>
             )
           })
           : ""}
 
-        <div className="w-full text-[#676a6c]">
+        {/* <div className="w-full text-[#676a6c]">
           <div>
             <SimpleGrid
               cols={3}
@@ -234,7 +250,7 @@ const Enterprise: React.FC<any> = (login) => {
               </div>
             )}
           </div>
-        ))}
+        ))} */}
 
 
         {sectionEmpty && (
