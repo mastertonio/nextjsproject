@@ -24,6 +24,7 @@ import {
 } from "@tabler/icons";
 import { useNavShowStore } from "@app/store/builderStore";
 import { LinksGroup } from "@app/core/components/sidebar/BuilderSidebar";
+import LogoPlaceHolder from "@public/logo-placeholder.png"
 import router from "next/router";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -169,7 +170,7 @@ const mockdata = {
 };
 
 
-const NavbarSimple = ({ sidebarData }: any) => {
+const NavbarSimple = ({ sidebarData, sectionEmpty }: any) => {
   const { classes, cx } = useStyles();
   const navShow = useNavShowStore((state) => state.value);
   const hide = useNavShowStore((state) => state.hide);
@@ -178,10 +179,10 @@ const NavbarSimple = ({ sidebarData }: any) => {
 
   let links;
 
-  if(sidebarData?.navigationMenu) {
+  if (sidebarData?.navigationMenu) {
     links = sidebarData?.navigationMenu.map((item: any) => (
       <LinksGroup {...item} key={item.title} icon={item.icon} />
-    )); 
+    ));
   }
 
   // const links = mockdata.sidebar.navigationMenu.map((item) => (
@@ -200,11 +201,19 @@ const NavbarSimple = ({ sidebarData }: any) => {
           <IconX className="w-[30px] h-[30px]" onClick={() => hide()} />
         </div>
 
-        <Image
-          className="mt-[15px] sm:mt-[35px]"
-          src={logo}
-          alt="random"
-        />
+        {sectionEmpty === true ? (
+          <Image
+            className="mt-[15px] sm:mt-[35px]"
+            src="./login-placeholder.png"
+            alt="random"
+          />
+        ) : (
+          <Image
+            className="mt-[15px] sm:mt-[35px]"
+            src={logo}
+            alt="random"
+          />
+        )}
       </Group>
 
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
@@ -213,7 +222,7 @@ const NavbarSimple = ({ sidebarData }: any) => {
         >
           <Group position="apart" spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Box ml="md" onClick={()=> {
+              <Box ml="md" onClick={() => {
                 router.push('/dashboard')
               }}>
                 <Text color={"white"}>Dashboard</Text>

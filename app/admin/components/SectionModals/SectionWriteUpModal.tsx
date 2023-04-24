@@ -6,21 +6,34 @@ import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
 import { useCardStore, useTokenStore } from '@app/store/builder/builderState';
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
+import { useRouter } from 'next/router';
+import { useMutation, useQueryClient } from 'react-query';
+import { UserDataProp } from '@app/context/user.context';
 
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
     open: boolean
     cardID: string
+    user: UserDataProp
 }
 
-const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
+const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID, user }) => {
+    const router = useRouter()
     const hideModal = useModalEntryStore((state) => state.hide);
     const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
     const tokenChar = useTokenStore((state) => state.tokenChar);
+    const queryClient = useQueryClient()
     const form = useForm({
         initialValues: {
-            sectioWriteUp: "",
+            formEntry: [{
+                dataType: "description",
+                span: "auto",
+                class: null,
+                mediaOrigin: null,
+                text: "",
+                link: null,
+            }]
         }
     })
 
@@ -33,82 +46,119 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
         </div>
     )
 
-    const handleSubmit = async (values: typeof form.values) => {
-        try {
-            console.log('Values: ', values)
-            // setWriteup(cardID, values.sectioWriteUp)
-
-            const data = {
-                sections: [
-                    {
-                        address: "3c681809-0e2d-45fd-8603-124d6cde3cb2",
-                        sectionTitle: "test title entry",
-                        order: 1,
-                        headers: {
-                            dataType: "element",
-                            mainTitle: {
-                                dataType: "text",
-                                style: "",
-                                text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
-                            },
-                            subTitle: {
-                                dataType: "text",
-                                text: values.sectioWriteUp,
-                            },
-                            description: "",
-                            quotes: {
-                                dataType: "",
-                                position: "",
-                                elements: [],
-                            },
-                        },
-                        grayContent: {
-                            dataType: "sliders",
-                            classes: "row border-bottom gray-bg dashboard-header",
-                            elements: [],
-                        },
-                    },
-                ],
-            };
-
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${tokenChar}`,
+    const sectionWriteUp = useMutation({
+        mutationFn: (roi: any) =>
+            axios.put(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+                {
+                    "_id": "643f36cc92ecfde71079db69",
+                    "sectionTitle": "test jjjjj", //nullable
+                    "order": 1,
+                    "content": {
+                        "dataType": "headerElements",
+                        "elements": roi
+                    }
                 },
-            };
-
-
-            try {
-                const res = await axios.put(
-                    "/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool",
-                    data,
-                    config
-                );
-                console.log("PUT response", res);
-            } catch (error) {
-                console.log("PUT ERROR", error);
-            }
-
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.tokens.access.token}`
+                    }
+                }
+            ).then((response) => response.data),
+        onMutate: (roi) => {
+            console.log(roi, "Section Write Up")
+        },
+        onSuccess: (newRoi) => {
             setOpened(false)
-        } catch (error) {
-            console.log('Error: ', error)
+            Promise.all(
+                [
+                    queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+                    queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+                    // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+                ]
+            )
+        },
+        onError: (error) => {
+            if (error instanceof Error) {
+            }
         }
-    }
+    })
+
+    // const handleSubmit = async (values: typeof form.values) => {
+    //     try {
+    //         console.log('Values: ', values)
+    //         // setWriteup(cardID, values.sectioWriteUp)
+
+    //         const data = {
+    //             sections: [
+    //                 {
+    //                     address: "3c681809-0e2d-45fd-8603-124d6cde3cb2",
+    //                     sectionTitle: "test title entry",
+    //                     order: 1,
+    //                     headers: {
+    //                         dataType: "element",
+    //                         mainTitle: {
+    //                             dataType: "text",
+    //                             style: "",
+    //                             text: '<h1 class="text-left text-[green] text-[26px] sm:text-[2em]">ROI DASHBOARD | 2 Year Projection <span class="float-right">$0</span></h1>',
+    //                         },
+    //                         subTitle: {
+    //                             dataType: "text",
+    //                             text: values.sectioWriteUp,
+    //                         },
+    //                         description: "",
+    //                         quotes: {
+    //                             dataType: "",
+    //                             position: "",
+    //                             elements: [],
+    //                         },
+    //                     },
+    //                     grayContent: {
+    //                         dataType: "sliders",
+    //                         classes: "row border-bottom gray-bg dashboard-header",
+    //                         elements: [],
+    //                     },
+    //                 },
+    //             ],
+    //         };
+
+    //         const config = {
+    //             headers: {
+    //                 Authorization: `Bearer ${tokenChar}`,
+    //             },
+    //         };
+
+
+    //         try {
+    //             const res = await axios.put(
+    //                 "/v1/company/62b2a6f9061ed2a095b55555/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool",
+    //                 data,
+    //                 config
+    //             );
+    //             console.log("PUT response", res);
+    //         } catch (error) {
+    //             console.log("PUT ERROR", error);
+    //         }
+
+    //         setOpened(false)
+    //     } catch (error) {
+    //         console.log('Error: ', error)
+    //     }
+    // }
 
 
     return (
         <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto">
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit((values) => sectionWriteUp.mutate(values.formEntry))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
-                        {/* <Textarea
+                        <Textarea
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioWriteUp")}
-                        /> */}
-                        <div className="w-[100%] sm:w-[75%] ml-auto">
+                        />
+                        {/* <div className="w-[100%] sm:w-[75%] ml-auto">
                             <RichTextSection />
-                        </div>
+                        </div> */}
                     </Grid>
 
 

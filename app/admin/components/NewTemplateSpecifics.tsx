@@ -54,19 +54,19 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                         //     <>
                         //         {section.grayContent.dataType === 'sliders' ? section.grayContent.elements.map((item: any, indexItem: any) => {
                         //             console.log('section card', item)
-                                    return (
-                                        <Card key={section._id} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
-                                            <div className="flex flex-row items-center justify-between">
-                                                <Text className="text-[20px] text-blue-600 font-semibold">
-                                                    {section.sectionTitle}
-                                                </Text>
-                                                <div>
-                                                    <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
-                                                    <MdClose className="text-red-600 text-[25px] cursor-pointer" />
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    )
+                        return (
+                            <Card key={section._id} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
+                                <div className="flex flex-row items-center justify-between">
+                                    <Text className="text-[20px] text-blue-600 font-semibold">
+                                        {section.sectionTitle}
+                                    </Text>
+                                    <div>
+                                        <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
+                                        <MdClose className="text-red-600 text-[25px] cursor-pointer" />
+                                    </div>
+                                </div>
+                            </Card>
+                        )
                         //         }) : null}
                         //     </>
                         // )
@@ -91,7 +91,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                     </Card>
                 </div>
 
-                <div className="flex flex-row mt-[40px] w-full">
+                {/* <div className="flex flex-row mt-[40px] w-full">
                     <Button
                         type="button"
                         radius="sm"
@@ -101,7 +101,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                     >
                         Add New Testimonial
                     </Button>
-                </div>
+                </div> */}
 
             </div>
             <AddSectionModal showModal={opened} setOpened={setUpdate} open={update} user={user} data={data} />

@@ -135,7 +135,7 @@ const Enterprise: React.FC<any> = (login) => {
   return (
     <AppShell
       padding={0}
-      navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} />}
+      navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} sectionEmpty={sectionEmpty} />}
       header={<EnterpriseNavbar />}
       styles={(theme) => ({
         main: {
@@ -168,23 +168,7 @@ const Enterprise: React.FC<any> = (login) => {
                   // quotes={section.headers.title.quotes}
                   key={section.order}
                 />
-
-                {/* <SimpleGrid
-                cols={3}
-                p={10}
-                pr={20}
-                className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
-              >
-                {section.grayContent.elements.map((element: any) => (
-                  <SliderCard
-                    key={element.element_id}
-                    label={element?.header?.title}
-                    money={element?.body?.total}
-                    progress={element?.footer?.value}
-                  />
-                ))}
-              </SimpleGrid> */}
-                <div>
+                {/* <div>
                   {section.grayContent.dataType == "sliders" ? (
                     <SimpleGrid
                       cols={3}
@@ -192,13 +176,6 @@ const Enterprise: React.FC<any> = (login) => {
                       pr={20}
                       className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
                     >
-                      {/* <SliderCard
-                        key={section._id}
-                        label={section.sectionTitle}
-                        money={0}
-                        progress={0}
-                        isSectionEmpty={sectionEmpty}
-                      /> */}
                       {data?.data.data.content.sections.map((element: any) => (
                         <SliderCard
                           key={element._id}
@@ -208,15 +185,6 @@ const Enterprise: React.FC<any> = (login) => {
                           isSectionEmpty={sectionEmpty}
                         />
                       ))}
-                      {/* {section.grayContent.elements.map((element: any) => (
-                        <SliderCard
-                          key={element.element_id}
-                          label={section.sectionTitle}
-                          money={element?.body?.total}
-                          progress={element?.footer?.value}
-                          isSectionEmpty={sectionEmpty}
-                        />
-                      ))} */}
                     </SimpleGrid>
                   ) : section.grayContent.dataType == "variables" ? (
                     <div className="bg-[#e9ecef]">
@@ -227,11 +195,47 @@ const Enterprise: React.FC<any> = (login) => {
                       <br></br>
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
             )
           })
           : ""}
+
+        <div className="w-full text-[#676a6c]">
+          <div>
+            <SimpleGrid
+              cols={3}
+              p={10}
+              pr={20}
+              className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
+            >
+              {data?.data.data.content.sections.map((section: any) => (
+                <SliderCard
+                  key={section._id}
+                  label={section.sectionTitle}
+                  money={0}
+                  progress={0}
+                  isSectionEmpty={sectionEmpty}
+                />
+              ))}
+            </SimpleGrid>
+          </div>
+        </div>
+
+        {data?.data.data.content.sections.map((section: any) => (
+          <div>
+            {section.grayContent.dataType === "variables" ? (
+              <div className="bg-[#e9ecef]">
+                <InputVariable elements={section.grayContent.elements as iElemsProp[]} type={section.grayContent.dataType} />
+              </div>
+            ) : (
+              <div className="bg-[#e9ecef]">
+                <br></br>
+              </div>
+            )}
+          </div>
+        ))}
+
 
         {sectionEmpty && (
           <div className="w-full text-[#676a6c]">
