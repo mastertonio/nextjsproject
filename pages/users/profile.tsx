@@ -14,7 +14,7 @@ import {
 import { useForm } from "@mantine/form";
 import RoiFooter from "@core/components/footer/Footer";
 import { useRouter } from "next/router";
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import Sidebar from "@core/components/sidebar/Sidebar";
 import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
@@ -41,10 +41,10 @@ const UserProfile: React.FC<any> = (login) => {
 
   const form = useForm({
     initialValues: {
-      email: "",
-      first_name: "",
-      last_name: "",
-      phone_number: ""
+      email: login.data.user.user.email,
+      first_name: login.data.user.user.first_name,
+      last_name: login.data.user.user.last_name,
+      phone_number: login.data.user.user.phone
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -136,6 +136,7 @@ const UserProfile: React.FC<any> = (login) => {
   };
 
   useEffect(() => {
+    console.log('User Profile', user)
     setUser(data?.data);
   }, [data]);
 

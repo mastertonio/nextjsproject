@@ -18,7 +18,7 @@ import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
@@ -219,7 +219,7 @@ const UsersDashboard: React.FC<any> = (login) => {
       className=""
       fixed
       header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
-      navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens}/>}
+      navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <div className="m-[20px] bg-white p-[10px] sm:p-[50px]">
         <Grid style={{ margin: 20 }}>

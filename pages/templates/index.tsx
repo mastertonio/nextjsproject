@@ -15,7 +15,7 @@ import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import { useLocalStorage, useScrollIntoView } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
@@ -47,11 +47,11 @@ const TemplatesDashboard: React.FC<any> = (login) => {
 
   const getCompanyTemplates = async () => {
     return await axios.get(
-      `/v1/company/${login.data.user.user.company_id}/template`,{
-        headers: {
-          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-        },
-      }
+      `/v1/company/${login.data.user.user.company_id}/template`, {
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    }
     );
   };
 
@@ -177,7 +177,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
         <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
           {login.data.user.user.role.includes("admin") ? (<AddTemplateButton user={login.data.user} refetch={refetch} />) : ""}
-          
+
           <Input
             variant="default"
             placeholder="Search for ROI"

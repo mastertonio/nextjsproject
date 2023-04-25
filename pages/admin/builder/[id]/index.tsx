@@ -10,7 +10,7 @@ import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/AdminNavbar";
 import TemplateSpecifics from "@app/admin/components/NewTemplateSpecifics";
 import Sections from "@app/admin/components/NewSections";
 import { useRouter } from "next/router";
@@ -26,6 +26,9 @@ const AdminBuilder: React.FC<any> = (login) => {
   const userZ = useUserStore((state) => (state.user))
   const tokenChar = useTokenStore((state) => (state.tokenChar))
 
+  console.log('template', router.query.temp_id)
+  console.log('version', router.query.id)
+
   const getAdminToolData = async () => {
     return await axios.get(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`, {
       headers: {
@@ -38,12 +41,12 @@ const AdminBuilder: React.FC<any> = (login) => {
 
   useEffect(() => {
     console.log("admin tool data", data)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
 
 
-    if (isLoading) return <MainLoader />;
+  if (isLoading) return <MainLoader />;
 
   //   if (isSuccess) {
   return (
@@ -60,7 +63,7 @@ const AdminBuilder: React.FC<any> = (login) => {
       asideOffsetBreakpoint="sm"
       className="p-0 m-0 "
       fixed
-      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} templateID={router.query.id} id={router.query.temp_id} />}
     >
       <div className="flex-col sm:flex-row relative h-auto">
         {/* Template Specifics */}

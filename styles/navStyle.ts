@@ -23,7 +23,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    maxWidth: 1920,
+    maxWidth: "auto",
     margin: "0 auto",
     transition: "all 0.5s",
   },
