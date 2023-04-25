@@ -94,7 +94,8 @@ const Projection = ({
   return (
     <div className="overflow-hidden">
       <div className="ml-[22px] mr-[22px]">
-        <div dangerouslySetInnerHTML={{ __html: title }} />
+        <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">{title}</h1>
+        {/* <div dangerouslySetInnerHTML={{ __html: title }} /> */}
         {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
         <div dangerouslySetInnerHTML={{ __html: description }} />
       </div>
