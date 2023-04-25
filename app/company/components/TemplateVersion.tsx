@@ -179,7 +179,8 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
 
         <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddVersion user={user} update={refetch} comp_id={comp_id} temp_id={temp_id} />
+          {user.user.role.includes('admin') ? (<AddVersion user={user} update={refetch} comp_id={comp_id} temp_id={temp_id} />) : ""}
+          
           <Text
             color="teal"
             weight={900}
