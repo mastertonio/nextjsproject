@@ -23,7 +23,7 @@ import UserContext, { UserContextTypes, UserDataProp } from "@context/user.conte
 import { UserState, useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 
-const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
+const RoiNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -51,7 +51,7 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
           direction='left'
           className="!bg-[#2f4050] !p-[20px]"
         >
-          <DashboardDrawer user={user} />
+          <DashboardDrawer user={user} tokens={tokens}/>
         </Drawer>
         <Button
           type="button"
@@ -119,34 +119,5 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
     </Header>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const data = 'from gssp'
-  const cookies = context.req.cookies
-  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-    // headers: {
-    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-    // }
-    headers: {
-      'Cookie': "x-access-token=" + cookies['x-access-token']
-    }
-  })
-  const user = await res.json();
-
-  if (user) {
-    // redirect to dashboard page if authenticated
-    return { props: { user: user } }
-  } else {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-      props: { user, cookies },
-    }
-  }
-
-  // return { props: { user } }
-}
 
 export default RoiNavbar;

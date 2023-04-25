@@ -251,7 +251,7 @@ const Dashboard: React.FC<any> = (login) => {
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>

@@ -152,11 +152,11 @@ const UserProfile: React.FC<any> = (login) => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar tokens={login.data.user.user} user={login.data.user.tokens} />}
+      navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
       // footer={
       //   <RoiFooter />
       // }
-      header={<RoiNavbar />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div

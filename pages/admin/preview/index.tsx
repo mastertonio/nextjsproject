@@ -17,9 +17,10 @@ import Sections from "@app/admin/components/Sections";
 import { useRouter } from "next/router";
 import { UserState, useUserStore } from "@app/store/userState";
 import { useForm } from "react-hook-form";
+import { getSession } from "next-auth/react";
 
 
-const AdminBuilder: React.FC<UserState> = () => {
+const AdminBuilder: React.FC<any> = (login) => {
     const router = useRouter();
     const theme = useMantineTheme();
     const { classes } = useStyles();
@@ -59,7 +60,7 @@ const AdminBuilder: React.FC<UserState> = () => {
             asideOffsetBreakpoint="sm"
             className="p-0 m-0"
             fixed
-            header={<RoiNavbar />}
+            header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         >
             <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,5 +81,20 @@ const AdminBuilder: React.FC<UserState> = () => {
         </AppShell>
     );
 };
+
+export async function getServerSideProps(ctx: any) {
+    const session = await getSession({ req: ctx.req });
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+    // Pass data to the page via props
+    return { props: { data: session } }
+  }
+  
 
 export default AdminBuilder;

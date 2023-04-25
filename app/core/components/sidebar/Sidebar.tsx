@@ -90,7 +90,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
         <Image src="/logo.png" alt="random" height={62} width={205} />
       </div>
       <Text className="mb-[100px] ml-[35px] w-full">
-        Welcome {userData?.name}
+        Welcome {user.name}
       </Text>
       <Navbar.Section>
         <Button
@@ -105,7 +105,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
           Dashboard
         </Button>
       </Navbar.Section>
-      <Navbar.Section>
+      {user.role.includes('admin') ? (<Navbar.Section>
         <Button
           type="button"
           variant="subtle"
@@ -125,7 +125,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
           in={openCompany}
           className="flex flex-col items-end"
         >
-          {userData?.role == "admin" ? (
+          {/* {userData?.role == "admin" ? (
             <Button
               type="button"
               variant="subtle"
@@ -139,7 +139,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             </Button>
           ) : (
             ""
-          )}
+          )} */}
           <Button
             type="button"
             variant="subtle"
@@ -152,7 +152,8 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             Company Users
           </Button>
         </Collapse>
-      </Navbar.Section>
+      </Navbar.Section>) : ""}
+
       <Navbar.Section>
         <Button
           type="button"

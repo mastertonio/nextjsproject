@@ -14,26 +14,11 @@ import {
 } from "react-icons/md";
 import Cookies from 'js-cookie';
 import { signOut } from "next-auth/react";
+import { UserDataProp } from "@app/context/user.context";
 
-const DashboardDrawer = ({ user }: any) => {
+const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
-  // const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  // const [company, setCompany] = useLocalStorage({ key: "my-company" });
-
-  const handleLogout = () => {
-    try {
-      // sessionStorage.clear()
-      Cookies.set('x-access-token', ' ', {
-        expires: Date.now()
-      });
-
-      Cookies.remove('x-access-token', { path: '/' })
-      router.push("/");
-    } catch (error) {
-      return error;
-    }
-  };
 
   return (
     <>
@@ -54,7 +39,7 @@ const DashboardDrawer = ({ user }: any) => {
             Dashboard
           </Button>
         </div>
-        <div>
+        {user.role.includes('admin') ? (<div>
           <Button
             variant="subtle"
             color="blue"
@@ -98,7 +83,8 @@ const DashboardDrawer = ({ user }: any) => {
               Company Users
             </Button>
           </Collapse>
-        </div>
+        </div>) : ""}
+        
         <div>
           <Button
             type="button"

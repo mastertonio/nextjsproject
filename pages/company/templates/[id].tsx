@@ -196,7 +196,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         navbar={<Sidebar tokens={login.data.user.tokens} user={login.data.user.user} />}
       >
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>

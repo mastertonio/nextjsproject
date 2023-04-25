@@ -218,7 +218,7 @@ const UsersDashboard: React.FC<any> = (login) => {
       asideOffsetBreakpoint="sm"
       className=""
       fixed
-      header={<RoiNavbar />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens}/>}
     >
       <div className="m-[20px] bg-white p-[10px] sm:p-[50px]">

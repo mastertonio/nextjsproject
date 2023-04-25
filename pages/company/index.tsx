@@ -286,7 +286,7 @@ const CompanyList: React.FC<any> = (login) => {
         // footer={
         //   <RoiFooter />
         // }
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >
         <Grid
           className="mt-[40px] ml-[10px] mr-[10px] mb-[30px]"
