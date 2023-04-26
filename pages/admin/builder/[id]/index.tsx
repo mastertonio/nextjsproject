@@ -10,7 +10,7 @@ import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/AdminNavbar";
 import TemplateSpecifics from "@app/admin/components/NewTemplateSpecifics";
 import Sections from "@app/admin/components/NewSections";
 import { useRouter } from "next/router";
@@ -28,6 +28,9 @@ const AdminBuilder: React.FC<any> = (login) => {
   const tokenChar = useTokenStore((state) => (state.tokenChar))
   const sectionStore = useAdminSectionStore
   const sections = useAdminSectionStore((state)=> (state.sections))
+
+  console.log('template', router.query.temp_id)
+  console.log('version', router.query.id)
 
   const getAdminToolData = async () => {
     const res = await axios.get(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`, {
