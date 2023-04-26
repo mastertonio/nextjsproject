@@ -16,6 +16,7 @@ import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import { UserDataProp } from '@app/context/user.context';
+import { SectionStateAdminTool } from '@app/store/adminToolSectionStore';
 
 type iSectionProps = {
     data: any,
@@ -62,10 +63,9 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
 
     return (
         <>
-            {data?.sections.map((section: any, index: any) => {
-                console.log('question drag', section?.grayContent)
+            {data?.sections.map((section: SectionStateAdminTool, index: any) => {
                 return (
-                    <div className="w-full mt-[40px]" key={index}>
+                    <div className="w-full mt-[40px]" key={section._id}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
                             <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                                 <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
@@ -123,7 +123,11 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                                         color="teal"
                                         className="mr-0 sm:mr-[10px]"
                                         // onClick={() => setUpdateQuestion(true)}
-                                        onClick={() => setUpdateEntry(true)}
+                                        onClick={() => {
+                                            console.log("current!!!", section )
+                                            console.log("current ID!",section._id)
+                                            setUpdateEntry(true)
+                                        }}
                                     // onClick={addEmptySection}
                                     >
                                         Add New Entry
@@ -138,7 +142,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                         <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} cardID={getID} user={user} />
                         <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} cardID={getID} user={user} />
                         <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
-                        <ModalUpdateEntry showModal={entry} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
+                        <ModalUpdateEntry id={section._id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
                         <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
                     </div>
                 )

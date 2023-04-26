@@ -78,7 +78,7 @@ const SectionItems: React.FC<ICollapseProps> = ({ content, user }) => {
                     </Grid>
                 </Card>
             </div>
-            <ModalUpdateEntry user={user} showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} />
+            {/* <ModalUpdateEntry user={user} showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setUpdate} open={update} setOpenChoice={setUpdateChoice} /> */}
             <ModalAddEntry showModal={opened} sectionData={sectData} setSectionData={setSectData} setOpened={setOpened} open={opened} />
         </div>
     )

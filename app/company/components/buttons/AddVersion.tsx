@@ -57,12 +57,13 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
   const form = useForm({
     initialValues: {
       name: '',
-      stage: '',
+      stage: 0,
       notes: ''
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    console.log(values,'submitted val')
     try {
       showNotification({
         id: "edit-comp",
