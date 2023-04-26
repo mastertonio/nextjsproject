@@ -21,7 +21,7 @@ import {
   GetStaticPathsContext,
 } from "next";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import { useLocalStorage, useScrollIntoView, useWindowScroll } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
@@ -60,10 +60,10 @@ const TemplateDashboard: React.FC<any> = (login) => {
   const getCompanyTemplate = async (_id: string) => {
     return await axios.get(
       `/v1/company/${_id}/template`, {
-        headers: {
-          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-        }
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       }
+    }
     );
   };
 

@@ -25,7 +25,7 @@ import {
   GetStaticPathsContext,
 } from "next";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import RoiFooter from "@core/components/footer/Footer";
 import Welcome from "@dashboard/components/Welcome";
 import DashboardGraph from "@dashboard/components/DashboardGraph";

@@ -155,7 +155,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
         leftIcon={<AiOutlineFolderOpen />}
         color="blue"
         onClick={() => {
-          router.push({ pathname: `/enterprise/${item.source_id}`, query: { temp_ver: item.source_id, id: item.id }});
+          router.push({ pathname: `/enterprise/${item.source_id}`, query: { temp_ver: item.source_id, id: item.id } });
         }}
       >
         Open
@@ -222,7 +222,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
   return (
     <div>
       <Grid className="m-0 sm:m-[20px]">
-        <TempList filter={filter} handleFilter={handleFilterChange} user={user}/>
+        <TempList filter={filter} handleFilter={handleFilterChange} user={user} />
         {/* <MultiSelect
           style={{ width: 450 }}
           placeholder="Filter"
