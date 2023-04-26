@@ -84,7 +84,7 @@ const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
             </Button>
           </Collapse>
         </div>) : ""}
-        
+
         <div>
           <Button
             type="button"
@@ -99,7 +99,7 @@ const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
               openTemplate ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
             }
           >
-            Template
+            Manage Template
           </Button>
           <Collapse in={openTemplate}>
             {/* <Button

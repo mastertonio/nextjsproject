@@ -205,10 +205,11 @@ const ManagerDashboard: React.FC<any> = (login) => {
       <AppShell
         styles={{
           main: {
-            background:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
+            background: "#d5dbe0"
+            // background:
+            //   theme.colorScheme === "dark"
+            //     ? theme.colors.dark[8]
+            //     : theme.colors.gray[0],
           },
         }}
         navbarOffsetBreakpoint="sm"
