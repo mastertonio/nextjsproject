@@ -11,13 +11,14 @@ import { UserDataProp } from '@app/context/user.context';
 
 interface IModalEntryProps {
     showModal: boolean
-    setOpened: (b: boolean) => void
+    setOpened: (b: any) => void
+    setClose: (b: any) => void
     open: boolean
     cardID: string
     user: UserDataProp
 }
 
-const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID, user }) => {
+const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user }) => {
     const router = useRouter()
     const queryClient = useQueryClient()
     const hideModal = useModalEntryStore((state) => state.hide);
@@ -159,7 +160,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
 
 
     return (
-        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Embed Video')} padding={0} className="section-wrapper section-modal w-[100%] sm:-w-[700px] mx-auto">
+        <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Embed Video')} padding={0} className="section-wrapper section-modal w-[100%] sm:-w-[700px] mx-auto" id={cardID} key={cardID}>
             <form onSubmit={form.onSubmit((values) => sectionVideoLink.mutate(values.formEntry))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
@@ -190,7 +191,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, o
                             size="sm"
                             color="gray"
                             className="mr-0 sm:mr-[10px]"
-                            onClick={() => setOpened(false)}
+                            onClick={() => setClose(cardID)}
                         >
                             Close
                         </Button>

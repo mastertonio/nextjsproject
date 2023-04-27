@@ -30,6 +30,11 @@ a {
   display: none;
 }
 
+.section-wrapper .mantine-Modal-overlay {
+  background-color: #000 !important;
+  opacity: 0.75 !important;
+}
+
 .section-wrapper .mantine-Modal-header {
   background: rgb(37 99 235);
   color: #fff;

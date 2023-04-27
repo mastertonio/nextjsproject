@@ -18,11 +18,12 @@ interface IModalEntryProps {
   showModal: boolean
   sectionData: SectionStateAdminTool
   setSectionData: (arr: iSectionData[]) => void
-  setOpened: (b: boolean) => void
+  setOpened: (b: any) => void
+  setClose: (b: any) => void
   setOpenChoice: (b: boolean) => void
   open: boolean
   user: UserDataProp
-  id?: string
+  cardID: any
 }
 
 type iSectionProps = {
@@ -36,7 +37,7 @@ type iSectionProps = {
   address: string
 }
 
-const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, open, setOpenChoice, user, id }) => {
+const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionData, sectionData, setOpened, setClose, open, setOpenChoice, user, cardID }) => {
   const addQuestions = useQuestionPropsStore((state) => state.addQuestions);
   const initialValue =
     "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
@@ -146,8 +147,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
   })
 
   return (
-    <Modal opened={open} onClose={() => setOpened(false)} size="920px" title="Add Entry" padding={0} className="section-wrapper">
-      {id}
+    <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title="Add Entry" padding={0} className="section-wrapper section-modal">
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))} onClick={()=> console.log(sectionData)}>
         <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
           <Grid className="p-[10px]">
@@ -301,8 +301,9 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
                     { value: 'Vue', label: 'Vue' },
                   ]}
                   {...form.getInputProps("sections")}
-                  onChange={(val)=> {
-                    form.setFieldValue('formula', `${form.values.formula} ${val}`)}
+                  onChange={(val) => {
+                    form.setFieldValue('formula', `${form.values.formula} ${val}`)
+                  }
                   }
                   disabled={form.values.type !== "Output"}
                 />
@@ -337,7 +338,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
               size="sm"
               color="gray"
               className="mr-0 sm:mr-[10px]"
-              onClick={() => setOpened(false)}
+              onClick={() => setClose(cardID)}
             >
               Cancel
             </Button>

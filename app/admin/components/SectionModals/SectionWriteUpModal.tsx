@@ -13,12 +13,13 @@ import { UserDataProp } from '@app/context/user.context';
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
+    setClose: (b: any) => void
     open: boolean
     cardID: string
     user: UserDataProp
 }
 
-const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID, user }) => {
+const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user }) => {
     const router = useRouter()
     const hideModal = useModalEntryStore((state) => state.hide);
     const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
@@ -147,7 +148,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
 
 
     return (
-        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto">
+        <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
             <form onSubmit={form.onSubmit((values) => sectionWriteUp.mutate(values.formEntry))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
@@ -180,7 +181,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                             size="sm"
                             color="gray"
                             className="mr-0 sm:mr-[10px]"
-                            onClick={() => setOpened(false)}
+                            onClick={() => setClose(cardID)}
                         >
                             Close
                         </Button>
