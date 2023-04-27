@@ -48,7 +48,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
     );
   };
 
-  const { isLoading, isError, error, data, isFetching } = useQuery(
+  const { isLoading, isError, error, data, isFetching, refetch: singleRefetch } = useQuery(
     "getTransManagers",
     getManagers
   );
@@ -88,6 +88,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
       );
       if (response) {
         refetch();
+        singleRefetch();
         updateNotification({
           id: "edit-comp",
           color: "teal",

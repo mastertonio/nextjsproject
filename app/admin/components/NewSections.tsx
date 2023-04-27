@@ -16,6 +16,7 @@ import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import { UserDataProp } from '@app/context/user.context';
+import { SectionStateAdminTool } from '@app/store/adminToolSectionStore';
 
 type iSectionProps = {
     data: any,
@@ -86,10 +87,9 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
 
     return (
         <>
-            {data?.sections.map((section: any, index: any) => {
-                console.log('question drag', section?.grayContent)
+            {data?.sections.map((section: SectionStateAdminTool, index: any) => {
                 return (
-                    <div className="w-full mt-[40px]" key={index}>
+                    <div className="w-full mt-[40px]" key={section._id}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
                             <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                                 <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
@@ -147,7 +147,11 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                                         color="teal"
                                         className="mr-0 sm:mr-[10px]"
                                         // onClick={() => setUpdateQuestion(true)}
-                                        onClick={() => handleOpenEntryModal(index)}
+                                        onClick={() => {
+                                          console.log("current!!!", section )
+                                          console.log("current ID!",section._id)
+                                          handleOpenEntryModal(index)}
+                                        }
                                     // onClick={addEmptySection}
                                     >
                                         Add New Entry

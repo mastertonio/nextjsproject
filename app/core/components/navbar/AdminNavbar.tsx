@@ -35,8 +35,8 @@ export interface AdminDataProp {
             expires: string
         }
     }
-    templateID: string | any
-    id: string | any
+    templateID?: string | any
+    id?: string | any
 }
 
 const AdminNavbar: React.FC<AdminDataProp> = ({ user, tokens, templateID, id }) => {

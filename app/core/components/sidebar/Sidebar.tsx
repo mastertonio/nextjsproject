@@ -125,7 +125,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
           in={openCompany}
           className="flex flex-col items-end"
         >
-          {/* {userData?.role == "admin" ? (
+          {user.role == "admin" ? (
             <Button
               type="button"
               variant="subtle"
@@ -139,7 +139,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             </Button>
           ) : (
             ""
-          )} */}
+          )}
           <Button
             type="button"
             variant="subtle"

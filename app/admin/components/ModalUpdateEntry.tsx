@@ -11,10 +11,12 @@ import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import router from 'next/router';
 import { UserDataProp } from '@app/context/user.context';
+import shortUUID from 'short-uuid';
+import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
 
 interface IModalEntryProps {
   showModal: boolean
-  sectionData: iSectionData[]
+  sectionData: SectionStateAdminTool
   setSectionData: (arr: iSectionData[]) => void
   setOpened: (b: any) => void
   setClose: (b: any) => void
@@ -42,72 +44,39 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
   const [value, setValue] = useState<string>(initialValue)
   const [sel, setSel] = useState<string | null>(null);
   const [drop, setDrop] = useState<string | null>(null)
+  const prevSections = useAdminSectionStore((state)=> (state.sections))
+  // const updateAddSection = useAdminSectionStore((state)=> ())
   const form = useForm({
-    initialValues: {
-      id: 0,
-      title: "",
-      type: "",
-      choices: "",
-      format: "",
-      decimalPlace: "",
-      currency: "",
-      tooltip: "",
-      appendedText: "",
-      prefilled: "",
-      formula: "",
-      address: "",
-      section: "",
-    },
+    initialValues:{
+        id: shortUUID.generate(),
+        title: "",
+        type: "",
+        choices: "",
+        format: "",
+        decimalPlace: "",
+        currency: "",
+        tooltip: "",
+        appendedText: "",
+        prefilled: "",
+        formula: "",
+        address: "",
+        section: "",
+      },
   })
   const [formValue, setFormValue] = useLocalStorage<iSectionProps[]>({ key: 'formValue', defaultValue: [] });
   const queryClient = useQueryClient()
 
 
 
-  // const handleSubmit = async (values: typeof form.values) => {
-  //   try {
-  //     form.insertListItem('formEntry', {
-  //       id: Math.floor(Math.random() * 1000),
-  //       title: values.formEntry[0].title,
-  //       type: values.formEntry[0].type,
-  //       format: values.formEntry[0].format,
-  //       tooltip: values.formEntry[0].tooltip,
-  //       appendedText: values.formEntry[0].appendedText,
-  //       formula: values.formEntry[0].formula,
-  //       address: values.formEntry[0].address
-  //     })
-  //     setFormValue([
-  //       ...formValue,
-  //       {
-  //         id: Math.floor(Math.random() * 1000),
-  //         title: values.formEntry[0].title,
-  //         type: values.formEntry[0].type,
-  //         format: values.formEntry[0].format,
-  //         tooltip: values.formEntry[0].tooltip,
-  //         appendedText: values.formEntry[0].appendedText,
-  //         formula: values.formEntry[0].formula,
-  //         address: values.formEntry[0].address
-  //       }
-  //     ]);
-  //     setSectionData([
-  //       ...sectionData,
-  //       {
-  //         id: Math.floor(Math.random() * 1000),
-  //         title: values.formEntry[0].title,
-  //         type: values.formEntry[0].type,
-  //         format: values.formEntry[0].format,
-  //         tooltip: values.formEntry[0].tooltip,
-  //         appendedText: values.formEntry[0].appendedText,
-  //         formula: values.formEntry[0].formula,
-  //         address: values.formEntry[0].address
-  //       }
-  //     ])
-  //     setOpened(false)
-  //     form.reset();
-  //   } catch (error) {
-  //     console.log('Error: ', error)
-  //   }
-  // }
+  const handleSubmit = async (values: typeof form.values) => {
+    try {
+      console.log("wwwwww",prevSections, sectionData)
+      setOpened(false)
+      // form.reset();
+    } catch (error) {
+      console.log('Error: ', error)
+    }
+  }
 
   const addChoice = () => {
     setOpenChoice(true)
@@ -143,17 +112,10 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
 
   const addEntry = useMutation({
     mutationFn: (roi: any) =>
-      axios.put(
-        `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+      axios.patch(
+        `/v1/admintool/${router.query.id}/section/${sectionData._id}`,
         {
-          "_id": "643f36cc92ecfde71079db69",
-          "sectionTitle": "test jjjjj", //nullable
-          "order": 1,
-          "grayContent": { //nullable
-            "dataType": "sliders",
-            "classes": "row border-bottom gray-bg dashboard-header",
-            "elements": roi
-          }
+          
         },
         {
           headers: {
@@ -186,7 +148,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ showModal, setSectionDat
 
   return (
     <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title="Add Entry" padding={0} className="section-wrapper section-modal">
-      <form onSubmit={form.onSubmit((values) => addEntry.mutate(values))}>
+      <form onSubmit={form.onSubmit((values) => handleSubmit(values))} onClick={()=> console.log(sectionData)}>
         <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
           <Grid className="p-[10px]">
             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
