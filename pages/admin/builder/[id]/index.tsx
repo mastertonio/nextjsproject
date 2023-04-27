@@ -49,7 +49,7 @@ const AdminBuilder: React.FC<any> = (login) => {
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {
-    console.log('admintool', sections)
+    console.log('admintool', data)
     return (
       <AppShell
         styles={{

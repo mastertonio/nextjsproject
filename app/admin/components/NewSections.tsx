@@ -16,7 +16,7 @@ import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import { UserDataProp } from '@app/context/user.context';
-import { SectionStateAdminTool } from '@app/store/adminToolSectionStore';
+import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
 
 type iSectionProps = {
     data: any,
@@ -59,20 +59,21 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    console.log('new section', data)
+    const adminData = useAdminSectionStore((state)=> state.sections)
 
     return (
         <>
             {data?.sections.map((section: SectionStateAdminTool, index: any) => {
+                console.log("test display", adminData)
                 return (
                     <div className="w-full mt-[40px]" key={section._id}>
                         <div className="bg-[#ffffff] shadow p-[10px]">
                             <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                                 <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
-                                <span>{section.sectionTitle}</span>
+                                <span>{section.sectionTitle} {section._id}</span>
                             </h1>
                         </div>
-
+                        
                         <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px] mb-[40px]">
                             <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <Card.Section withBorder inheritPadding py="xs">
@@ -111,27 +112,13 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                             </Card>
                             <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                                 <div className="mt-[20px]">
-                                    {/* <DragNDrop data={section?.grayContent.elements[0].elements && [ "Null"]} type={section.grayContent.dataType} /> */}
-                                    <DragNDrop data={[]} type="collapse" />
+                                    <DragNDrop data={section.grayContent?.elements} type={section.grayContent?.dataType} />
+                                    {/* <DragNDrop data={[]} type="collapse" /> */}
                                 </div>
 
                                 <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
-                                    <Button
-                                        type="submit"
-                                        radius="sm"
-                                        size="sm"
-                                        color="teal"
-                                        className="mr-0 sm:mr-[10px]"
-                                        // onClick={() => setUpdateQuestion(true)}
-                                        onClick={() => {
-                                            console.log("current!!!", section )
-                                            console.log("current ID!",section._id)
-                                            setUpdateEntry(true)
-                                        }}
-                                    // onClick={addEmptySection}
-                                    >
-                                        Add New Entry
-                                    </Button>
+                                    {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
+                                    <ModalUpdateEntry id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
                                 </Grid>
                             </Card>
                         </div>
@@ -142,7 +129,6 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                         <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} cardID={getID} user={user} />
                         <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} cardID={getID} user={user} />
                         <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
-                        <ModalUpdateEntry id={section._id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
                         <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
                     </div>
                 )

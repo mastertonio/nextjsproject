@@ -87,7 +87,7 @@ export type SectionStateAdminTool = {
     grayContent?: {
         dataType?: string,
         classes?: string,
-        elements: iSectionData
+        elements: iSectionData[]
     },
     address?: string,
     sectionTitle?: string,
@@ -101,7 +101,7 @@ interface SectionState {
     version_id: string
     addSection: (section: iSectionData) => void;
     remove: (var_name: string) => void;
-    update: (sec: iSectionData, id: string) => void;
+    // update: (sec: iSectionData, id: string) => void;
 }
 
 export const useAdminSectionStore = create<SectionState>((set) => ({
@@ -115,17 +115,17 @@ export const useAdminSectionStore = create<SectionState>((set) => ({
         set((state) => ({
             sections: state.sections.filter((vars) => vars._id !== id),
         })),
-    update: (section: iSectionData, id: string) =>
-        set((state) => ({
-            sections: state.sections.map((vars) => {
-                if (vars._id === id) {
-                    return {
-                        ...vars,
-                        grayContent: { elements: section }
-                    };
-                } else {
-                    return vars;
-                }
-            }),
-        })),
+    // update: (section: iSectionData, id: string) =>
+    //     set((state) => ({
+    //         sections: state.sections.map((vars) => {
+    //             if (vars._id === id) {
+    //                 return {
+    //                     ...vars,
+    //                     grayContent: { elements: section }
+    //                 };
+    //             } else {
+    //                 return vars;
+    //             }
+    //         }),
+    //     })),
 }));

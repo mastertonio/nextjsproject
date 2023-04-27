@@ -47,28 +47,28 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface DragNDropProps {
-    data: iSectionNewProps[],
-    type: string,
+    data?: iSectionData[],
+    type?: string,
 }
 
-type iSectionNewProps = {
-    _id: string;
-    label: string;
-    classes: string;
-    forcedValue: number;
-    icon: string;
-    isDisabled: boolean | null;
-    isProcess: boolean | null;
-    rightSection: string;
-    sliderType: string;
-    value: number;
-    dataType: string;
-    format: string;
-    tooltip: string;
-    appendedText: string;
-    formula: string;
-    address: string;
-}
+// type iSectionNewProps = {
+//     _id: string;
+//     label: string;
+//     classes: string;
+//     forcedValue: number;
+//     icon: string;
+//     isDisabled: boolean | null;
+//     isProcess: boolean | null;
+//     rightSection: string;
+//     sliderType: string;
+//     value: number;
+//     dataType: string;
+//     format: string;
+//     tooltip: string;
+//     appendedText: string;
+//     formula: string;
+//     address: string;
+// }
 
 type iSectionProps = {
     id: number
@@ -99,7 +99,9 @@ export function DragNDrop({ data, type }: DragNDropProps) {
     const [state, handlers] = useListState(data);
 
     useEffect(() => {
-        handlers.setState(data);
+        if (data) {
+            handlers.setState(data);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
@@ -113,7 +115,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
     const items = state.map((item, index) => {
         console.log('item drag', item)
         return (
-            <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`}>
+            <Draggable key={item.id} index={index} draggableId={`${item.id}-sectionName`}>
                 {(provided, snapshot) => (
                     <div>
                         <div
@@ -133,7 +135,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                             <div>
                                 <div className="h-[20px] flex flex-row">
                                     <IconEdit size={18} stroke={1.5} />
-                                    <Text className="text-[14px] ml-[5px]">{item.label}</Text>
+                                    <Text className="text-[14px] ml-[5px]">{item.title}</Text>
                                 </div>
                             </div>
                             <div className="ml-auto button-section">
