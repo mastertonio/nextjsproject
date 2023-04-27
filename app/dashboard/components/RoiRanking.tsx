@@ -30,8 +30,17 @@ const RoiRanking: React.FC<UserDataProp> = ({ tokens, user }) => {
     getRankings
   );
 
+  // const me = data?.data.filter((elem: { _id: string; }) => elem._id == user.id)
+  // let elements = data?.data.sort((a: { totalROIS: number; }, b: { totalROIS: number; }) => b.totalROIS - a.totalROIS)
 
-  const elements = data?.data.sort((a: { totalROIS: number; }, b: { totalROIS: number; }) => b.totalROIS - a.totalROIS);
+  const me = data?.data.filter((elem: { _id: string }) => elem._id === user.id);
+  const elements = me?.concat(data?.data)
+    .sort((a: { totalROIS: number }, b: { totalROIS: number }) => b.totalROIS - a.totalROIS)
+    .slice(0, 5);
+  // const rank4 = elements.slice(0,4)
+  // const me = elements.filter((elem: { _id: string; }) => user.id == elem._id)
+  // const newRanking = rank4.push(me)
+  // console.log(newRanking)
   const [rank, setRank] = useState<number>(0)
   const rows = elements?.map((element: { _id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; totalROIS: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }, index: number) => (
     <tr key={element._id}>
