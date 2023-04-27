@@ -33,7 +33,7 @@ export interface IButtonAddCompanyProps {
   refetch: () => void;
 }
 
-const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
+const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -46,21 +46,21 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user}) 
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${user?.company_id}/manager`,{
-        headers: {
-          Authorization: `Bearer ${tokens?.access.token}`,
-        },
-      }
+      `/v1/company/${user?.company_id}/manager`, {
+      headers: {
+        Authorization: `Bearer ${tokens?.access.token}`,
+      },
+    }
     );
   };
 
   const getTemplates = async () => {
     return await axios.get(
-      `/v1/dashboard/template/list`,{
-        headers: {
-          Authorization: `Bearer ${tokens?.access.token}`,
-        },
-      }
+      `/v1/dashboard/template/list`, {
+      headers: {
+        Authorization: `Bearer ${tokens?.access.token}`,
+      },
+    }
     );
   };
 
@@ -115,7 +115,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user}) 
       first_name: "",
       last_name: "",
       email: "",
-      password: "$3rVerus1..a",
+      password: "",
       currency: "",
       manager: "",
       role: "",
@@ -170,6 +170,12 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user}) 
       return error;
     }
   };
+
+  const rolesData = [
+    { label: 'Manager/Director', value: '3' },
+    { label: 'End User', value: '4' },
+    { label: 'Admin', value: '2' },
+  ]
 
   const curData = [
     {
@@ -304,7 +310,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user}) 
             >
               <Text>Role: </Text>
               <Select
-                data={[{ label: 'Company Manager', value: '3' }, { label: 'Company Agent', value: '4' }]}
+                data={rolesData}
                 placeholder="Choose Role"
                 {...form.getInputProps("role")}
                 className="w-[550px] ml-auto"

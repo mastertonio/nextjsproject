@@ -18,7 +18,8 @@ interface IModalEntryProps {
   showModal: boolean
   sectionData: SectionStateAdminTool
   setSectionData: (arr: iSectionData[]) => void
-  setOpened: (b: boolean) => void
+  setOpened: (b: any) => void
+  setClose: (b: any) => void
   setOpenChoice: (b: boolean) => void
   open: boolean
   user: UserDataProp

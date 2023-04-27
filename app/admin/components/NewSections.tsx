@@ -46,20 +46,44 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     const showAddEntry = useModalAddEntryStore((state) => state.show);
     const contentData = useBuilderStore((state) => state.content)
     const [openedWriteUp, setOpenedWriteUp] = useState(false);
-    const [updateWriteUp, setUpdateWriteUp] = useState(false);
+    const [updateWriteUp, setUpdateWriteUp] = useState<any>({});
     const [openVideo, setOpenVideo] = useState(false);
-    const [updateVideo, setUpdateVideo] = useState(false)
+    const [updateVideo, setUpdateVideo] = useState<any>({})
     const [openQuestion, setOpenQuestion] = useState(false);
     const [updateQuestion, setUpdateQuestion] = useState(false);
     const [sectData, setSectData] = useState<iSectionData[]>([])
     const [entry, setEntry] = useState(false)
-    const [updateEntry, setUpdateEntry] = useState(false)
+    const [updateEntry, setUpdateEntry] = useState<any>({})
     const [getID, setGetID] = useState('');
     // const [newChoice, setNewChoice] = useState(false)
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
     const adminData = useAdminSectionStore((state)=> state.sections)
+
+    const handleOpenWriteModal = (id: any) => {
+        setUpdateWriteUp((prev: any) => ({ ...prev, [id]: true }))
+    }
+
+    const handleCloseWriteModal = (id: any) => {
+        setUpdateWriteUp((prev: any) => ({ ...prev, [id]: false }))
+    }
+
+    const handleOpenVideoModal = (id: any) => {
+        setUpdateVideo((prev: any) => ({ ...prev, [id]: true }))
+    }
+
+    const handleCloseVideoModal = (id: any) => {
+        setUpdateVideo((prev: any) => ({ ...prev, [id]: false }))
+    }
+
+    const handleOpenEntryModal = (id: any) => {
+        setUpdateEntry((prev: any) => ({ ...prev, [id]: true }))
+    }
+
+    const handleCloseEntryModal = (id: any) => {
+        setUpdateEntry((prev: any) => ({ ...prev, [id]: false }))
+    }
 
     return (
         <>
@@ -85,7 +109,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                                             <MdModeEdit
                                                 className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
                                                 onClick={() => {
-                                                    setUpdateWriteUp(true)
+                                                    handleOpenWriteModal(index)
                                                     // setGetID(card.id)
                                                 }}
                                             />
@@ -102,7 +126,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                                             <div className="flex flex-row items-center justify-between">
                                                 <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
                                                 <div>
-                                                    <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => setUpdateVideo(true)} />
+                                                    <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
                                                     <MdClose className="text-red-600 text-[16px] cursor-pointer" />
                                                 </div>
                                             </div>
@@ -118,7 +142,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
 
                                 <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
                                     {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
-                                    <ModalUpdateEntry id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
+                                    <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
                                 </Grid>
                             </Card>
                         </div>
@@ -126,8 +150,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                         {/* {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)
             ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)} */}
 
-                        <SectionWriteUpModal showModal={openedWriteUp} setOpened={setUpdateWriteUp} open={updateWriteUp} cardID={getID} user={user} />
-                        <SectionVideoModal showModal={openVideo} setOpened={setUpdateVideo} open={updateVideo} cardID={getID} user={user} />
+                        <SectionWriteUpModal showModal={openedWriteUp} setOpened={() => handleOpenWriteModal(index)} setClose={() => { handleCloseWriteModal(index) }} open={updateWriteUp[index]} cardID={index} user={user} />
+                        <SectionVideoModal showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
                         <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                         <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
                     </div>
