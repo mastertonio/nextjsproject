@@ -17,6 +17,7 @@ import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import { UserDataProp } from '@app/context/user.context';
 import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
+import EditButton from './EditButton';
 
 type iSectionProps = {
     data: any,
@@ -59,7 +60,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    const adminData = useAdminSectionStore((state)=> state.sections)
+    const adminData = useAdminSectionStore((state) => state.sections)
 
     const handleOpenWriteModal = (id: any) => {
         setUpdateWriteUp((prev: any) => ({ ...prev, [id]: true }))
@@ -85,79 +86,79 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
         setUpdateEntry((prev: any) => ({ ...prev, [id]: false }))
     }
 
-    return (
-        <>
-            {data?.sections.map((section: SectionStateAdminTool, index: any) => {
-                console.log("test display", adminData)
-                return (
-                    <div className="w-full mt-[40px]" key={section._id}>
-                        <div className="bg-[#ffffff] shadow p-[10px]">
-                            <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
-                                <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
-                                <span>{section.sectionTitle} {section._id}</span>
-                            </h1>
-                        </div>
-                        
-                        <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px] mb-[40px]">
-                            <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
-                                <Card.Section withBorder inheritPadding py="xs">
+    const sectionsAll = data?.sections.map((section: SectionStateAdminTool, index: any) => {
+        return (
+            <div className="w-full mt-[40px]" key={section._id}>
+                <div className="bg-[#ffffff] shadow p-[10px]">
+                    <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
+                        <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
+                        <span>{section.sectionTitle} {section._id}</span>
+                    </h1>
+                </div>
+
+                <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px] mb-[40px]">
+                    <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
+                        <Card.Section withBorder inheritPadding py="xs">
+                            <div className="flex flex-row items-center justify-between">
+                                <Text className="text-[16px] text-blue-600 font-semibold">
+                                    {section.sectionTitle}
+                                </Text>
+                                <div>
+                                    <MdModeEdit
+                                        className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
+                                        onClick={() => {
+                                            handleOpenWriteModal(index)
+                                            // setGetID(card.id)
+                                        }}
+                                    />
+                                    <MdClose className="text-red-600 text-[20px] cursor-pointer" />
+                                </div>
+                            </div>
+                        </Card.Section>
+                        <div className="mt-[20px] mb-[40px]">
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex-auto w-full sm:w-[50%]">
+                                    <Text></Text>
+                                </div>
+                                <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                     <div className="flex flex-row items-center justify-between">
-                                        <Text className="text-[16px] text-blue-600 font-semibold">
-                                            {section.sectionTitle}
-                                        </Text>
+                                        <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
                                         <div>
-                                            <MdModeEdit
-                                                className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
-                                                onClick={() => {
-                                                    handleOpenWriteModal(index)
-                                                    // setGetID(card.id)
-                                                }}
-                                            />
-                                            <MdClose className="text-red-600 text-[20px] cursor-pointer" />
-                                        </div>
-                                    </div>
-                                </Card.Section>
-                                <div className="mt-[20px] mb-[40px]">
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <div className="flex-auto w-full sm:w-[50%]">
-                                            <Text></Text>
-                                        </div>
-                                        <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
-                                            <div className="flex flex-row items-center justify-between">
-                                                <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
-                                                <div>
-                                                    <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
-                                                    <MdClose className="text-red-600 text-[16px] cursor-pointer" />
-                                                </div>
-                                            </div>
+                                            <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
+                                            <MdClose className="text-red-600 text-[16px] cursor-pointer" />
                                         </div>
                                     </div>
                                 </div>
-                            </Card>
-                            <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
-                                <div className="mt-[20px]">
-                                    <DragNDrop data={section.grayContent?.elements} type={section.grayContent?.dataType} />
-                                    {/* <DragNDrop data={[]} type="collapse" /> */}
-                                </div>
-
-                                <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
-                                    {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
-                                    <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
-                                </Grid>
-                            </Card>
+                            </div>
+                        </div>
+                    </Card>
+                    <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
+                        <div className="mt-[20px]">
+                            <DragNDrop data={section.grayContent?.elements} type={section.grayContent?.dataType} />
+                            {/* <DragNDrop data={[]} type="collapse" /> */}
                         </div>
 
-                        {/* {contentData.length > 0 ? contentData.map((content) => (<SectionItems key={content.id} content={content} />)
-            ) : (<div className="pl-[2rem] pr-[2rem] mb-[40px]">No Sections Yet</div>)} */}
+                        <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
+                            {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
+                            <EditButton id={section._id} user={user} adminId={data.id} sectionData={section} setOpenChoice={setUpdateChoice} setSectionData={setSectData}/>
+                            <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
+                        </Grid>
+                    </Card>
+                </div>
 
-                        <SectionWriteUpModal showModal={openedWriteUp} setOpened={() => handleOpenWriteModal(index)} setClose={() => { handleCloseWriteModal(index) }} open={updateWriteUp[index]} cardID={index} user={user} />
-                        <SectionVideoModal showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
-                        <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
-                        <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
-                    </div>
-                )
-            })}
-        </>
+
+                <SectionWriteUpModal showModal={openedWriteUp} setOpened={() => handleOpenWriteModal(index)} setClose={() => { handleCloseWriteModal(index) }} open={updateWriteUp[index]} cardID={index} user={user} />
+                <SectionVideoModal showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
+                <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
+                <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
+            </div>
+        )}
+    )
+
+    return (
+        <div>
+            {sectionsAll}
+        </div>
     )
 }
 

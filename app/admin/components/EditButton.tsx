@@ -1,27 +1,29 @@
-import React, { useState } from 'react'
-import { Modal, Button, Divider, Text, TextInput, Textarea, Grid, Select } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import RichTextSection from '@app/core/components/richtext/RichTextSection';
-// import FormSelect from '@app/core/components/dropdown/SelectChoice';
-// import { useModalEntryStore } from '@app/store/builderStore';
-import { useQuestionPropsStore } from '@app/store/builder/builderState';
-import { iSectionData } from './Sections';
-import { useLocalStorage } from '@mantine/hooks';
-import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
-import router from 'next/router';
-import { UserDataProp } from '@app/context/user.context';
-import shortUUID from 'short-uuid';
-import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
+import { useState } from "react";
+import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { AiOutlineEdit } from "react-icons/ai";
+import axios from "axios";
+import { useLocalStorage } from "@mantine/hooks";
+import { useRouter } from "next/router";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons";
+import { useMutation, useQueryClient } from "react-query";
+import { useUserStore } from "@app/store/userState";
+import { UserDataProp } from "@app/context/user.context";
+import { SectionStateAdminTool, iSectionData } from "@app/store/adminToolSectionStore";
+import shortUUID from "short-uuid";
+
+export interface IButtonRoiNameProps {
+  id?: string;
+  // refetch: () => void;
+  // name: string;
+  user: UserDataProp
+}
 
 interface IModalEntryProps {
-  showModal: boolean
   sectionData: SectionStateAdminTool
   setSectionData: (arr: iSectionData[]) => void
-  setOpened: (b: any) => void
-  setClose: (b: any) => void
   setOpenChoice: (b: boolean) => void
-  open: boolean
   user: UserDataProp
   id?: string
   adminId: string
@@ -39,7 +41,6 @@ type iSectionProps = {
 }
 
 type formProps = {
-  id: string,
   title: string,
   type: string,
   choices: string,
@@ -51,23 +52,18 @@ type formProps = {
   prefilled: string,
   formula: string,
   address: string,
-  section: string,
 }
 
-const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSectionData, sectionData, setOpened, open, setOpenChoice, user, id }) => {
-  const addQuestions = useQuestionPropsStore((state) => state.addQuestions);
-  const initialValue =
-    "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
-  const [value, setValue] = useState(id)
-  const [sel, setSel] = useState<string | null>(null);
-  const [drop, setDrop] = useState<string | null>(null)
-  const prevSections = useAdminSectionStore((state) => (state.sections))
-  const adminData = useAdminSectionStore((state) => state.sections)
-  // console.log("lis", sectionData)
+const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id }) => {
+  const [opened, setOpened] = useState(false);
+  const [value] = useLocalStorage({ key: "auth-token" });
+  const router = useRouter();
+  const p = router.query;
+  const userZ = useUserStore((state) => (state.user))
+  const queryClient = useQueryClient()
 
   const form = useForm({
     initialValues: {
-      id: shortUUID.generate(),
       title: "",
       type: "",
       choices: "",
@@ -78,16 +74,10 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSe
       appendedText: "",
       prefilled: "",
       formula: "",
-      address: "",
-      section: "",
+      address: ""
     },
   })
-  const queryClient = useQueryClient()
 
-  const addChoice = () => {
-    setOpenChoice(true)
-    setOpened(false)
-  }
 
   const dataSelect = [
     { value: 'Input', label: 'Input' },
@@ -116,23 +106,29 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSe
     { value: "Average Salary", label: "Average Salary" },
   ]
 
+  type iEditTempProp = {
+    title: string
+  }
+
   const addEntry = useMutation({
     mutationFn: (roi: formProps) =>
       axios.patch(
-        `/v1/admintool/${adminId}/section/${id}`,
+        `/v1/company/admintool/${adminId}/section/${id}`,
         {
-          ...sectionData,
           grayContent: {
             elements: [
               {
-                id: roi.id,
                 title: roi.title,
-                type: roi.type,
+                dataType: roi.type,
+                choices: roi.choices,
                 format: roi.format,
+                decimalPlace: roi.decimalPlace,
+                currency: roi.currency,
                 tooltip: roi.tooltip,
                 appendedText: roi.appendedText,
+                prefilled: roi.prefilled,
                 formula: roi.formula,
-                address: roi.address,
+                address: roi.address
               }
             ]
           }
@@ -160,28 +156,36 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSe
 
     },
     onError: (error) => {
-      if (error instanceof Error) {
-
-      }
-
+      // if (error instanceof Error) { //Error or AxiosError
+      //set message here
+      // }
     }
   })
 
+  const addChoice = () => {
+    setOpenChoice(true)
+    setOpened(false)
+  }
+
   return (
     <>
-      <Modal opened={open} onClose={() => setOpened(false)} size="920px" title="Add Entry" padding={0} className="section-wrapper">
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        withCloseButton={false}
+        size="920px" title="Add Entry" padding={0} className="section-wrapper"
+      >
         <form onSubmit={form.onSubmit((values) => addEntry.mutate(values))}>
           <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
             {value}
-            <Grid className="p-[10px]">
+            {/* <Grid className="p-[10px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
               <TextInput
                 required
                 className="w-[100%] sm:w-[75%] ml-auto"
-                {...form.getInputProps("id")}
                 disabled={true}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid className="p-[10px] mt-[20px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
@@ -323,7 +327,6 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSe
                       { value: 'Svelte', label: 'Svelte' },
                       { value: 'Vue', label: 'Vue' },
                     ]}
-                    {...form.getInputProps("sections")}
                     onChange={(val) => {
                       form.setFieldValue('formula', `${form.values.formula} ${val}`)
                     }
@@ -369,22 +372,19 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSe
           </div>
         </form>
       </Modal>
+
       <Button
         type="submit"
         radius="sm"
         size="sm"
         color="teal"
         className="mr-0 sm:mr-[10px]"
-        // onClick={() => setUpdateQuestion(true)}
-        onClick={() => {
-          setOpened(true)
-        }}
-      // onClick={addEmptySection}
+        onClick={() => setOpened(true)}
       >
-        Add New Entry {id}
+        Add New Entry
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default ModalUpdateEntry
+export default EditButton;
