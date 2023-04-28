@@ -13,10 +13,11 @@ import {
   Table,
   Center,
   Badge,
+  Alert
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery, useQueries } from "react-query";
 
 import RoiNavbar from "@core/components/navbar/MainNavbar";
 import { useLocalStorage } from "@mantine/hooks";
@@ -30,7 +31,7 @@ import {
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
+import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
@@ -129,6 +130,22 @@ const UsersDashboard: React.FC<any> = (login) => {
     getCompanyUsers
   );
 
+  const queries = [
+    {
+      queryKey: ["license"],
+      queryFn: async () => {
+        const res = await axios.get(`/v1/company/${login.data.user.user.company_id}/license`, {
+          headers: {
+            Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+          },
+        });
+        return res.data;
+      },
+    },
+  ];
+
+  const results = useQueries(queries);
+
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);
   const [allRoi, setAllRoi] = useState<any>();
@@ -142,6 +159,7 @@ const UsersDashboard: React.FC<any> = (login) => {
 
   useEffect(() => {
     setSortedData(data?.data);
+    console.log('results query', results[0]?.data)
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -236,6 +254,14 @@ const UsersDashboard: React.FC<any> = (login) => {
               handleSearchChange(event.target.value);
             }}
           />
+        </Grid>
+        <Grid style={{ margin: 20 }}>
+          <Alert color="teal" className="pt-[6px] pb-[6px] w-[300px]">
+            <span className="text-[10px] text-slate-700 font-semibold">The ROI Shop currently has {results[0]?.data?.company_license} licenses and {results[0]?.data?.user_count} users.</span>
+          </Alert>
+          {/* <Badge color="teal" variant="filled" size="md" className="leading-[9px]">
+            The ROI Shop currently has {results[0]?.data?.company_license} licenses and {results[0]?.data?.user_count} users.
+          </Badge> */}
         </Grid>
         <ScrollArea
           className="h-[590px]"
