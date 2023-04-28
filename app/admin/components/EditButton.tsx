@@ -347,7 +347,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
                 color="teal"
                 className="mr-0 sm:mr-[10px] mb-[10px]"
               >
-                Add Entry {id}
+                Add Entry
               </Button>
               {/* <Button
               type="button"

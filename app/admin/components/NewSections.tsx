@@ -92,7 +92,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                 <div className="bg-[#ffffff] shadow p-[10px]">
                     <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
                         <FcTodoList className="text-blue-600 mr-[10px] text-[30px] sm:text-[30px]" />
-                        <span>{section.sectionTitle} {section._id}</span>
+                        <span>{section.sectionTitle}</span>
                     </h1>
                 </div>
 
@@ -141,7 +141,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                         <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
                             {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
                             <EditButton id={section._id} user={user} adminId={data.id} sectionData={section} setOpenChoice={setUpdateChoice} setSectionData={setSectData}/>
-                            <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} />
+                            {/* <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} /> */}
                         </Grid>
                     </Card>
                 </div>
