@@ -252,7 +252,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
               <TextInput
                 required
                 className="w-[550px] ml-auto"
-                placeholder="Enter User Email"
+                placeholder=""
                 {...form.getInputProps("email")}
               />
             </Grid>
@@ -267,7 +267,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
               <PasswordInput
                 required
                 className="w-[550px] ml-auto"
-                placeholder="Enter User Password"
+                placeholder=""
                 {...form.getInputProps("password")}
               />
             </Grid>
@@ -278,7 +278,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
               <TextInput
                 required
                 className="w-[550px] ml-auto"
-                placeholder="Enter User First Name"
+                placeholder=""
                 {...form.getInputProps("first_name")}
               />
             </Grid>
@@ -289,7 +289,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
               <TextInput
                 required
                 className="w-[550px] ml-auto"
-                placeholder="Enter User Last Name"
+                placeholder=""
                 {...form.getInputProps("last_name")}
               />
             </Grid>
@@ -327,7 +327,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
             >
               <Text>Select Manager: </Text>
               <Select
-                placeholder="New Title Name"
+                placeholder=""
                 className="w-[550px] ml-auto"
                 defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}

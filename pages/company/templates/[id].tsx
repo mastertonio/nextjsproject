@@ -32,7 +32,7 @@ import {
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
+import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";

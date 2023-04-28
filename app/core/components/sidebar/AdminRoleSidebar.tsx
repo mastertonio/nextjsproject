@@ -82,14 +82,14 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             p="md"
             hiddenBreakpoint="sm"
             //   hidden={!opened}
-            width={{ sm: 200, lg: 250 }}
+            width={{ sm: 200, lg: 200 }}
             height="100vh"
             className={`bg-[#2f4050] text-[lightgray] mt-[-70px] flex-col items-start ${navShow === false ? 'hidden' : ''} sm:flex`}
         >
             <div className="mt-[35px]">
-                <Image src="/logo.png" alt="random" height={62} width={205} />
+                <Image src="/logo.png" alt="random" height={55} width={190} />
             </div>
-            <Text className="mb-[100px] ml-[35px] w-full">
+            <Text className="mb-[80px] ml-[35px] w-full text-[14px]">
                 Welcome {user.name}
             </Text>
             <Navbar.Section>
@@ -97,7 +97,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     type="button"
                     variant="subtle"
                     fullWidth
-                    className="mt-[5px] text-[lightgray]"
+                    className="mt-[5px] text-[lightgray] text-[13px]"
                     onClick={() => router.push(`/users`)}
                     leftIcon={<MdSpaceDashboard />}
                     size="md"
@@ -111,7 +111,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     variant="subtle"
                     color="blue"
                     fullWidth
-                    className="mt-[5px] text-[lightgray]"
+                    className="mt-[5px] text-[lightgray] text-[13px]"
                     // onClick={() => setOpenCompany((o) => !o)}
                     onClick={() => router.push(`/company`)}
                     leftIcon={<MdCalculate />}
@@ -161,7 +161,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     variant="subtle"
                     color="blue"
                     fullWidth
-                    className="mt-[5px] text-[lightgray]"
+                    className="mt-[5px] text-[lightgray] text-[13px]"
                     size="md"
                     leftIcon={<MdAccessTimeFilled />}
                     onClick={() => router.push(`/templates`)}
@@ -203,7 +203,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     variant="subtle"
                     color="blue"
                     fullWidth
-                    className="mt-[5px] text-[lightgray]"
+                    className="mt-[5px] text-[lightgray] text-[13px]"
                     size="md"
                     leftIcon={<MdLogout />}
                     onClick={async () => {
