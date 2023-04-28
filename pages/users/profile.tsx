@@ -15,7 +15,7 @@ import { useForm } from "@mantine/form";
 import RoiFooter from "@core/components/footer/Footer";
 import { useRouter } from "next/router";
 import RoiNavbar from "@core/components/navbar/MainNavbar";
-import Sidebar from "@core/components/sidebar/Sidebar";
+import Sidebar from "@core/components/sidebar/AdminRoleSidebar";
 import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";

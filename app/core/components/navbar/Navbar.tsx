@@ -92,7 +92,7 @@ const RoiNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
             className="mr-auto"
             onClick={() => router.push('/dashboard')}
           >
-            {user?.role == "company-manager" || user?.role == "company-agent" ? "My Calculator" : "My Dashboard"}
+            {user?.role == "company-manager" || user?.role == "company-agent" ? "My Calculators" : "My Dashboard"}
           </Button>
         </div>
 
