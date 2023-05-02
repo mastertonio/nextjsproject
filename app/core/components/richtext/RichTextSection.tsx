@@ -69,6 +69,7 @@ const RichTextSection: React.FC<iRichTextProps> = () => {
     useEffect(() => {
         const html = editor?.getHTML()
         console.log('Editor', value)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

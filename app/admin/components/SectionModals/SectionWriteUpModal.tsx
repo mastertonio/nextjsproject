@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Button, Divider, Text, Textarea, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
 import { useCardStore } from '@app/store/builder/builderState';
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
+import { useQueryClient } from 'react-query';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -15,6 +17,10 @@ interface IModalEntryProps {
 const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, cardID }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
     const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
+    const initialValue =
+        "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+    const [value, setValue] = useState<string>(initialValue)
+    const queryClient = useQueryClient()
     const form = useForm({
         initialValues: {
             sectioWriteUp: "",
@@ -47,10 +53,13 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
-                        <Textarea
+                        {/* <Textarea
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioWriteUp")}
-                        />
+                        /> */}
+                        <div className="w-[100%] sm:w-[75%] ml-auto">
+                            {/* <RichTextSection value={value} setValue={setValue} /> */}
+                        </div>
                     </Grid>
 
 

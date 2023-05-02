@@ -51,7 +51,14 @@ const RoiRanking: React.FC<UserDataProp> = ({ tokens, user }) => {
             <th className="!border-white !border-0">ROIS</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+          {rows}
+          <tr>
+            <td><span className="bg-[#F4BB44] pt-[3px] pb-[3px] pl-[8px] pr-[8px] m-[15px] text-white rounded-[4px]">{5}</span></td>
+            <td>{me?.name}</td>
+            <td>{me?.totalROIS}</td>
+          </tr>
+        </tbody>
       </Table>
     </>
   );

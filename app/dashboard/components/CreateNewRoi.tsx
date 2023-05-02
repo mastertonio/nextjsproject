@@ -71,7 +71,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
       });
     },
     onSuccess: (newRoi) => {
-      console.log(newRoi)
+      console.log("newROi", newRoi)
       Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
@@ -90,7 +90,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
           autoClose: 2500,
         });
 
-        router.push(`/templates`);
+        router.push(`/enterprise/${newRoi.template_version_id}`);
       }
       updateNotification({
         id: "create-row",
