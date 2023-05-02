@@ -160,6 +160,7 @@ const UsersDashboard: React.FC<any> = (login) => {
   useEffect(() => {
     setSortedData(data?.data);
     console.log('results query', results[0]?.data)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
