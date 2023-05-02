@@ -14,8 +14,8 @@ import {
 import { useForm } from "@mantine/form";
 import RoiFooter from "@core/components/footer/Footer";
 import { useRouter } from "next/router";
-import RoiNavbar from "@core/components/navbar/Navbar";
-import Sidebar from "@core/components/sidebar/Sidebar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
+import Sidebar from "@core/components/sidebar/AdminRoleSidebar";
 import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";
@@ -41,10 +41,10 @@ const UserProfile: React.FC<any> = (login) => {
 
   const form = useForm({
     initialValues: {
-      email: "",
-      first_name: "",
-      last_name: "",
-      phone_number: ""
+      email: login.data.user.user.email,
+      first_name: login.data.user.user.first_name,
+      last_name: login.data.user.user.last_name,
+      phone_number: login.data.user.user.phone
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -136,6 +136,7 @@ const UserProfile: React.FC<any> = (login) => {
   };
 
   useEffect(() => {
+    console.log('User Profile', user)
     setUser(data?.data);
   }, [data]);
 
@@ -143,20 +144,21 @@ const UserProfile: React.FC<any> = (login) => {
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+          background: "#d5dbe0"
+          // background:
+          //   theme.colorScheme === "dark"
+          //     ? theme.colors.dark[8]
+          //     : theme.colors.gray[0],
         },
       }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       fixed
-      navbar={<Sidebar tokens={login.data.user.user} user={login.data.user.tokens} />}
+      navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
       // footer={
       //   <RoiFooter />
       // }
-      header={<RoiNavbar />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div

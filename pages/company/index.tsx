@@ -35,7 +35,7 @@ import Th from "@dashboard/components/table/Thead";
 import SkeletonLoader from "@core/components/loader/SkeletonLoader";
 import TempList from "@core/components/dropdown/TemplateTags";
 import EditCompanyButton from "@app/company/components/buttons/EditCompanyButton";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
+import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import RoiNavbar from "@app/core/components/navbar/Navbar";
 import Segmented from "@app/core/components/buttons/Segmented";
 import AddCompanyButton from "@app/company/components/buttons/AddCompanyButton";
@@ -282,11 +282,11 @@ const CompanyList: React.FC<any> = (login) => {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
-        navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens}/>}
+        navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
         // footer={
         //   <RoiFooter />
         // }
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >
         <Grid
           className="mt-[40px] ml-[10px] mr-[10px] mb-[30px]"

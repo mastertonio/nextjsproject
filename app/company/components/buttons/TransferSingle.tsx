@@ -41,14 +41,14 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
   const getManagers = async () => {
     return await axios.get(
       `/v1/company/${user.user.company_id}/user`, {
-        headers: {
-          Authorization: `Bearer ${user.tokens.access.token}`,
-        },
-      }
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }
     );
   };
 
-  const { isLoading, isError, error, data, isFetching } = useQuery(
+  const { isLoading, isError, error, data, isFetching, refetch: singleRefetch } = useQuery(
     "getTransManagers",
     getManagers
   );
@@ -75,19 +75,20 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${company}/roi/transfer`,
+        `/v1/company/${user.user.company_id}/roi/transfer`,
         {
           roi_source_uid: id,
           roi_new_uid: values.new_source,
           template_id: tempId
         }, {
-          headers: {
-            Authorization: `Bearer ${user.tokens.access.token}`,
-          },
-        }
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
       if (response) {
         refetch();
+        singleRefetch();
         updateNotification({
           id: "edit-comp",
           color: "teal",

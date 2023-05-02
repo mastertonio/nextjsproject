@@ -23,7 +23,7 @@ import UserContext, { UserContextTypes, UserDataProp } from "@context/user.conte
 import { UserState, useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 
-const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
+const RoiNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -32,6 +32,8 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState)
   }
+
+  console.log("user role navbar", user?.role)
 
   return (
     <Header height={opened === true ? 220 : 70} p="md" className={`${classes.header} flex-col sm:flex-row`}>
@@ -44,14 +46,14 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
           mr="xl"
         />
       </MediaQuery>
-      <div className="ml-auto sm:ml-[unset] mt-[-30px] sm:mt-0">
+      {/* <div className="ml-auto sm:ml-[unset] mt-[-30px] sm:mt-0">
         <Drawer
           open={isOpen}
           onClose={toggleDrawer}
           direction='left'
           className="!bg-[#2f4050] !p-[20px]"
         >
-          <DashboardDrawer user={user} />
+          <DashboardDrawer user={user} tokens={tokens} />
         </Drawer>
         <Button
           type="button"
@@ -60,8 +62,8 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
         >
           Navigate
         </Button>
-      </div>
-      {/* {router.route.includes("dashboard") && user?.role == "admin" || user?.role == "company-admin" || user?.role == "company-manager" ? (
+      </div> */}
+      {router.route.includes("dashboard") && user?.role == "admin" || user?.role == "company-admin" ? (
         <div>
           <Drawer
             open={isOpen}
@@ -69,7 +71,7 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
             direction='left'
             style={{ backgroundColor: '#2f4050', padding: 20 }}
           >
-            <DashboardDrawer user={user} />
+            <DashboardDrawer user={user} tokens={tokens} />
           </Drawer>
           <Button
             type="button"
@@ -82,15 +84,15 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
 
       ) : (
         ""
-      )} */}
-      {router.route.includes("dashboard/manager") && user?.role == "company-manager" ? (
+      )}
+      {router.route.includes("dashboard/manager") && user?.role == "company-manager" || user?.role == "company-agent" ? (
         <div className="ml-[10px]">
           <Button
             type="button"
             className="mr-auto"
             onClick={() => router.push('/dashboard')}
           >
-            Main Dashboard
+            {user?.role == "company-manager" || user?.role == "company-agent" ? "My Calculators" : "My Dashboard"}
           </Button>
         </div>
 
@@ -112,41 +114,14 @@ const RoiNavbar: React.FC<Partial<UserDataProp>> = ({ user, tokens }) => {
         ""
       )}
       <Group position="right" className={`${opened === true ? 'flex' : 'hidden'} ml-[unset] sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
-        <AdminList tokens={tokens} user={user}/>
+        {router.route.includes("dashboard/manager") && user?.role == "admin" || user?.role == "company-admin" ? (
+          <AdminList tokens={tokens} user={user} />
+        ) : null}
         <PoweredByRoi />
         <ActionList />
       </Group>
     </Header>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const data = 'from gssp'
-  const cookies = context.req.cookies
-  const res = await fetch(`${process.env.NEXT_DEV_PORT}/v1/auth/current`, {
-    // headers: {
-    //   'Cookie': "session=" + cookies.session + ";session.sig=" + cookies['session.sig'] + ";x-access-token=" + cookies['x-access-token']
-    // }
-    headers: {
-      'Cookie': "x-access-token=" + cookies['x-access-token']
-    }
-  })
-  const user = await res.json();
-
-  if (user) {
-    // redirect to dashboard page if authenticated
-    return { props: { user: user } }
-  } else {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-      props: { user, cookies },
-    }
-  }
-
-  // return { props: { user } }
-}
 
 export default RoiNavbar;

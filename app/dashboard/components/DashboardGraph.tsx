@@ -15,7 +15,7 @@ import Highcharts from "highcharts";
 import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
 import { useQuery } from "react-query";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@app/context/user.context";
 import { getSession } from "next-auth/react";
 
 ChartJS.register(
@@ -45,20 +45,32 @@ export interface IDashboardGraphData {
   chartData: IDashboardData;
 }
 
-type Token = {
-  token: string
-}
-const DashboardGraph: React.FC<Token> = ({token}) => {
+
+const DashboardGraph: React.FC<UserDataProp> = ({ tokens, user }) => {
   const [graphData, setGraphData] = useState<IDashboardData>();
 
   const getGraphData = async () => {
-    return await axios.get(
-        `/v1/dashboard/data/graph`,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+    if (user.role.includes("manager")) {
+      return await axios.get(
+        `/v1/dashboard/data/graph`, {
+        headers: {
+          Authorization: `Bearer ${tokens.access.token}`,
+        },
+        params: {
+          data: 1
         }
+      }
       );
+    }
+
+    return await axios.get(
+      `/v1/dashboard/data/graph`, {
+      headers: {
+        Authorization: `Bearer ${tokens.access.token}`,
+      },
+    }
+    );
+
   };
 
   const { isLoading, status, data, isFetching, refetch } = useQuery(

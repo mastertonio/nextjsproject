@@ -42,7 +42,7 @@ const getTemplatesVersions = async (
   temp: string,
   token: string
 ) => {
-  return await axios.get(`/v1/company/${comp}/template/${temp}/version`,{
+  return await axios.get(`/v1/company/${comp}/template/${temp}/version`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -152,8 +152,11 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             key={shortUUID.generate()}
             user={user}
           />
-          <Button radius="sm" size="xs" color="red" className="ml-[10px]">
-            Delete
+          <Button radius="sm" size="xs" color="blue" className="ml-[10px]" onClick={() => {
+            console.log(item, "version tmplte")
+            router.push({ pathname: `/admin/builder/${item._id}`, query: { comp_id, temp_id, id: item._id } })
+          }}>
+            Open
           </Button>
         </div>
       ),
@@ -176,7 +179,8 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
 
         <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddVersion user={user} update={refetch} comp_id={comp_id} temp_id={temp_id} />
+          {user.user.role.includes('admin') ? (<AddVersion user={user} update={refetch} comp_id={comp_id} temp_id={temp_id} />) : ""}
+
           <Text
             color="teal"
             weight={900}

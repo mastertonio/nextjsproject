@@ -5,16 +5,17 @@ import { FaGripLinesVertical } from 'react-icons/fa'
 type iSliderProps = {
   progress: number
   addLabel: boolean
+  setProgressValue: any
 }
 
-const RoiSlider: React.FC<iSliderProps> = ({ progress, addLabel }) => {
+const RoiSlider: React.FC<iSliderProps> = ({ progress, addLabel, setProgressValue }) => {
   const [value, setValue] = useState();
 
   return (
     <div className="flex flex-col">
       <div className="clear-none mb-0">
         <p className="text-[13px] text-[#676a6c] float-left mt-0 mb-0">Conservative Factor</p>
-        <p className="text-[13px] text-[#676a6c] float-right mt-0 mb-0">5%</p>
+        <p className="text-[13px] text-[#676a6c] float-right mt-0 mb-0">{progress}%</p>
       </div>
       <Slider
         thumbSize={26}
@@ -22,7 +23,9 @@ const RoiSlider: React.FC<iSliderProps> = ({ progress, addLabel }) => {
         size={15}
         color="teal"
         radius="xs"
-        className={`rounded-0 pt-[5px] pb-0 pl-0 pr-0 m-0`} defaultValue={progress}
+        value={progress}
+        onChange={setProgressValue}
+        className={`rounded-0 pt-[5px] pb-0 pl-0 pr-0 m-0`}
         styles={(theme) => ({
           track: {
             borderRadius: 0,

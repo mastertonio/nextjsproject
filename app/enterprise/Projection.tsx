@@ -49,55 +49,57 @@ export type QuoteCarouselProps = {
 
 type iProjectionProps = {
   title: string;
-  subTitle: string;
+  // subTitle: string;
   description: string;
-  content: Content;
-  length: number;
-  quotes: QuoteCarouselProps;
+  // content: Content;
+  // length: number;
+  // quotes: QuoteCarouselProps;
 };
 
 const Projection = ({
   title,
-  subTitle,
+  // subTitle,
   description,
-  content,
-  length,
-  quotes,
+  // content,
+  // length,
+  // quotes,
 }: iProjectionProps) => {
-  const columns =
-    content.elements.length > 0
-      ? content.elements
-        .filter((elem) => elem.type !== "revolver")
-        .slice(0, 3)
-        .map((element, idx) =>
-          element.type == "description" ? (
-            <Grid.Col
-              span={element.span}
-              key={idx}
-              className="ml-[30px] mr-[30px] mt-[30px] max-w-[100%] sm:max-w-[50%]"
-            >
-              <div dangerouslySetInnerHTML={{ __html: element.text }}></div>
-            </Grid.Col>
-          ) : element.type == "media" ? (
-            <Suspense fallback={`Loading...`}>
-              <Grid.Col key={idx} span={element.span} className="sm:w-[40%] w-[100%]">
-                <VideoMedia media={element.link ? element.link : null} />
-              </Grid.Col>
-            </Suspense>
-          ) : (
-            ""
-          )
-        )
-      : null;
+  console.log(title)
+  // const columns =
+  //   content.elements.length > 0
+  //     ? content.elements
+  //       .filter((elem) => elem.type !== "revolver")
+  //       .slice(0, 3)
+  //       .map((element, idx) =>
+  //         element.type == "description" ? (
+  //           <Grid.Col
+  //             span={element.span}
+  //             key={idx}
+  //             className="ml-[30px] mr-[30px] mt-[30px] max-w-[100%] sm:max-w-[50%]"
+  //           >
+  //             <div dangerouslySetInnerHTML={{ __html: element.text }}></div>
+  //           </Grid.Col>
+  //         ) : element.type == "media" ? (
+  //           <Suspense fallback={`Loading...`}>
+  //             <Grid.Col key={idx} span={element.span} className="sm:w-[40%] w-[100%]">
+  //               <VideoMedia media={element.link ? element.link : null} />
+  //             </Grid.Col>
+  //           </Suspense>
+  //         ) : (
+  //           ""
+  //         )4
+  //       )
+  //     : null;
 
   return (
     <div className="overflow-hidden">
       <div className="ml-[22px] mr-[22px]">
-        <div dangerouslySetInnerHTML={{ __html: title }} />
-        <div dangerouslySetInnerHTML={{ __html: subTitle }} />
+        <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">{title}</h1>
+        {/* <div dangerouslySetInnerHTML={{ __html: title }} /> */}
+        {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
         <div dangerouslySetInnerHTML={{ __html: description }} />
       </div>
-      <Grid className="sm:flex block">
+      {/* <Grid className="sm:flex block">
         {quotes.position == "top" ? (
           <QuotesCarousel
             type={quotes.type}
@@ -117,7 +119,7 @@ const Projection = ({
         ) : (
           ""
         )}
-      </Grid>
+      </Grid> */}
       {/* { quotes.position == "bottom" ? (<QuotesCarousel type={quotes.type} position={quotes.position} elements={quotes.elements} />) : ""} */}
     </div>
   );

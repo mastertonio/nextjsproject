@@ -18,12 +18,12 @@ import { Color } from '@tiptap/extension-color';
 import { IconTable, IconTableOff, IconTableExport, IconTableImport, IconVideo } from '@tabler/icons';
 
 
-type iRichTextProps = {}
+type iRichTextProps = {
+    value: string,
+    setValue: (data: string) => void
+}
 
-const RichTextSection: React.FC<iRichTextProps> = () => {
-    const initialValue =
-        "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
-    const [value, setValue] = useState<string>(initialValue)
+const RichTextSection: React.FC<iRichTextProps> = ({ setValue, value}) => {
     const editor: Editor | null = useEditor({
         extensions: [
             StarterKit,

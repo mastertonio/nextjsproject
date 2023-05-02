@@ -78,7 +78,7 @@ const Company: React.FC<any> = (login) => {
       // footer={
       //   <RoiFooter />
       // }
-      header={<RoiNavbar />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       Welcome {user?.name} to your Company
     </AppShell>

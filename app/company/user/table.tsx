@@ -64,7 +64,11 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
 
   const getCompanyUsers = async (company: string) => {
     return await axios.get(
-      `/v1/company/${company}/user/templates`
+      `/v1/company/${company}/user/templates`,{
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
     );
   };
 

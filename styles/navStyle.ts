@@ -23,22 +23,31 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    maxWidth: "auto",
+    margin: "0 auto",
+    transition: "all 0.5s",
+  },
+
+  headerEnt: {
+    backgroundColor: theme.colors.gray[2],
+    display: "flex",
+    flexDirection: "row",
     maxWidth: 1920,
     margin: "0 auto",
-    transition: 'all 0.5s'
+    transition: "all 0.5s",
   },
 
   placeholder: {
-    text: 'white'
+    text: "white",
   },
 
   childrenSpacing: {
     marginLeft: 15,
-    marginRight: 15
+    marginRight: 15,
   },
 
   powered_by: {
     display: "flex",
-    flexDirection: "row"
-  }
+    flexDirection: "row",
+  },
 }));

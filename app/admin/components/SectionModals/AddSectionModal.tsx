@@ -1,14 +1,20 @@
 import React from 'react'
 import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import axios from 'axios';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
-import { useCardStore } from '@app/store/builder/builderState';
+import { useCardStore, useSectionBuilderStore, useTokenStore } from '@app/store/builder/builderState';
+import { UserDataProp } from '@app/context/user.context';
+import { useRouter } from 'next/router';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 interface IModalEntryProps {
     showModal: boolean
     setOpened: (b: boolean) => void
-    open: boolean
+    open: boolean,
+    user: UserDataProp
+    data: any
 }
 
 interface CardSection {
@@ -16,12 +22,19 @@ interface CardSection {
     sectioName: string;
 }
 
-const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open }) => {
+const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, open, user, data }) => {
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
     const newCardName = useCardStore((state) => state.newCardName);
+    const tokenChar = useTokenStore((state) => state.tokenChar);
     const addCard = useCardStore((state) => state.addCard);
+    const valueBucketName = useSectionBuilderStore((state) => state.valueBucketName);
+    const addSection = useSectionBuilderStore((state) => state.addSection)
+    const setValueBucketName = useSectionBuilderStore((state) => state.setValueBucketName)
     const setNewCardName = useCardStore((state) => state.setNewCardName);
+
+    const queryClient = useQueryClient()
+    const router = useRouter()
     const form = useForm({
         initialValues: {
             sectioName: "",
@@ -35,10 +48,136 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
         </div>
     )
 
+    const createSection = useMutation({
+        mutationFn: (roi: string) =>
+            axios.put(
+                `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+                {
+                    sectionTitle: roi
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.tokens.access.token}`,
+                    },
+                }
+            ).then((response) => response.data),
+        onMutate: () => {
+
+        },
+        onSuccess: (newRoi) => {
+
+            setOpened(false)
+            Promise.all(
+                [
+                    queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+                    queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+                    // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+                ]
+            )
+
+
+        },
+        onError: (error) => {
+            if (error instanceof Error) {
+
+            }
+
+        }
+    })
+
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
-            addCard()
+            console.log("token", tokenChar);
+
+            const newGrayContent = {
+                text: values.sectioName,
+                sliderType: "stacked",
+                toggle: false,
+                address: "CON1942",
+                elements: []
+            }
+
+            const data = {
+                "sectionTitle": values.sectioName,
+                "order": 1,
+                "headers": {
+                    "dataType": "element",
+                    "mainTitle": {
+                        "dataType": "text",
+                        "style": "",
+                        "text": "<h1 class=\"text-left text-[green] text-[26px] sm:text-[2em]\">ROI DASHBOARD Test | 2 Year Projection <span class=\"float-right\">$0</span></h1>"
+                    },
+                    "subTitle": {
+                        "dataType": "text",
+                        "text": "<hr><h3 class=\"text-[22px] font-bold\">Select a section below to review your ROI</h3>"
+                    },
+                    "description": "<p class=\"text-[16px]\">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left. <br><br></p>",
+                    "quotes": {
+                        "dataType": "revolver",
+                        "position": "bottom",
+                        "elements": [
+                            {
+                                "dataType": "quote",
+                                "qoute": {
+                                    "text": "We love the tool! It is changing the conversation we have with our existing customers.",
+                                    "author": "David Verhaag, Vice President Customer Success"
+                                }
+                            },
+                            {
+                                "dataType": "quote",
+                                "qoute": {
+                                    "text": "Hey McDonald, I created an ROI for my first client yesterday and we closed today. The ROI Shop made getting approval from the CFO a piece of cake and resulted in my first sale!",
+                                    "author": "Natalie Grant - Sales Rep"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "grayContent": {
+                    "dataType": "sliders",
+                    "classes": "row border-bottom gray-bg dashboard-header",
+                    "elements": [
+                        {
+                            "dataType": "card",
+                            "label": "Conservative Factor:",
+                            "classes": "col-lg-4",
+                            "title": "Improve Win Rate",
+                            "sliderType": "stacked",
+                            "value": 50,
+                            "address": "CON1940"
+                        },
+                        {
+                            "dataType": "card",
+                            "label": "Reduce:",
+                            "classes": "col-lg-4",
+                            "title": "Improve Win Rate",
+                            "sliderType": "stacked",
+                            "value": 100,
+                            "address": "CON1941"
+                        }
+                    ]
+                }
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${user.tokens.access.token}`,
+                },
+            };
+
+
+            try {
+                const res = await axios.put(
+                    `https://api.theroishop.com/v1/company/628778331f0d2a1dec275404/template/6287791836bddb586c11082a/version/64368eebd9ff1b8e24aa6323/adminTool`,
+                    data,
+                    config
+                );
+                console.log("PUT response", res);
+            } catch (error) {
+                console.log("PUT ERROR", error);
+            }
+
             setOpened(false)
         } catch (error) {
             console.log('Error: ', error)
@@ -47,7 +186,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
 
     return (
         <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Section')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%] mx-auto">
-            <form onSubmit={form.onSubmit(handleSubmit)}>
+            <form onSubmit={form.onSubmit((values) => createSection.mutate(values.sectioName))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Name </Text>
@@ -55,8 +194,8 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioName")}
-                            onChange={(event) => setNewCardName(event.target.value)}
-                            value={newCardName}
+                        // onChange={(event) => setValueBucketName(event.target.value)}
+                        // value={valueBucketName}
                         />
                     </Grid>
 

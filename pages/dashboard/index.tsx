@@ -31,6 +31,7 @@ import { useRouter } from "next/router";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import UserContext, { State, UserContextTypes } from "@context/user.context";
 import { UserState, useUserStore } from "@app/store/userState";
+import { useTokenStore } from "@app/store/builder/builderState"
 import Cookies from 'js-cookie';
 import FourOhFour from "pages/404";
 import { getSession, signOut, useSession } from "next-auth/react";
@@ -89,18 +90,21 @@ const Dashboard: React.FC<any> = (
   }, [session]);
 
   const getDashboardData = async () => {
-    return await axios.get(`/v1/dashboard`,{
+    return await axios.get(`/v1/dashboard`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       },
     });
   };
 
+  // const getCompanyData = async () => {
+  //   return await axios.get(`/`)
+  // }
+
   const { isLoading, status, data, isFetching, refetch, isSuccess, isError } = useQuery(
     "dashboardData",
     getDashboardData
   );
-
 
   if (isLoading) return <MainLoader />;
 
@@ -109,10 +113,11 @@ const Dashboard: React.FC<any> = (
       <AppShell
         styles={{
           main: {
-            background:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
+            background: "#d5dbe0"
+            // background:
+            //   theme.colorScheme === "dark"
+            //     ? theme.colors.dark[8]
+            //     : theme.colors.gray[0],
           },
         }}
         navbarOffsetBreakpoint="sm"
@@ -132,10 +137,10 @@ const Dashboard: React.FC<any> = (
             <ViewCount viewcount={data?.data.viewcount} />
           </div>
           <div className={`${classes.dashboard_graph} w-full sm:w-[900px] mt-[30px] sm:mt-0`}>
-            <DashboardGraph  token={login.data.user.tokens.access.token} />
+            <DashboardGraph user={login.data.user.user} tokens={login.data.user.tokens} />
           </div>
           <div className={`${classes.roi_ranking} w-full sm:w-[400px] relative`}>
-            <CreateNewRoi user={login.data.user.user} tokens={login.data.user.tokens}/>
+            <CreateNewRoi user={login.data.user.user} tokens={login.data.user.tokens} />
             <RoiRanking user={login.data.user.user} tokens={login.data.user.tokens} />
           </div>
         </div>
@@ -150,8 +155,23 @@ const Dashboard: React.FC<any> = (
   return <></>
 };
 
+interface User {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+  user?: {
+    user?: {
+      role: string | null | undefined;
+    }
+  }
+}
+
 export async function getServerSideProps(ctx: any) {
-  const session = await getSession({ req: ctx.req });
+  const session = await getSession({ req: ctx.req }) as User;
+  console.log(session?.user?.user?.role, "session?.usersss")
+
+
+
   if (!session) {
     return {
       redirect: {
@@ -160,7 +180,24 @@ export async function getServerSideProps(ctx: any) {
       },
     };
   }
-  console.log(session, 'sezsion')
+
+  // if (session.user?.user?.role?.includes("manager")) {
+  //   return {
+  //     redirect: {
+  //       destination: '/dashboard/manager',
+  //       permanent: false,
+  //     },
+  //   };
+  // } else if (session.user?.user?.role?.includes('admin')){
+  //   return {
+  //     redirect: {
+  //       destination: '/users',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
+
   // Pass data to the page via props
   return { props: { data: session } }
 }

@@ -15,7 +15,7 @@ import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
 import { useQuery } from "react-query";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import { useLocalStorage, useScrollIntoView } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
@@ -26,7 +26,7 @@ import {
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
+import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import shortUUID from "short-uuid";
 import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
@@ -47,11 +47,11 @@ const TemplatesDashboard: React.FC<any> = (login) => {
 
   const getCompanyTemplates = async () => {
     return await axios.get(
-      `/v1/company/${login.data.user.user.company_id}/template`,{
-        headers: {
-          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-        },
-      }
+      `/v1/company/${login.data.user.user.company_id}/template`, {
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    }
     );
   };
 
@@ -134,7 +134,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
     status: item.status,
     active: item.active,
     company_id: item.company_id,
-    actions: (
+    actions: login.data.user.user.role.includes("admin") ? (
       <div
         className="flex justify-end items-center"
       >
@@ -151,7 +151,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
           Delete
         </Button>
       </div>
-    ),
+    ) : "",
   }));
 
   return isLoading ? (
@@ -160,23 +160,25 @@ const TemplatesDashboard: React.FC<any> = (login) => {
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+          background: "#d5dbe0"
+          // background:
+          //   theme.colorScheme === "dark"
+          //     ? theme.colors.dark[8]
+          //     : theme.colors.gray[0],
         },
       }}
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       className=""
       fixed
-      header={<RoiNavbar />}
+      header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <div className="m-[10px] bg-white p-[10px] sm:p-[25px]">
         <Grid className="m-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddTemplateButton user={login.data.user} refetch={refetch} />
+          {login.data.user.user.role.includes("admin") ? (<AddTemplateButton user={login.data.user} refetch={refetch} />) : ""}
+
           <Input
             variant="default"
             placeholder="Search for ROI"
@@ -311,7 +313,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
         <div className="mt-[30px]">
           <Paginate
             refetch={refetch}
-            page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
+            page={sortedData ? Math.ceil(sortedData?.length / limit) : 1}
             limit={limit}
             totalResults={sortedData?.length}
             setLimit={setLimit}

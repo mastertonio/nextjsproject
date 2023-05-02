@@ -28,16 +28,16 @@ import { useState } from "react";
 // import { Logo } from './Logo';
 
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
+  { title: "Dashboard", icon: IconGauge },
   {
-    label: "My ROIs",
+    title: "My ROIs",
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: "ROI 1", link: "/" },
-      { label: "ROI 2", link: "/" },
-      { label: "ROI 3", link: "/" },
-      { label: "ROI 4", link: "/" },
+      { title: "ROI 1", link: "/" },
+      { title: "ROI 2", link: "/" },
+      { title: "ROI 3", link: "/" },
+      { title: "ROI 4", link: "/" },
     ],
   },
 ];
@@ -55,9 +55,8 @@ const useStyles = createStyles((theme) => ({
     marginLeft: -theme.spacing.md,
     marginRight: -theme.spacing.md,
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
-    borderBottom: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderBottom: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+      }`,
   },
 
   links: {
@@ -73,9 +72,8 @@ const useStyles = createStyles((theme) => ({
   footer: {
     marginLeft: -theme.spacing.md,
     marginRight: -theme.spacing.md,
-    borderTop: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+      }`,
   },
 
   control: {
@@ -101,14 +99,14 @@ const useStyles = createStyles((theme) => ({
     marginLeft: 30,
     fontSize: theme.fontSizes.sm,
     color: "gray",
-    borderLeft: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderLeft: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+      }`,
 
     "&:hover": {
       backgroundColor: "teal",
       color: "white",
     },
+    cursor: "pointer"
   },
 
   hov: {
@@ -128,30 +126,34 @@ const useStyles = createStyles((theme) => ({
 
 interface LinksGroupProps {
   icon: TablerIcon;
-  label: string;
+  title: string;
   initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  navigationlist?: { title: string; link: string }[];
+  scroll: any;
 }
 
 export function LinksGroup({
   icon: Icon,
-  label,
+  title,
   initiallyOpened,
-  links,
+  navigationlist,
+  scroll
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
-  const hasLinks = Array.isArray(links);
+  const hasLinks = Array.isArray(navigationlist);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
-  const items = (hasLinks ? links : []).map((link) => (
+  const items = (hasLinks ? navigationlist : []).map((link) => (
     <Text<"a">
       component="a"
       className={classes.link}
       href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
+      key={link.title}
+      onClick={() => {
+        scroll();
+      }}
     >
-      {link.label}
+      {link.title}
     </Text>
   ));
 
@@ -163,9 +165,9 @@ export function LinksGroup({
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Icon size={18} color={'white'}/>
+            <Icon size={18} color={'white'} />
             <Box ml="md">
-              <Text color={"white"}>{label}</Text>
+              <Text color={"white"}>{title}</Text>
             </Box>
           </Box>
           {hasLinks && (
@@ -191,7 +193,7 @@ const NavbarNested = () => {
   const { classes } = useStyles();
 
   const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
+    <LinksGroup {...item} key={item.title} scroll />
   ));
 
   return (

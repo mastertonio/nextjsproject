@@ -27,10 +27,9 @@ const authOptions: NextAuthOptions = {
         const payload = { email, password };
 
         const user = await axios.post(`https://api.theroishop.com/v1/auth/login`, payload); //external link
-        console.log(user.data, "userData")
+        console.log(user.data.user.role, "userData")
 
         if (user) {
-          useUserStore.setState({ user: user.data})
           return user.data;
 
         } else {

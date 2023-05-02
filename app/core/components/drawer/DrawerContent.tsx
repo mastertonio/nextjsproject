@@ -14,26 +14,11 @@ import {
 } from "react-icons/md";
 import Cookies from 'js-cookie';
 import { signOut } from "next-auth/react";
+import { UserDataProp } from "@app/context/user.context";
 
-const DashboardDrawer = ({ user }: any) => {
+const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
-  // const [current, setCurrent] = useLocalStorage({ key: "current-user" });
-  // const [company, setCompany] = useLocalStorage({ key: "my-company" });
-
-  const handleLogout = () => {
-    try {
-      // sessionStorage.clear()
-      Cookies.set('x-access-token', ' ', {
-        expires: Date.now()
-      });
-
-      Cookies.remove('x-access-token', { path: '/' })
-      router.push("/");
-    } catch (error) {
-      return error;
-    }
-  };
 
   return (
     <>
@@ -41,35 +26,52 @@ const DashboardDrawer = ({ user }: any) => {
         <div className="mt-[35px]">
           <Image src="/logo.png" alt="random" height={60} width={200} />
         </div>
-        <div>
-          <Button
-            type="button"
-            variant="subtle"
-            fullWidth
-            className="mt-[100px] text-[lightgray] flex items-start"
-            onClick={() => router.push(`/dashboard`)}
-            leftIcon={<MdSpaceDashboard />}
-            size="md"
-          >
-            Dashboard
-          </Button>
-        </div>
-        <div>
+        {user?.role == "admin" || user?.role == "company-admin" ? (
+          <div>
+            <Button
+              type="button"
+              variant="subtle"
+              fullWidth
+              className="mt-[100px] text-[lightgray] flex items-start"
+              onClick={() => router.push(`/users`)}
+              leftIcon={<MdSpaceDashboard />}
+              size="md"
+            >
+              Dashboard
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <Button
+              type="button"
+              variant="subtle"
+              fullWidth
+              className="mt-[100px] text-[lightgray] flex items-start"
+              onClick={() => router.push(`/dashboard`)}
+              leftIcon={<MdSpaceDashboard />}
+              size="md"
+            >
+              Dashboard
+            </Button>
+          </div>
+        )}
+        {user?.role == "admin" ? (<div>
           <Button
             variant="subtle"
             color="blue"
             fullWidth
             className="mt-[5px] text-[lightgray] flex items-start"
-            onClick={() => setOpenCompany((o) => !o)}
+            onClick={() => router.push(`/company`)}
+            // onClick={() => setOpenCompany((o) => !o)}
             leftIcon={<MdCalculate />}
-            rightIcon={
-              openCompany ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
-            }
+            // rightIcon={
+            //   openCompany ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
+            // }
             size="md"
           >
-            Company
+            Create Company
           </Button>
-          <Collapse in={openCompany}>
+          {/* <Collapse in={openCompany}>
             {user?.role == "admin" ? (
               <Button
                 type="button"
@@ -97,8 +99,9 @@ const DashboardDrawer = ({ user }: any) => {
             >
               Company Users
             </Button>
-          </Collapse>
-        </div>
+          </Collapse> */}
+        </div>) : ""}
+
         <div>
           <Button
             type="button"
@@ -108,14 +111,15 @@ const DashboardDrawer = ({ user }: any) => {
             className="mt-[5px] text-[lightgray] flex items-start"
             size="md"
             leftIcon={<MdAccessTimeFilled />}
-            onClick={() => setOpenTemplate((o) => !o)}
-            rightIcon={
-              openTemplate ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
-            }
+            onClick={() => router.push(`/templates`)}
+          // onClick={() => setOpenTemplate((o) => !o)}
+          // rightIcon={
+          //   openTemplate ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
+          // }
           >
-            Template
+            Manage Template
           </Button>
-          <Collapse in={openTemplate}>
+          {/* <Collapse in={openTemplate}>
             <Button
               type="button"
               variant="subtle"
@@ -123,7 +127,7 @@ const DashboardDrawer = ({ user }: any) => {
               fullWidth
               className="mt-[5px] ml-[8px] text-[lightgray]"
               leftIcon={<MdLineWeight />}
-              onClick={() => router.push(`/templates/builder`)}
+              onClick={() => router.push(`/admin/builder`)}
             >
               Create Template
             </Button>
@@ -138,7 +142,7 @@ const DashboardDrawer = ({ user }: any) => {
             >
               Template List
             </Button>
-          </Collapse>
+          </Collapse> */}
         </div>
         <div>
           <Button

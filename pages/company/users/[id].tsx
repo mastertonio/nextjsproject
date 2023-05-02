@@ -25,7 +25,7 @@ import {
   GetStaticPathsContext,
 } from "next";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import RoiFooter from "@core/components/footer/Footer";
 import Welcome from "@dashboard/components/Welcome";
 import DashboardGraph from "@dashboard/components/DashboardGraph";
@@ -50,7 +50,7 @@ import {
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
+import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
@@ -241,17 +241,18 @@ const Dashboard: React.FC<any> = (login) => {
       <AppShell
         styles={{
           main: {
-            background:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
+            background: "#d5dbe0"
+            // background:
+            //   theme.colorScheme === "dark"
+            //     ? theme.colors.dark[8]
+            //     : theme.colors.gray[0],
           },
         }}
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>

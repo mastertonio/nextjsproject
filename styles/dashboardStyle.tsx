@@ -3,10 +3,11 @@ import { createStyles } from "@mantine/core";
 export const useStyles = createStyles((theme, _params, getRef) => ({
   wrapper: {
     // subscribe to color scheme changes right in your styles
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[5]
-        : theme.colors.gray[1],
+    // backgroundColor:
+    //   theme.colorScheme === "dark"
+    //     ? theme.colors.dark[5]
+    //     : theme.colors.gray[1],
+    backgroundColor: "#d5dbe0",
     maxWidth: 700,
     width: "100%",
     height: 450,
@@ -91,9 +92,8 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      borderBottom: `1px solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`,
+      borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
+        }`,
     },
   },
 

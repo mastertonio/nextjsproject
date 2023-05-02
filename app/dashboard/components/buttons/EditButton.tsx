@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Button, Text, TextInput, Grid } from "@mantine/core";
+import { Modal, Button, Text, TextInput, Grid, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
@@ -7,7 +7,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
 
@@ -20,6 +20,7 @@ export interface IButtonRoiNameProps {
 
 const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) => {
   const [opened, setOpened] = useState(false);
+  const [state, setState] = useState<string | null>(null);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
@@ -29,6 +30,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) 
   const form = useForm({
     initialValues: {
       title: "",
+      transferTo: "",
     },
   });
 
@@ -36,8 +38,25 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) 
     title: string
   }
 
+  const getManagers = async () => {
+    return await axios.get(
+      `/v1/company/${user.user.company_id}/user`, {
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }
+    );
+  };
+
+  const { isLoading, isError, error, data, isFetching } = useQuery(
+    "getTransManagers",
+    getManagers
+  );
+
+  const transferlist = data?.data.map((item: { _id: string; email: string; }) => ({ key: item._id, value: item._id, label: item.email }))
+
   const editRoi = useMutation({
-    mutationFn: (roi: iEditTempProp) => axios.patch(`/v1/dashboard/roi/${id}/${user.user.id}`, roi,{
+    mutationFn: (roi: iEditTempProp) => axios.patch(`/v1/dashboard/roi/${id}/${user.user.id}`, roi, {
       headers: {
         Authorization: `Bearer ${user.tokens.access.token}`,
       },
@@ -98,25 +117,37 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) 
         <Text
           weight={700}
           color="gray"
-          style={{
-            padding: 30,
-            marginBottom: 80,
-            fontSize: 30,
-            backgroundColor: "#073e52",
-            color: "white",
-          }}
+          className="p-[10px] mb-[40px] text-[30px] bg-[#073e52] text-white"
+          // style={{
+          //   padding: 30,
+          //   marginBottom: 80,
+          //   fontSize: 30,
+          //   backgroundColor: "#073e52",
+          //   color: "white",
+          // }}
           align="center"
         >
           {name}
         </Text>
         <form onSubmit={form.onSubmit((values) => editRoi.mutate({ title: values.title }))}>
-          <Grid style={{ margin: 30, marginBottom: 80 }}>
-            <Text>Change ROI Name to: </Text>
+          <Grid className="m-[20px]">
+            <Text className="text-[14px]">Change ROI Name to: </Text>
             <TextInput
               required
-              style={{ width: 250, marginLeft: "auto" }}
+              className="w-[400px] ml-auto"
               placeholder="New Title Name"
               {...form.getInputProps("title")}
+            />
+          </Grid>
+
+          <Grid className="m-[20px] mb-[40px]">
+            <Text className="text-[14px]">Transfer to: </Text>
+            <Select
+              placeholder="Select Email Address"
+              className="w-[400px] ml-auto"
+              defaultValue={state}
+              data={transferlist?.length > 0 ? transferlist : []}
+              {...form.getInputProps("transferTo")}
             />
           </Grid>
 

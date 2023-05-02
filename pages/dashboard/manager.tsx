@@ -104,10 +104,10 @@ const ManagerDashboard: React.FC<any> = (login) => {
   const getCompanyUsers = async () => {
     return await axios.get(
       `/v1/company/${login.data.user.user.company_id}/user`, {
-        headers: {
-          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-        },
-      }
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    }
     );
   };
 
@@ -205,20 +205,21 @@ const ManagerDashboard: React.FC<any> = (login) => {
       <AppShell
         styles={{
           main: {
-            background:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
+            background: "#d5dbe0"
+            // background:
+            //   theme.colorScheme === "dark"
+            //     ? theme.colors.dark[8]
+            //     : theme.colors.gray[0],
           },
         }}
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
-          <ManagerDashboardGraph />
+          <ManagerDashboardGraph token={login.data.user.tokens.access.token} />
         </div>
         <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
           <CompanyUserTable user={login.data.user} company={login.data.user.user ? login.data.user.user.company_id : ""} update={refetch} />

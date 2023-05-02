@@ -21,7 +21,7 @@ import {
   GetStaticPathsContext,
 } from "next";
 
-import RoiNavbar from "@core/components/navbar/Navbar";
+import RoiNavbar from "@core/components/navbar/MainNavbar";
 import { useLocalStorage, useScrollIntoView, useWindowScroll } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Paginate from "@app/dashboard/components/table/paginate";
@@ -32,7 +32,7 @@ import {
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
-import Sidebar from "@app/core/components/sidebar/Sidebar";
+import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import Pophover from "@app/core/components/popover/Pophover";
 import EditCompanyUserButton from "@app/company/components/buttons/EditCompanyUser";
 import AddCompanyUserButton from "@app/company/components/buttons/AddCompanyUser";
@@ -60,10 +60,10 @@ const TemplateDashboard: React.FC<any> = (login) => {
   const getCompanyTemplate = async (_id: string) => {
     return await axios.get(
       `/v1/company/${_id}/template`, {
-        headers: {
-          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-        }
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       }
+    }
     );
   };
 
@@ -186,17 +186,18 @@ const TemplateDashboard: React.FC<any> = (login) => {
       <AppShell
         styles={{
           main: {
-            background:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[0],
+            background: "#d5dbe0"
+            // background:
+            //   theme.colorScheme === "dark"
+            //     ? theme.colors.dark[8]
+            //     : theme.colors.gray[0],
           },
         }}
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         className=""
         fixed
-        header={<RoiNavbar />}
+        header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         navbar={<Sidebar tokens={login.data.user.tokens} user={login.data.user.user} />}
       >
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>

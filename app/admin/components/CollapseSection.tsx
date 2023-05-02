@@ -43,9 +43,9 @@ const CollapseSection: React.FC<iCollapseProps> = ({ item }) => {
                 {/* Rich editor */}
                 <Grid className="p-[10px] mt-[20px] sm:mt-0">
                     <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[500px]">Section Writeup: </Text>
-                    <div className="w-[100%] sm:w-[50%] ml-auto">
+                    {/* <div className="w-[100%] sm:w-[50%] ml-auto">
                         <RichTextSection />
-                    </div>
+                    </div> */}
                 </Grid>
 
                 <Grid className="p-[10px] mt-[20px] sm:mt-0">

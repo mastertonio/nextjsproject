@@ -59,7 +59,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch, user })
         icon: <IconCheck size={16} />,
         autoClose: 3000,
       });
-      router.push(`/templates/${newRoi.id}`);
+      router.push(`/enterprise/${newRoi.id}`);
     },
     onError: (error) => {
       if (error instanceof Error) {
