@@ -156,10 +156,11 @@ const UsersDashboard: React.FC<any> = (login) => {
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [userData, setUserData] = useState();
 
   useEffect(() => {
     setSortedData(data?.data);
-    console.log('results query', results[0]?.data)
+    console.log('results query', login.data.user.user.role)
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -222,6 +223,15 @@ const UsersDashboard: React.FC<any> = (login) => {
     ),
   }));
 
+  useEffect(() => {
+    const currentPostsData = currentPosts?.map((item: ICompanyUsersProps) => {
+      return item;
+    })
+
+    setUserData(currentPostsData)
+  }, [currentPosts])
+
+
   return isLoading ? <MainLoader /> : (
     <AppShell
       styles={{
@@ -240,18 +250,20 @@ const UsersDashboard: React.FC<any> = (login) => {
       header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
-      <div className="m-[20px] bg-white p-[10px] sm:p-[50px]">
-        <Grid className="m-[20px]">
-          <Alert color="teal" className="pt-[10px] pb-[10px] w-full">
-            <span className="text-[14px] text-slate-500 font-medium">You have <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.company_license : 0}</span> licenses and <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.user_count : 0}</span> active users.</span>
-          </Alert>
-          {/* <Badge color="teal" variant="filled" size="md" className="leading-[9px]">
+      <div className="m-[20px] bg-white p-[10px] sm:p-[20px]">
+        {login.data.user.user.role === 'company-admin' ? (
+          <Grid className="m-[10px] pt-[20px]">
+            <Alert color="teal" className="pt-[10px] pb-[10px] w-full">
+              <span className="text-[14px] text-slate-500 font-medium"><span className="text-slate-700 font-semibold">{results[0]?.data?.company_name}</span> has <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.company_license : 0}</span> licenses and <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.user_count : 0}</span> users.</span>
+            </Alert>
+            {/* <Badge color="teal" variant="filled" size="md" className="leading-[9px]">
             The ROI Shop currently has {results[0]?.data?.company_license} licenses and {results[0]?.data?.user_count} users.
           </Badge> */}
-        </Grid>
-        <Grid style={{ margin: 20 }}>
+          </Grid>
+        ) : null}
+        <Grid className="m-[10px] pt-[20px] pb-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} />
+          <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} myCompany={userData} />
           <Input
             variant="default"
             placeholder="Search for ROI"
@@ -281,7 +293,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("email")}
-                  style="w-[300px] !border-white !border-0"
+                  style="w-[300px] !p-[10px] !border-white !border-0"
                 >
                   User Name
                 </Th>
@@ -289,7 +301,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "created_rois"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("created_rois")}
-                  style="w-[300px] sm:w-[170px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                  style="w-[200px] sm:w-[260px] !p-[10px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                 >
                   Created Rois
                 </Th>
@@ -297,7 +309,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "role"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("role")}
-                  style="w-[300px] sm:w-[170px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                  style="w-[200px] sm:w-[200px] !p-[10px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                 >
                   Role
                 </Th>
@@ -305,7 +317,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "manager_email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("manager_email")}
-                  style="w-[250px] !border-white !border-0"
+                  style="w-[250px] !p-[10px] !border-white !border-0"
                 >
                   Manager
                 </Th>
@@ -313,7 +325,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "currency"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("currency")}
-                  style="w-[300px] sm:w-[110px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                  style="w-[200px] sm:w-[240px] !p-[10px] !whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                 >
                   Currency
                 </Th>
@@ -321,11 +333,11 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px] !border-white !border-0"
+                  style="w-[130px] !p-[10px] !border-white !border-0"
                 >
                   Status
                 </Th>
-                <th className="!border-white !border-0"></th>
+                <th className="!border-white !border-0 !p-[10px]"></th>
               </tr>
             </thead>
             {isLoading ? (
@@ -334,27 +346,27 @@ const UsersDashboard: React.FC<any> = (login) => {
               <tbody>
                 {companies?.map((element: ICompanyUsersElements) => (
                   <tr key={element.id} className="h-[20px]">
-                    <td style={{ width: 10 }}>{element.username}</td>
+                    <td style={{ width: 10 }} className="!p-[10px]">{element.username}</td>
                     <td
-                      className="cursor-pointer w-[140px] pl-[30px]"
+                      className="cursor-pointer w-[140px] pl-[30px] !p-[10px]"
                     >
                       {element.created_rois}
                     </td>
-                    <td>{element.role}</td>
-                    <td>
+                    <td className="!p-[10px]">{element.role}</td>
+                    <td className="!p-[10px]">
                       {!!element.manager_email ? element.manager_email : "Unassigned"}
                     </td>
-                    <td className="w-[145px] pl-[30px]">
+                    <td className="w-[145px] pl-[30px] !p-[10px]">
                       {element.currency}
                     </td>
                     <td
-                      className="w-[110px]"
+                      className="w-[110px] !p-[10px]"
                     >
                       <Badge color="green" variant="outline">
                         {element.status}
                       </Badge>
                     </td>
-                    <td>{element.actions}</td>
+                    <td className="!p-[10px]">{element.actions}</td>
                   </tr>
                 ))}
               </tbody>
@@ -376,7 +388,7 @@ const UsersDashboard: React.FC<any> = (login) => {
         </div>
       </div>
       <CompanyUserTable user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} />
-    </AppShell>
+    </AppShell >
   );
 };
 

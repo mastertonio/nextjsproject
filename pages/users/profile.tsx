@@ -25,6 +25,7 @@ import ChangePass from "@core/components/forms/changepassword";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons'
 import MainLoader from "@app/core/components/loader/MainLoader";
+import ListUser from "@app/profile/ListUser";
 import { useUserStore } from "@app/store/userState";
 import { getSession } from "next-auth/react";
 
@@ -236,6 +237,9 @@ const UserProfile: React.FC<any> = (login) => {
         </div>
       </form>
       <ChangePass />
+      {login.data.user.user.role === 'company-manager' ? (
+        <ListUser user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} login={login} />
+      ) : null}
     </AppShell>
   );
 };
