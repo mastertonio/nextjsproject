@@ -241,6 +241,14 @@ const UsersDashboard: React.FC<any> = (login) => {
       navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
       <div className="m-[20px] bg-white p-[10px] sm:p-[50px]">
+        <Grid className="m-[20px]">
+          <Alert color="teal" className="pt-[10px] pb-[10px] w-full">
+            <span className="text-[14px] text-slate-500 font-medium">You have <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.company_license : 0}</span> licenses and <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.user_count : 0}</span> active users.</span>
+          </Alert>
+          {/* <Badge color="teal" variant="filled" size="md" className="leading-[9px]">
+            The ROI Shop currently has {results[0]?.data?.company_license} licenses and {results[0]?.data?.user_count} users.
+          </Badge> */}
+        </Grid>
         <Grid style={{ margin: 20 }}>
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
           <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} />
@@ -254,14 +262,6 @@ const UsersDashboard: React.FC<any> = (login) => {
               handleSearchChange(event.target.value);
             }}
           />
-        </Grid>
-        <Grid style={{ margin: 20 }}>
-          <Alert color="teal" className="pt-[6px] pb-[6px] w-[300px]">
-            <span className="text-[10px] text-slate-700 font-semibold">The ROI Shop currently has {results[0]?.data?.company_license} licenses and {results[0]?.data?.user_count} users.</span>
-          </Alert>
-          {/* <Badge color="teal" variant="filled" size="md" className="leading-[9px]">
-            The ROI Shop currently has {results[0]?.data?.company_license} licenses and {results[0]?.data?.user_count} users.
-          </Badge> */}
         </Grid>
         <ScrollArea
           className="h-[590px]"
