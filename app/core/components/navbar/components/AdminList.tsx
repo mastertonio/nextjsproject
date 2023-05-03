@@ -34,12 +34,12 @@ export interface IAdminListProps {
   user?: iAdminData;
 }
 
-const AdminList: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
+const AdminList: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const { classes } = useStyles();
   const [values, setValues] = useState<any>("Admin");
 
   const getAdminList = async () => {
-    return await axios.get(`/v1/dashboard/admin/list`,{
+    return await axios.get(`/v1/dashboard/admin/list`, {
       headers: {
         Authorization: `Bearer ${tokens?.access.token}`,
       },
@@ -50,8 +50,6 @@ const AdminList: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
     "adminList",
     getAdminList
   );
-
-  console.log(data)
 
   const adminList = data?.data.map((a: { name: string }) => a.name);
   adminList?.unshift("Admin");

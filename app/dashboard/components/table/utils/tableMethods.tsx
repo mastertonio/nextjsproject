@@ -137,7 +137,7 @@ export const sortCompanyData = (
   );
 };
 
-//////////////////////////Company Users
+// /Company Users
 export interface ICompanyUsersProps {
   _id: string;
   first_name: string;

@@ -21,6 +21,18 @@ export interface UserContextTypes {
   id: string;
 }
 
+export interface ICompanyUserTypes {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password?: string;
+  currency: string;
+  manager_email: string;
+  manager_id: string;
+  role: string;
+  template?: string[];
+};
+
 export interface UserDataProp {
   user: UserContextTypes
   tokens: {
@@ -33,6 +45,21 @@ export interface UserDataProp {
       expires: string
     }
   }
+}
+
+export interface UserAddComp {
+  user: UserContextTypes
+  tokens: {
+    access: {
+      token: string,
+      expires: string
+    },
+    refresh: {
+      token: string,
+      expires: string
+    }
+  }
+  myCompany: ICompanyUserTypes;
 }
 
 export interface State {

@@ -81,8 +81,11 @@ const ActionList: React.FC = () => {
         </Menu.Item>
         <Divider />
         <Menu.Item onClick={async () => {
-          const data = await signOut({ redirect: false, callbackUrl: "/" })
-          router.push(data.url)
+          // const data = await signOut({ redirect: false, callbackUrl: "/" })
+          // console.log('log out', data.url)
+          // router.push(data.url)
+          signOut();
+          router.push("/")
         }} color="red">
           Logout
         </Menu.Item>

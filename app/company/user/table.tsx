@@ -64,11 +64,11 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
 
   const getCompanyUsers = async (company: string) => {
     return await axios.get(
-      `/v1/company/${company}/user/templates`,{
-        headers: {
-          Authorization: `Bearer ${user.tokens.access.token}`,
-        },
-      }
+      `/v1/company/${company}/user/templates`, {
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }
     );
   };
 
@@ -165,7 +165,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
   if (isSuccess) {
     return (
       <div>
-        <div className="m-[10px] bg-white p-[20px] sm:p-[50px]">
+        <div className="m-[20px] bg-white p-[20px] sm:p-[30px]">
           <Grid className="m-[20px]">
             <Text weight={700}> The ROI Shop User Calculators</Text>
             <Input
@@ -197,7 +197,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "username"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("username")}
-                    style="w-[300px] !border-white !border-0"
+                    style="w-[300px] !p-[10px] !border-white !border-0"
                   >
                     User Name
                   </Th>
@@ -205,7 +205,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "calculator_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("calculator_name")}
-                    style="w-[300px] sm:w-[250px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                    style="w-[300px] m:w-[300px] !p-[10px] !whitespace-nowrap sm:whitespace-normal !border-white !border-0"
                   >
                     Calculator Name
                   </Th>
@@ -213,7 +213,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "template_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("template_name")}
-                    style="w-[250px] !border-white !border-0"
+                    style="w-[200px] sm:w-[300px] !p-[10px] !border-white !border-0"
                   >
                     Template Name
                   </Th>
@@ -221,7 +221,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "createdAt"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("createdAt")}
-                    style="w-[400px] !border-white !border-0"
+                    style="w-[400px] !p-[10px] !border-white !border-0"
                   >
                     Created Date
                   </Th>
@@ -229,7 +229,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "visits"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("visits")}
-                    style="w-[300px] sm:w-[110px] !border-white !border-0"
+                    style="w-[300px] sm:w-[200px] !p-[10px] !border-white !border-0"
                   >
                     Visits
                   </Th>
@@ -237,11 +237,11 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     sorted={sortBy === "unique_ip"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("unique_ip")}
-                    style="w-[300px] sm:w-[130px] !border-white !border-0"
+                    style="w-[300px] sm:w-[130px] !p-[10px] !border-white !border-0"
                   >
                     Unique
                   </Th>
-                  <th className="!border-white !border-0"></th>
+                  <th className="!border-white !border-0 !p-[10px]"></th>
                 </tr>
               </thead>
               {isLoading ? (
@@ -250,23 +250,23 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                 <tbody>
                   {companyUsers?.map((element: any) => (
                     <tr key={shortUUID.generate()} className="h-[20px]">
-                      <td className="w-[10px]">{element.username}</td>
+                      <td className="w-[10px] !p-[10px]">{element.username}</td>
                       <td
-                        className="cursor-pointer w-[140px] pl-[30px]"
+                        className="cursor-pointer w-[140px] pl-[30px] !p-[10px]"
                       >
                         {element.calculator_name}
                       </td>
-                      <td>{element.template_name}</td>
-                      <td>{element.createdAt}</td>
-                      <td className="w-[145px] pl-[30px]">
+                      <td className="!p-[10px]">{element.template_name}</td>
+                      <td className="!p-[10px]">{element.createdAt}</td>
+                      <td className="w-[145px] pl-[30px] !p-[10px]">
                         {element.visits}
                       </td>
                       <td
-                        className="w-[110px]"
+                        className="w-[110px] !p-[10px]"
                       >
                         {element.unique_ip}
                       </td>
-                      <td>{element.actions}</td>
+                      <td className="!p-[10px]">{element.actions}</td>
                     </tr>
                   ))}
                 </tbody>

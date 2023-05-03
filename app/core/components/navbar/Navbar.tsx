@@ -85,14 +85,14 @@ const RoiNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
       ) : (
         ""
       )}
-      {router.route.includes("dashboard/manager") && user?.role == "company-manager" || user?.role == "company-agent" ? (
+      {router.route.includes("dashboard/manager") && user?.role == "company-manager" ? (
         <div className="ml-[10px]">
           <Button
             type="button"
             className="mr-auto"
             onClick={() => router.push('/dashboard')}
           >
-            {user?.role == "company-manager" || user?.role == "company-agent" ? "My Calculators" : "My Dashboard"}
+            {user?.role == "company-manager" ? "My Calculators" : "My Dashboard"}
           </Button>
         </div>
 
