@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
 
-const TransferUser: React.FC<any> = () => {
+const TransferUser: React.FC<any> = ({ item, manager }) => {
     const [opened, setOpened] = useState(false);
     const router = useRouter();
     const p = router.query;
@@ -43,7 +43,7 @@ const TransferUser: React.FC<any> = () => {
     ]
 
     const handleSubmit = async (values: typeof form.values) => {
-        console.log(values)
+        console.log('Transfer values', values)
     };
 
     return (
@@ -87,9 +87,9 @@ const TransferUser: React.FC<any> = () => {
                         <Grid
                             className="ml-[30px] mr-[30px] mt-[40px] mb-[15px]"
                         >
-                            <Text>Transfer test@gmail.com ROIs to: </Text>
+                            <Text>Transfer {item.email} ROIs to: </Text>
                             <Select
-                                data={curData}
+                                data={manager}
                                 placeholder="Select an Option"
                                 {...form.getInputProps("transfer")}
                                 className="w-[350px] ml-auto"
@@ -103,7 +103,7 @@ const TransferUser: React.FC<any> = () => {
                             size="sm"
                             color="teal"
                             className="mr-[10px]"
-                            onClick={() => setOpened(false)}
+                        // onClick={() => setOpened(false)}
                         >
                             Transfer ROIs
                         </Button>

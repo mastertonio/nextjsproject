@@ -380,7 +380,6 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
               className="mr-[10px]"
               onClick={() => {
                 setSaveAdd(true)
-                setOpened(false)
               }}
             >
               Save and Add

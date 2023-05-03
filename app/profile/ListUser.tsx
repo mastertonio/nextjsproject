@@ -57,7 +57,7 @@ const ListUser: React.FC<any> = ({
     company,
     update,
     user,
-    login
+    manager
 }) => {
     const { classes, cx } = useStyles();
 
@@ -104,7 +104,7 @@ const ListUser: React.FC<any> = ({
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        console.log('results', results)
+        console.log('results list users', manager)
         setSortedData(data?.data);
     }, [data]);
 
@@ -158,7 +158,7 @@ const ListUser: React.FC<any> = ({
                 }}
             >
                 <EditCompanyUserButton />
-                <TransferButton />
+                <TransferButton item={item} manager={manager} />
                 <DeleteListUser />
             </div>
         ),
