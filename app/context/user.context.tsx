@@ -60,6 +60,7 @@ export interface UserAddComp {
     }
   }
   myCompany: ICompanyUserTypes;
+  refetch: ()=> void
 }
 
 export interface State {
