@@ -27,13 +27,13 @@ import dayjs from "dayjs";
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { getSession } from "next-auth/react";
-import { UserDataProp } from "@app/context/user.context";
+import { UserDataProp, UserAddComp } from "@app/context/user.context";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
 }
 
-const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
+const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, myCompany }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -41,6 +41,7 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
   const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [state, setState] = useState();
   const [currency, setCurrency] = useState<string | null>(null);
+  const [saveAdd, setSaveAdd] = useState<boolean>(false);
 
   const userZ = useUserStore((state) => (state.user))
 
@@ -144,7 +145,11 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
           manager: values.manager,
           role: values.role,
           template: filter,
-        });
+        }, {
+        headers: {
+          Authorization: `Bearer ${tokens?.access.token}`,
+        },
+      });
       if (response) {
         updateNotification({
           id: "edit-comp",
@@ -159,7 +164,22 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
         setStartDate(null);
         setEndDate(null);
       }
+
+      if (saveAdd === true) {
+        form.setValues({
+          first_name: "",
+          last_name: "",
+          email: "",
+          password: "",
+          currency: form.values.currency,
+          manager: form.values.manager,
+          role: form.values.role,
+        })
+      } else {
+        form.reset();
+      }
     } catch (error) {
+      console.log('submitted error', error)
       updateNotification({
         id: "edit-comp",
         color: "red",
@@ -352,6 +372,18 @@ const AddCompanyUserButton: React.FC<Partial<UserDataProp>> = ({ tokens, user })
           </Stack>
 
           <Grid justify="flex-end" className="m-[20px]">
+            <Button
+              type="submit"
+              radius="sm"
+              size="sm"
+              color="teal"
+              className="mr-[10px]"
+              onClick={() => {
+                setSaveAdd(true)
+              }}
+            >
+              Save and Add
+            </Button>
             <Button
               type="submit"
               radius="sm"

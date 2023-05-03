@@ -10,6 +10,7 @@ import {
   Text,
   TextInput,
   useMantineTheme,
+  Select
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import RoiFooter from "@core/components/footer/Footer";
@@ -18,13 +19,14 @@ import RoiNavbar from "@core/components/navbar/MainNavbar";
 import Sidebar from "@core/components/sidebar/AdminRoleSidebar";
 import { useLocalStorage } from "@mantine/hooks";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery, useQueries } from "react-query";
 import { useEffect } from "react";
 import { BsFolderSymlinkFill } from "react-icons/bs";
 import ChangePass from "@core/components/forms/changepassword";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from '@tabler/icons'
 import MainLoader from "@app/core/components/loader/MainLoader";
+import ListUser from "@app/profile/ListUser";
 import { useUserStore } from "@app/store/userState";
 import { getSession } from "next-auth/react";
 
@@ -33,6 +35,7 @@ const UserProfile: React.FC<any> = (login) => {
   const [error, setError] = useState("");
   const router = useRouter();
   const [user, setUser] = useState<any>({});
+  const [manager, setManager] = useState<any>([]);
   const p = router.query;
 
   const userZ = useUserStore((state) => (state.user))
@@ -44,7 +47,8 @@ const UserProfile: React.FC<any> = (login) => {
       email: login.data.user.user.email,
       first_name: login.data.user.user.first_name,
       last_name: login.data.user.user.last_name,
-      phone_number: login.data.user.user.phone
+      phone_number: login.data.user.user.phone,
+      direct_report: ""
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -135,10 +139,43 @@ const UserProfile: React.FC<any> = (login) => {
     });
   };
 
+  const queries = [
+    {
+      queryKey: ["manager"],
+      queryFn: async () => {
+        const res = await axios.get(`/v1/company/${login.data.user.user.company_id}/manager`, {
+          headers: {
+            Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+          },
+        });
+        return res.data;
+      },
+    },
+  ];
+
+  const results = useQueries(queries)
+  const managerList = results[0].data
+
   useEffect(() => {
-    console.log('User Profile', user)
+    const transferlist = managerList?.map((item: { id: string; email: string }) => ({
+      key: item.id,
+      value: item.id,
+      label: item.email,
+    }));
+    setManager(transferlist)
+  }, [results])
+
+
+  useEffect(() => {
     setUser(data?.data);
   }, [data]);
+
+  const curData = [
+    {
+      label: "USD",
+      value: "USD",
+    },
+  ]
 
   return isLoading ? <MainLoader /> : (
     <AppShell
@@ -215,12 +252,26 @@ const UserProfile: React.FC<any> = (login) => {
                   placeholder="Your Last Name"
                   name="last_name"
                   className="w-full"
-                  {...form.getInputProps("last")}
+                  {...form.getInputProps("last_name")}
                 // onChange={handleChange}
                 // onBlur={onSubmit}
                 />
               </div>
             </div>
+
+            {login.data.user.user.role === 'company-manager' ? (
+              <div className="grid grid-cols-2 gap-4 mt-[10px]">
+                <div className="gap-1">
+                  <p className="text-[14px] text-slate-900 mb-[5px] font-semibold mt-0">Select Direct Report</p>
+                  <Select
+                    data={manager?.length > 0 ? manager : []}
+                    placeholder="Select an option"
+                    {...form.getInputProps("direct_report")}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            ) : null}
 
             <Group className="mt-[20px]">
               <Button
@@ -236,6 +287,9 @@ const UserProfile: React.FC<any> = (login) => {
         </div>
       </form>
       <ChangePass />
+      {login.data.user.user.role === 'company-admin' ? (
+        <ListUser user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} manager={manager} />
+      ) : null}
     </AppShell>
   );
 };
