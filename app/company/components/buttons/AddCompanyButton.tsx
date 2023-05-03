@@ -21,9 +21,11 @@ import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
+import { UserDataProp } from "@app/context/user.context";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
+  user: UserDataProp
 }
 
 const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {

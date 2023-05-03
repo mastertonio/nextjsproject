@@ -292,7 +292,7 @@ const CompanyList: React.FC<any> = (login) => {
           className="mt-[40px] ml-[10px] mr-[10px] mb-[30px]"
         >
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddCompanyButton refetch={refetch} />
+          <AddCompanyButton user={login.data.user} refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
