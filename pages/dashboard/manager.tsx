@@ -221,7 +221,7 @@ const ManagerDashboard: React.FC<any> = (login) => {
         <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
           <ManagerDashboardGraph token={login.data.user.tokens.access.token} />
         </div>
-        <div style={{ margin: 10, backgroundColor: "white", padding: 90 }}>
+        <div style={{ margin: 10, backgroundColor: "white" }}>
           <CompanyUserTable user={login.data.user} company={login.data.user.user ? login.data.user.user.company_id : ""} update={refetch} />
         </div>
       </AppShell>

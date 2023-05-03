@@ -264,14 +264,14 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
               >
                 ROI name
               </Th>
-              <Th
+              {/* <Th
                 sorted={sortBy === "source_name"}
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("name")}
                 style="w-[225px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
               >
                 Template Name
-              </Th>
+              </Th> */}
               <Th
                 sorted={sortBy === "dateCreated"}
                 reversed={reverseSortDirection}
@@ -393,14 +393,17 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
                     <td className="w-[145px] whitespace-nowrap sm:whitespace-normal">{element.status}</td>
                     <td className="w-[140px] whitespace-nowrap sm:whitespace-normal">{element.importance}</td>
                     <td
-                      className="w-[310px] cursor-pointer whitespace-nowrap sm:whitespace-normal"
+                      className="w-[310px] cursor-pointer whitespace-nowrap sm:whitespace-normal hover:text-blue-600"
                       onClick={() => {
                         router.push(`/enterprise/${element.id}`);
                       }}
                     >
-                      {element.roiname}
+                      <div className="flex flex-col">
+                        <span className="font-semibold">{element.roiname}</span>
+                        <span className="text-[11px] text-slate-600 font-medium">{element.source_name}</span>
+                      </div>
                     </td>
-                    <td className="w-[240px] whitespace-nowrap sm:whitespace-normal">{element.source_name}</td>
+                    {/* <td className="w-[240px] whitespace-nowrap sm:whitespace-normal">{element.source_name}</td> */}
                     <td className="w-[285px] whitespace-nowrap sm:whitespace-normal">{element.dates}</td>
                     <td className="w-[150px] pl-[20px] whitespace-nowrap sm:whitespace-normal" >
                       {element.views}

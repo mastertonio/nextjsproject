@@ -92,19 +92,39 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             <Text className="mb-[80px] ml-[35px] w-full text-[14px]">
                 Welcome {user.name}
             </Text>
-            <Navbar.Section>
-                <Button
-                    type="button"
-                    variant="subtle"
-                    fullWidth
-                    className="mt-[5px] text-[lightgray] text-[13px]"
-                    onClick={() => router.push(`/users`)}
-                    leftIcon={<MdSpaceDashboard />}
-                    size="md"
-                >
-                    Dashboard
-                </Button>
-            </Navbar.Section>
+
+            {user?.role === 'admin' || user?.role === 'company-admin' ? (
+                <Navbar.Section>
+                    <Button
+                        type="button"
+                        variant="subtle"
+                        fullWidth
+                        className="mt-[5px] text-[lightgray] text-[13px]"
+                        onClick={() => router.push(`/users`)}
+                        leftIcon={<MdSpaceDashboard />}
+                        size="md"
+                    >
+                        Dashboard
+                    </Button>
+                </Navbar.Section>
+            ) : null}
+
+            {user?.role === 'company-manager' ? (
+                <Navbar.Section>
+                    <Button
+                        type="button"
+                        variant="subtle"
+                        fullWidth
+                        className="mt-[5px] text-[lightgray] text-[13px]"
+                        onClick={() => router.push(`/dashboard/manager`)}
+                        leftIcon={<MdSpaceDashboard />}
+                        size="md"
+                    >
+                        Dashboard
+                    </Button>
+                </Navbar.Section>
+            ) : null}
+
             {user?.role == "admin" ? (<Navbar.Section>
                 <Button
                     type="button"
