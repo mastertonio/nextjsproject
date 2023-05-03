@@ -24,7 +24,7 @@ import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { getSession } from "next-auth/react";
 import { UserDataProp, UserAddComp } from "@app/context/user.context";
@@ -33,7 +33,7 @@ export interface IButtonAddCompanyProps {
   refetch: () => void;
 }
 
-const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, myCompany }) => {
+const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, myCompany, refetch }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -42,6 +42,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
   const [state, setState] = useState();
   const [currency, setCurrency] = useState<string | null>(null);
   const [saveAdd, setSaveAdd] = useState<boolean>(false);
+  const queryClient = useQueryClient()
 
   const userZ = useUserStore((state) => (state.user))
 
@@ -151,6 +152,13 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
         },
       });
       if (response) {
+        Promise.all(
+          [
+            queryClient.invalidateQueries({ queryKey: ['get_all_company_users'] }),
+            queryClient.invalidateQueries({ queryKey: ['license'] }),
+            queryClient.invalidateQueries({ queryKey: ['get_all_company_users_with_templates'] }),
+          ]
+        )
         updateNotification({
           id: "edit-comp",
           color: "teal",

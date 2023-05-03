@@ -161,6 +161,7 @@ const UsersDashboard: React.FC<any> = (login) => {
   useEffect(() => {
     setSortedData(data?.data);
     console.log('results query', login.data.user.user.role)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const indexOfLastPost = activePage * limit;
@@ -223,13 +224,11 @@ const UsersDashboard: React.FC<any> = (login) => {
     ),
   }));
 
-  useEffect(() => {
-    const currentPostsData = currentPosts?.map((item: ICompanyUsersProps) => {
-      return item;
-    })
+  // const currentPostsData = currentPosts?.map((item: ICompanyUsersProps) => {
+  //   return item;
+  // })
 
-    setUserData(currentPostsData)
-  }, [currentPosts])
+  // setUserData(currentPostsData)
 
 
   return isLoading ? <MainLoader /> : (
@@ -263,7 +262,7 @@ const UsersDashboard: React.FC<any> = (login) => {
         ) : null}
         <Grid className="m-[10px] pt-[20px] pb-[20px]">
           {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
-          <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} myCompany={userData} />
+          <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} myCompany={userData} refetch={refetch} />
           <Input
             variant="default"
             placeholder="Search for ROI"
