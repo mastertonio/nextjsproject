@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
 
-const DeleteListUser: React.FC<any> = () => {
+const DeleteListUser: React.FC<any> = ({ item, manager, user, company, id, refetch }) => {
     const [opened, setOpened] = useState(false);
     const router = useRouter();
     const p = router.query;
@@ -31,19 +31,58 @@ const DeleteListUser: React.FC<any> = () => {
 
     const form = useForm({
         initialValues: {
-            transfer: "",
+            status: 0,
         },
     });
 
-    const curData = [
-        {
-            label: "test@gmail.com",
-            value: "test@gmail.com",
-        },
-    ]
+    const handleSubmit = async () => {
+        console.log('Delete')
+        try {
+            showNotification({
+                id: "edit-comp",
+                loading: true,
+                title: `Updating ...`,
+                message: "Please wait, updating edited row",
+                autoClose: false,
+                disallowClose: true,
+                color: "teal",
+            });
 
-    const handleSubmit = async (values: typeof form.values) => {
-        console.log(values)
+            const response = await axios.patch(`/v1/company/${company}/user/${id}`,
+                {
+                    status: 0,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.tokens.access.token}`,
+                    },
+                }
+            );
+
+            if (response) {
+                refetch();
+                updateNotification({
+                    id: "edit-comp",
+                    color: "teal",
+                    title: `Delete success!`,
+                    message: "Delete succeeded! ",
+                    icon: <IconCheck size={16} />,
+                    autoClose: 2500,
+                });
+            }
+            setOpened(false)
+            console.log('delete res', response);
+        } catch (error) {
+            console.log('delete error', error);
+            updateNotification({
+                id: "edit-comp",
+                color: "red",
+                title: "Delete failed",
+                message: "Something went wrong, Please try again",
+                autoClose: false,
+            });
+            return error;
+        }
     };
 
     return (
@@ -61,7 +100,7 @@ const DeleteListUser: React.FC<any> = () => {
                     className="pt-[20px] text-[30px] !bg-[#073e52] text-white"
                     align="center"
                 >
-                    Delete test@gmail.com?
+                    Delete {item.email}?
                 </Text>
 
                 <Text
@@ -72,8 +111,7 @@ const DeleteListUser: React.FC<any> = () => {
                 >
                     This action cannot be undone
                 </Text>
-
-                <form>
+                <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack
                         justify="flex-start"
                         sx={(theme) => ({
@@ -87,9 +125,10 @@ const DeleteListUser: React.FC<any> = () => {
                         <Grid
                             className="ml-[30px] mr-[30px] mt-[40px] mb-[15px]"
                         >
-                            <Text>Are you sure you want to delete test@mgail.com? This action cannot be undone and all created ROIs may be lost. </Text>
+                            <Text>Are you sure you want to delete {item.email}? This action cannot be undone and all created ROIs may be lost. </Text>
                         </Grid>
                     </Stack>
+
                     <Grid justify="flex-end" className="m-[20px]">
                         <Button
                             type="submit"
@@ -97,9 +136,8 @@ const DeleteListUser: React.FC<any> = () => {
                             size="sm"
                             color="red"
                             className="mr-[10px]"
-                            onClick={() => setOpened(false)}
                         >
-                            Delete test@gmail.com
+                            Delete {item.email}
                         </Button>
                         <Button
                             type="button"
