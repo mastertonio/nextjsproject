@@ -209,14 +209,14 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                   >
                     Calculator Name
                   </Th>
-                  <Th
+                  {/* <Th
                     sorted={sortBy === "template_name"}
                     reversed={reverseSortDirection}
                     onSort={() => setSorting("template_name")}
                     style="w-[200px] sm:w-[300px] !p-[10px] !border-white !border-0"
                   >
                     Template Name
-                  </Th>
+                  </Th> */}
                   <Th
                     sorted={sortBy === "createdAt"}
                     reversed={reverseSortDirection}
@@ -254,9 +254,11 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                       <td
                         className="cursor-pointer w-[140px] pl-[30px] !p-[10px]"
                       >
-                        {element.calculator_name}
+                        <div className="flex flex-col">
+                          <span className="font-semibold">{element.calculator_name}</span>
+                          <span className="text-[11px] text-slate-600 font-medium">{element.template_name}</span>
+                        </div>
                       </td>
-                      <td className="!p-[10px]">{element.template_name}</td>
                       <td className="!p-[10px]">{element.createdAt}</td>
                       <td className="w-[145px] pl-[30px] !p-[10px]">
                         {element.visits}
