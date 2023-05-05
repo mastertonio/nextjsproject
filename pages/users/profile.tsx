@@ -163,7 +163,7 @@ const UserProfile: React.FC<any> = (login) => {
       label: item.email,
     }));
     setManager(transferlist)
-  }, [results])
+  }, [results, managerList]);
 
 
   useEffect(() => {

@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
 
-const TransferUser: React.FC<any> = ({ item, manager }) => {
+const TransferUser: React.FC<any> = ({ item, manager, id, company, user, refetch }) => {
     const [opened, setOpened] = useState(false);
     const router = useRouter();
     const p = router.query;
@@ -44,6 +44,53 @@ const TransferUser: React.FC<any> = ({ item, manager }) => {
 
     const handleSubmit = async (values: typeof form.values) => {
         console.log('Transfer values', values)
+        try {
+            showNotification({
+                id: "edit-comp",
+                loading: true,
+                title: `Updating ...`,
+                message: "Please wait, updating edited row",
+                autoClose: false,
+                disallowClose: true,
+                color: "teal",
+            });
+            const response = await axios.patch(`/v1/company/${company}/user/${id}`,
+                {
+                    manager: values.transfer
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.tokens.access.token}`,
+                    },
+                }
+            );
+
+            if (response) {
+                refetch();
+                updateNotification({
+                    id: "edit-comp",
+                    color: "teal",
+                    title: `Transfer success!`,
+                    message: "Transfer succeeded! ",
+                    icon: <IconCheck size={16} />,
+                    autoClose: 2500,
+                });
+            }
+            setOpened(false)
+            form.reset();
+            console.log('tranfer res', response);
+        } catch (error) {
+            console.log('tranfer error', error);
+            updateNotification({
+                id: "edit-comp",
+                color: "red",
+                title: "Transfer failed",
+                message: "Something went wrong, Please try again",
+                autoClose: false,
+            });
+            form.reset();
+            return error;
+        }
     };
 
     return (
