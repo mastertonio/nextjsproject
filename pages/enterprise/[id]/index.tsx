@@ -6,7 +6,7 @@ import { getSession } from 'next-auth/react';
 import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
 import NavbarSimple from "@app/core/components/sidebar/EnterpriseSidebar";
 import Projection from "@app/enterprise/Projection";
-import { AppShell, Group, Badge, SimpleGrid, Card, Text, Grid, Stack } from "@mantine/core";
+import { AppShell, Group, Badge, SimpleGrid, Card, Text, Grid, Stack, Input, Button, NumberInput, Tooltip } from "@mantine/core";
 import { useScrollIntoView } from '@mantine/hooks';
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
@@ -14,6 +14,8 @@ import NewValueBucket from "@app/core/components/card/NewValueBucket";
 import InputVariable, { iElemsProp } from "@app/enterprise/components/input/NewInput";
 import MainLoader from '@app/core/components/loader/MainLoader';
 import { useTargetRefStore } from "@app/store/builderStore"
+import { IconQuestionCircle } from '@tabler/icons';
+import { useCalculatorStore } from '@app/store/builder/calculatorStore';
 
 interface CardSection {
   id: string;
@@ -90,6 +92,8 @@ type EnterpriseProps = {
 const Enterprise: React.FC<any> = (login) => {
   const router = useRouter();
   const { id } = router.query;
+  const cells = useCalculatorStore((state) => (state.cells))
+  const { setState } = useCalculatorStore
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const [sectionEmpty, setSectionEmpty] = useState<boolean>(false);
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
@@ -139,9 +143,19 @@ const Enterprise: React.FC<any> = (login) => {
 
 
   useEffect(() => {
+    if (data?.data) {
+      setState(data?.data.data.content.sections[0].grayContent.elements)
+    }
+    console.log("cells", cells, data?.data.data.content.sections[0].grayContent.elements)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cells, data])
+
+
+  useEffect(() => {
     const formValue = JSON.parse(localStorage.getItem("valueBucket") ?? '[]') as CardSection[];
     setValueBucketState(formValue)
     console.log('storage value bucket', valueBucketState)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -184,13 +198,42 @@ const Enterprise: React.FC<any> = (login) => {
                   key={section.order}
 
                 />
-                
+
                 <div className="">
-                  {/* {section.grayContent.elements.map((elem: any) => {
-                    elem.dataType == "Input" ? (
-                      
-                    ) : ""
-                  })} */}
+                  {section.grayContent.elements.map((elem: any) => {
+                    return (
+                      <div key={elem._id}>
+                        {elem.dataType == "Input" && elem.appendedText ? (
+                          <div className="flex items-center ml-auto remove-radius">
+                            <Text className='mx-6'>{elem.title}</Text>
+                            <NumberInput
+                              className="w-[100px] md:w-[255px] 2xl:w-[255px]"
+                              // icon={state.icon ? state.icon : ""}
+                              hideControls
+                            // rightSectionProps={{
+                            //   onClick: showModalCalculate
+                            // }}
+                            // disabled
+                            // value={result}
+                            />
+                            <Button
+                              type="submit"
+                              radius="xs"
+                              size="sm"
+                              className="w-[150px] sm:w-[unset] text-[12px] sm:text-[unset] rounded-l-none"
+                              disabled
+                            >
+                              {elem.appendedText}
+                            </Button>
+                            {elem.tooltip ?
+                              <Tooltip label={elem.tooltip} >
+                                <IconQuestionCircle />
+                              </Tooltip> : ""
+                            }
+                          </div>) : ""}
+                      </div>
+                    )
+                  })}
                   {/* <div className="bg-[#e9ecef]">
                     <InputVariable elements={section.grayContent.elements} type={section.grayContent.dataType} />
                   </div> */}
