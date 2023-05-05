@@ -62,7 +62,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    const adminData = useAdminSectionStore((state) => state.sections)
+    // const adminData = useAdminSectionStore((state) => state.sections)
 
     const handleOpenWriteModal = (id: any) => {
         setUpdateWriteUp((prev: any) => ({ ...prev, [id]: true }))
@@ -135,7 +135,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                     </Card>
                     <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                         <div className="mt-[20px]">
-                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} choices={choices}/>
+                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} choices={choices} />
                             {/* <DragNDrop data={[]} type="collapse" /> */}
                         </div>
 
@@ -153,7 +153,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                 <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                 <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
             </div>
-        )}
+        )
+    }
     )
 
     return (

@@ -27,7 +27,7 @@ const AdminBuilder: React.FC<any> = (login) => {
   const userZ = useUserStore((state) => (state.user))
   const tokenChar = useTokenStore((state) => (state.tokenChar))
   const sectionStore = useAdminSectionStore
-  const sections = useAdminSectionStore((state) => (state.sections))
+  // const sections = useAdminSectionStore((state) => (state.sections))
 
   console.log('template', router.query.temp_id)
   console.log('version', router.query.id)
@@ -49,8 +49,8 @@ const AdminBuilder: React.FC<any> = (login) => {
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {
-    const flatData = data.data.adminTool.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
-    const choices = data.data.adminTool.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map((elem: { address: string; title: string; }) => ({ value: elem.address, label: elem.title }))
+    const flatData = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
+    const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map((elem: { address: string; title: string; }) => ({ value: elem.address, label: elem.title }))
     console.log('admintool', choices)
     return (
       <AppShell
@@ -72,7 +72,7 @@ const AdminBuilder: React.FC<any> = (login) => {
         <div className="flex-col sm:flex-row relative h-auto">
           {/* Template Specifics */}
           <TemplateSpecifics data={data?.data.adminTool} user={login.data.user} isFetching={isFetching} />
-          <Sections user={login.data.user} data={data?.data.adminTool}  choices={choices} fullData={flatData}/>
+          <Sections user={login.data.user} data={data?.data.adminTool} choices={choices} fullData={flatData} />
         </div>
       </AppShell>
     );

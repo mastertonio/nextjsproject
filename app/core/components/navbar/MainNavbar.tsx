@@ -65,7 +65,7 @@ const MainNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
             <Group position="right" className={`${opened === true ? 'flex' : 'hidden'} ml-[unset] sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
                 <AdminList tokens={tokens} user={user} />
                 <PoweredByRoi />
-                <ActionList />
+                <ActionList user={user} />
             </Group>
         </Header>
     );

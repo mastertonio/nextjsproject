@@ -34,7 +34,7 @@ export interface IAdminListProps {
   user?: iAdminData;
 }
 
-const AdminList: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
+const AdminList: React.FC<Partial<any>> = ({ tokens, user }) => {
   const { classes } = useStyles();
   const [values, setValues] = useState<any>("Admin");
 
