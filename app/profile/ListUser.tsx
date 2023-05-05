@@ -104,7 +104,8 @@ const ListUser: React.FC<any> = ({
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        console.log('results list users', manager)
+        console.log('results list users', user)
+        console.log('Company ID:', company)
         setSortedData(data?.data);
     }, [data]);
 
@@ -158,8 +159,8 @@ const ListUser: React.FC<any> = ({
                 }}
             >
                 <EditCompanyUserButton />
-                <TransferButton item={item} manager={manager} />
-                <DeleteListUser />
+                <TransferButton item={item} manager={manager} id={item._id} company={company} user={user} refetch={refetch} />
+                <DeleteListUser item={item} manager={manager} id={item._id} company={company} user={user} refetch={refetch} />
             </div>
         ),
     }));
@@ -247,19 +248,19 @@ const ListUser: React.FC<any> = ({
                         )}
                     </Table>
                 </ScrollArea>
-                {/* <div className="mb-[40px]">
-                        <Paginate
-                            refetch={refetch}
-                            page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
-                            limit={limit}
-                            totalResults={sortedData?.length}
-                            setLimit={setLimit}
-                            activePage={activePage}
-                            setPage={setPage}
-                            firstIndex={indexOfFirstPost}
-                            lastIndex={indexOfLastPost}
-                        />
-                    </div> */}
+                <div className="mb-[40px]">
+                    <Paginate
+                        refetch={refetch}
+                        page={sortedData ? Math.ceil(sortedData?.length / limit) : 10}
+                        limit={limit}
+                        totalResults={sortedData?.length}
+                        setLimit={setLimit}
+                        activePage={activePage}
+                        setPage={setPage}
+                        firstIndex={indexOfFirstPost}
+                        lastIndex={indexOfLastPost}
+                    />
+                </div>
             </div>
         </div>
     );
