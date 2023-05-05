@@ -35,6 +35,7 @@ import Th from "@dashboard/components/table/Thead";
 import SkeletonLoader from "@core/components/loader/SkeletonLoader";
 import TempList from "@core/components/dropdown/TemplateTags";
 import EditCompanyButton from "@app/company/components/buttons/EditCompanyButton";
+import OpenCompanyButton from "@app/company/components/buttons/OpenCompanyButton";
 import Sidebar from "@app/core/components/sidebar/AdminRoleSidebar";
 import RoiNavbar from "@app/core/components/navbar/Navbar";
 import Segmented from "@app/core/components/buttons/Segmented";
@@ -215,16 +216,23 @@ const CompanyList: React.FC<any> = (login) => {
   const companies = currentPosts?.map((item: any) => ({
     id: item._id,
     button: (
-      <Button
-        type="button"
-        leftIcon={<AiOutlineFolderOpen />}
-        color="blue"
-        onClick={() => {
-          router.push(`/company/${item._id}`);
-        }}
-      >
-        Open
-      </Button>
+      // <Button
+      //   type="button"
+      //   leftIcon={<AiOutlineFolderOpen />}
+      //   color="blue"
+      //   onClick={() => {
+      //     router.push(`/company/${item._id}`);
+      //   }}
+      // >
+      //   Open
+      // </Button>
+      <OpenCompanyButton
+        id={item._id}
+        refetch={refetch}
+        name={item.name}
+        myCompany={item}
+        user={login.data.user}
+      />
     ),
     roiname: item.name,
     alias: item.alias,
@@ -257,13 +265,13 @@ const CompanyList: React.FC<any> = (login) => {
         >
           Users
         </Button>
-        <EditCompanyButton
+        {/* <EditCompanyButton
           id={item._id}
           refetch={refetch}
           name={item.name}
           myCompany={item}
           user={login.data.user}
-        />
+        /> */}
       </div>
     ),
   }));
@@ -282,7 +290,7 @@ const CompanyList: React.FC<any> = (login) => {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
-        navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
+        // navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
         // footer={
         //   <RoiFooter />
         // }
@@ -309,7 +317,7 @@ const CompanyList: React.FC<any> = (login) => {
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
-            className={`${classes.table} w-[1200px] sm:w-[unset]`}
+            className={`${classes.table} w-[1300px] sm:w-full`}
             highlightOnHover
             verticalSpacing="xs"
             fontSize="xs"

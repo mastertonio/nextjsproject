@@ -279,7 +279,7 @@ const UsersDashboard: React.FC<any> = (login) => {
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
-            className={`${classes.table} w-[1300px] sm:w-[unset]`}
+            className={`${classes.table} w-[1300px] sm:w-full`}
             highlightOnHover
             verticalSpacing="xs"
             horizontalSpacing="xl"

@@ -237,10 +237,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         permanent: false,
       },
     };
-  } else if (session.user?.user?.role?.includes('admin')){
+  } else if (session.user?.user?.role?.includes('company-admin')){
     return {
       redirect: {
         destination: '/users',
+        permanent: false,
+      },
+    };
+  } else if (session.user?.user?.role?.includes('admin')){
+    return {
+      redirect: {
+        destination: '/company',
         permanent: false,
       },
     };
