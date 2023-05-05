@@ -205,8 +205,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     className="mt-[5px] text-[lightgray] text-[13px]"
                     size="md"
                     leftIcon={<MdAccessTimeFilled />}
-                    onClick={(e) => {
-                        e.preventDefault()
+                    onClick={() => {
                         router.push(`/templates`)
                     }}
                 // onClick={() => setOpenTemplate((o) => !o)}
