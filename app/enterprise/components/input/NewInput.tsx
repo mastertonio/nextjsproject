@@ -101,7 +101,6 @@ const NewInputVariable: React.FC<iGrayProps> = ({
     const FormulaParser = require('hot-formula-parser').Parser
     const parser = new FormulaParser()
 
-
     const hide = () => {
         setShow((prevState) => !prevState)
     }
@@ -125,15 +124,16 @@ const NewInputVariable: React.FC<iGrayProps> = ({
     });
 
 
-    useEffect(() => {
-        const formValue = JSON.parse(localStorage.getItem("formValue") ?? '[]') as iSectionProps[];
-        setStorage(formValue)
-        // const elementValue = formValue.map((value) => {
-        //     return value;
-        // })
-        console.log('localStorage', storage);
-        console.log('dataR', dataR)
-    }, [dataR])
+    // useEffect(() => {
+    //     const formValue = JSON.parse(localStorage.getItem("formValue") ?? '[]') as iSectionProps[];
+    //     setStorage(formValue)
+    //     // const elementValue = formValue.map((value) => {
+    //     //     return value;
+    //     // })
+    //     console.log('localStorage', storage);
+    //     console.log('dataR', dataR)
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [dataR])
 
 
     return (
@@ -214,7 +214,7 @@ const NewInputVariable: React.FC<iGrayProps> = ({
                                                         })}
                                                     />
                                                 </>
-                                            ) : state.type == "input" ? (
+                                            ) : state.type == "Input" ? (
                                                 <Input
                                                     className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px] "
                                                     // icon={state.icon ? state.icon : ""}
@@ -288,9 +288,9 @@ const NewInputVariable: React.FC<iGrayProps> = ({
                 </form>
             </Stack>
 
-            <div className="ml-[15px] sm:ml-auto w-full sm:w-[22%] mt-[10px] sm:mt-0">
+            {/* <div className="ml-[15px] sm:ml-auto w-full sm:w-[22%] mt-[10px] sm:mt-0">
                 <FloatingCard />
-            </div>
+            </div> */}
 
             <CalculationModal showModal={showModalValue} setClose={hideModalCalculate} />
         </Grid>

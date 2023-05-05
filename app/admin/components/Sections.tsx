@@ -16,7 +16,7 @@ type iSectionProps = {
 }
 
 export type iSectionData = {
-    id: number
+    _id: number
     title: string
     type: string
     format: string

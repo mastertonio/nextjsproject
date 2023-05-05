@@ -8,6 +8,8 @@ import { useCardStore, useSectionBuilderStore, useTokenStore } from '@app/store/
 import { UserDataProp } from '@app/context/user.context';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { showNotification, updateNotification } from '@mantine/notifications';
+import { IconCheck } from "@tabler/icons";
 
 interface IModalEntryProps {
     showModal: boolean
@@ -62,7 +64,15 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 }
             ).then((response) => response.data),
         onMutate: () => {
-
+            setOpened(false)
+            showNotification({
+                id: "adding-section",
+                loading: true,
+                title: `Adding section!`,
+                message: "Please wait ...",
+                autoClose: false,
+                disallowClose: true,
+              });
         },
         onSuccess: (newRoi) => {
 
@@ -74,14 +84,34 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                     // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
                 ]
             )
-
+            updateNotification({
+                id: "adding-section",
+                color: "teal",
+                title: `Section Added!`,
+                message: "",
+                icon: <IconCheck size={16} />,
+                autoClose: 3000,
+              });
 
         },
         onError: (error) => {
             if (error instanceof Error) {
-
-            }
-
+                updateNotification({
+                  id: "adding-section",
+                  color: "red",
+                  title: `Adding section failed`,
+                  message: error.message,
+                  autoClose: false,
+                });
+              }
+        
+              updateNotification({
+                id: "adding-section",
+                color: "red",
+                title: `Adding section failed`,
+                message: "Something went wrong, Please try again",
+                autoClose: false,
+              });
         }
     })
 

@@ -71,7 +71,7 @@ const ModalAddEntry: React.FC<IModalAddEntryProps> = ({ showModal, setSectionDat
             setSectionData([
                 ...sectionData,
                 {
-                    id: Math.floor(Math.random() * 1000),
+                    _id: Math.floor(Math.random() * 1000),
                     title: values.formEntry[0].title,
                     type: values.formEntry[0].type,
                     format: values.formEntry[0].format,
