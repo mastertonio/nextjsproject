@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Modal, Button, Text, TextInput, Grid, Stack, NumberInput } from "@mantine/core";
+import { Modal, Button, Text,Textarea, TextInput, Grid, Stack, NumberInput,Group,FileButton } from "@mantine/core";
+import { AiOutlineFolderOpen } from "react-icons/ai";
+import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
@@ -18,7 +20,7 @@ export interface IButtonCompanyProps {
   user: UserDataProp
 }
 
-const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
+const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
   id,
   refetch,
   name,
@@ -26,6 +28,9 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
   user
 }) => {
   const [opened, setOpened] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
@@ -49,10 +54,10 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
   const handleSubmit = async (values: typeof form.values) => {
     try {
       showNotification({
-        id: "edit-comp",
+        id: "open-comp",
         loading: true,
         title: `Updating ...`,
-        message: "Please wait, updating edited row",
+        message: "Please wait, Openning company info",
         autoClose: false,
         disallowClose: true,
         color: "teal",
@@ -76,7 +81,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
       if (response) {
         refetch();
         updateNotification({
-          id: "edit-comp",
+          id: "open-comp",
           color: "teal",
           title: `Company updated!`,
           message: "A company was edited! ",
@@ -86,7 +91,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
       }
     } catch (error) {
       updateNotification({
-        id: "edit-comp",
+        id: "open-comp",
         color: "red",
         title: "Updating a table row failed",
         message: "Something went wrong, Please try again",
@@ -208,6 +213,70 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
                 />
               </div>
             </Grid>
+            <Grid className="ml-[30px] mr-[30px]">
+              <Text className="mr-[20px]">Contract Start: </Text>
+              <DatePicker
+                value={startDate}
+                onChange={setStartDate}
+                clearable
+                className="w-[250px]"
+              />
+              {/* onChange={dat => dat && setDate(dat)} */}
+            </Grid>
+            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
+              <Text className="mr-[26px]">Contract End: </Text>
+              <DatePicker
+                value={endDate}
+                onChange={setEndDate}
+                clearable
+                className="w-[250px]"
+                minDate={startDate || new Date()}
+              />
+            </Grid>
+            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
+              <Text>Notes: </Text>
+              <Textarea
+                className="w-[600px] ml-auto"
+                autosize
+                minRows={3}
+                maxRows={4}
+                {...form.getInputProps("notes")}
+              />
+            </Grid>
+            <Grid
+              className="ml-[30px] mr-[30px] mb-[15px]"
+            >
+              <div
+                className="flex justify-between items-center"
+              >
+                <Text className="mr-[20px]">
+                  Contract and Agreements:{" "}
+                </Text>
+                <Group>
+                  <FileButton onChange={setFile}>
+                    {(props) => (
+                      <Button
+                        type="button"
+                        variant="light"
+                        color="dark"
+                        radius="xs"
+                        compact
+                        {...props}
+                      >
+                        Choose File
+                      </Button>
+                    )}
+                  </FileButton>
+                </Group>
+              </div>
+              <div className="ml-[20px]">
+                {file && (
+                  <Text size="sm" align="center" mt="xs">
+                    Picked file: {file.name}
+                  </Text>
+                )}
+              </div>
+            </Grid>
           </Stack>
           <Grid justify="flex-end" className="m-[20px]">
             <Button
@@ -235,16 +304,16 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
 
       <Button
         type="button"
-        leftIcon={<AiOutlineEdit />}
+        leftIcon={<AiOutlineFolderOpen />}
         radius="sm"
         size="xs"
         onClick={() => setOpened(true)}
         color="blue"
       >
-        Edit
+        Open
       </Button>
     </>
   );
 };
 
-export default EditCompanyButton;
+export default OpenCompanyButton;
