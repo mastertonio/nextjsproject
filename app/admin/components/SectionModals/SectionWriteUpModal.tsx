@@ -150,7 +150,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
 
 
     return (
-        <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
+        <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
             <form onSubmit={form.onSubmit((values) => sectionWriteUp.mutate(values.formEntry))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
@@ -159,9 +159,10 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                             className="w-[100%] sm:w-[75%] ml-auto"
                             {...form.getInputProps("sectioWriteUp")}
                         />
-                        {/* <div className="w-[100%] sm:w-[75%] ml-auto">
-                            <RichTextSection />
-                        </div> */}
+                        */}
+                        <div className="w-[100%] sm:w-[75%] ml-auto">
+                            <RichTextSection value={value} setValue={setValue} />
+                        </div>
                     </Grid>
 
 

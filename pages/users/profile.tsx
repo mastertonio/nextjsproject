@@ -163,7 +163,7 @@ const UserProfile: React.FC<any> = (login) => {
       label: item.email,
     }));
     setManager(transferlist)
-  }, [results, managerList]);
+  }, [])
 
 
   useEffect(() => {
@@ -287,9 +287,9 @@ const UserProfile: React.FC<any> = (login) => {
         </div>
       </form>
       <ChangePass />
-      {login.data.user.user.role === 'company-admin' ? (
+      {/* {login.data.user.user.role === 'company-admin' ? (
         <ListUser user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} manager={manager} />
-      ) : null}
+      ) : null} */}
     </AppShell>
   );
 };
