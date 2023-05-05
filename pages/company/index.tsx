@@ -227,12 +227,12 @@ const CompanyList: React.FC<any> = (login) => {
       //   Open
       // </Button>
       <OpenCompanyButton
-      id={item._id}
-      refetch={refetch}
-      name={item.name}
-      myCompany={item}
-      user={login.data.user}
-    />
+        id={item._id}
+        refetch={refetch}
+        name={item.name}
+        myCompany={item}
+        user={login.data.user}
+      />
     ),
     roiname: item.name,
     alias: item.alias,
@@ -317,7 +317,7 @@ const CompanyList: React.FC<any> = (login) => {
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
-            className={`${classes.table} w-[1200px] sm:w-[unset]`}
+            className={`${classes.table} w-[1300px] sm:w-full`}
             highlightOnHover
             verticalSpacing="xs"
             fontSize="xs"

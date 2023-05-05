@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Button, Text,Textarea, TextInput, Grid, Stack, NumberInput,Group,FileButton } from "@mantine/core";
+import { Modal, Button, Text, Textarea, TextInput, Grid, Stack, NumberInput, Group, FileButton } from "@mantine/core";
 import { AiOutlineFolderOpen } from "react-icons/ai";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -73,10 +73,10 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
           contact_email: values.email,
           contact_phone: values.phone,
         }, {
-          headers: {
-            Authorization: `Bearer ${user.tokens.access.token}`,
-          },
-        }
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
       if (response) {
         refetch();
@@ -127,7 +127,7 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
-              height: 500,
+              // height: 500,
             })}
           >
             <Grid
@@ -191,7 +191,7 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
                 />
               </div>
             </Grid>
-            <Grid className="ml-[30px] mr-[30px] mb-[80px]">
+            <Grid className="ml-[30px] mr-[30px] mb-[30px]">
               <div>
                 <Text>Email: </Text>
                 <TextInput
@@ -244,7 +244,7 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
               />
             </Grid>
             <Grid
-              className="ml-[30px] mr-[30px] mb-[15px]"
+              className="ml-[30px] mr-[30px] mb-[15px] mt-[20px]"
             >
               <div
                 className="flex justify-between items-center"

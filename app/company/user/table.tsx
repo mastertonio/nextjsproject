@@ -252,7 +252,7 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
                     <tr key={shortUUID.generate()} className="h-[20px]">
                       <td className="w-[10px] !p-[10px]">{element.username}</td>
                       <td
-                        className="cursor-pointer w-[140px] pl-[30px] !p-[10px]"
+                        className="cursor-pointer w-[140px] pl-[30px] !p-[10px] hover:text-blue-600"
                       >
                         <div className="flex flex-col">
                           <span className="font-semibold">{element.calculator_name}</span>

@@ -93,14 +93,16 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 Welcome {user.name}
             </Text>
 
-            {user?.role === 'admin'  ? (
+            {user.role === 'admin' ? (
                 <Navbar.Section>
                     <Button
                         type="button"
                         variant="subtle"
                         fullWidth
                         className="mt-[5px] text-[lightgray] text-[13px]"
-                        onClick={() => router.push(`/company`)}
+                        onClick={() => {
+                            router.push(`/company`)
+                        }}
                         leftIcon={<MdSpaceDashboard />}
                         size="md"
                     >
@@ -108,30 +110,16 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     </Button>
                 </Navbar.Section>
             ) : null}
-            {user?.role === 'company-admin' ? (
+            {user.role === 'company-admin' ? (
                 <Navbar.Section>
                     <Button
                         type="button"
                         variant="subtle"
                         fullWidth
                         className="mt-[5px] text-[lightgray] text-[13px]"
-                        onClick={() => router.push(`/users`)}
-                        leftIcon={<MdSpaceDashboard />}
-                        size="md"
-                    >
-                        Dashboard
-                    </Button>
-                </Navbar.Section>
-            ) : null}
-
-            {user?.role === 'company-manager' ? (
-                <Navbar.Section>
-                    <Button
-                        type="button"
-                        variant="subtle"
-                        fullWidth
-                        className="mt-[5px] text-[lightgray] text-[13px]"
-                        onClick={() => router.push(`/dashboard/manager`)}
+                        onClick={() => {
+                            router.push(`/users`)
+                        }}
                         leftIcon={<MdSpaceDashboard />}
                         size="md"
                     >
@@ -140,7 +128,25 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 </Navbar.Section>
             ) : null}
 
-            {user?.role == "admin" ? (<Navbar.Section>
+            {user.role === 'company-manager' ? (
+                <Navbar.Section>
+                    <Button
+                        type="button"
+                        variant="subtle"
+                        fullWidth
+                        className="mt-[5px] text-[lightgray] text-[13px]"
+                        onClick={() => {
+                            router.push(`/dashboard/manager`)
+                        }}
+                        leftIcon={<MdSpaceDashboard />}
+                        size="md"
+                    >
+                        Dashboard
+                    </Button>
+                </Navbar.Section>
+            ) : null}
+
+            {user.role == "admin" ? (<Navbar.Section>
                 {/*<Button
                     type="button"
                     variant="subtle"
@@ -190,7 +196,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 </Collapse> */}
             </Navbar.Section>) : ""}
 
-            {user?.role == "company-admin" ? (<Navbar.Section>
+            {user.role == "company-admin" ? (<Navbar.Section>
                 <Button
                     type="button"
                     variant="subtle"
@@ -199,7 +205,10 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     className="mt-[5px] text-[lightgray] text-[13px]"
                     size="md"
                     leftIcon={<MdAccessTimeFilled />}
-                    onClick={() => router.push(`/templates`)}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        router.push(`/templates`)
+                    }}
                 // onClick={() => setOpenTemplate((o) => !o)}
                 // rightIcon={
                 //     openTemplate ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
