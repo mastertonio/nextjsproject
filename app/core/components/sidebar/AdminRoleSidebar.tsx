@@ -93,14 +93,33 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 Welcome {user.name}
             </Text>
 
-            {user?.role === 'admin' || user?.role === 'company-admin' ? (
+            {user.role === 'admin' ? (
                 <Navbar.Section>
                     <Button
                         type="button"
                         variant="subtle"
                         fullWidth
                         className="mt-[5px] text-[lightgray] text-[13px]"
-                        onClick={() => router.push(`/users`)}
+                        onClick={() => {
+                            router.push(`/company`)
+                        }}
+                        leftIcon={<MdSpaceDashboard />}
+                        size="md"
+                    >
+                        Dashboard
+                    </Button>
+                </Navbar.Section>
+            ) : null}
+            {user.role === 'company-admin' ? (
+                <Navbar.Section>
+                    <Button
+                        type="button"
+                        variant="subtle"
+                        fullWidth
+                        className="mt-[5px] text-[lightgray] text-[13px]"
+                        onClick={() => {
+                            router.push(`/users`)
+                        }}
                         leftIcon={<MdSpaceDashboard />}
                         size="md"
                     >
@@ -109,14 +128,16 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 </Navbar.Section>
             ) : null}
 
-            {user?.role === 'company-manager' ? (
+            {user.role === 'company-manager' ? (
                 <Navbar.Section>
                     <Button
                         type="button"
                         variant="subtle"
                         fullWidth
                         className="mt-[5px] text-[lightgray] text-[13px]"
-                        onClick={() => router.push(`/dashboard/manager`)}
+                        onClick={() => {
+                            router.push(`/dashboard/manager`)
+                        }}
                         leftIcon={<MdSpaceDashboard />}
                         size="md"
                     >
@@ -125,8 +146,8 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 </Navbar.Section>
             ) : null}
 
-            {user?.role == "admin" ? (<Navbar.Section>
-                <Button
+            {user.role == "admin" ? (<Navbar.Section>
+                {/*<Button
                     type="button"
                     variant="subtle"
                     color="blue"
@@ -142,7 +163,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 >
                     Create Company
                 </Button>
-                {/* <Collapse
+                 <Collapse
                     in={openCompany}
                     className="flex flex-col items-end"
                 >
@@ -175,7 +196,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                 </Collapse> */}
             </Navbar.Section>) : ""}
 
-            <Navbar.Section>
+            {user.role == "company-admin" ? (<Navbar.Section>
                 <Button
                     type="button"
                     variant="subtle"
@@ -184,7 +205,9 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                     className="mt-[5px] text-[lightgray] text-[13px]"
                     size="md"
                     leftIcon={<MdAccessTimeFilled />}
-                    onClick={() => router.push(`/templates`)}
+                    onClick={() => {
+                        router.push(`/templates`)
+                    }}
                 // onClick={() => setOpenTemplate((o) => !o)}
                 // rightIcon={
                 //     openTemplate ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />
@@ -216,7 +239,7 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                         Template List
                     </Button>
                 </Collapse> */}
-            </Navbar.Section>
+            </Navbar.Section>) : ""}
             <Navbar.Section>
                 <Button
                     type="button"
