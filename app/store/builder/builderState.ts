@@ -148,7 +148,7 @@ export const useSectionsStore = create<ISectionState>((set) => ({
     }),
   remove: (id: number) =>
     set((state) => ({
-      section: state.section.filter((vars) => vars.id !== id),
+      section: state.section.filter((vars) => vars._id !== id),
     })),
 }));
 

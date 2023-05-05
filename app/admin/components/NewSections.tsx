@@ -135,7 +135,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                     </Card>
                     <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                         <div className="mt-[20px]">
-                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} />
+                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} choices={choices}/>
                             {/* <DragNDrop data={[]} type="collapse" /> */}
                         </div>
 
