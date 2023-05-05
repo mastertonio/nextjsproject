@@ -28,7 +28,7 @@ export interface IButtonAddCompanyProps {
   user: UserDataProp
 }
 
-const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
+const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
@@ -46,12 +46,12 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
       contact_lname: "",
       contact_email: "",
       contact_phone: "",
-      notes: "",
-      active: "",
+      notes: ""
     },
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    console.log("file", file)
     try {
       showNotification({
         id: "edit-comp",
@@ -76,7 +76,12 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch }) => {
           contact_lname: values.contact_lname,
           contact_email: values.contact_email,
           contact_phone: values.contact_phone,
-        });
+          active: 1
+        }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      });
       if (response) {
         refetch();
         updateNotification({

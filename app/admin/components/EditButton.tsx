@@ -69,7 +69,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
       choices: "",
       format: "",
       decimalPlace: "",
-      currency: "",
+      currency: user.user.currency,
       tooltip: "",
       appendedText: "",
       prefilled: "",
@@ -250,7 +250,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
               </Grid>
             ) : null}
 
-            {form.values.format === "Currency" ? (
+            {/* {form.values.format === "Currency" ? (
               <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                 <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Currency: </Text>
                 <div className="w-[100%] sm:w-[75%]">
@@ -261,7 +261,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
                   />
                 </div>
               </Grid>
-            ) : null}
+            ) : null} */}
 
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
@@ -278,6 +278,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
               <TextInput
+              //in short a placeholder
                 required
                 className="w-[100%] sm:w-[75%] ml-auto"
                 {...form.getInputProps("prefilled")}
@@ -286,7 +287,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
 
             {form.values.formula !== 'Textarea' ? (
               <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
+                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Text: </Text>
                 <TextInput
                   required
                   className="w-[100%] sm:w-[75%] ml-auto"
@@ -310,7 +311,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
                 <Textarea
                   className="w-[100%] sm:w-[75%] ml-auto"
                   {...form.getInputProps("formula")}
-                  disabled={form.values.type !== "Output"}
+                  // disabled={form.values.type !== "Output"}
                 />
               </Grid>
             ) : null}
