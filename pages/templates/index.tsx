@@ -324,7 +324,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
           />
         </div>
 
-        {temp_id !== "" ? (
+        {/* {temp_id !== "" ? (
           <>
             <Divider my="lg" size="xl" style={{ marginTop: 70 }} />
             <TemplateVersion
@@ -339,7 +339,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
           </>
         ) : (
           ""
-        )}
+        )} */}
         {/* <TemplateVersion update={refetch} comp_id={comp_id}  temp_id={temp_id} first_temp={data?.[0]._id} name={name} /> */}
         <div ref={targetRef}></div>
       </div>
