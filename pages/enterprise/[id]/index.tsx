@@ -183,6 +183,37 @@ const Enterprise: React.FC<any> = (login) => {
             <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">ROI DASHBOARD | 2 Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
           </div>
         </div>
+        <div className="overflow-hidden">
+      <div className="ml-[22px] mr-[22px]">
+        <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">Dashboard</h1>
+        {/* <div dangerouslySetInnerHTML={{ __html: title }} /> */}
+        {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
+        {/* <div dangerouslySetInnerHTML={{ __html: description }} /> */}
+      </div>
+      @jom loop mo dito lahat ng section tapos gawan mo ng slider cards lahat
+      {/* <Grid className="sm:flex block">
+        {quotes.position == "top" ? (
+          <QuotesCarousel
+            type={quotes.type}
+            position={quotes.position}
+            elements={quotes.elements}
+          />
+        ) : (
+          ""
+        )}
+        {columns ? columns : ""}
+        {quotes.position == "bottom" ? (
+          <QuotesCarousel
+            type={quotes.type}
+            position={quotes.position}
+            elements={quotes.elements}
+          />
+        ) : (
+          ""
+        )}
+      </Grid> */}
+      {/* { quotes.position == "bottom" ? (<QuotesCarousel type={quotes.type} position={quotes.position} elements={quotes.elements} />) : ""} */}
+    </div>
         {data?.data
           ? data?.data.data.content.sections.map((section: any) => {
             console.log('enterprise section', section)
