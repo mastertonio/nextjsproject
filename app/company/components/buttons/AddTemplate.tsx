@@ -80,7 +80,24 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
           Authorization: `Bearer ${user.tokens.access.token}`,
         },
       });
-      if (response) {
+
+      console.log('add template: template ID', response.data._id)
+
+      const responseVersion = await axios.post(
+        `/v1/company/${user.user.company_id}/template/${response.data._id}/version`,
+        {
+          name: values.name,
+          version: 0,
+          notes: values.notes,
+        }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      });
+
+      console.log('add version: template ID', responseVersion)
+
+      if (response && responseVersion) {
         refetch();
         updateNotification({
           id: "edit-comp",
@@ -95,7 +112,10 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
         setStartDate(null);
         setEndDate(null);
       }
+
+      router.push({ pathname: `/admin/builder/${response.data._id}`, query: { comp_id: user.user.company_id, temp_id: response.data._id, id: response.data._id } })
     } catch (error) {
+      console.log("Add Template", error);
       updateNotification({
         id: "edit-comp",
         color: "red",
@@ -180,7 +200,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
                 className="mr-[10px]"
                 onClick={() => setOpened(false)}
               >
-                Save Template
+                Build Template
               </Button>
               <Button
                 type="button"

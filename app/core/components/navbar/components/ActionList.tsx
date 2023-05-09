@@ -2,19 +2,41 @@ import { Button, Divider, Menu } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import short from "short-uuid";
 import { useStyles } from "@styles/navStyle";
-import { IAdminListProps } from "./AdminList";
+// import { IAdminListProps } from "./AdminList";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
 import { ImProfile } from "react-icons/im";
 import { AiFillCaretDown } from "react-icons/ai";
-import UserContext from "@app/context/user.context";
+import UserContext, { UserDataProp } from "@context/user.context";
 import { useUserStore } from "@app/store/userState";
 import Cookies from 'js-cookie';
 import { signOut } from "next-auth/react";
 
 
-const ActionList: React.FC = () => {
+type iAdminData = {
+  verification_code: string | null;
+  phone: number | null;
+  manager: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  currency: string | null;
+  email_verified_at: Date | null;
+  remember_token: string | null;
+  role: string;
+  isEmailVerified: boolean;
+  avatar: string;
+  name: string;
+  email: string;
+  company_id: string;
+  id: string;
+};
+
+export interface IAdminListProps {
+  user?: iAdminData;
+}
+
+const ActionList: React.FC<Partial<UserDataProp>> = ({ user }: any) => {
   const router = useRouter();
   const p = router.query;
   const [values, setValues] = useState<any>("");
@@ -22,6 +44,8 @@ const ActionList: React.FC = () => {
   // const [cookies, setCookie, removeCookie] = useCookies(['x-access-token']);
 
   const userCtx = useContext(UserContext);
+
+  console.log('list user', user)
 
   const handleChange = (event: any) => {
     setValues(event);
@@ -69,6 +93,7 @@ const ActionList: React.FC = () => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Label>{user?.first_name} {user?.last_name}</Menu.Label>
         <Menu.Label>User Actions</Menu.Label>
         <Menu.Item
           icon={<ImProfile />}

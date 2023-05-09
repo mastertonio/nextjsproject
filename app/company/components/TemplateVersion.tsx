@@ -153,7 +153,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
             user={user}
           />
           <Button radius="sm" size="xs" color="blue" className="ml-[10px]" onClick={() => {
-            console.log(item, "version tmplte")
+            console.log(item._id, "version tmplte")
             router.push({ pathname: `/admin/builder/${item._id}`, query: { comp_id, temp_id, id: item._id } })
           }}>
             Open
@@ -343,7 +343,7 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
                       <td
                         className="w-[140px] cursor-pointer pl-[30px]"
                       >
-                        {element.notes}
+                        {element.notes} {element._id}
                       </td>
                       <td
                         className="w-[110px]"

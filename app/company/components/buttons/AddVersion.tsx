@@ -63,7 +63,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values,'submitted val')
+    console.log(values, 'submitted val')
     try {
       showNotification({
         id: "edit-comp",
@@ -85,6 +85,8 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
           Authorization: `Bearer ${user.tokens.access.token}`,
         },
       });
+
+      console.log('version template', response)
       if (response) {
         update();
         updateNotification({

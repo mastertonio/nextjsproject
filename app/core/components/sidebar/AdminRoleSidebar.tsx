@@ -89,8 +89,8 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             <div className="mt-[35px]">
                 <Image src="/logo.png" alt="random" height={55} width={190} />
             </div>
-            <Text className="mb-[80px] ml-[35px] w-full text-[14px]">
-                Welcome {user.name}
+            <Text className="mb-[80px] ml-[35px] w-full text-[12px]">
+                Welcome {user.first_name} {user.last_name}
             </Text>
 
             {user.role === 'admin' ? (

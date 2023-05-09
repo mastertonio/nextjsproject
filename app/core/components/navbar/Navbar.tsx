@@ -118,7 +118,7 @@ const RoiNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
           <AdminList tokens={tokens} user={user} />
         ) : null}
         <PoweredByRoi />
-        <ActionList />
+        <ActionList user={user} />
       </Group>
     </Header>
   );
