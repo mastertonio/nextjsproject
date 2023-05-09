@@ -83,62 +83,7 @@ export type CalculatorStore = {
 // }
 
 export const useCalculatorStore = create<Cell>((set) => ({
-  cells: [
-    {
-      address: "A1",
-      forcedValue: "",
-      formTags: "input",
-      format: "0,0",
-      formula: null,
-      label: "A1",
-      value: 0,
-    },
-    {
-      address: "A2",
-      forcedValue: "",
-      format: "0,0%",
-      formula: null,
-      formTags: "input",
-      label: "A2",
-      value: 0,
-    },
-    {
-      address: "B1",
-      forcedValue: "",
-      format: "$0,0",
-      formula: "",
-      formTags: "input",
-      label: "B1",
-      value: 0,
-    },
-    {
-      address: "B2",
-      forcedValue: "",
-      format: "$0,0",
-      formula: "",
-      formTags: "input",
-      label: "B2",
-      value: 0,
-    },
-    {
-      address: "A5",
-      forcedValue: "",
-      format: "",
-      formula: "SUM(A2:B2)*10",
-      formTags: "output",
-      label: "A5",
-      value: 0,
-    },
-    {
-      address: "C6",
-      forcedValue: "",
-      format: "",
-      formula: "SUM(A1:A5)*10",
-      formTags: "output",
-      label: "C6",
-      value: 0,
-    }
-  ],
+  cells: [],
   update: (cells: CellProps) => {
     set((state) => {
       const updatedCells = state.cells.map((cell) => {
