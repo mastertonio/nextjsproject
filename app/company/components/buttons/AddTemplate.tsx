@@ -171,7 +171,6 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
             >
               <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Notes: </Text>
               <Textarea
-                required
                 className="w-[550px] ml-auto"
                 placeholder="Enter Notes for Template"
                 {...form.getInputProps("notes")}

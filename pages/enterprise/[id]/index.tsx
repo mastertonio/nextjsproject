@@ -126,7 +126,7 @@ const Enterprise: React.FC<any> = (login) => {
   );
 
   useEffect(() => {
-    console.log("data?.data", data?.data.data.content);
+    console.log("data?.data", data);
     if (data?.data.data.content.sections.length === 0) {
       setSectionEmpty(true)
     } else {
@@ -184,7 +184,7 @@ const Enterprise: React.FC<any> = (login) => {
                   key={section.order}
 
                 />
-                
+
                 <div className="">
                   {/* {section.grayContent.elements.map((elem: any) => {
                     elem.dataType == "Input" ? (
