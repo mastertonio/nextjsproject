@@ -164,7 +164,7 @@ const Enterprise: React.FC<any> = (login) => {
   );
 
   useEffect(() => {
-    console.log("data?.data", data?.data.data.content);
+    console.log("data?.data", data);
     if (data?.data.data.content.sections.length === 0) {
       setSectionEmpty(true)
     } else {
@@ -442,6 +442,7 @@ const Enterprise: React.FC<any> = (login) => {
                       })}
                     </form>
                   </Stack>
+
                   {/* <div className="bg-[#e9ecef]">
                     <InputVariable elements={section.grayContent.elements} type={section.grayContent.dataType} />
                   </div> */}
