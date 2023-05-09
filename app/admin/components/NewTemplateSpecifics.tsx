@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Card, Grid, Text, TextInput, Button } from '@mantine/core'
+import { Card, Grid, Text, TextInput, Button, Loader } from '@mantine/core'
 import { useForm } from "@mantine/form"
 import { MdAddBox, MdModeEdit, MdClose } from 'react-icons/md'
 import { FcComboChart } from 'react-icons/fc'
 import AddSectionModal from './SectionModals/AddSectionModal';
 import { useCardStore } from '@app/store/builder/builderState';
+import EditSectionModal from './SectionModals/EditSectionModal';
+import RemoveSectionModal from './RemoveSectionModal';
 
 type iTemplateProps = {}
 
-const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
+const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
     const cards = useCardStore((state) => state.cards);
     const removeCard = useCardStore((state) => state.removeCard);
     const [opened, setOpened] = useState(false);
@@ -61,8 +63,8 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                                         {section.sectionTitle}
                                     </Text>
                                     <div>
-                                        <MdModeEdit className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
-                                        <MdClose className="text-red-600 text-[25px] cursor-pointer" />
+                                        <EditSectionModal adminId={data.id} id={section._id} user={user} secName={section.sectionTitle} />
+                                        <RemoveSectionModal adminId={data.id} id={section._id} user={user} secName={section.sectionTitle} />
                                     </div>
                                 </div>
                             </Card>
@@ -82,7 +84,12 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user }) => {
                             </div>
                         </Card>
                     ))} */}
-
+                    {isFetching ?
+                        <Card className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
+                            <div className="flex flex-row items-center justify-between">
+                                <Loader variant="dots" />
+                            </div>
+                        </Card> : ""}
                     <Card className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder onClick={() => setUpdate(true)}>
                         <div className="flex flex-row items-center">
                             <MdAddBox className="text-blue-600 text-[30px] mr-[10px]" />

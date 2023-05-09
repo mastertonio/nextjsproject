@@ -17,11 +17,13 @@ import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import { UserDataProp } from '@app/context/user.context';
 import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
-import EditButton from './EditButton';
+import NewAddSectionModal from './NewAddSectionModal';
 
 type iSectionProps = {
     data: any,
     user: UserDataProp
+    choices: []
+    fullData: []
 }
 
 export type iSectionData = {
@@ -35,7 +37,7 @@ export type iSectionData = {
     address: string
 }
 
-const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
+const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData }) => {
     const questions = useQuestionPropsStore((state) => state.questions)
     const writeup = useSectionWriteupStore((state) => state.sectionWriteUp)
     const cardSection = useCardStore((state) => state.cards)
@@ -60,7 +62,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     // const [updateChoice, setUpdateChoice] = useState(false)
     const sectionData = useSectionsStore((state) => state.section)
     const addEmptySection = useBuilderStore((state) => state.addSection)
-    const adminData = useAdminSectionStore((state) => state.sections)
+    // const adminData = useAdminSectionStore((state) => state.sections)
 
     const handleOpenWriteModal = (id: any) => {
         setUpdateWriteUp((prev: any) => ({ ...prev, [id]: true }))
@@ -85,7 +87,6 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
     const handleCloseEntryModal = (id: any) => {
         setUpdateEntry((prev: any) => ({ ...prev, [id]: false }))
     }
-
     const sectionsAll = data?.sections.map((section: SectionStateAdminTool, index: any) => {
         return (
             <div className="w-full mt-[40px]" key={section._id}>
@@ -134,13 +135,13 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                     </Card>
                     <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                         <div className="mt-[20px]">
-                            <DragNDrop data={section.grayContent?.elements} type={section.grayContent?.dataType} />
+                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} choices={choices} />
                             {/* <DragNDrop data={[]} type="collapse" /> */}
                         </div>
 
                         <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
                             {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
-                            <EditButton id={section._id} user={user} adminId={data.id} sectionData={section} setOpenChoice={setUpdateChoice} setSectionData={setSectData}/>
+                            <NewAddSectionModal id={section._id} user={user} adminId={data.id} sectionData={section} setOpenChoice={setUpdateChoice} setSectionData={setSectData} choices={choices} fullData={fullData} />
                             {/* <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} /> */}
                         </Grid>
                     </Card>
@@ -152,7 +153,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user }) => {
                 <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                 <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
             </div>
-        )}
+        )
+    }
     )
 
     return (

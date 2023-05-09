@@ -75,7 +75,7 @@ function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
     };
 
     const items = state.map((item, index) => (
-        <Draggable key={item.id} index={index} draggableId={`${item.id}-sectionName`}>
+        <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`}>
             {(provided, snapshot) => (
                 <div>
                     <div
@@ -105,8 +105,8 @@ function SectionDnd({ data, type, setUpdate }: DragNDropProps) {
                                 size="sm"
                                 className="h-[20px] w-full"
                                 onClick={() => {
-                                    remove(item.id)
-                                    console.log(remove(item.id))
+                                    remove(item._id)
+                                    console.log(remove(item._id))
                                 }}
                             >
                                 <IconX size={12} stroke={1.5} />

@@ -8,6 +8,9 @@ import { useModalEntryStore } from '@app/store/builderStore';
 import { IBuilderSubState, useBuilderStore, useNewStore } from '@app/store/builder/builderState';
 import { iSectionData } from '../../../admin/components/Sections'
 import EditQuestions from '@app/admin/components/SectionModals/EditQuestions';
+import axios from 'axios';
+import { UserDataProp } from '@app/context/user.context';
+import EditSectionEntryModal from '../SectionEditEntries';
 
 const useStyles = createStyles((theme) => ({
     item: {
@@ -47,8 +50,12 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface DragNDropProps {
-    data?: iSectionData[],
+    data?: any[],
     type?: string,
+    user: UserDataProp,
+    id?: string
+    adminId: string,
+    choices: []
 }
 
 // type iSectionNewProps = {
@@ -81,7 +88,7 @@ type iSectionProps = {
     address: string
 }
 
-export function DragNDrop({ data, type }: DragNDropProps) {
+export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropProps) {
     const { classes, cx } = useStyles();
     const show = useModalEntryStore((state) => state.show);
     const setUpdateChoice = useNewStore((state) => state.setUpdateChoice)
@@ -112,10 +119,10 @@ export function DragNDrop({ data, type }: DragNDropProps) {
         }))
     };
 
-    const items = state.map((item, index) => {
+    const items = data?.map((item, index) => {
         console.log('item drag', item)
         return (
-            <Draggable key={item.id} index={index} draggableId={`${item.id}-sectionName`}>
+            <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`} isDragDisabled={true}>
                 {(provided, snapshot) => (
                     <div>
                         <div
@@ -134,7 +141,7 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                             </div>
                             <div>
                                 <div className="h-[20px] flex flex-row">
-                                    <IconEdit size={18} stroke={1.5} />
+                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices}/>
                                     <Text className="text-[14px] ml-[5px]">{item.title}</Text>
                                 </div>
                             </div>
@@ -145,7 +152,14 @@ export function DragNDrop({ data, type }: DragNDropProps) {
                                     color="red"
                                     size="sm"
                                     className="h-[20px] w-full"
-                                // onClick={() => remove(item.id)}
+                                    onClick={async () => {
+                                        console.log(item)
+                                        await axios.delete(`/v1/company/admintool/${adminId}/section/${id}/element/${item._id}`, {
+                                            headers: {
+                                                Authorization: `Bearer ${user.tokens.access.token}`,
+                                            }
+                                        })
+                                    }}
                                 >
                                     <IconX size={12} stroke={1.5} />
                                 </Button>

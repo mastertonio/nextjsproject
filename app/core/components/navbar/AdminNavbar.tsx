@@ -19,7 +19,7 @@ import DashboardDrawer from "../drawer/DrawerContent";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "react-query";
 import UserContext, { UserContextTypes, UserDataProp } from "@context/user.context";
-
+import Link from 'next/link';
 import { UserState, useUserStore } from "@app/store/userState";
 import { GetServerSideProps } from "next";
 
@@ -48,6 +48,11 @@ const AdminNavbar: React.FC<AdminDataProp> = ({ user, tokens, templateID, id }) 
     const toggleDrawer = () => {
         setIsOpen((prevState) => !prevState)
     }
+
+    const handleLinkClick = (e: any) => {
+        e.preventDefault();
+        window.open(e.target.href, '_blank');
+    };
 
     return (
         <Header height={opened === true ? 220 : 70} p="md" className={`${classes.header} flex-col sm:flex-row`}>
@@ -131,13 +136,25 @@ const AdminNavbar: React.FC<AdminDataProp> = ({ user, tokens, templateID, id }) 
                 {/* <AdminList tokens={tokens} user={user} /> */}
                 <Button
                     type="button"
+                    className="mr-auto bg-blue-600">
+                    <Link href={`/enterprise/${router.query.id}?temp_ver=${router.query.id}`} passHref replace>
+                        <a target="_blank" onClick={handleLinkClick}>Enterprise</a>
+                    </Link>
+                </Button>
+                {/* <Button
+                    type="button"
                     className="mr-auto bg-blue-600"
                     onClick={() => {
-                        router.push({ pathname: `/enterprise/${templateID}`, query: { temp_ver: templateID, id: id } });
+
+                        // Open the URL in a new tab
+                        window.open('/new-url', '_blank')
+
+                        // Push the current page's URL to the browser history
+                        router.push({ pathname: `/enterprise/${router.query.id}`, query: { temp_ver: id } });
                     }}
                 >
                     Enterprise
-                </Button>
+                </Button> */}
                 <PoweredByRoi />
                 <ActionList />
             </Group>

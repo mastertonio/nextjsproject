@@ -126,7 +126,7 @@ const Enterprise: React.FC<any> = (login) => {
   );
 
   useEffect(() => {
-    console.log("data?.data", data);
+    console.log("data?.data", data?.data.data.content);
     if (data?.data.data.content.sections.length === 0) {
       setSectionEmpty(true)
     } else {
@@ -184,7 +184,16 @@ const Enterprise: React.FC<any> = (login) => {
                   key={section.order}
 
                 />
+                
                 <div className="">
+                  {/* {section.grayContent.elements.map((elem: any) => {
+                    elem.dataType == "Input" ? (
+                      
+                    ) : ""
+                  })} */}
+                  {/* <div className="bg-[#e9ecef]">
+                    <InputVariable elements={section.grayContent.elements} type={section.grayContent.dataType} />
+                  </div> */}
                   {section.grayContent.dataType == "sliders" ? (
                     <SimpleGrid
                       cols={3}
@@ -208,7 +217,7 @@ const Enterprise: React.FC<any> = (login) => {
                     </div>
                   ) : (
                     <div className="bg-[#e9ecef]">
-                      <br></br>
+                      <InputVariable elements={section.grayContent.elements as iElemsProp[]} type={section.grayContent.dataType} />
                     </div>
                   )}
                 </div>

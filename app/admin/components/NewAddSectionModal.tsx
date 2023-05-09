@@ -27,6 +27,8 @@ interface IModalEntryProps {
   user: UserDataProp
   id?: string
   adminId: string
+  choices: []
+  fullData: []
 }
 
 type iSectionProps = {
@@ -54,7 +56,7 @@ type formProps = {
   address: string,
 }
 
-const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id }) => {
+const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id, choices, fullData }) => {
   const [opened, setOpened] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
@@ -140,11 +142,18 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
         }
       ).then((response) => response.data),
     onMutate: (roi) => {
-      console.log(roi, "roiroriiro")
-      console.log("IIIIIIIIIIIII", id)
+      console.log("MUTATE", roi)
+      setOpened(false)
+      showNotification({
+        id: "adding-entry",
+        loading: true,
+        title: `Adding entries`,
+        message: "Please wait ...",
+        autoClose: false,
+        disallowClose: true,
+      });
     },
     onSuccess: (newRoi) => {
-      setOpened(false)
       Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
@@ -152,13 +161,33 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
           // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
         ]
       )
-
-
+      updateNotification({
+        id: "adding-entry",
+        color: "teal",
+        title: `Entry Added!`,
+        message: "",
+        icon: <IconCheck size={16} />,
+        autoClose: 3000,
+      });
     },
     onError: (error) => {
-      // if (error instanceof Error) { //Error or AxiosError
-      //set message here
-      // }
+      if (error instanceof Error) {
+        updateNotification({
+          id: "adding-entry",
+          color: "red",
+          title: `Adding entries failed`,
+          message: error.message,
+          autoClose: false,
+        });
+      }
+
+      updateNotification({
+        id: "adding-entry",
+        color: "red",
+        title: `Adding entries failed`,
+        message: "Something went wrong, Please try again",
+        autoClose: false,
+      });
     }
   })
 
@@ -278,7 +307,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
               <TextInput
-              //in short a placeholder
+                //in short a placeholder
                 required
                 className="w-[100%] sm:w-[75%] ml-auto"
                 {...form.getInputProps("prefilled")}
@@ -311,7 +340,7 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
                 <Textarea
                   className="w-[100%] sm:w-[75%] ml-auto"
                   {...form.getInputProps("formula")}
-                  // disabled={form.values.type !== "Output"}
+                // disabled={form.values.type !== "Output"}
                 />
               </Grid>
             ) : null}
@@ -322,17 +351,12 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
                 <div className="w-[100%] sm:w-[75%]">
                   <Select
                     placeholder="Choose"
-                    data={[
-                      { value: 'React', label: 'React' },
-                      { value: 'Angular', label: 'Angular' },
-                      { value: 'Svelte', label: 'Svelte' },
-                      { value: 'Vue', label: 'Vue' },
-                    ]}
+                    data={choices ? choices : []}
                     onChange={(val) => {
                       form.setFieldValue('formula', `${form.values.formula} ${val}`)
                     }
                     }
-                    disabled={form.values.type !== "Output"}
+                    // disabled={form.values.type !== "Output"}
                   />
                 </div>
               </Grid>
@@ -388,4 +412,4 @@ const EditButton: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenC
   );
 };
 
-export default EditButton;
+export default NewAddSectionModal;
