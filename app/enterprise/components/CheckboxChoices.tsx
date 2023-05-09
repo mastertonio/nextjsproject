@@ -29,15 +29,15 @@ const CheckboxChoices: React.FC<Partial<iCheckboxChoices>> = ({ choices, other, 
                 radius="xl"
                 key={choice.id}
             />)) : ""}
-            {other ? 
-            <>
-            <Checkbox
-                label={other?.name}
-                color="dark"
-                radius="xl"
-                onClick={()=> hide?.()}
-            />
-            </> : ""}
+            {other ?
+                <>
+                    <Checkbox
+                        label={other?.name}
+                        color="dark"
+                        radius="xl"
+                        onClick={() => hide?.()}
+                    />
+                </> : ""}
         </div>
     );
 }
