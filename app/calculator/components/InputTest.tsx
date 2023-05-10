@@ -100,20 +100,21 @@ const InputTest: React.FC<CellPropsType> = ({ cell }) => {
     }
 
     return (
-        <NumberInput
-            key={cell.address}
-            label={cell.label}
-            hideControls
-            defaultValue={0}
-            value={cell.value == Infinity ? 0 : cell.value}
-            onBlur={(event: BaseSyntheticEvent) => {
-                update({
-                    ...cell,
-                    value: +event.target.value
-                })
-                // console.log(cells, "from Inputtest")
-            }}
-        />
+        // <NumberInput
+        //     key={cell.address}
+        //     label={cell.label}
+        //     hideControls
+        //     defaultValue={0}
+        //     value={cell.value == Infinity ? 0 : cell.value}
+        //     onBlur={(event: BaseSyntheticEvent) => {
+        //         update({
+        //             ...cell,
+        //             value: +event.target.value
+        //         })
+        //         // console.log(cells, "from Inputtest")
+        //     }}
+        // />
+        <></>
     )
 }
 

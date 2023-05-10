@@ -130,8 +130,8 @@ const Enterprise: React.FC<any> = (login) => {
     HTMLDivElement,
     HTMLDivElement
   >({ offset: 30, isList: true });
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     console.log("cells", cells)
   }, [cells])
 
@@ -304,7 +304,7 @@ const Enterprise: React.FC<any> = (login) => {
                         console.log('elements', elem)
                         return (
                           <Stack key={elem._id}>
-                            {elem.dataType == "Input" && elem.appendedText ? (
+                            {elem.dataType == "Input" && elem.tooltip ? (
                               <Grid
                                 className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
                               >
@@ -378,36 +378,6 @@ const Enterprise: React.FC<any> = (login) => {
                                   className="w-[280px] ml-[30px] sm:ml-auto mt-[10px] sm:mt-0"
                                   color="indigo" size="xl" />
                               </Grid>
-                            ) : elem.dataType == "Slider" ? (
-                              <Grid
-                                key={elem._id}
-                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                              >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <Slider
-                                  thumbSize={26}
-                                  thumbChildren={<FaGripLinesVertical />}
-                                  size={15}
-                                  color="teal"
-                                  radius="xs"
-                                  className="w-[400px] ml-auto" defaultValue={10}
-                                  styles={(theme) => ({
-                                    track: {
-                                      borderRadius: 0,
-                                    },
-                                    thumb: {
-                                      height: 30,
-                                      width: 30,
-                                      borderColor: '#D9D9D9',
-                                      backgroundColor: theme.white,
-                                      borderWidth: 1,
-                                      boxShadow: theme.shadows.sm,
-                                      borderRadius: 3,
-                                      color: '#E8E7E6'
-                                    },
-                                  })}
-                                />
-                              </Grid>
                             ) : elem.dataType == "Checkbox" ? (
                               <Grid
                                 key={elem._id}
@@ -440,6 +410,31 @@ const Enterprise: React.FC<any> = (login) => {
                                     placeholder="Pick one"
                                   />
                                 </div>
+                              </Grid>
+                            ) : elem.dataType == "Output" && elem.appendedText ? (
+                              <Grid
+                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                              >
+                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Input
+                                  className="ml-auto w-[400px] md:w-[300px] 2xl:w-[285px] "
+                                  // icon={state.icon ? state.icon : ""}
+                                  type="number"
+                                  key={elem._id}
+                                  // id={elem.id}
+                                  // {...register(`input${elem._id}`)}
+                                  // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                  // rightSection={
+                                  //   elem.tooltip ?
+                                  //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                  //       <Button type="submit" variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionCircle size="18" /></Button>
+                                  //     </Tooltip> : ""
+                                  // }
+                                  disabled={true}
+                                  placeholder="$0"
+                                // defaultValue={myCompany.name}
+                                />
+                                <Button type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
                               </Grid>
                             ) : ""}
                           </Stack>

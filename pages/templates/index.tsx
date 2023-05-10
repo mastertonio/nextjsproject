@@ -73,6 +73,8 @@ const TemplatesDashboard: React.FC<any> = (login) => {
   const [name, setName] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
+  console.log('template login', data)
+
   useEffect(() => {
     setSortedData(data?.data);
   }, [data]);
@@ -119,11 +121,18 @@ const TemplatesDashboard: React.FC<any> = (login) => {
     name: (
       <span
         className="cursor-pointer w-[10px]"
-        onClick={() => {
-          scrollIntoView({ alignment: "center" });
+        onClick={async () => {
+          // scrollIntoView({ alignment: "center" });
           setTemp(item._id);
           setComp(item.company_id);
           setName(item.name);
+          // get the version id
+          const responseVersion = await axios.get(`/v1/company/${item.company_id}/template/${item._id}/version`, {
+            headers: {
+              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+            },
+          })
+          console.log('get version id', responseVersion.data)
           refetch;
         }}
       >
