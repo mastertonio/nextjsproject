@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider } from "@mantine/core";
+import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon } from "@mantine/core";
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { useForm } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
-import { useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage, randomId } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { showNotification, updateNotification } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons";
+import { IconCheck, IconTrash } from "@tabler/icons";
 import { useMutation, useQueryClient } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
@@ -45,7 +46,7 @@ type iSectionProps = {
 type formProps = {
   title: string,
   type: string,
-  choices: string,
+  choices: any,
   format: string,
   decimalPlace: string,
   currency: string,
@@ -58,7 +59,10 @@ type formProps = {
 
 const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id, choices, fullData }) => {
   const [opened, setOpened] = useState(false);
-  const [value] = useLocalStorage({ key: "auth-token" });
+  const initialValue =
+    "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+  const [value, setValue] = useState<string>(initialValue)
+  // const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
   const userZ = useUserStore((state) => (state.user))
@@ -68,7 +72,13 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     initialValues: {
       title: "",
       type: "",
-      choices: "",
+      choices: [
+        {
+          id: randomId(),
+          label: "",
+          value: "",
+        }
+      ],
       format: "",
       decimalPlace: "",
       currency: user.user.currency,
@@ -80,6 +90,22 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     },
   })
 
+  const choicesFields = form.values.choices.map((item, index) => (
+    <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={item.id}>
+      <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
+      <TextInput
+        className="w-[100%] sm:w-[40%] ml-auto"
+        {...form.getInputProps(`choices.${index}.label`)}
+      />
+      <TextInput
+        className="w-[100%] sm:w-[20%] ml-auto"
+        {...form.getInputProps(`choices.${index}.value`)}
+      />
+      <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
+        <IconTrash size="1rem" />
+      </ActionIcon>
+    </Grid>
+  ))
 
   const dataSelect = [
     { value: 'Input', label: 'Input' },
@@ -122,7 +148,8 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
               {
                 title: roi.title,
                 dataType: roi.type,
-                choices: roi.choices,
+                // choices: roi.choices,
+                choices: [],
                 format: roi.format,
                 decimalPlace: roi.decimalPlace,
                 currency: roi.currency,
@@ -206,7 +233,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       >
         <form onSubmit={form.onSubmit((values) => addEntry.mutate(values))}>
           <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
-            {value}
+            {/* {value} */}
             {/* <Grid className="p-[10px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
               <TextInput
@@ -224,8 +251,8 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 {...form.getInputProps(`title`)}
               />
               {/* <div className="w-[100%] sm:w-[75%] ml-auto">
-              <RichTextSection value={value} setValue={setValue} />
-            </div> */}
+                <RichTextSection value={value} setValue={setValue} />
+              </div> */}
             </Grid>
 
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
@@ -240,19 +267,23 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
             </Grid>
 
             {form.values.type === 'Dropdown' || form.values.type === 'Radio' || form.values.type === 'Checkbox' ? (
-              <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Choices: </Text>
+              <div className="p-[10px] w-[100%] sm:w-[70%] mb-[60px] ml-auto">
+                {/* <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Choices: </Text> */}
+                {choicesFields}
                 <Button
                   type="button"
                   radius="sm"
                   size="sm"
                   color="teal"
-                  className="ml-auto w-[100%] sm:w-[unset]"
-                  onClick={addChoice}
+                  className="float-right w-[100%] sm:w-[unset]"
+                  // onClick={addChoice}
+                  onClick={() =>
+                    form.insertListItem('choices', { id: randomId(), label: "", value: "" })
+                  }
                 >
                   Add New Choice
                 </Button>
-              </Grid>
+              </div>
             ) : null}
 
             {form.values.type !== 'Textarea' ? (
@@ -352,7 +383,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                       form.setFieldValue('formula', `${form.values.formula} ${val}`)
                     }
                     }
-                    // disabled={form.values.type !== "Output"}
+                  // disabled={form.values.type !== "Output"}
                   />
                 </div>
               </Grid>

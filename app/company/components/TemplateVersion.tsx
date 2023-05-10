@@ -88,6 +88,8 @@ const TemplateVersion: React.FC<ITemplateVersionType> = ({
   const [status, setStatus] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
+  console.log("templates version", data)
+
   useEffect(() => {
     setSortedData(data?.data);
   }, [data]);
