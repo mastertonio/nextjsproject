@@ -484,7 +484,7 @@ const Calc: React.FC = () => {
     return (
         <Container className={`${classes.root} max-w-[100%] bg-gray-100`}>
 
-            {cells.map((cell) => <InputTest cell={cell} key={cell.address} />)}
+            {/* {cells.map((cell) => <InputTest cell={cell} key={cell.address} />)} */}
             {/* <div className="container mx-auto">
                 <h1 className="text-3xl font-bold">Test VLOOKUP</h1>
                 <Table />
