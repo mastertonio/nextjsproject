@@ -16,9 +16,10 @@ import Sections from "@app/admin/components/NewSections";
 import { useRouter } from "next/router";
 import { UserState, useUserStore } from "@app/store/userState";
 import { getSession } from "next-auth/react";
-import { useTokenStore } from "@app/store/builder/builderState"
+import { useCalculationStore, useTokenStore } from "@app/store/builder/builderState"
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useAdminSectionStore } from "@app/store/adminToolSectionStore";
+import { useCalculatorSheetStore } from "@app/store/builder/calculatorStore";
 
 const AdminBuilder: React.FC<any> = (login) => {
   const router = useRouter();
@@ -26,14 +27,15 @@ const AdminBuilder: React.FC<any> = (login) => {
   const { classes } = useStyles();
   const userZ = useUserStore((state) => (state.user))
   const tokenChar = useTokenStore((state) => (state.tokenChar))
+  const cells = useCalculatorSheetStore((state)=> state.cells)
   const sectionStore = useAdminSectionStore
   // const sections = useAdminSectionStore((state) => (state.sections))
 
-  console.log('template', router.query.temp_id)
-  console.log('version', router.query.id)
+  // console.log('template', router.query.temp_id)
+  // console.log('version', router.query.id)
 
   const getAdminToolData = async () => {
-    const res = await axios.get(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`, {
+    const res = await axios.get(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.ver_id}/adminTool`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`
       },
@@ -51,7 +53,9 @@ const AdminBuilder: React.FC<any> = (login) => {
   if (isSuccess) {
     const flatData = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
     const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map((elem: { address: string; title: string; }) => ({ value: elem.address, label: elem.title }))
-    console.log('admintool', choices)
+    // const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map(() => )
+    // useCalculationStore.
+    // console.log('admintool', flatData)
     return (
       <AppShell
         styles={{

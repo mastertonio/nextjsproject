@@ -130,6 +130,11 @@ const Enterprise: React.FC<any> = (login) => {
     HTMLDivElement,
     HTMLDivElement
   >({ offset: 30, isList: true });
+  
+  useEffect(()=>{
+    console.log("cells", cells)
+  }, [cells])
+
   const getEnterpriseData = async () => {
     return await axios.get(`/v1/templateBuilder/${router.query.temp_ver}`, {
       headers: {

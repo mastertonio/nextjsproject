@@ -81,7 +81,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
         },
       });
 
-      console.log('add template: template ID', response.data._id)
+      console.log('add template: template ID', response)
 
       const responseVersion = await axios.post(
         `/v1/company/${user.user.company_id}/template/${response.data._id}/version`,
@@ -113,7 +113,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
         setEndDate(null);
       }
 
-      router.push({ pathname: `/admin/builder/${response.data._id}`, query: { comp_id: user.user.company_id, temp_id: response.data._id, id: response.data._id } })
+      router.push({ pathname: `/admin/builder/${response.data._id}`, query: { comp_id: user.user.company_id, temp_id: response.data._id, ver_id: response.data.templateVersion.id } })
     } catch (error) {
       console.log("Add Template", error);
       updateNotification({

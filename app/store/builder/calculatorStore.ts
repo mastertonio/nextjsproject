@@ -17,6 +17,7 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
+import { ReactNode } from "react";
 
 const FormulaParser = require("hot-formula-parser");
 const formulas = FormulaParser.SUPPORTED_FORMULAS;
@@ -27,6 +28,32 @@ export interface UserState {
   login: (user: UserContextTypes) => void;
   setToken: (token: string) => void;
   setRefresh: (refresh: string) => void;
+}
+
+export type NewCellProps = {
+  address?: string
+  appendedText?: string
+  choices: any
+  classes: string
+  currency: string
+  dataType: string
+  decimalPlace: number
+  forcedValue: number | string
+  format: string
+  formula: string
+  icon: string
+  isDisabled: boolean
+  isProcess: boolean
+  label: string
+  prefilled: string
+  rightSection: string
+  sliderType: string
+  text: string
+  title: string
+  toggle: boolean
+  tooltip: string
+  value: number
+  _id: string
 }
 
 export type CellProps = {
@@ -44,15 +71,15 @@ export type CellProps = {
 };
 
 export type Cell = {
-  cells: CellProps[];
-  dependant?: CellProps[];
-  dependencies?: CellProps[];
-  update: (cells: CellProps) => void;
+  cells: NewCellProps[];
+  dependant?: NewCellProps[];
+  dependencies?: NewCellProps[];
+  update: (cells: NewCellProps) => void;
 };
 
 export type CalculatorStore = {
-  cells: CellProps[];
-  update: (cells: CellProps) => void;
+  cells: NewCellProps[];
+  update: (cells: NewCellProps) => void;
 };
 
 
@@ -84,7 +111,7 @@ export type CalculatorStore = {
 
 export const useCalculatorStore = create<Cell>((set) => ({
   cells: [],
-  update: (cells: CellProps) => {
+  update: (cells: NewCellProps) => {
     set((state) => {
       const updatedCells = state.cells.map((cell) => {
         if (cell.address === cells.address) {
@@ -194,17 +221,33 @@ function cellObjectsTo2DArray(cellObjects: CellProps[], numRows: number, numCols
 }
 
 
-export function transformData(data: CellProps[]) {
+export function transformData(data: NewCellProps[]) {
   const result = [];
 
   for (const obj of data) {
     const row = [
       obj.address,
-      null,
-      obj.formTags,
+      obj._id,
+      obj.appendedText,
+      obj.choices,
+      obj.classes,
+      obj.currency,
+      obj.dataType,
+      obj.decimalPlace,
+      obj.forcedValue,
       obj.format,
       obj.formula,
+      obj.icon,
+      obj.isDisabled,
+      obj.isProcess,
       obj.label,
+      obj.prefilled,
+      obj.rightSection,
+      obj.sliderType,
+      obj.text,
+      obj.title,
+      obj.toggle,
+      obj.tooltip,
       obj.value,
     ];
 
@@ -220,9 +263,9 @@ interface DataRow {
 
 
 function calculateFormula(
-  cell: CellProps,
+  cell: NewCellProps,
   state: CalculatorStore
-): CellProps | null {
+): NewCellProps | null {
   // console.log(cell.formula, "im the formula", formulas);
   const formulaRegex = new RegExp(`\\b(${formulas.join("|")})\\b`);
   const parser = new FormulaParser.Parser();

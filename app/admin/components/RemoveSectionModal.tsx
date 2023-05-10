@@ -61,13 +61,14 @@ const RemoveSectionModal: React.FC<RemoveSectionModalProps> = ({ id, user, secNa
         [
           queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
           queryClient.invalidateQueries({ queryKey: ['graphData'] }),
-          queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+          queryClient.invalidateQueries({ queryKey: ['ranking_list'] }),
+          queryClient.invalidateQueries({ queryKey: ['adminToolData'] })
         ]
       )
       updateNotification({
         id: "delete-row",
         color: "teal",
-        title: `${newRoi.title} removed successfully`,
+        title: `Section removed successfully`,
         message: "",
         icon: <IconCheck size={16} />,
         autoClose: 3000,

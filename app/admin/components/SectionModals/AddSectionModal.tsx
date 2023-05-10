@@ -50,10 +50,12 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
         </div>
     )
 
+    console.log("router.query.ver_id", router.query.ver_id)
+
     const createSection = useMutation({
         mutationFn: (roi: string) =>
             axios.put(
-                `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+                `/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.ver_id}/adminTool`,
                 {
                     sectionTitle: roi
                 },
@@ -64,6 +66,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 }
             ).then((response) => response.data),
         onMutate: () => {
+            console.log("on mutate",router.query.temp_id, router.query.ver_id)
             setOpened(false)
             showNotification({
                 id: "adding-section",

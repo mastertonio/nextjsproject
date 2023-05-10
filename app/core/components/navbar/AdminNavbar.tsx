@@ -137,7 +137,7 @@ const AdminNavbar: React.FC<AdminDataProp> = ({ user, tokens, templateID, id }) 
                 <Button
                     type="button"
                     className="mr-auto bg-blue-600">
-                    <Link href={`/enterprise/${router.query.id}?temp_ver=${router.query.id}`} passHref replace>
+                    <Link href={`/enterprise/${router.query.id}?temp_ver=${router.query.ver_id}`} passHref replace>
                         <a target="_blank" onClick={handleLinkClick}>Preview</a>
                     </Link>
                 </Button>
