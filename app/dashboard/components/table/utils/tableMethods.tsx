@@ -273,6 +273,16 @@ export interface ICompanyTemplatesProps {
   status: string;
 }
 
+export interface ITemplatesProps {
+  _id: string;
+  name: string;
+  notes: string;
+  company_id: string;
+  active: string;
+  status: string;
+  version_id: string;
+}
+
 export const filterCompanyTemplatesData = (
   data: ICompanyTemplatesProps[],
   search: string
