@@ -41,7 +41,6 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         initialValues: {
             id: data._id,
             title: data.title,
-            choices: "",
             format: data.format,
             decimalPlace: data.decimalPlace ? data.decimalPlace : "",
             currency: data.currency ? data.currency : "",
@@ -79,6 +78,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
             },
         }).then((response) => response.data),
         onMutate: (roi) => {
+            console.log("roi", roi)
             setOpened(false)
             showNotification({
                 id: "update-section",
@@ -156,28 +156,28 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         <>
             <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${secName} section`)} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%] mx-auto">
                 <form onSubmit={form.onSubmit((values) => editSectionEntry.mutate(values))}>
-                <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
-                    <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("id")}
-                            disabled={true}
-                        />
-                    </Grid>
+                    <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
+                        <Grid className="p-[10px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
+                            <TextInput
+                                required
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps("id")}
+                                disabled={true}
+                            />
+                        </Grid>
 
-                    <Grid className="p-[10px] mt-[20px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
-                        <Textarea
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps(`title`)}
-                        />
+                        <Grid className="p-[10px] mt-[20px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
+                            <Textarea
+                                required
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps(`title`)}
+                            />
 
-                    </Grid>
+                        </Grid>
 
-                    {/* <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                        {/* <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Type: </Text>
                         <div className="w-[100%] sm:w-[75%]">
                             <Select
@@ -188,7 +188,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                         </div>
                     </Grid> */}
 
-                    {/* {form.values.type === 'Dropdown' || form.values.type === 'Radio' || form.values.type === 'Checkbox' ? (
+                        {/* {form.values.type === 'Dropdown' || form.values.type === 'Radio' || form.values.type === 'Checkbox' ? (
                         <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Choices: </Text>
                             <Button
@@ -204,107 +204,109 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                         </Grid>
                     ) : null} */}
 
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
-                        <div className="w-[100%] sm:w-[75%]">
-                            <Select
-                                placeholder="Choose"
-                                data={format}
-                                {...form.getInputProps("format")}
-                            />
-                        </div>
-                    </Grid>
-
-                    {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" || data.format === "Number" || data.format === "Percent" || data.format === "Currency" ? (
                         <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
-                            <TextInput
-                                required
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps("decimalPlace")}
-                            />
-                        </Grid>
-                    ) : null}
-
-                    {form.values.format === "Currency" || data.format === "Currency" ? (
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Currency: </Text>
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
                             <div className="w-[100%] sm:w-[75%]">
                                 <Select
                                     placeholder="Choose"
-                                    data={currencyFormat}
-                                    {...form.getInputProps("currency")}
+                                    data={format}
+                                    {...form.getInputProps("format")}
                                 />
                             </div>
                         </Grid>
-                    ) : null}
 
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("tooltip")}
-                        />
-                    </Grid>
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("prefilled")}
-                        />
-                    </Grid>
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("appendedText")}
-                        />
-                    </Grid>
+                        {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" || data.format === "Number" || data.format === "Percent" || data.format === "Currency" ? (
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
+                                <TextInput
+                                    className="w-[100%] sm:w-[75%] ml-auto"
+                                    {...form.getInputProps("decimalPlace")}
+                                />
+                            </Grid>
+                        ) : null}
 
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("address")}
-                        />
-                    </Grid>
+                        {form.values.format === "Currency" || data.format === "Currency" ? (
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Currency: </Text>
+                                <div className="w-[100%] sm:w-[75%]">
+                                    <Select
+                                        placeholder="Choose"
+                                        data={currencyFormat}
+                                        {...form.getInputProps("currency")}
+                                    />
+                                </div>
+                            </Grid>
+                        ) : null}
 
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
-                        <Textarea
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("formula")}
-                        />
-                    </Grid>
-
-                    <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
-                        <div className="w-[100%] sm:w-[75%]">
-                            <Select
-                                placeholder="Choose"
-                                data={choices ? choices : []}
-                                {...form.getInputProps("sections")}
+                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
+                            <TextInput
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps("tooltip")}
                             />
-                        </div>
-                    </Grid>
+                        </Grid>
+                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
+                            <TextInput
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps("prefilled")}
+                            />
+                        </Grid>
+                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
+                            <TextInput
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps("appendedText")}
+                            />
+                        </Grid>
 
-                    <Divider className="mt-[30px] mb-[30px]" />
+                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
+                            <TextInput
+                                required
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps("address")}
+                            />
+                        </Grid>
 
-                    <Grid justify="flex-end" className="mt-[20px] mb-[20px] sm:mb-0 flex flex-col sm:flex-row m-0 sm:m-[-8px] pt-0 sm:pt-[20px">
-                        <Button
-                            type="submit"
-                            radius="sm"
-                            size="sm"
-                            color="teal"
-                            className="mr-0 sm:mr-[10px] mb-[10px]"
-                        >
-                            Update Entry
-                        </Button>
-                        {/* <Button
+                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
+                            <Textarea
+                                className="w-[100%] sm:w-[75%] ml-auto"
+                                {...form.getInputProps("formula")}
+                            // disabled={form.values.type !== "Output"}
+                            />
+                        </Grid>
+
+                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
+                            <div className="w-[100%] sm:w-[75%]">
+                                <Select
+                                    placeholder="Choose"
+                                    data={choices ? choices : []}
+                                    onChange={(val) => {
+                                        console.log("valval", val)
+                                        form.setFieldValue('formula', `${form.values.formula} ${val}`)
+                                    }
+                                    }
+                                // disabled={form.values.type !== "Output"}
+                                />
+                            </div>
+                        </Grid>
+
+                        <Divider className="mt-[30px] mb-[30px]" />
+
+                        <Grid justify="flex-end" className="mt-[20px] mb-[20px] sm:mb-0 flex flex-col sm:flex-row m-0 sm:m-[-8px] pt-0 sm:pt-[20px">
+                            <Button
+                                type="submit"
+                                radius="sm"
+                                size="sm"
+                                color="teal"
+                                className="mr-0 sm:mr-[10px] mb-[10px]"
+                            >
+                                Update Entry 111
+                            </Button>
+                            {/* <Button
                             type="button"
                             radius="sm"
                             size="sm"
@@ -313,18 +315,18 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                         >
                             Delete
                         </Button> */}
-                        <Button
-                            type="button"
-                            radius="sm"
-                            size="sm"
-                            color="gray"
-                            className="mr-0 sm:mr-[10px]"
-                            onClick={() => setOpened(false)}
-                        >
-                            Cancel
-                        </Button>
-                    </Grid>
-                </div>
+                            <Button
+                                type="button"
+                                radius="sm"
+                                size="sm"
+                                color="gray"
+                                className="mr-0 sm:mr-[10px]"
+                                onClick={() => setOpened(false)}
+                            >
+                                Cancel
+                            </Button>
+                        </Grid>
+                    </div>
                 </form>
             </Modal>
             <IconEdit onClick={() => setOpened(true)} size={18} stroke={1.5} />

@@ -30,10 +30,16 @@ export interface UserState {
   setRefresh: (refresh: string) => void;
 }
 
+type ChoicesTypes = {
+  value: string
+  label: string
+  _id: string
+}
+
 export type NewCellProps = {
   address?: string
   appendedText?: string
-  choices: any
+  choices: any 
   classes: string
   currency: string
   dataType: string
@@ -75,6 +81,7 @@ export type Cell = {
   dependant?: NewCellProps[];
   dependencies?: NewCellProps[];
   update: (cells: NewCellProps) => void;
+  addItems: (cells: NewCellProps[]) => void
 };
 
 export type CalculatorStore = {
@@ -111,6 +118,10 @@ export type CalculatorStore = {
 
 export const useCalculatorStore = create<Cell>((set) => ({
   cells: [],
+  addItems: (newCells: NewCellProps[]) =>{ 
+    console.log("newCells", newCells)
+    set({ cells: newCells })
+  },
   update: (cells: NewCellProps) => {
     set((state) => {
       const updatedCells = state.cells.map((cell) => {
@@ -477,6 +488,7 @@ export const useCalculatorSheetStore = create<Sheet>((set) => ({
 
 useCalculatorStore.subscribe((state) => {
   const sheetStore = useCalculatorSheetStore.getState();
+  console.log("sheesh", state)
   const parser = new FormulaParser.Parser();
   parser.on('callFunction', function (name: string, params: any, done: (arg0: number) => void) {
     if (name === 'VLOOKUP') {

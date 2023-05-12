@@ -380,6 +380,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                     placeholder="Choose"
                     data={choices ? choices : []}
                     onChange={(val) => {
+                      console.log("valval", val)
                       form.setFieldValue('formula', `${form.values.formula} ${val}`)
                     }
                     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, BaseSyntheticEvent } from 'react';
 import axios from 'axios';
 import { useQuery } from "react-query";
 import { useRouter } from 'next/router';
@@ -123,6 +123,8 @@ const Enterprise: React.FC<any> = (login) => {
   const [show, setShow] = useState<boolean>(false)
   const [value, toggle] = useToggle(['teal', 'red']);
   const cells = useCalculatorStore((state) => (state.cells))
+  const addItems = useCalculatorStore((state) => state.addItems)
+  const update = useCalculatorStore((state)=> state.update)
   const { setState } = useCalculatorStore
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const [sectionEmpty, setSectionEmpty] = useState<boolean>(false);
@@ -166,6 +168,9 @@ const Enterprise: React.FC<any> = (login) => {
   const { isLoading, data, refetch, isSuccess } = useQuery(
     "enterpriseData",
     getEnterpriseData,
+    {
+      refetchOnWindowFocus: true,
+    }
   );
 
   useEffect(() => {
@@ -185,9 +190,17 @@ const Enterprise: React.FC<any> = (login) => {
     if (data?.data) {
       setState(data?.data.data.content.sections[0].grayContent.elements)
     }
-    console.log("cells", cells, data?.data.data.content.sections[0].grayContent.elements)
+    console.log("cellsis", cells)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cells, data])
+
+  const flatData = data?.data.data.content.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
+
+  useEffect(() => {
+    addItems(flatData)
+    // console.log("triggered",flatData, cells)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
 
   useEffect(() => {
@@ -300,8 +313,8 @@ const Enterprise: React.FC<any> = (login) => {
                         </div>
                       ) : ""}
 
-                      {section.grayContent.elements.map((elem: any) => {
-                        console.log('elements', elem)
+                      {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; })=> elem._id == item._id)).map((elem: any) => {
+                        console.log('elements111', elem.dataType)
                         return (
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
@@ -323,8 +336,17 @@ const Enterprise: React.FC<any> = (login) => {
                                         <Button type="submit" variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionCircle size="18" /></Button>
                                       </Tooltip> : ""
                                   }
+                                  // value={elem.value}
+                                  onBlur={(event: BaseSyntheticEvent) => {
+                                    console.log(event, "venti", elem)
+                                    update({
+                                      ...elem,
+                                      value: +event.target.value
+                                    })
+                                    // console.log(cells, "from Inputtest")
+                                  }}
                                   // disabled={state.disabled ? true : false}
-                                  placeholder="$0"
+                                  placeholder={elem.prefilled}
                                 // defaultValue={myCompany.name}
                                 />
                               </Grid>
@@ -421,6 +443,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   // icon={state.icon ? state.icon : ""}
                                   type="number"
                                   key={elem._id}
+                                  value={elem.value}
                                   // id={elem.id}
                                   // {...register(`input${elem._id}`)}
                                   // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -431,7 +454,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   //     </Tooltip> : ""
                                   // }
                                   disabled={true}
-                                  placeholder="$0"
+                                  placeholder={elem.prefilled}
                                 // defaultValue={myCompany.name}
                                 />
                                 <Button type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>

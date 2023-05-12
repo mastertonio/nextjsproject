@@ -19,7 +19,7 @@ import { getSession } from "next-auth/react";
 import { useCalculationStore, useTokenStore } from "@app/store/builder/builderState"
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useAdminSectionStore } from "@app/store/adminToolSectionStore";
-import { useCalculatorSheetStore } from "@app/store/builder/calculatorStore";
+import { useCalculatorSheetStore, useCalculatorStore } from "@app/store/builder/calculatorStore";
 
 const AdminBuilder: React.FC<any> = (login) => {
   const router = useRouter();
@@ -29,6 +29,8 @@ const AdminBuilder: React.FC<any> = (login) => {
   const tokenChar = useTokenStore((state) => (state.tokenChar))
   const cells = useCalculatorSheetStore((state)=> state.cells)
   const sectionStore = useAdminSectionStore
+  const addItems = useCalculatorStore((state)=> state.addItems)
+  const celll = useCalculatorStore((state)=> state.cells)
   // const sections = useAdminSectionStore((state) => (state.sections))
 
   // console.log('template', router.query.temp_id)
@@ -48,6 +50,13 @@ const AdminBuilder: React.FC<any> = (login) => {
 
   const { isLoading, status, data, isFetching, refetch, isSuccess } = useQuery('adminToolData', getAdminToolData);
 
+  const flatData = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
+  
+  useEffect(()=> {
+    addItems(flatData)
+    console.log("triggered",flatData, celll)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[data])
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {
