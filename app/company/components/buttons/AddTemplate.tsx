@@ -83,21 +83,21 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
 
       console.log('add template: template ID', response)
 
-      const responseVersion = await axios.post(
-        `/v1/company/${user.user.company_id}/template/${response.data._id}/version`,
-        {
-          name: values.name,
-          version: 0,
-          notes: values.notes,
-        }, {
-        headers: {
-          Authorization: `Bearer ${user.tokens.access.token}`,
-        },
-      });
+      // const responseVersion = await axios.post(
+      //   `/v1/company/${user.user.company_id}/template/${response.data._id}/version`,
+      //   {
+      //     name: values.name,
+      //     version: 0,
+      //     notes: values.notes,
+      //   }, {
+      //   headers: {
+      //     Authorization: `Bearer ${user.tokens.access.token}`,
+      //   },
+      // });
 
-      console.log('add version: template ID', responseVersion)
+      // console.log('add version: template ID', responseVersion)
 
-      if (response && responseVersion) {
+      if (response) {
         refetch();
         updateNotification({
           id: "edit-comp",

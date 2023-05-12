@@ -95,10 +95,12 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
       <TextInput
         className="w-[100%] sm:w-[40%] ml-auto"
+        placeholder="Text"
         {...form.getInputProps(`choices.${index}.label`)}
       />
       <TextInput
         className="w-[100%] sm:w-[20%] ml-auto"
+        placeholder="Value"
         {...form.getInputProps(`choices.${index}.value`)}
       />
       <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
@@ -286,30 +288,34 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
               </div>
             ) : null}
 
-            {form.values.type !== 'Textarea' ? (
-              <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
-                <div className="w-[100%] sm:w-[75%]">
-                  <Select
-                    placeholder="Choose"
-                    data={format}
-                    {...form.getInputProps("format")}
-                  />
-                </div>
-              </Grid>
-            ) : null}
+            {form.values.type == "Dropdown" || form.values.type == 'Radio' || form.values.type == 'Checkbox' || form.values.type == "Textarea" ? (
+              null
+            ) : (
+              <div>
+                {form.values.type !== 'Textarea' ? (
+                  <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                    <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
+                    <div className="w-[100%] sm:w-[75%]">
+                      <Select
+                        placeholder="Choose"
+                        data={format}
+                        {...form.getInputProps("format")}
+                      />
+                    </div>
+                  </Grid>
+                ) : null}
 
-            {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" ? (
-              <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
-                <TextInput
-                  className="w-[100%] sm:w-[75%] ml-auto"
-                  {...form.getInputProps("decimalPlace")}
-                />
-              </Grid>
-            ) : null}
+                {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" ? (
+                  <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                    <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
+                    <TextInput
+                      className="w-[100%] sm:w-[75%] ml-auto"
+                      {...form.getInputProps("decimalPlace")}
+                    />
+                  </Grid>
+                ) : null}
 
-            {/* {form.values.format === "Currency" ? (
+                {/* {form.values.format === "Currency" ? (
               <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                 <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Currency: </Text>
                 <div className="w-[100%] sm:w-[75%]">
@@ -322,73 +328,74 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
               </Grid>
             ) : null} */}
 
-            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
-              <TextInput
-                className="w-[100%] sm:w-[75%] ml-auto"
-                {...form.getInputProps("tooltip")}
-              />
-              {/* <div className="w-[100%] sm:w-[75%] ml-auto">
+                <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                  <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
+                  <TextInput
+                    className="w-[100%] sm:w-[75%] ml-auto"
+                    {...form.getInputProps("tooltip")}
+                  />
+                  {/* <div className="w-[100%] sm:w-[75%] ml-auto">
               <RichTextSection />
             </div> */}
-            </Grid>
+                </Grid>
 
-            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
-              <TextInput
-                //in short a placeholder
-                className="w-[100%] sm:w-[75%] ml-auto"
-                {...form.getInputProps("prefilled")}
-              />
-            </Grid>
-
-            {form.values.formula !== 'Textarea' ? (
-              <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Text: </Text>
-                <TextInput
-                  className="w-[100%] sm:w-[75%] ml-auto"
-                  {...form.getInputProps("appendedText")}
-                />
-              </Grid>
-            ) : null}
-
-            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-              <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
-              <TextInput
-                required
-                className="w-[100%] sm:w-[75%] ml-auto"
-                {...form.getInputProps("address")}
-              />
-            </Grid>
-
-            {form.values.formula !== 'Textarea' ? (
-              <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
-                <Textarea
-                  className="w-[100%] sm:w-[75%] ml-auto"
-                  {...form.getInputProps("formula")}
-                // disabled={form.values.type !== "Output"}
-                />
-              </Grid>
-            ) : null}
-
-            {form.values.type !== 'Textarea' ? (
-              <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
-                <div className="w-[100%] sm:w-[75%]">
-                  <Select
-                    placeholder="Choose"
-                    data={choices ? choices : []}
-                    onChange={(val) => {
-                      console.log("valval", val)
-                      form.setFieldValue('formula', `${form.values.formula} ${val}`)
-                    }
-                    }
-                  // disabled={form.values.type !== "Output"}
+                <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                  <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
+                  <TextInput
+                    //in short a placeholder
+                    className="w-[100%] sm:w-[75%] ml-auto"
+                    {...form.getInputProps("prefilled")}
                   />
-                </div>
-              </Grid>
-            ) : null}
+                </Grid>
+
+                {form.values.formula !== 'Textarea' ? (
+                  <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                    <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Text: </Text>
+                    <TextInput
+                      className="w-[100%] sm:w-[75%] ml-auto"
+                      {...form.getInputProps("appendedText")}
+                    />
+                  </Grid>
+                ) : null}
+
+                <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                  <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
+                  <TextInput
+                    required
+                    className="w-[100%] sm:w-[75%] ml-auto"
+                    {...form.getInputProps("address")}
+                  />
+                </Grid>
+
+                {form.values.formula !== 'Textarea' ? (
+                  <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                    <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
+                    <Textarea
+                      className="w-[100%] sm:w-[75%] ml-auto"
+                      {...form.getInputProps("formula")}
+                    // disabled={form.values.type !== "Output"}
+                    />
+                  </Grid>
+                ) : null}
+
+                {form.values.type !== 'Textarea' ? (
+                  <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                    <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
+                    <div className="w-[100%] sm:w-[75%]">
+                      <Select
+                        placeholder="Choose"
+                        data={choices ? choices : []}
+                        onChange={(val) => {
+                          form.setFieldValue('formula', `${form.values.formula} ${val}`)
+                        }
+                        }
+                      // disabled={form.values.type !== "Output"}
+                      />
+                    </div>
+                  </Grid>
+                ) : null}
+              </div>
+            )}
 
             <Divider className="mt-[30px] mb-[30px]" />
 
