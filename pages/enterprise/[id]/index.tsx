@@ -300,7 +300,6 @@ const Enterprise: React.FC<any> = (login) => {
                   // length={section.headers.title.content.elements.length}
                   // quotes={section.headers.title.quotes}
                   key={section.order}
-
                 />
 
                 <Grid className="mt-[10px] mb-[10px] p-[10px] w-full">
@@ -309,7 +308,7 @@ const Enterprise: React.FC<any> = (login) => {
                       {section.grayContent.elements.length !== 0 ? (
                         <div className="mb-[30px]">
                           <Grid className="flex items-center">
-                            <Text ml={30} dangerouslySetInnerHTML={{ __html: "Please tell us a little about your sales organization" }} color="dark" fz="xl" fw={700}></Text>
+                            <Text ml={30} dangerouslySetInnerHTML={{ __html: "Section Writeup output in progress..." }} color="dark" fz="xl" fw={700}></Text>
                             <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
                               {value == "red" ? "Exclude" : "Include"}
                             </Button>
