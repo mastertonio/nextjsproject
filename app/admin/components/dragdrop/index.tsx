@@ -11,6 +11,7 @@ import EditQuestions from '@app/admin/components/SectionModals/EditQuestions';
 import axios from 'axios';
 import { UserDataProp } from '@app/context/user.context';
 import EditSectionEntryModal from '../SectionEditEntries';
+import { useQueryClient } from 'react-query';
 
 const useStyles = createStyles((theme) => ({
     item: {
@@ -99,6 +100,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
     const [opened, setOpened] = useState(false);
     const [update, setUpdate] = useState(false);
     const [getID, setGetID] = useState(0);
+    const queryClient = useQueryClient()
 
     const equalsCheck = (a: IBuilderSubState[], b: IBuilderSubState[]) => a.length === b.length && a.every((v, i) => v === b[i])
 
@@ -141,7 +143,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                             </div>
                             <div>
                                 <div className="h-[20px] flex flex-row">
-                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices}/>
+                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} />
                                     <Text className="text-[14px] ml-[5px]">{item.title}</Text>
                                 </div>
                             </div>
@@ -154,11 +156,22 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                                     className="h-[20px] w-full"
                                     onClick={async () => {
                                         console.log(item)
-                                        await axios.delete(`/v1/company/admintool/${adminId}/section/${id}/element/${item._id}`, {
+                                        const res = await axios.delete(`/v1/company/admintool/${adminId}/section/${id}/element/${item._id}/target/grayContent`, {
                                             headers: {
                                                 Authorization: `Bearer ${user.tokens.access.token}`,
                                             }
                                         })
+                                        if (res) {
+                                            Promise.all(
+                                                [
+                                                    queryClient.invalidateQueries({ queryKey: ['get_all_roi'] }),
+                                                    queryClient.invalidateQueries({ queryKey: ['graphData'] }),
+                                                    queryClient.invalidateQueries({ queryKey: ['ranking_list'] }),
+                                                    queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+                                                    queryClient.invalidateQueries({ queryKey: ['enterpriseData'] })
+                                                ]
+                                            )
+                                        }
                                     }}
                                 >
                                     <IconX size={12} stroke={1.5} />

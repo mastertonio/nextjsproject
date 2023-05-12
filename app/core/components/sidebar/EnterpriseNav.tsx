@@ -49,7 +49,7 @@ const EnterpriseNavbar: React.FC = () => {
       <div style={{ marginLeft: '227px' }} className="hidden sm:flex">
         <h3 className="text-[14px] text-[#676a6c]">ROI DASHBOARD</h3>
       </div>
-      <Group position="right" className={`${opened === true ? 'flex' : 'hidden'}  sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0 w-[50%]`}>
+      <Group position="right" className={`${opened === true ? 'flex' : 'hidden'}  sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
         <PoweredByRoi />
         <ActionList />
       </Group>
