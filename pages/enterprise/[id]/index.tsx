@@ -44,6 +44,7 @@ import {
   IconAt,
 } from "@tabler/icons";
 import { FaGripLinesVertical } from 'react-icons/fa'
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
 
 interface CardSection {
   id: string;
@@ -126,6 +127,9 @@ const Enterprise: React.FC<any> = (login) => {
   const { setState } = useCalculatorStore
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const [sectionEmpty, setSectionEmpty] = useState<boolean>(false);
+  const initialValue =
+    "<p></p>";
+  const [rteValue, setRTEValue] = useState<string>(initialValue)
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<
     HTMLDivElement,
     HTMLDivElement
@@ -169,7 +173,7 @@ const Enterprise: React.FC<any> = (login) => {
   );
 
   useEffect(() => {
-    console.log("data?.data", data);
+    console.log("data?.data", data?.data?.templateBuilderInfo);
     if (data?.data.data.content.sections.length === 0) {
       setSectionEmpty(true)
     } else {
@@ -219,7 +223,7 @@ const Enterprise: React.FC<any> = (login) => {
       <>
         <div className="w-full text-[#676a6c]">
           <div className="ml-[22px] mr-[22px]">
-            <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">ROI DASHBOARD | 2 Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
+            <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">{data?.data?.templateBuilderInfo?.name} | {data?.data?.templateBuilderInfo?.projection} Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
           </div>
         </div>
         <div className="overflow-hidden">
@@ -306,27 +310,31 @@ const Enterprise: React.FC<any> = (login) => {
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
                               <Grid
-                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <Input
-                                  className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px] "
-                                  // icon={state.icon ? state.icon : ""}
-                                  type="number"
-                                  key={elem._id}
-                                  // id={elem.id}
-                                  // {...register(`input${elem._id}`)}
-                                  // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                  rightSection={
-                                    elem.tooltip ?
-                                      <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                        <Button type="submit" variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionCircle size="18" /></Button>
-                                      </Tooltip> : ""
-                                  }
-                                  // disabled={state.disabled ? true : false}
-                                  placeholder="$0"
-                                // defaultValue={myCompany.name}
-                                />
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className='w-1/2 flex items-center'>
+                                  <Input
+                                    className="w-full"
+                                    // icon={state.icon ? state.icon : ""}
+                                    type="number"
+                                    key={elem._id}
+                                    // id={elem.id}
+                                    // {...register(`input${elem._id}`)}
+                                    // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                    rightSection={
+                                      elem.tooltip ?
+                                        <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                          <div className="flex flex-row items-center">
+                                            <IconQuestionCircle size="20" />
+                                          </div>
+                                        </Tooltip> : ""
+                                    }
+                                    // disabled={state.disabled ? true : false}
+                                    placeholder="$0"
+                                  // defaultValue={myCompany.name}
+                                  />
+                                </div>
                               </Grid>
                               // <div className="flex items-center ml-auto remove-radius">
                               //   <Text className='mx-6'>{elem.title}</Text>
@@ -358,33 +366,39 @@ const Enterprise: React.FC<any> = (login) => {
                             ) : elem.dataType == "Textarea" && elem.appendedText ? (
                               <Grid
                                 key={elem._id}
-                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <Textarea
-                                  className="ml-auto w-[400px] md:w-[300px] 2xl:w-[400px]"
-                                  withAsterisk
-                                />
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className="w-1/2">
+                                  {/* <Textarea
+                                    className="w-full"
+                                    withAsterisk
+                                  /> */}
+                                  <RichTextSection value={rteValue} setValue={setRTEValue} />
+                                </div>
                               </Grid>
                             ) : elem.dataType == "Ratings" ? (
                               <Grid
                                 key={elem._id}
-                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <Rating
-                                  defaultValue={5}
-                                  fractions={2}
-                                  className="w-[280px] ml-[30px] sm:ml-auto mt-[10px] sm:mt-0"
-                                  color="indigo" size="xl" />
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className="w-1/2 flex flex-row justify-center">
+                                  <Rating
+                                    defaultValue={5}
+                                    fractions={2}
+                                    className="mt-[10px] sm:mt-0"
+                                    color="indigo" size="xl"
+                                  />
+                                </div>
                               </Grid>
                             ) : elem.dataType == "Checkbox" ? (
                               <Grid
                                 key={elem._id}
-                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <div className="flex flex-col ml-auto lg:w-[400px] w-96">
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className="flex w-1/2 items-center">
                                   <Checkbox
                                     label={elem.title}
                                     color="dark"
@@ -396,10 +410,10 @@ const Enterprise: React.FC<any> = (login) => {
                             ) : elem.dataType == "Dropdown" ? (
                               <Grid
                                 key={elem._id}
-                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <div className="flex flex-col ml-auto lg:w-[400px] w-96">
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className="flex flex-col ml-auto w-1/2">
                                   <Select
                                     data={[
                                       {
@@ -413,28 +427,71 @@ const Enterprise: React.FC<any> = (login) => {
                               </Grid>
                             ) : elem.dataType == "Output" && elem.appendedText ? (
                               <Grid
-                                className="ml-[30px] mr-[30px] mt-[7px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-[100%] md:w-[300px] 2xl:w-[450px] mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <Input
-                                  className="ml-auto w-[400px] md:w-[300px] 2xl:w-[285px] "
-                                  // icon={state.icon ? state.icon : ""}
-                                  type="number"
-                                  key={elem._id}
-                                  // id={elem.id}
-                                  // {...register(`input${elem._id}`)}
-                                  // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                  // rightSection={
-                                  //   elem.tooltip ?
-                                  //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                  //       <Button type="submit" variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionCircle size="18" /></Button>
-                                  //     </Tooltip> : ""
-                                  // }
-                                  disabled={true}
-                                  placeholder="$0"
-                                // defaultValue={myCompany.name}
-                                />
-                                <Button type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className='w-1/2 flex items-center'>
+                                  <Input
+                                    className="w-full appended-radius"
+                                    // icon={state.icon ? state.icon : ""}
+                                    type="number"
+                                    key={elem._id}
+                                    // id={elem.id}
+                                    // {...register(`input${elem._id}`)}
+                                    // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                    // rightSection={
+                                    //   elem.tooltip ?
+                                    //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                    //       <Button type="submit" variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionCircle size="18" /></Button>
+                                    //     </Tooltip> : ""
+                                    // }
+                                    disabled={true}
+                                    placeholder="$0"
+                                  // defaultValue={myCompany.name}
+                                  />
+                                  <Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                </div>
+                              </Grid>
+                            ) : elem.dataType == "Input" && elem.appendedText ? (
+                              <Grid
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                              >
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className='w-1/2 flex'>
+                                  <Input
+                                    className="w-full appended-radius"
+                                    // icon={state.icon ? state.icon : ""}
+                                    type="number"
+                                    key={elem._id}
+                                    // id={elem.id}
+                                    // {...register(`input${elem._id}`)}
+                                    // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                    // disabled={state.disabled ? true : false}
+                                    placeholder="$0"
+                                  // defaultValue={myCompany.name}
+                                  />
+                                  <Button className="appended-btn w-auto" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                </div>
+                              </Grid>
+                            ) : elem.dataType == "Input" ? (
+                              <Grid
+                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                              >
+                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <div className='w-1/2 flex items-center'>
+                                  <Input
+                                    className="w-full"
+                                    // icon={state.icon ? state.icon : ""}
+                                    type="number"
+                                    key={elem._id}
+                                    // id={elem.id}
+                                    // {...register(`input${elem._id}`)}
+                                    // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                    // disabled={state.disabled ? true : false}
+                                    placeholder="$0"
+                                  // defaultValue={myCompany.name}
+                                  />
+                                </div>
                               </Grid>
                             ) : ""}
                           </Stack>

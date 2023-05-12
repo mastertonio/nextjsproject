@@ -133,6 +133,14 @@ th {
   border-bottom-right-radius: 0px !important;
 }
 
+.appended-radius input {
+  border-radius: 4px 0 0 4px !important;
+}
+
+.appended-btn {
+  border-radius: 0 4px 4px 0 !important;
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;

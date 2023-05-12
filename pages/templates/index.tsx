@@ -22,6 +22,7 @@ import Paginate from "@app/dashboard/components/table/paginate";
 import {
   sortCompanyTemplatesData,
   ICompanyTemplatesProps,
+  ITemplatesProps
 } from "@app/dashboard/components/table/utils/tableMethods";
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
@@ -73,8 +74,6 @@ const TemplatesDashboard: React.FC<any> = (login) => {
   const [name, setName] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
-  console.log('template login', data)
-
   useEffect(() => {
     setSortedData(data?.data);
   }, [data]);
@@ -116,7 +115,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
 
   const [temp_id, setTemp] = useState<string>("");
   const [comp_id, setComp] = useState<string>("");
-  const templates = currentPosts?.map((item: ICompanyTemplatesProps) => ({
+  const templates = currentPosts?.map((item: ITemplatesProps) => ({
     id: item._id,
     name: (
       <span
@@ -126,14 +125,15 @@ const TemplatesDashboard: React.FC<any> = (login) => {
           setTemp(item._id);
           setComp(item.company_id);
           setName(item.name);
-          // get the version id
-          const responseVersion = await axios.get(`/v1/company/${item.company_id}/template/${item._id}/version`, {
-            headers: {
-              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-            },
-          })
-          console.log('get version id', responseVersion.data)
-          refetch;
+          // // get the version id
+          // // const responseVersion = await axios.get(`/v1/company/${item.company_id}/template/${item._id}/version`, {
+          // //   headers: {
+          // //     Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+          // //   },
+          // // })
+          // // console.log('get version id', responseVersion.data)
+          // refetch;
+          router.push({ pathname: `/admin/builder/${item._id}`, query: { comp_id: item.company_id, temp_id: item._id, ver_id: item.version_id } })
         }}
       >
         {item.name}
@@ -162,6 +162,8 @@ const TemplatesDashboard: React.FC<any> = (login) => {
       </div>
     ) : "",
   }));
+
+  console.log('template login', currentPosts)
 
   return isLoading ? (
     <MainLoader />
