@@ -174,10 +174,7 @@ const Enterprise: React.FC<any> = (login) => {
 
   const { isLoading, data, refetch, isSuccess } = useQuery(
     "enterpriseData",
-    getEnterpriseData,
-    {
-      refetchOnWindowFocus: true,
-    }
+    getEnterpriseData
   );
 
   useEffect(() => {
