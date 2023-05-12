@@ -304,7 +304,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                                 color="teal"
                                 className="mr-0 sm:mr-[10px] mb-[10px]"
                             >
-                                Update Entry 111
+                                Update Entry
                             </Button>
                             {/* <Button
                             type="button"
