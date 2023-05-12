@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, BaseSyntheticEvent } from 'react';
 import axios from 'axios';
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
@@ -35,7 +35,7 @@ import NewValueBucket from "@app/core/components/card/NewValueBucket";
 import InputVariable, { iElemsProp, iElementProp } from "@app/enterprise/components/input/ElementInput";
 import MainLoader from '@app/core/components/loader/MainLoader';
 import { useTargetRefStore } from "@app/store/builderStore"
-import { IconQuestionCircle } from '@tabler/icons';
+import { IconCheck, IconQuestionCircle } from '@tabler/icons';
 import { useCalculatorStore } from '@app/store/builder/calculatorStore';
 import {
   IconQuestionMark,
@@ -45,6 +45,7 @@ import {
 } from "@tabler/icons";
 import { FaGripLinesVertical } from 'react-icons/fa'
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
+import { showNotification, updateNotification } from '@mantine/notifications';
 
 interface CardSection {
   id: string;
@@ -119,13 +120,14 @@ type EnterpriseProps = {
 };
 
 const Enterprise: React.FC<any> = (login) => {
+  const [opened, setOpened] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const [show, setShow] = useState<boolean>(false)
   const [value, toggle] = useToggle(['teal', 'red']);
   const cells = useCalculatorStore((state) => (state.cells))
   const addItems = useCalculatorStore((state) => state.addItems)
-  const update = useCalculatorStore((state)=> state.update)
+  const update = useCalculatorStore((state) => state.update)
   const { setState } = useCalculatorStore
   const [valueBucketState, setValueBucketState] = useState<CardSection[]>([])
   const [sectionEmpty, setSectionEmpty] = useState<boolean>(false);
@@ -136,6 +138,7 @@ const Enterprise: React.FC<any> = (login) => {
     HTMLDivElement,
     HTMLDivElement
   >({ offset: 30, isList: true });
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     console.log("cells", cells)
@@ -188,6 +191,7 @@ const Enterprise: React.FC<any> = (login) => {
     console.log("is section empty", sectionEmpty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
+
 
 
   useEffect(() => {
@@ -288,7 +292,7 @@ const Enterprise: React.FC<any> = (login) => {
         </div>
         {data?.data
           ? data?.data.data.content.sections.map((section: any) => {
-            console.log('enterprise section', section)
+            console.log('enterprise section', section, data)
             return (
               <div className="w-full text-[#676a6c]" key={section.id} ref={targetRef}>
                 <Projection
@@ -317,8 +321,8 @@ const Enterprise: React.FC<any> = (login) => {
                         </div>
                       ) : ""}
 
-                      {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; })=> elem._id == item._id)).map((elem: any) => {
-                        console.log('elements111', elem.dataType)
+                      {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
+                        console.log('elements111', elem)
                         return (
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
@@ -332,6 +336,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     // icon={state.icon ? state.icon : ""}
                                     type="number"
                                     key={elem._id}
+                                    defaultValue={elem.value}
                                     // id={elem.id}
                                     // {...register(`input${elem._id}`)}
                                     // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -343,6 +348,23 @@ const Enterprise: React.FC<any> = (login) => {
                                           </div>
                                         </Tooltip> : ""
                                     }
+                                    onBlur={async (event: BaseSyntheticEvent) => {
+                                      console.log(event, "venti", elem)
+                                      update({
+                                        ...elem,
+                                        value: +event.target.value
+                                      })
+                                      await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                        grayContent: {
+                                          value: +event.target.value
+                                        }
+                                      }, {
+                                        headers: {
+                                          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                        },
+                                      })
+                                      // console.log(cells, "from Inputtest")
+                                    }}
                                     // disabled={state.disabled ? true : false}
                                     placeholder="$0"
                                   // defaultValue={myCompany.name}
@@ -450,15 +472,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     type="number"
                                     key={elem._id}
                                     value={elem.value}
-                                    // id={elem.id}
-                                    // {...register(`input${elem._id}`)}
-                                    // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                    // rightSection={
-                                    //   elem.tooltip ?
-                                    //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                    //       <Button type="submit" variant="subtle" color="gray" radius="xs" size="xs" compact><IconQuestionCircle size="18" /></Button>
-                                    //     </Tooltip> : ""
-                                    // }
+                                
                                     disabled={true}
                                     placeholder="$0"
                                   // defaultValue={myCompany.name}

@@ -17,9 +17,11 @@ interface IModalEntryProps {
     open: boolean
     cardID: string
     user: UserDataProp
+    adminId: string
+    id?: string
 }
 
-const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user }) => {
+const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user, adminId, id }) => {
     const router = useRouter()
     const hideModal = useModalEntryStore((state) => state.hide);
     const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
@@ -51,14 +53,12 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
 
     const sectionWriteUp = useMutation({
         mutationFn: (roi: any) =>
-            axios.put(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+            axios.patch(`/v1/company/admintool/${adminId}/section/${id}`,
                 {
-                    "_id": "643f36cc92ecfde71079db69",
-                    "sectionTitle": "test jjjjj", //nullable
-                    "order": 1,
-                    "content": {
-                        "dataType": "headerElements",
-                        "elements": roi
+                    headers: {
+                        title: {
+                            description: roi
+                        }
                     }
                 },
                 {
@@ -151,7 +151,6 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
 
     return (
         <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
-            <form onSubmit={form.onSubmit((values) => sectionWriteUp.mutate(values.formEntry))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
@@ -175,6 +174,9 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                             size="sm"
                             color="teal"
                             className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
+                            onClick={()=>{
+                                sectionWriteUp.mutateAsync(value)
+                            }}
                         >
                             Create Section
                         </Button>
@@ -190,7 +192,6 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                         </Button>
                     </Grid>
                 </div>
-            </form>
         </Modal>
     )
 }

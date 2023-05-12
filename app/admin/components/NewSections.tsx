@@ -148,8 +148,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                 </div>
 
 
-                <SectionWriteUpModal showModal={openedWriteUp} setOpened={() => handleOpenWriteModal(index)} setClose={() => { handleCloseWriteModal(index) }} open={updateWriteUp[index]} cardID={index} user={user} />
-                <SectionVideoModal showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
+                <SectionWriteUpModal id={section._id} adminId={data.id} showModal={openedWriteUp} setOpened={() => handleOpenWriteModal(index)} setClose={() => { handleCloseWriteModal(index) }} open={updateWriteUp[index]} cardID={index} user={user} />
+                <SectionVideoModal id={section._id} adminId={data.id} showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
                 <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                 <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
             </div>

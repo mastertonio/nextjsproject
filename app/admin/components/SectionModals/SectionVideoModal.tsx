@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Button, Divider, Text, TextInput, Grid } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
@@ -16,24 +16,20 @@ interface IModalEntryProps {
     open: boolean
     cardID: string
     user: UserDataProp
+    adminId: string
+    id?: string
 }
 
-const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user }) => {
+const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user, adminId, id }) => {
     const router = useRouter()
     const queryClient = useQueryClient()
     const hideModal = useModalEntryStore((state) => state.hide);
     const tokenChar = useTokenStore((state) => state.tokenChar);
     const setVideoLink = useCardStore((state) => state.updateSectionVideoLink)
+    const [value, setValue] = useState<string>("")
     const form = useForm({
         initialValues: {
-            formEntry: [{
-                dataType: "media",
-                span: "auto",
-                class: "col-lg-5",
-                mediaOrigin: "video",
-                text: null,
-                link: "",
-            }]
+            link: ""
         }
     })
 
@@ -46,14 +42,22 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
 
     const sectionVideoLink = useMutation({
         mutationFn: (roi: any) =>
-            axios.put(`/v1/company/${router.query.comp_id}/template/${router.query.temp_id}/version/${router.query.id}/adminTool`,
+            axios.patch(`/v1/company/admintool/${adminId}/section/${id}`,
                 {
-                    "_id": "643f36cc92ecfde71079db69",
-                    "sectionTitle": "test jjjjj", //nullable
-                    "order": 1,
-                    "content": {
-                        "dataType": "headerElements",
-                        "elements": roi
+                    headers: {
+                        title: {
+                            content: {
+                                elements: [
+                                    {
+                                        dataType: "media",
+                                        class: "col-lg-5",
+                                        span: "auto",
+                                        mediaOrigin: "video",
+                                        link: roi
+                                    }
+                                ]
+                            }
+                        }
                     }
                 },
                 {
@@ -161,14 +165,14 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
 
     return (
         <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Embed Video')} padding={0} className="section-wrapper section-modal w-[100%] sm:-w-[700px] mx-auto" id={cardID} key={cardID}>
-            <form onSubmit={form.onSubmit((values) => sectionVideoLink.mutate(values.formEntry))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Video Link </Text>
                         <TextInput
                             required
                             className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("sectionVideo")}
+                            value={value}
+                            onChange={(event) => setValue(event.currentTarget.value)}
                         />
                     </Grid>
 
@@ -182,6 +186,10 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                             size="sm"
                             color="teal"
                             className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
+                            onClick={() => {
+                                sectionVideoLink.mutateAsync(value)
+                                setClose(cardID)
+                            }}
                         >
                             Create Section
                         </Button>
@@ -197,7 +205,6 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                         </Button>
                     </Grid>
                 </div>
-            </form>
         </Modal>
     )
 }
