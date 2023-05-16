@@ -46,6 +46,7 @@ import {
 import { FaGripLinesVertical } from 'react-icons/fa'
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { showNotification, updateNotification } from '@mantine/notifications';
+import he from 'he';
 
 interface CardSection {
   id: string;
@@ -308,7 +309,7 @@ const Enterprise: React.FC<any> = (login) => {
                       {section.grayContent.elements.length !== 0 ? (
                         <div className="mb-[30px]">
                           <Grid className="flex items-center">
-                            <Text ml={30} dangerouslySetInnerHTML={{ __html: "Section Writeup output in progress..." }} color="dark" fz="xl" fw={700}></Text>
+                            <Text ml={30} dangerouslySetInnerHTML={{ __html: he.decode(section.headers.title.description)}} color="dark" fz="xl" fw={700}></Text>
                             <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
                               {value == "red" ? "Exclude" : "Include"}
                             </Button>
@@ -325,7 +326,7 @@ const Enterprise: React.FC<any> = (login) => {
                               <Grid
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0" ></Text>
                                 <div className='w-1/2 flex items-center'>
                                   <Input
                                     className="w-full"
@@ -394,18 +395,20 @@ const Enterprise: React.FC<any> = (login) => {
                               //     </Tooltip> : ""
                               //   }
                               // </div>
-                            ) : elem.dataType == "Textarea" && elem.appendedText ? (
+                            ) : elem.dataType == "Textarea" 
+                            // && elem.appendedText 
+                            ? (
                               <Grid
                                 key={elem._id}
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
-                                <div className="w-1/2">
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                <div className="w-1/2 ml-auto">
                                   {/* <Textarea
                                     className="w-full"
                                     withAsterisk
                                   /> */}
-                                  <RichTextSection value={rteValue} setValue={setRTEValue} />
+                                  <RichTextSection content={rteValue} onChange={setRTEValue} />
                                 </div>
                               </Grid>
                             ) : elem.dataType == "Ratings" ? (
@@ -413,7 +416,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 key={elem._id}
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                 <div className="w-1/2 flex flex-row justify-center">
                                   <Rating
                                     defaultValue={5}
@@ -428,7 +431,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 key={elem._id}
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                 <div className="flex w-1/2 items-center">
                                   <Checkbox
                                     label={elem.title}
@@ -443,7 +446,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 key={elem._id}
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                 <div className="flex flex-col ml-auto w-1/2">
                                   <Select
                                     data={[
@@ -460,7 +463,7 @@ const Enterprise: React.FC<any> = (login) => {
                               <Grid
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                 <div className='w-1/2 flex items-center'>
                                   <Input
                                     className="w-full appended-radius"
@@ -480,7 +483,7 @@ const Enterprise: React.FC<any> = (login) => {
                               <Grid
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                 <div className='w-1/2 flex'>
                                   <Input
                                     className="w-full appended-radius"
@@ -501,7 +504,7 @@ const Enterprise: React.FC<any> = (login) => {
                               <Grid
                                 className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                               >
-                                <Text className="text-[14px] w-1/2 mb-[10px] sm:mb-0">{elem.title}: </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title)}} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                 <div className='w-1/2 flex items-center'>
                                   <Input
                                     className="w-full"

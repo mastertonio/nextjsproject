@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon } from "@mantine/core";
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { useForm } from "@mantine/form";
@@ -44,7 +44,7 @@ type iSectionProps = {
 }
 
 type formProps = {
-  title: string,
+  title: string
   type: string,
   choices: any,
   format: string,
@@ -60,7 +60,7 @@ type formProps = {
 const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id, choices, fullData }) => {
   const [opened, setOpened] = useState(false);
   const initialValue =
-    "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+    "<div></div>";
   const [value, setValue] = useState<string>(initialValue)
   // const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
@@ -68,9 +68,12 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
 
+  useEffect(() => {
+    console.log(value)
+  }, [value])
+
   const form = useForm({
     initialValues: {
-      title: "",
       type: "",
       choices: [
         {
@@ -233,7 +236,19 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         withCloseButton={false}
         size="920px" title="Add Entry" padding={0} className="section-wrapper"
       >
-        <form onSubmit={form.onSubmit((values) => addEntry.mutate(values))}>
+        <form onSubmit={form.onSubmit((values) => addEntry.mutateAsync({
+          address: values.address,
+          appendedText: values.appendedText,
+          choices: values.choices,
+          title: value,
+          currency: values.currency,
+          decimalPlace: values.decimalPlace,
+          format: values.format,
+          formula: values.formula,
+          prefilled: values.prefilled,
+          tooltip: values.tooltip,
+          type: values.type
+        }))}>
           <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
             {/* {value} */}
             {/* <Grid className="p-[10px]">
@@ -247,14 +262,14 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
 
             <Grid className="p-[10px] mt-[20px] sm:mt-[20px]">
               <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
-              <Textarea
+              {/* <Textarea
                 required
                 className="w-[100%] sm:w-[75%] ml-auto"
-                {...form.getInputProps(`title`)}
-              />
-              {/* <div className="w-[100%] sm:w-[75%] ml-auto">
-                <RichTextSection value={value} setValue={setValue} />
-              </div> */}
+                
+              /> */}
+              <div className="w-[100%] sm:w-[75%] ml-auto">
+                <RichTextSection content={value} onChange={setValue} />
+              </div>
             </Grid>
 
             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">

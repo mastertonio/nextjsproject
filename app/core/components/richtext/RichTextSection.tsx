@@ -18,12 +18,12 @@ import { Color } from '@tiptap/extension-color';
 import { IconTable, IconTableOff, IconTableExport, IconTableImport, IconVideo } from '@tabler/icons';
 
 
-type iRichTextProps = {
-    value: string,
-    setValue: (data: string) => void
+interface CustomRichTextEditorProps {
+    content: string;
+    onChange: (newContent: string) => void;
 }
 
-const RichTextSection: React.FC<iRichTextProps> = ({ setValue, value}) => {
+const RichTextSection: React.FC<CustomRichTextEditorProps> = ({ content, onChange }) => {
     const editor: Editor | null = useEditor({
         extensions: [
             StarterKit,
@@ -38,7 +38,7 @@ const RichTextSection: React.FC<iRichTextProps> = ({ setValue, value}) => {
                 controls: false,
             }),
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
-            Placeholder.configure({ placeholder: 'This is placeholder' }),
+            Placeholder.configure({ placeholder: 'Type here' }),
             Table.configure({
                 resizable: true,
             }),
@@ -46,7 +46,11 @@ const RichTextSection: React.FC<iRichTextProps> = ({ setValue, value}) => {
             TableHeader,
             TableCell,
         ],
-        content: value
+        content,
+        onUpdate({ editor }) {
+            const newContent = editor.getHTML();
+            onChange(newContent);
+        },
 
     });
 
@@ -68,14 +72,16 @@ const RichTextSection: React.FC<iRichTextProps> = ({ setValue, value}) => {
 
     useEffect(() => {
         const html = editor?.getHTML()
-        console.log('Editor', value)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        console.log('Editor', content)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
     return (
-        <RichTextEditor editor={editor} onChange={() => setValue}>
-            <RichTextEditor.Toolbar sticky stickyOffset={60}>
+        <RichTextEditor editor={editor}>
+            <RichTextEditor.Toolbar
+            // sticky stickyOffset={60}
+            >
                 <RichTextEditor.ControlsGroup>
                     <RichTextEditor.Bold />
                     <RichTextEditor.Italic />

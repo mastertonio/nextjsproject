@@ -9,6 +9,7 @@ import AddSectionModal from './SectionModals/AddSectionModal';
 import { useCardStore } from '@app/store/builder/builderState';
 import EditSectionModal from './SectionModals/EditSectionModal';
 import RemoveSectionModal from './RemoveSectionModal';
+import he from 'he';
 
 type iTemplateProps = {}
 
@@ -59,9 +60,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
                         return (
                             <Card key={section._id} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
                                 <div className="flex flex-row items-center justify-between">
-                                    <Text className="text-[20px] text-blue-600 font-semibold">
-                                        {section.sectionTitle}
-                                    </Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(section.sectionTitle)}} className="text-[20px] text-blue-600 font-semibold"></Text>
                                     <div>
                                         <EditSectionModal adminId={data.id} id={section._id} user={user} secName={section.sectionTitle} />
                                         <RemoveSectionModal adminId={data.id} id={section._id} user={user} secName={section.sectionTitle} />

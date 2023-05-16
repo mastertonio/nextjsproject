@@ -9,26 +9,25 @@ import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 import { UserDataProp } from '@app/context/user.context';
+import { MdModeEdit } from 'react-icons/md';
 
 interface IModalEntryProps {
-    showModal: boolean
-    setOpened: (b: boolean) => void
-    setClose: (b: any) => void
-    open: boolean
     cardID: string
     user: UserDataProp
     adminId: string
     id?: string
+    defData?: string
 }
 
-const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, setClose, open, cardID, user, adminId, id }) => {
+const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ cardID, user, adminId, id, defData }) => {
     const router = useRouter()
     const hideModal = useModalEntryStore((state) => state.hide);
     const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
     const initialValue =
         "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
-    const [value, setValue] = useState<string>(initialValue)
+    const [value, setValue] = useState<string>(defData ? defData : initialValue)
     const queryClient = useQueryClient()
+    const [opened, setOpened] = useState(false);
     const form = useForm({
         initialValues: {
             formEntry: [{
@@ -150,7 +149,8 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
 
 
     return (
-        <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
+        <>
+            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
@@ -160,7 +160,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                         />
                         */}
                         <div className="w-[100%] sm:w-[75%] ml-auto">
-                            <RichTextSection value={value} setValue={setValue} />
+                            <RichTextSection content={value} onChange={setValue} />
                         </div>
                     </Grid>
 
@@ -174,7 +174,8 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                             size="sm"
                             color="teal"
                             className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
-                            onClick={()=>{
+                            onClick={() => {
+                                setOpened(false)
                                 sectionWriteUp.mutateAsync(value)
                             }}
                         >
@@ -186,13 +187,22 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ showModal, setOpened,
                             size="sm"
                             color="gray"
                             className="mr-0 sm:mr-[10px]"
-                            onClick={() => setClose(cardID)}
+                            onClick={() => setOpened(false)}
                         >
                             Close
                         </Button>
                     </Grid>
                 </div>
-        </Modal>
+            </Modal>
+            <MdModeEdit
+                className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
+                onClick={() => {
+                    setOpened(true)
+                    // setGetID(card.id)
+                }}
+
+            />
+        </>
     )
 }
 
