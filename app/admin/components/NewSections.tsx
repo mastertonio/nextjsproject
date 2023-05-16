@@ -18,6 +18,7 @@ import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import { UserDataProp } from '@app/context/user.context';
 import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
 import NewAddSectionModal from './NewAddSectionModal';
+import he from 'he';
 
 type iSectionProps = {
     data: any,
@@ -101,17 +102,9 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                     <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                         <Card.Section withBorder inheritPadding py="xs">
                             <div className="flex flex-row items-center justify-between">
-                                <Text className="text-[16px] text-blue-600 font-semibold">
-                                    {section.sectionTitle}
-                                </Text>
+                                <Text dangerouslySetInnerHTML={{ __html: section.headers?.title.description ? he.decode(section?.headers?.title.description) : "" }} className="text-[16px]"></Text>
                                 <div>
-                                    <MdModeEdit
-                                        className="text-blue-600 text-[20px] mr-[10px] cursor-pointer"
-                                        onClick={() => {
-                                            handleOpenWriteModal(index)
-                                            // setGetID(card.id)
-                                        }}
-                                    />
+                                    <SectionWriteUpModal defData={section.headers?.title.description ? he.decode(section?.headers?.title.description) : ""} id={section._id} adminId={data.id} cardID={index} user={user} />
                                     <MdClose className="text-red-600 text-[20px] cursor-pointer" />
                                 </div>
                             </div>
@@ -148,8 +141,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                 </div>
 
 
-                <SectionWriteUpModal showModal={openedWriteUp} setOpened={() => handleOpenWriteModal(index)} setClose={() => { handleCloseWriteModal(index) }} open={updateWriteUp[index]} cardID={index} user={user} />
-                <SectionVideoModal showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
+
+                <SectionVideoModal id={section._id} adminId={data.id} showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
                 <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                 <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { createStyles, Text, Button } from '@mantine/core';
+import { createStyles, Text, Button, Grid } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react-beautiful-dnd';
 import { IconGripVertical, IconEdit, IconX } from '@tabler/icons';
@@ -12,6 +12,7 @@ import axios from 'axios';
 import { UserDataProp } from '@app/context/user.context';
 import EditSectionEntryModal from '../SectionEditEntries';
 import { useQueryClient } from 'react-query';
+import he from 'he';
 
 const useStyles = createStyles((theme) => ({
     item: {
@@ -142,10 +143,11 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                                 <IconGripVertical size={18} stroke={1.5} />
                             </div>
                             <div>
-                                <div className="h-[20px] flex flex-row">
+                                <Grid className="h-[20px]">
                                     <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} />
-                                    <Text className="text-[14px] ml-[5px]">{item.title}</Text>
-                                </div>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(item.title)}} className="text-[14px] ml-[5px] flex items-center h-5"></Text>
+                                    {/* <p style={{ display: 'flex', alignItems: 'center', margin: '0' }}><span>What</span></p> */}
+                                </Grid>
                             </div>
                             <div className="ml-auto button-section">
                                 <Button
