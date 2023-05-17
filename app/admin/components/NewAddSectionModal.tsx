@@ -69,8 +69,8 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const queryClient = useQueryClient()
 
   useEffect(() => {
-    console.log(value)
-  }, [value])
+    console.log(choices)
+  }, [choices])
 
   const form = useForm({
     initialValues: {
@@ -222,6 +222,20 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       });
     }
   })
+
+  function generateExcelAddresses(numRows: number, numCols: number): string[] {
+    const addresses: string[] = [];
+  
+    for (let row = 1; row <= numRows; row++) {
+      for (let col = 1; col <= numCols; col++) {
+        const columnLetter = String.fromCharCode(64 + col);
+        const address = `${columnLetter}${row}`;
+        addresses.push(address);
+      }
+    }
+  
+    return addresses;
+  }
 
   const addChoice = () => {
     setOpenChoice(true)

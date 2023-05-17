@@ -20,6 +20,8 @@ import { useCalculationStore, useTokenStore } from "@app/store/builder/builderSt
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useAdminSectionStore } from "@app/store/adminToolSectionStore";
 import { useCalculatorSheetStore, useCalculatorStore } from "@app/store/builder/calculatorStore";
+import he from "he";
+import { convertHtmlToPlainText } from "@app/admin/components/SectionEditEntries";
 
 const AdminBuilder: React.FC<any> = (login) => {
   const router = useRouter();
@@ -61,7 +63,7 @@ const AdminBuilder: React.FC<any> = (login) => {
 
   if (isSuccess) {
     const flatData = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
-    const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map((elem: { address: string; title: string; }) => ({ value: elem.address, label: elem.title }))
+    const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map((elem: { address: string; title: string; }) => ({ value: elem.address, label: convertHtmlToPlainText(he.decode(elem.title)) }))
     // const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map(() => )
     // useCalculationStore.
     // console.log('admintool', flatData)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
@@ -12,6 +12,8 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { iSectionData } from './Sections';
 import { format } from 'highcharts';
+import he from 'he';
+import RichTextSection from '@app/core/components/richtext/RichTextSection';
 
 interface IModalEntryProps {
     id?: string
@@ -28,6 +30,19 @@ interface CardSection {
     sectioName: string;
 }
 
+export const convertHtmlToPlainText = (htmlString: string) => {
+    const tagRegex = /<[^>]+>/g;
+    const whitespaceRegex = /\s+/g;
+
+    // Remove HTML tags
+    const plainText = htmlString.replace(tagRegex, '');
+
+    // Remove excess whitespace
+    const trimmedText = plainText.replace(whitespaceRegex, ' ').trim();
+
+    return trimmedText;
+}
+
 const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId }) => {
     const [opened, setOpened] = useState(false);
     const hideModal = useModalEntryStore((state) => state.hide);
@@ -35,6 +50,12 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
     const newCardName = useCardStore((state) => state.newCardName);
     const addCard = useCardStore((state) => state.addCard);
     const setNewCardName = useCardStore((state) => state.setNewCardName);
+    const initialValue =
+        "<p></p>";
+    const [value, setValue] = useState<string>(data.title ? he.decode(data.title) : initialValue)
+    useEffect(()=>{
+        console.log("data.title",he.decode(data.title))
+    },[data])
     const queryClient = useQueryClient()
     // console.log("NEW DATA", choices)
     const form = useForm({
@@ -152,9 +173,10 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         { value: "USD", label: "USD" },
     ]
 
+
     return (
         <>
-            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${secName} section`)} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%] mx-auto">
+            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${convertHtmlToPlainText(he.decode(secName))} section`)} padding={0} className="section-wrapper w-[100%] sm:w-[70%] mx-auto">
                 <form onSubmit={form.onSubmit((values) => editSectionEntry.mutate(values))}>
                     <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                         <Grid className="p-[10px]">
@@ -167,14 +189,16 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                             />
                         </Grid>
 
-                        <Grid className="p-[10px] mt-[20px] sm:mt-[20px]">
+                        <Grid className="p-[10px]">
                             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
-                            <Textarea
-                                required
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps(`title`)}
-                            />
-
+                            {/* <Textarea
+                            className="w-[100%] sm:w-[75%] ml-auto"
+                            {...form.getInputProps("sectioWriteUp")}
+                        />
+                        */}
+                            <div className="w-[100%] sm:w-[75%] ml-auto">
+                                <RichTextSection content={value} onChange={setValue} />
+                            </div>
                         </Grid>
 
                         {/* <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
