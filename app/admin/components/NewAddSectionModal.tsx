@@ -77,7 +77,6 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       type: "",
       choices: [
         {
-          id: randomId(),
           label: "",
           value: "",
         }
@@ -94,7 +93,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   })
 
   const choicesFields = form.values.choices.map((item, index) => (
-    <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={item.id}>
+    <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
       <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
       <TextInput
         className="w-[100%] sm:w-[40%] ml-auto"
@@ -154,7 +153,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 title: roi.title,
                 dataType: roi.type,
                 // choices: roi.choices,
-                choices: [],
+                choices: roi.choices,
                 format: roi.format,
                 decimalPlace: roi.decimalPlace,
                 currency: roi.currency,
