@@ -28,7 +28,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch, user })
   }
 
   const cloneRoi = useMutation({
-    mutationFn: (roi: iCloneProp) => axios.post(`/v1/dashboard/roi/${id}/${user.user.id}`, roi,{
+    mutationFn: (roi: iCloneProp) => axios.post(`/v1/dashboard/roi/${id}/${user.user.id}`, roi, {
       headers: {
         Authorization: `Bearer ${user.tokens.access.token}`,
       },

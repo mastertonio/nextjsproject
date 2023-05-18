@@ -77,7 +77,7 @@ const Dashboard: React.FC<any> = (
       const timeLeft = expirationDate.getTime() - Date.now();
       console.log("exp time", login.data.user.tokens.access.expires)
       console.log(expirationDate.getTime() < Date.now())
-      intervalId = setInterval( async () => {
+      intervalId = setInterval(async () => {
         if (expirationDate.getTime() < Date.now()) {
           const data = await signOut({ redirect: false, callbackUrl: "/" })
           router.push(data.url);
@@ -86,7 +86,7 @@ const Dashboard: React.FC<any> = (
       }, timeLeft);
     }
     return () => clearInterval(intervalId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   const getDashboardData = async () => {

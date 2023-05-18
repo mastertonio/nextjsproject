@@ -102,7 +102,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                     <Card className="mt-[15px] mb-[20px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                         <Card.Section withBorder inheritPadding py="xs">
                             <div className="flex flex-row items-center justify-between">
-                                <Text dangerouslySetInnerHTML={{ __html: section.headers?.title.description ? he.decode(section?.headers?.title.description) : "" }} className="text-[16px]"></Text>
+                                <Text dangerouslySetInnerHTML={{ __html: section.headers?.title.description ? he.decode(section?.headers?.title.description) : "Please add your own section writeup input here" }} className="text-[16px]"></Text>
                                 <div>
                                     <SectionWriteUpModal defData={section.headers?.title.description ? he.decode(section?.headers?.title.description) : ""} id={section._id} adminId={data.id} cardID={index} user={user} />
                                     <MdClose className="text-red-600 text-[20px] cursor-pointer" />
@@ -115,8 +115,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                                     <Text></Text>
                                 </div>
                                 <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
-                                    <div className="flex flex-row items-center justify-between">
-                                        <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
+                                    <div className="flex flex-row items-center justify-end content-center">
+                                        <Text className="text-[14px] text-slate-600 font-semibold mr-[30px]">Add Video link here: <span className="text-teal-500"></span></Text>
                                         <div>
                                             <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
                                             <MdClose className="text-red-600 text-[16px] cursor-pointer" />

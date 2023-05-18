@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
 import { useCardStore, useTokenStore } from '@app/store/builder/builderState';
-import RichTextSection from '@app/core/components/richtext/RichTextSection';
+import RichTextSection from '@app/core/components/richtext/WriteUpRTE';
 import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 import { UserDataProp } from '@app/context/user.context';
