@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon } from "@mantine/core";
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage, randomId } from "@mantine/hooks";
@@ -13,6 +13,8 @@ import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
 import { SectionStateAdminTool, iSectionData } from "@app/store/adminToolSectionStore";
 import shortUUID from "short-uuid";
+import { z } from 'zod';
+import { useCalculatorStore } from "@app/store/builder/calculatorStore";
 
 export interface IButtonRoiNameProps {
   id?: string;
@@ -62,6 +64,10 @@ interface OptionsFormula {
   label: string
 }
 
+const schema = z.object({
+  title: z.string().nonempty().min(2, { message: 'Name should have at least 2 letters' }),
+});
+
 const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id, choices, fullData }) => {
   const [opened, setOpened] = useState(false);
   const initialValue =
@@ -72,24 +78,29 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const p = router.query;
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
-  const [currentAddress, setCurrentAddress] = useState('A1');
+  const cells = useCalculatorStore((state) => state.cells)
+
+  // function findLast<T>(array: T[], predicate: (value: T, index: number, array: T[]) => boolean): T | undefined {
+  //   for (let i = array.length - 1; i >= 0; i--) {
+  //     const value = array[i];
+  //     if (predicate(value, i, array)) {
+  //       return value;
+  //     }
+  //   }
+  //   return undefined;
+  // }
+
+  // const lastItem = findLast(cells, () => true)
+  // console.log("lastttt", lastItem)
+
+  const [currentAddress, setCurrentAddress] = useState("A1");
   const [realFormula, setRF] = useState("")
 
-  useEffect(() => {
-    console.log("CHEWY", choices)
-    
-    console.log("realFormula", realFormula)
-  }, [realFormula, choices])
 
   const form = useForm({
     initialValues: {
       type: "",
-      choices: [
-        {
-          label: "",
-          value: "",
-        }
-      ],
+      choices: [],
       format: "",
       decimalPlace: "",
       currency: user.user.currency,
@@ -99,6 +110,10 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       formula: "",
       address: currentAddress
     },
+    transformValues: (values) => ({
+      ...values,
+      address: values.type == "Dropdown" || values.type == "Radio" || values.type == "Checkbox" || values.type == "Textarea" || values.type == "Ratings" ? "" : currentAddress,
+    }),
   })
 
   const choicesFields = form.values.choices.map((item, index) => (
@@ -343,7 +358,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
               </div>
             ) : null}
 
-            {form.values.type == "Dropdown" || form.values.type == 'Radio' || form.values.type == 'Checkbox' || form.values.type == "Textarea" ? (
+            {form.values.type == "Dropdown" || form.values.type == 'Radio' || form.values.type == 'Checkbox' || form.values.type == "Textarea" || form.values.type == "Ratings" ? (
               null
             ) : (
               <div>
@@ -440,8 +455,13 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                         placeholder="Choose"
                         data={zchoice}
                         onChange={(val) => {
+                          // const selectedOption = zchoice.find((item: { value: string }) => item.value === val);
+                          // const selectedLabel = selectedOption ? selectedOption.label : '';
+                          // const updatedFormula = form.values.formula.replace(val as, selectedLabel);
+                          // setRF((prevValue) => '');
+                          // form.setFieldValue('formula', updatedFormula);
                           const selectedOption = zchoice.find((item: { value: string }) => item.value === val);
-                          setRF((prevValue) => "")
+                          setRF((prevValue) => `${prevValue} ${val}`)
                           form.setFieldValue('formula', `${form.values.formula} ${val}`)
                         }
                         }

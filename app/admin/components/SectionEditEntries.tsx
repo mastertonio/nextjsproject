@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea } from '@mantine/core';
+import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea, ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
@@ -7,7 +7,7 @@ import { useCardStore } from '@app/store/builder/builderState';
 import { MdAddBox, MdModeEdit, MdClose } from 'react-icons/md'
 import { UserDataProp } from '@app/context/user.context';
 import { showNotification, updateNotification } from '@mantine/notifications';
-import { IconCheck, IconEdit } from '@tabler/icons';
+import { IconCheck, IconEdit, IconTrash } from '@tabler/icons';
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { iSectionData } from './Sections';
@@ -48,13 +48,14 @@ type formProps = {
     title: string
     format: string,
     decimalPlace: string,
+    choices: any,
     currency: string,
     tooltip: string,
     appendedText: string,
     prefilled: string,
     formula: string,
     address: string,
-  }
+}
 
 
 
@@ -76,7 +77,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
     const form = useForm({
         initialValues: {
             id: data._id,
-            // title: data.title,
+            choices: [...data.choices],
             format: data.format,
             decimalPlace: data.decimalPlace ? data.decimalPlace : "",
             currency: data.currency ? data.currency : "",
@@ -188,87 +189,41 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         { value: "USD", label: "USD" },
     ]
 
-    const UpdateChoicesModal = (<>
-        <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${convertHtmlToPlainText(he.decode(secName))} section`)} padding={0} className="section-wrapper w-[100%] sm:w-[70%] mx-auto">
-            <form onSubmit={form.onSubmit((values) => editSectionEntry.mutate({
-                address: values.address,
-                appendedText: values.appendedText,
-                title: value,
-                currency: values.currency,
-                decimalPlace: values.decimalPlace,
-                format: values.format,
-                formula: values.formula,
-                prefilled: values.prefilled,
-                tooltip: values.tooltip
-            }))}>
-                <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
-                    <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("id")}
-                            disabled={true}
-                        />
-                    </Grid>
+    const choicesFields = form.values.choices.map((item: {value: string, label: string}, index: number) => (
+        <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
+          <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
+          <TextInput
+            className="w-[100%] sm:w-[40%] ml-auto"
+            defaultValue={item.label}
+            placeholder="Text"
+            {...form.getInputProps(`choices.${index}.label`)}
+          />
+          <TextInput
+            className="w-[100%] sm:w-[20%] ml-auto"
+            placeholder="Value"
+            defaultValue={item.value}
+            {...form.getInputProps(`choices.${index}.value`)}
+          />
+          <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
+            <IconTrash size="1rem" />
+          </ActionIcon>
+        </Grid>
+      ))
 
-                    <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
-                        {/* <Textarea
-                        className="w-[100%] sm:w-[75%] ml-auto"
-                        {...form.getInputProps("sectioWriteUp")}
-                    />
-                    */}
-                        <div className="w-[100%] sm:w-[75%] ml-auto">
-                            <RichTextSection content={value} onChange={setValue} />
-                        </div>
-                    </Grid>
-
-                    <Divider className="mt-[30px] mb-[30px]" />
-
-                    <Grid justify="flex-end" className="mt-[20px] mb-[20px] sm:mb-0 flex flex-col sm:flex-row m-0 sm:m-[-8px] pt-0 sm:pt-[20px">
-                        <Button
-                            type="submit"
-                            radius="sm"
-                            size="sm"
-                            color="teal"
-                            className="mr-0 sm:mr-[10px] mb-[10px]"
-                        >
-                            Update Entry
-                        </Button>
-                        {/* <Button
-                        type="button"
-                        radius="sm"
-                        size="sm"
-                        color="red"
-                        className="mr-0 sm:mr-[10px] mb-[10px]"
-                    >
-                        Delete
-                    </Button> */}
-                        <Button
-                            type="button"
-                            radius="sm"
-                            size="sm"
-                            color="gray"
-                            className="mr-0 sm:mr-[10px]"
-                            onClick={() => setOpened(false)}
-                        >
-                            Cancel
-                        </Button>
-                    </Grid>
-                </div>
-            </form>
-        </Modal>
-    </>)
+    useEffect(() => {
+        console.log("TYPE", data.choices)
+    }, [data])
 
 
     return (
         <>
+            { }
             <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${convertHtmlToPlainText(he.decode(secName))} section`)} padding={0} className="section-wrapper w-[100%] sm:w-[70%] mx-auto">
                 <form onSubmit={form.onSubmit((values) => editSectionEntry.mutate({
                     address: values.address,
                     appendedText: values.appendedText,
                     title: value,
+                    choices: values.choices,
                     currency: values.currency,
                     decimalPlace: values.decimalPlace,
                     format: values.format,
@@ -310,34 +265,44 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                         </div>
                     </Grid> */}
 
-                        {/* {form.values.type === 'Dropdown' || form.values.type === 'Radio' || form.values.type === 'Checkbox' ? (
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Choices: </Text>
-                            <Button
-                                type="button"
-                                radius="sm"
-                                size="sm"
-                                color="teal"
-                                className="ml-auto w-[100%] sm:w-[unset]"
-                                onClick={addChoice}
-                            >
-                                Add New Choice
-                            </Button>
-                        </Grid>
-                    ) : null} */}
+                        {type === 'Dropdown' || type === 'Radio' || type === 'Checkbox' ? (
 
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
-                            <div className="w-[100%] sm:w-[75%]">
-                                <Select
-                                    placeholder="Choose"
-                                    data={format}
-                                    {...form.getInputProps("format")}
-                                />
+                            <div className="p-[10px] w-[100%] sm:w-[70%] mb-[60px] ml-auto">
+                                {/* <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Choices: </Text> */}
+                                {choicesFields}
+                                {/* {data ? data.choices.map((item: { value: string, label: string})=> {
+
+                                }) : ""} */}
+                                <Button
+                                    type="button"
+                                    radius="sm"
+                                    size="sm"
+                                    color="teal"
+                                    className="float-right w-[100%] sm:w-[unset]"
+                                    // onClick={addChoice}
+                                    onClick={() =>
+                                        form.insertListItem('choices', { value: "", label: "" })
+                                    }
+                                >
+                                    Add New Choice
+                                </Button>
                             </div>
-                        </Grid>
+                        ) : null}
 
-                        {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" || data.format === "Number" || data.format === "Percent" || data.format === "Currency" ? (
+
+                        {type == "Dropdown" || type == "Radio" || type == "Checkbox" ? "" : (
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Format: </Text>
+                                <div className="w-[100%] sm:w-[75%]">
+                                    <Select
+                                        placeholder="Choose"
+                                        data={format}
+                                        {...form.getInputProps("format")}
+                                    />
+                                </div>
+                            </Grid>)}
+
+                        {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" || data.format === "Number" || data.format === "Percent" || data.format === "Currency" && type !== "Dropdown" && type !== "Radio" && type !== "Checkbox" ? (
                             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                                 <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
                                 <TextInput
@@ -347,7 +312,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                             </Grid>
                         ) : null}
 
-                        {form.values.format === "Currency" || data.format === "Currency" ? (
+                        {form.values.format === "Currency" || data.format === "Currency" && type !== "Dropdown" && type !== "Radio" && type !== "Checkbox" ? (
                             <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                                 <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Currency: </Text>
                                 <div className="w-[100%] sm:w-[75%]">
@@ -359,61 +324,62 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                                 </div>
                             </Grid>
                         ) : null}
+                        {type == "Dropdown" || type == "Radio" || type == "Checkbox" ? null : (<>
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
+                                <TextInput
+                                    className="w-[100%] sm:w-[75%] ml-auto"
+                                    {...form.getInputProps("tooltip")}
+                                />
+                            </Grid>
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
+                                <TextInput
+                                    className="w-[100%] sm:w-[75%] ml-auto"
+                                    {...form.getInputProps("prefilled")}
+                                />
+                            </Grid>
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
+                                <TextInput
+                                    className="w-[100%] sm:w-[75%] ml-auto"
+                                    {...form.getInputProps("appendedText")}
+                                />
+                            </Grid>
 
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Helpful Tip: </Text>
-                            <TextInput
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps("tooltip")}
-                            />
-                        </Grid>
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Prefilled Value: </Text>
-                            <TextInput
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps("prefilled")}
-                            />
-                        </Grid>
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Append Value: </Text>
-                            <TextInput
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps("appendedText")}
-                            />
-                        </Grid>
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
+                                <TextInput
+                                    className="w-[100%] sm:w-[75%] ml-auto"
+                                    {...form.getInputProps("address")}
+                                />
+                            </Grid>
 
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
-                            <TextInput
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps("address")}
-                            />
-                        </Grid>
-
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
-                            <Textarea
-                                className="w-[100%] sm:w-[75%] ml-auto"
-                                {...form.getInputProps("formula")}
-                            // disabled={form.values.type !== "Output"}
-                            />
-                        </Grid>
-
-                        <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
-                            <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
-                            <div className="w-[100%] sm:w-[75%]">
-                                <Select
-                                    placeholder="Choose"
-                                    data={choices ? choices : []}
-                                    onChange={(val) => {
-                                        console.log("valval", val)
-                                        form.setFieldValue('formula', `${form.values.formula} ${val}`)
-                                    }
-                                    }
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Formula: </Text>
+                                <Textarea
+                                    className="w-[100%] sm:w-[75%] ml-auto"
+                                    {...form.getInputProps("formula")}
                                 // disabled={form.values.type !== "Output"}
                                 />
-                            </div>
-                        </Grid>
+                            </Grid>
+
+                            <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                                <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Other Sections: </Text>
+                                <div className="w-[100%] sm:w-[75%]">
+                                    <Select
+                                        placeholder="Choose"
+                                        data={choices ? choices : []}
+                                        onChange={(val) => {
+                                            console.log("valval", val)
+                                            form.setFieldValue('formula', `${form.values.formula} ${val}`)
+                                        }
+                                        }
+                                    // disabled={form.values.type !== "Output"}
+                                    />
+                                </div>
+                            </Grid>
+                        </>)}
 
                         <Divider className="mt-[30px] mb-[30px]" />
 
@@ -449,7 +415,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                         </Grid>
                     </div>
                 </form>
-            </Modal>
+            </Modal >
             <IconEdit onClick={() => setOpened(true)} size={18} stroke={1.5} />
         </>
     )

@@ -344,12 +344,15 @@ const Enterprise: React.FC<any> = (login) => {
                               >
                                 <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0" ></Text>
                                 <div className='w-1/2 flex items-center'>
-                                  <Input
+                                  <NumberInput
                                     className="w-full"
                                     // icon={state.icon ? state.icon : ""}
                                     type="number"
                                     key={elem._id}
+                                    hideControls
                                     defaultValue={elem.value}
+
+                                    icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                     // id={elem.id}
                                     // {...register(`input${elem._id}`)}
                                     // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -379,7 +382,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       // console.log(cells, "from Inputtest")
                                     }}
                                     // disabled={state.disabled ? true : false}
-                                    placeholder="$0"
+                                    placeholder={elem.prefilled}
                                   // defaultValue={myCompany.name}
                                   />
                                 </div>
@@ -499,12 +502,29 @@ const Enterprise: React.FC<any> = (login) => {
                                       }
                                     </div>
                                   </Grid>
-                                ) : elem.dataType == "Output" && elem.appendedText ? (
+                                ) : elem.dataType == "Output" ? (
                                   <Grid
                                     className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className='w-1/2 flex items-center'>
+                                    <div className='w-1/2 flex items-center' 
+                                    onBlur={async (event: BaseSyntheticEvent) => {
+                                      console.log(event, "venti", elem)
+                                      update({
+                                        ...elem,
+                                        value: elem.value
+                                      })
+                                      await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                        grayContent: {
+                                          value: elem.value
+                                        }
+                                      }, {
+                                        headers: {
+                                          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                        },
+                                      })
+                                      // console.log(cells, "from Inputtest")
+                                    }}>
                                       <Input
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
@@ -512,8 +532,18 @@ const Enterprise: React.FC<any> = (login) => {
                                         key={elem._id}
                                         value={elem.value}
 
-                                        disabled={true}
-                                        placeholder="$0"
+                                        icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        disabled
+                                        placeholder={elem.prefilled}
+                                        rightSection={
+                                          elem.tooltip ?
+                                            <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                              <div className="flex flex-row items-center">
+                                                <IconQuestionCircle size="20" />
+                                              </div>
+                                            </Tooltip> : ""
+                                        }
+
                                       // defaultValue={myCompany.name}
                                       />
                                       <Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
@@ -525,16 +555,44 @@ const Enterprise: React.FC<any> = (login) => {
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex'>
-                                      <Input
+                                      <NumberInput
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
+                                        hideControls
+                                        icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        defaultValue={elem.value}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
-                                        placeholder="$0"
+                                        placeholder={elem.prefilled}
+                                        rightSection={
+                                          elem.tooltip ?
+                                            <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                              <div className="flex flex-row items-center">
+                                                <IconQuestionCircle size="20" />
+                                              </div>
+                                            </Tooltip> : ""
+                                        }
+                                        onBlur={async (event: BaseSyntheticEvent) => {
+                                          console.log(event, "venti", elem)
+                                          update({
+                                            ...elem,
+                                            value: +event.target.value
+                                          })
+                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                            grayContent: {
+                                              value: +event.target.value
+                                            }
+                                          }, {
+                                            headers: {
+                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                            },
+                                          })
+                                          // console.log(cells, "from Inputtest")
+                                        }}
                                       // defaultValue={myCompany.name}
                                       />
                                       <Button className="appended-btn w-auto" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
@@ -546,18 +604,48 @@ const Enterprise: React.FC<any> = (login) => {
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'>
-                                      <Input
+                                      <NumberInput
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
+                                        hideControls
+                                        defaultValue={elem.value}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
-                                        placeholder="$0"
+                                        placeholder={elem.prefilled}
+                                        rightSection={
+                                          elem.tooltip ?
+                                            <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                              <div className="flex flex-row items-center">
+                                                <IconQuestionCircle size="20" />
+                                              </div>
+                                            </Tooltip> : ""
+                                        }
+                                        onBlur={async (event: BaseSyntheticEvent) => {
+                                          console.log(event, "venti", elem)
+                                          update({
+                                            ...elem,
+                                            value: +event.target.value
+                                          })
+                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                            grayContent: {
+                                              value: +event.target.value
+                                            }
+                                          }, {
+                                            headers: {
+                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                            },
+                                          })
+                                          // console.log(cells, "from Inputtest")
+                                        }}
+                                        icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+
                                       // defaultValue={myCompany.name}
                                       />
+                                      {elem.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>) : ""}
                                     </div>
                                   </Grid>
                                 ) : ""}
