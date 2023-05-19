@@ -195,8 +195,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         onClick={() => {
           setOpened(true);
         }}
-        className="mr-[5px]"
-        color="yellow"
+        className="mr-[5px] bg-white text-black border-gray-900"
       >
         Edit
       </Button>

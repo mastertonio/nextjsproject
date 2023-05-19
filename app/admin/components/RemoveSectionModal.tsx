@@ -39,7 +39,7 @@ const RemoveSectionModal: React.FC<RemoveSectionModalProps> = ({ id, user, secNa
   }
 
   const deleteRoi = useMutation({
-    mutationFn: () => axios.delete(`/v1/company/admintool/${adminId}/section/${id}`,{
+    mutationFn: () => axios.delete(`/v1/company/admintool/${adminId}/section/${id}`, {
       headers: {
         Authorization: `Bearer ${user.tokens.access.token}`,
       },
@@ -104,21 +104,22 @@ const RemoveSectionModal: React.FC<RemoveSectionModalProps> = ({ id, user, secNa
         size="lg"
         padding={0}
       >
-        <Text align="center">
-          <AiOutlineExclamationCircle size={250} color="#f8bb86" />
+        <Text align="center" className="mt-[20px]">
+          <AiOutlineExclamationCircle size={70} color="#f8bb86" />
         </Text>
 
         <Text
           weight={500}
           color="gray"
-          style={{
-            paddingTop: 30,
-            paddingLeft: 30,
-            paddingRight: 30,
-            fontSize: 30,
-            backgroundColor: "white",
-            color: "gray",
-          }}
+          className="mt-[20px] text-[22px] text-gray-400 bg-white"
+          // style={{
+          //   paddingTop: 30,
+          //   paddingLeft: 30,
+          //   paddingRight: 30,
+          //   fontSize: 30,
+          //   backgroundColor: "white",
+          //   color: "gray",
+          // }}
           align="center"
         >
           Are you sure ?
@@ -126,24 +127,16 @@ const RemoveSectionModal: React.FC<RemoveSectionModalProps> = ({ id, user, secNa
         <Text
           weight={300}
           color="gray"
-          style={{
-            paddingLeft: 30,
-            paddingRight: 30,
-            paddingBottom: 30,
-            marginBottom: 10,
-            fontSize: 20,
-            backgroundColor: "white",
-            color: "gray",
-          }}
+          className="mb-[30px] text-[22px] text-gray-400 bg-white"
           align="center"
         >
           You will not be able to recover{" "}
-          <Text weight={700} style={{ display: "inline-block", fontSize: 20 }}>
+          <Text weight={700} className="inline-block text-[22px]">
             {secName}
           </Text>
           !
         </Text>
-        <Grid justify="flex-end" style={{ margin: 20 }}>
+        <Grid justify="flex-end" className="m-[20px]">
           <Button
             type="submit"
             radius="sm"
@@ -172,7 +165,7 @@ const RemoveSectionModal: React.FC<RemoveSectionModalProps> = ({ id, user, secNa
           </Button>
         </Grid>
       </Modal>
-      <MdClose onClick={()=> setOpened(true)} className="text-red-600 text-[25px] cursor-pointer" />
+      <MdClose onClick={() => setOpened(true)} className="text-red-600 text-[25px] cursor-pointer" />
     </>
   );
 };
