@@ -224,7 +224,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
 
   function generateExcelAddresses(numRows: number, numCols: number): string[] {
     const addresses: string[] = [];
-  
+
     for (let row = 1; row <= numRows; row++) {
       for (let col = 1; col <= numCols; col++) {
         const columnLetter = String.fromCharCode(64 + col);
@@ -232,7 +232,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         addresses.push(address);
       }
     }
-  
+
     return addresses;
   }
 
@@ -281,7 +281,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 
               /> */}
               <div className="w-[100%] sm:w-[75%] ml-auto">
-                <RichTextSection content={value} onChange={setValue} />
+                <RichTextSection content={value} onChange={setValue} type={form.values.type} />
               </div>
             </Grid>
 

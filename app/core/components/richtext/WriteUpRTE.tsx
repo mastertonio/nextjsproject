@@ -21,10 +21,9 @@ import { IconTable, IconTableOff, IconTableExport, IconTableImport, IconVideo } 
 interface CustomRichTextEditorProps {
     content: string;
     onChange: (newContent: string) => void;
-    type?: string;
 }
 
-const RichTextSection: React.FC<CustomRichTextEditorProps> = ({ content, onChange, type }) => {
+const WriteUpRTE: React.FC<CustomRichTextEditorProps> = ({ content, onChange }) => {
     const editor: Editor | null = useEditor({
         extensions: [
             StarterKit,
@@ -119,26 +118,21 @@ const RichTextSection: React.FC<CustomRichTextEditorProps> = ({ content, onChang
                     <RichTextEditor.H4 />
                 </RichTextEditor.ControlsGroup>
 
-                {type == 'Textarea' ? (
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Blockquote />
-                        <RichTextEditor.Hr />
-                        <RichTextEditor.BulletList />
-                        <RichTextEditor.OrderedList />
-                    </RichTextEditor.ControlsGroup>
-                ) : null}
-
+                <RichTextEditor.ControlsGroup>
+                    <RichTextEditor.Blockquote />
+                    <RichTextEditor.Hr />
+                    <RichTextEditor.BulletList />
+                    <RichTextEditor.OrderedList />
+                </RichTextEditor.ControlsGroup>
 
                 <RichTextEditor.ControlsGroup>
                     <RichTextEditor.Link />
                     <RichTextEditor.Unlink />
-                    {type == 'Textarea' ? (
-                        <RichTextEditor.Control
-                            onClick={() => addVideo()}
-                        >
-                            <IconVideo size={18} stroke={1} />
-                        </RichTextEditor.Control>
-                    ) : null}
+                    <RichTextEditor.Control
+                        onClick={() => addVideo()}
+                    >
+                        <IconVideo size={18} stroke={1} />
+                    </RichTextEditor.Control>
                 </RichTextEditor.ControlsGroup>
 
                 <RichTextEditor.ControlsGroup>
@@ -178,4 +172,4 @@ const RichTextSection: React.FC<CustomRichTextEditorProps> = ({ content, onChang
     )
 }
 
-export default RichTextSection
+export default WriteUpRTE
