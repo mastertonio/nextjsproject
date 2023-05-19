@@ -32,6 +32,7 @@ import MainLoader from "@app/core/components/loader/MainLoader";
 import shortUUID from "short-uuid";
 import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
 import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
+import DeleteTemplate from "@app/company/components/buttons/DeleteTemplate";
 import CloneTemplate from "@app/company/components/buttons/CloneTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
 import { useUserStore } from "@app/store/userState";
@@ -167,9 +168,18 @@ const TemplatesDashboard: React.FC<any> = (login) => {
           user={login.data.user}
           version_id={item.version_id}
         />
-        <Button type="button" radius="sm" size="xs" color="red" className="ml-[5px]">
+        <DeleteTemplate
+          id={item._id}
+          notes={item.notes}
+          status={item.active}
+          refetch={refetch}
+          name={item.name}
+          key={shortUUID.generate()}
+          user={login.data.user}
+        />
+        {/* <Button type="button" radius="sm" size="xs" color="red" className="ml-[5px]">
           Delete
-        </Button>
+        </Button> */}
       </div>
     ) : "",
   }));
