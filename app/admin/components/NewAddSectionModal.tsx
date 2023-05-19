@@ -375,7 +375,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                   </Grid>
                 ) : null}
 
-                {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" ? (
+                {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" && !(form.values.type=="Dropdown" || form.values.type=="Radio" || form.values.type=="Checkbox")  ? (
                   <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                     <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
                     <TextInput

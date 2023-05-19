@@ -534,7 +534,7 @@ const Enterprise: React.FC<any> = (login) => {
 
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                         disabled
-                                        placeholder={elem.prefilled}
+                                        placeholder={elem.prefilled && "Add Input here"}
                                         rightSection={
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
@@ -543,6 +543,7 @@ const Enterprise: React.FC<any> = (login) => {
                                               </div>
                                             </Tooltip> : ""
                                         }
+                                        
 
                                       // defaultValue={myCompany.name}
                                       />
