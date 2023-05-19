@@ -19,6 +19,7 @@ import { UserDataProp } from '@app/context/user.context';
 import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
 import NewAddSectionModal from './NewAddSectionModal';
 import he from 'he';
+import ReactPlayer from 'react-player';
 
 type iSectionProps = {
     data: any,
@@ -116,6 +117,19 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                                 </div>
                                 <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                     <div className="flex flex-row items-center justify-between">
+                                        {/* {section.headers?.title.content.elements[0] ? (
+                                            <div style={{ height: 100, width: 100, margin: 30 }}>
+                                                <ReactPlayer
+                                                    controls
+                                                    playing
+                                                    light={true}
+                                                    className="object-cover h-fit w-fit absolute top-0 left-0"
+                                                    url={section.headers?.title.content.elements[0]?.link ?? ''}
+                                                    width="100%"
+                                                    height="100%"
+                                                />
+                                            </div>
+                                        ) : null} */}
                                         <Text className="text-[16px] text-slate-600 font-semibold">Section Video: <span className="text-teal-500"></span></Text>
                                         <div>
                                             <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />

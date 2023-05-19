@@ -59,6 +59,16 @@ export type iSectionData = {
     address: string
 }
 
+type ContentTypeVideo = {
+    class?: string
+    dataType: "media" | "description"
+    link: string
+    mediaOrigin?: string
+    span?: string
+    text?: string
+    _id:string
+}
+
 export type SectionStateAdminTool = {
     headers?: {
         title: {
@@ -78,7 +88,7 @@ export type SectionStateAdminTool = {
             },
             content: {
                 dataType?: string,
-                elements: []
+                elements: ContentTypeVideo[]
             },
             dataType?: string,
             description?: string

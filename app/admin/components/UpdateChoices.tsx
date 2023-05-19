@@ -23,7 +23,6 @@ interface IModalEntryProps {
     data: any
     choices: []
     itemId: string
-    type: string
 }
 
 interface CardSection {
@@ -56,9 +55,7 @@ type formProps = {
     address: string,
   }
 
-
-
-const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId, type }) => {
+const UpdateChoices: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId }) => {
     const [opened, setOpened] = useState(false);
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
@@ -188,79 +185,6 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         { value: "USD", label: "USD" },
     ]
 
-    const UpdateChoicesModal = (<>
-        <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${convertHtmlToPlainText(he.decode(secName))} section`)} padding={0} className="section-wrapper w-[100%] sm:w-[70%] mx-auto">
-            <form onSubmit={form.onSubmit((values) => editSectionEntry.mutate({
-                address: values.address,
-                appendedText: values.appendedText,
-                title: value,
-                currency: values.currency,
-                decimalPlace: values.decimalPlace,
-                format: values.format,
-                formula: values.formula,
-                prefilled: values.prefilled,
-                tooltip: values.tooltip
-            }))}>
-                <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
-                    <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Auto ID: </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            {...form.getInputProps("id")}
-                            disabled={true}
-                        />
-                    </Grid>
-
-                    <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Entry Name: </Text>
-                        {/* <Textarea
-                        className="w-[100%] sm:w-[75%] ml-auto"
-                        {...form.getInputProps("sectioWriteUp")}
-                    />
-                    */}
-                        <div className="w-[100%] sm:w-[75%] ml-auto">
-                            <RichTextSection content={value} onChange={setValue} />
-                        </div>
-                    </Grid>
-
-                    <Divider className="mt-[30px] mb-[30px]" />
-
-                    <Grid justify="flex-end" className="mt-[20px] mb-[20px] sm:mb-0 flex flex-col sm:flex-row m-0 sm:m-[-8px] pt-0 sm:pt-[20px">
-                        <Button
-                            type="submit"
-                            radius="sm"
-                            size="sm"
-                            color="teal"
-                            className="mr-0 sm:mr-[10px] mb-[10px]"
-                        >
-                            Update Entry
-                        </Button>
-                        {/* <Button
-                        type="button"
-                        radius="sm"
-                        size="sm"
-                        color="red"
-                        className="mr-0 sm:mr-[10px] mb-[10px]"
-                    >
-                        Delete
-                    </Button> */}
-                        <Button
-                            type="button"
-                            radius="sm"
-                            size="sm"
-                            color="gray"
-                            className="mr-0 sm:mr-[10px]"
-                            onClick={() => setOpened(false)}
-                        >
-                            Cancel
-                        </Button>
-                    </Grid>
-                </div>
-            </form>
-        </Modal>
-    </>)
-
 
     return (
         <>
@@ -385,6 +309,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                         <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                             <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
                             <TextInput
+                                required
                                 className="w-[100%] sm:w-[75%] ml-auto"
                                 {...form.getInputProps("address")}
                             />
@@ -455,4 +380,4 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
     )
 }
 
-export default EditSectionEntryModal
+export default UpdateChoices

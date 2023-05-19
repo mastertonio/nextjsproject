@@ -144,7 +144,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                             </div>
                             <div>
                                 <Grid className="h-[20px]">
-                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} />
+                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} type={item.dataType} />
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(item.title)}} className="text-[14px] ml-[5px] flex items-center h-5"></Text>
                                     {/* <p style={{ display: 'flex', alignItems: 'center', margin: '0' }}><span>What</span></p> */}
                                 </Grid>

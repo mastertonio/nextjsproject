@@ -43,7 +43,7 @@ type iSectionProps = {
   address: string
 }
 
-type formProps = {
+export type formProps = {
   title: string
   type: string,
   choices: any,
@@ -57,6 +57,11 @@ type formProps = {
   address: string,
 }
 
+interface OptionsFormula {
+  value: string
+  label: string
+}
+
 const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id, choices, fullData }) => {
   const [opened, setOpened] = useState(false);
   const initialValue =
@@ -67,10 +72,14 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const p = router.query;
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
+  const [currentAddress, setCurrentAddress] = useState('A1');
+  const [realFormula, setRF] = useState("")
 
   useEffect(() => {
-    console.log(choices)
-  }, [choices])
+    console.log("CHEWY", choices)
+    
+    console.log("realFormula", realFormula)
+  }, [realFormula, choices])
 
   const form = useForm({
     initialValues: {
@@ -88,7 +97,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       appendedText: "",
       prefilled: "",
       formula: "",
-      address: ""
+      address: currentAddress
     },
   })
 
@@ -118,9 +127,9 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     { value: 'Dropdown', label: 'Dropdown' },
     { value: 'Radio', label: 'Radio' },
     { value: 'Checkbox', label: 'Checkbox' },
-    { value: 'Slider', label: 'Slider' },
-    { value: 'Header', label: 'Header' },
-    { value: 'HTML', label: 'HTML' },
+    // { value: 'Slider', label: 'Slider' },
+    // { value: 'Header', label: 'Header' },
+    // { value: 'HTML', label: 'HTML' },
     { value: 'Ratings', label: 'Ratings' },
   ];
 
@@ -142,6 +151,8 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     title: string
   }
 
+
+
   const addEntry = useMutation({
     mutationFn: (roi: formProps) =>
       axios.patch(
@@ -152,7 +163,6 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
               {
                 title: roi.title,
                 dataType: roi.type,
-                // choices: roi.choices,
                 choices: roi.choices,
                 format: roi.format,
                 decimalPlace: roi.decimalPlace,
@@ -161,7 +171,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 appendedText: roi.appendedText,
                 prefilled: roi.prefilled,
                 formula: roi.formula,
-                address: roi.address
+                address: currentAddress
               }
             ]
           }
@@ -185,6 +195,15 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       });
     },
     onSuccess: (newRoi) => {
+      // Generate the next address
+      const currentColumn = currentAddress.charCodeAt(0);
+      const nextColumn = String.fromCharCode(currentColumn + 1);
+      const nextAddress = `${nextColumn}1`;
+      setCurrentAddress(nextAddress);
+      console.log(nextColumn)
+      console.log(nextAddress)
+      console.log(currentAddress)
+
       Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
@@ -222,9 +241,10 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     }
   })
 
+  //must check previous address in database
   function generateExcelAddresses(numRows: number, numCols: number): string[] {
     const addresses: string[] = [];
-  
+
     for (let row = 1; row <= numRows; row++) {
       for (let col = 1; col <= numCols; col++) {
         const columnLetter = String.fromCharCode(64 + col);
@@ -232,7 +252,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         addresses.push(address);
       }
     }
-  
+
     return addresses;
   }
 
@@ -240,6 +260,12 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     setOpenChoice(true)
     setOpened(false)
   }
+
+  const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
+    value: item.value,
+    label: item.label,
+    fakeValue: item.label
+  })) : []
 
   return (
     <>
@@ -292,6 +318,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                   placeholder="Choose"
                   data={dataSelect}
                   {...form.getInputProps("type")}
+                  required
                 />
               </div>
             </Grid>
@@ -386,14 +413,13 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                   </Grid>
                 ) : null}
 
-                <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
+                {/* <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                   <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Address: </Text>
                   <TextInput
-                    required
                     className="w-[100%] sm:w-[75%] ml-auto"
                     {...form.getInputProps("address")}
                   />
-                </Grid>
+                </Grid> */}
 
                 {form.values.formula !== 'Textarea' ? (
                   <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
@@ -412,8 +438,10 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                     <div className="w-[100%] sm:w-[75%]">
                       <Select
                         placeholder="Choose"
-                        data={choices ? choices : []}
+                        data={zchoice}
                         onChange={(val) => {
+                          const selectedOption = zchoice.find((item: { value: string }) => item.value === val);
+                          setRF((prevValue) => "")
                           form.setFieldValue('formula', `${form.values.formula} ${val}`)
                         }
                         }

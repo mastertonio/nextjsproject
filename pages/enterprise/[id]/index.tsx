@@ -49,6 +49,7 @@ import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { showNotification, updateNotification } from '@mantine/notifications';
 import he from 'he';
 import RadioToggle from '@app/admin/components/RadioToggle';
+import ReactPlayer from 'react-player';
 
 interface CardSection {
   id: string;
@@ -305,6 +306,20 @@ const Enterprise: React.FC<any> = (login) => {
                   key={section.order}
                 />
 
+                {section.headers?.title.content.elements[0] ? (
+                  <div style={{ height: 300, margin: 30 }}>
+                    <ReactPlayer
+                      controls
+                      playing
+                      light={true}
+                      className=""
+                      url={section.headers?.title.content.elements[0]?.link ?? ''}
+                      width="100%"
+                      height="100%"
+                    />
+                  </div>
+                ) : null}
+
                 <Grid className="mt-[10px] mb-[10px] p-[10px] w-full">
                   <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-[12px] w-[96%] sm:w-[100%] pb-[40px] sm:pb-30px]">
                     <form>
@@ -321,7 +336,6 @@ const Enterprise: React.FC<any> = (login) => {
                       ) : ""}
 
                       {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
-                        console.log('elements111', elem)
                         return (
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
@@ -428,125 +442,125 @@ const Enterprise: React.FC<any> = (login) => {
                                     />
                                   </div>
                                 </Grid>
-                              ) 
-                              // : elem.dataType == "Checkbox" ? (
-                              //   <Grid
-                              //     key={elem._id}
-                              //     className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                              //   >
-                              //     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                              //     <div className="flex w-1/2 items-center">
-                              //       <Checkbox
-                              //         label={elem.title}
-                              //         color="dark"
-                              //         radius="xl"
-                              //         key={elem._id}
-                              //       />
-                              //     </div>
-                              //   </Grid>
-                              // ) 
-                              : elem.dataType == "Dropdown" ? (
-                                <Grid
-                                  key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className="flex flex-col ml-auto w-1/2">
-                                    <Select
-                                      data={elem.choices ? elem.choices : ""}
-                                      placeholder="Pick one"
-                                    />
-                                  </div>
-                                </Grid>
-                              ) : elem.dataType == "Radio" ? (
-                                <Grid
-                                  key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className="flex flex-col ml-auto w-1/2">
-                                    {elem.choices.map((elem: { label: string, _id: string }) => (
-                                      <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
-                                  </div>
-                                </Grid>
-                              ) : elem.dataType == "Checkbox" ? (
-                                <Grid
-                                  key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className="flex flex-col ml-auto w-1/2">
-                                    {elem.choices.map((elem: { label: string, _id: string }) => (
-                                      <Checkbox
-                                        key={elem._id}
-                                        label={elem.label}
+                              )
+                                // : elem.dataType == "Checkbox" ? (
+                                //   <Grid
+                                //     key={elem._id}
+                                //     className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                //   >
+                                //     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                //     <div className="flex w-1/2 items-center">
+                                //       <Checkbox
+                                //         label={elem.title}
+                                //         color="dark"
+                                //         radius="xl"
+                                //         key={elem._id}
+                                //       />
+                                //     </div>
+                                //   </Grid>
+                                // ) 
+                                : elem.dataType == "Dropdown" ? (
+                                  <Grid
+                                    key={elem._id}
+                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className="flex flex-col ml-auto w-1/2">
+                                      <Select
+                                        data={elem.choices ? elem.choices : ""}
+                                        placeholder="Pick one"
                                       />
-                                    ))
-                                    }
-                                  </div>
-                                </Grid>
-                              ) : elem.dataType == "Output" && elem.appendedText ? (
-                                <Grid
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className='w-1/2 flex items-center'>
-                                    <Input
-                                      className="w-full appended-radius"
-                                      // icon={state.icon ? state.icon : ""}
-                                      type="number"
-                                      key={elem._id}
-                                      value={elem.value}
+                                    </div>
+                                  </Grid>
+                                ) : elem.dataType == "Radio" ? (
+                                  <Grid
+                                    key={elem._id}
+                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className="flex flex-col ml-auto w-1/2">
+                                      {elem.choices.map((elem: { label: string, _id: string }) => (
+                                        <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
+                                    </div>
+                                  </Grid>
+                                ) : elem.dataType == "Checkbox" ? (
+                                  <Grid
+                                    key={elem._id}
+                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className="flex flex-col ml-auto w-1/2">
+                                      {elem.choices.map((elem: { label: string, _id: string }) => (
+                                        <Checkbox
+                                          key={elem._id}
+                                          label={elem.label}
+                                        />
+                                      ))
+                                      }
+                                    </div>
+                                  </Grid>
+                                ) : elem.dataType == "Output" && elem.appendedText ? (
+                                  <Grid
+                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className='w-1/2 flex items-center'>
+                                      <Input
+                                        className="w-full appended-radius"
+                                        // icon={state.icon ? state.icon : ""}
+                                        type="number"
+                                        key={elem._id}
+                                        value={elem.value}
 
-                                      disabled={true}
-                                      placeholder="$0"
-                                    // defaultValue={myCompany.name}
-                                    />
-                                    <Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
-                                  </div>
-                                </Grid>
-                              ) : elem.dataType == "Input" && elem.appendedText ? (
-                                <Grid
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className='w-1/2 flex'>
-                                    <Input
-                                      className="w-full appended-radius"
-                                      // icon={state.icon ? state.icon : ""}
-                                      type="number"
-                                      key={elem._id}
-                                      // id={elem.id}
-                                      // {...register(`input${elem._id}`)}
-                                      // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                      // disabled={state.disabled ? true : false}
-                                      placeholder="$0"
-                                    // defaultValue={myCompany.name}
-                                    />
-                                    <Button className="appended-btn w-auto" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
-                                  </div>
-                                </Grid>
-                              ) : elem.dataType == "Input" ? (
-                                <Grid
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className='w-1/2 flex items-center'>
-                                    <Input
-                                      className="w-full"
-                                      // icon={state.icon ? state.icon : ""}
-                                      type="number"
-                                      key={elem._id}
-                                      // id={elem.id}
-                                      // {...register(`input${elem._id}`)}
-                                      // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                      // disabled={state.disabled ? true : false}
-                                      placeholder="$0"
-                                    // defaultValue={myCompany.name}
-                                    />
-                                  </div>
-                                </Grid>
-                              ) : ""}
+                                        disabled={true}
+                                        placeholder="$0"
+                                      // defaultValue={myCompany.name}
+                                      />
+                                      <Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                    </div>
+                                  </Grid>
+                                ) : elem.dataType == "Input" && elem.appendedText ? (
+                                  <Grid
+                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className='w-1/2 flex'>
+                                      <Input
+                                        className="w-full appended-radius"
+                                        // icon={state.icon ? state.icon : ""}
+                                        type="number"
+                                        key={elem._id}
+                                        // id={elem.id}
+                                        // {...register(`input${elem._id}`)}
+                                        // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                        // disabled={state.disabled ? true : false}
+                                        placeholder="$0"
+                                      // defaultValue={myCompany.name}
+                                      />
+                                      <Button className="appended-btn w-auto" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                    </div>
+                                  </Grid>
+                                ) : elem.dataType == "Input" ? (
+                                  <Grid
+                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className='w-1/2 flex items-center'>
+                                      <Input
+                                        className="w-full"
+                                        // icon={state.icon ? state.icon : ""}
+                                        type="number"
+                                        key={elem._id}
+                                        // id={elem.id}
+                                        // {...register(`input${elem._id}`)}
+                                        // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                        // disabled={state.disabled ? true : false}
+                                        placeholder="$0"
+                                      // defaultValue={myCompany.name}
+                                      />
+                                    </div>
+                                  </Grid>
+                                ) : ""}
                           </Stack>
                         )
                       })}

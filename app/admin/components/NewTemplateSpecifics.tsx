@@ -37,12 +37,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
 
     return (
         <div className="w-full">
-            <div className="bg-[#ffffff] shadow p-[10px]">
-                <h1 className="text-[20px] sm:text-[28px] text-slate-800 font-bold flex flex-row items-center ml-[20px]">
-                    <FcComboChart className="text-blue-600 mr-[10px] text-[40px] sm:text-[30px]" />
-                    <span>ROI Dashboard | 2 Year Projection</span>
-                </h1>
-            </div>
+            
 
             <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px]">
                 <Card className="mt-[15px]" shadow="sm" radius="sm" withBorder>
