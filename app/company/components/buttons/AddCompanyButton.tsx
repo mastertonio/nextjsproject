@@ -51,7 +51,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log("file", file)
+    console.log("file handle submit", file)
     try {
       showNotification({
         id: "edit-comp",
