@@ -70,6 +70,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
             console.log("Section Write Up", roi)
         },
         onSuccess: (newRoi) => {
+            console.log('link success', newRoi)
             setOpened(false)
             Promise.all(
                 [
@@ -80,6 +81,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
             )
         },
         onError: (error) => {
+            console.log("link error", error)
             if (error instanceof Error) {
             }
         }
@@ -165,46 +167,46 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
 
     return (
         <Modal opened={open} onClose={() => setClose(cardID)} size="920px" title={ModalTitle('Embed Video')} padding={0} className="section-wrapper section-modal w-[100%] sm:-w-[700px] mx-auto" id={cardID} key={cardID}>
-                <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
-                    <Grid className="p-[10px]">
-                        <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Video Link </Text>
-                        <TextInput
-                            required
-                            className="w-[100%] sm:w-[75%] ml-auto"
-                            value={value}
-                            onChange={(event) => setValue(event.currentTarget.value)}
-                        />
-                    </Grid>
+            <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
+                <Grid className="p-[10px]">
+                    <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Video Link </Text>
+                    <TextInput
+                        required
+                        className="w-[100%] sm:w-[75%] ml-auto"
+                        value={value}
+                        onChange={(event) => setValue(event.currentTarget.value)}
+                    />
+                </Grid>
 
 
-                    <Divider className="mt-[40px] mb-[40px]" />
+                <Divider className="mt-[40px] mb-[40px]" />
 
-                    <Grid justify="flex-end" className="flex flex-col sm:flex-row m-0 sm:m-[-8px]">
-                        <Button
-                            type="submit"
-                            radius="sm"
-                            size="sm"
-                            color="teal"
-                            className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
-                            onClick={() => {
-                                sectionVideoLink.mutateAsync(value)
-                                setClose(cardID)
-                            }}
-                        >
-                            Create Section
-                        </Button>
-                        <Button
-                            type="button"
-                            radius="sm"
-                            size="sm"
-                            color="gray"
-                            className="mr-0 sm:mr-[10px]"
-                            onClick={() => setClose(cardID)}
-                        >
-                            Close
-                        </Button>
-                    </Grid>
-                </div>
+                <Grid justify="flex-end" className="flex flex-col sm:flex-row m-0 sm:m-[-8px]">
+                    <Button
+                        type="submit"
+                        radius="sm"
+                        size="sm"
+                        color="teal"
+                        className="mr-0 sm:mr-[10px] mb-[10px] sm:mb-0"
+                        onClick={() => {
+                            sectionVideoLink.mutateAsync(value)
+                            setClose(cardID)
+                        }}
+                    >
+                        Create Section
+                    </Button>
+                    <Button
+                        type="button"
+                        radius="sm"
+                        size="sm"
+                        color="gray"
+                        className="mr-0 sm:mr-[10px]"
+                        onClick={() => setClose(cardID)}
+                    >
+                        Close
+                    </Button>
+                </Grid>
+            </div>
         </Modal>
     )
 }

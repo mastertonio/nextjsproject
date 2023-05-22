@@ -90,6 +90,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
         setUpdateEntry((prev: any) => ({ ...prev, [id]: false }))
     }
     const sectionsAll = data?.sections.map((section: SectionStateAdminTool, index: any) => {
+        console.log('section', section)
         return (
             <div className="w-full mt-[40px]" key={section._id}>
                 <div className="bg-[#ffffff] shadow p-[10px]">
@@ -117,7 +118,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                                 </div>
                                 <div className="flex-auto w-full sm:w-[50%] mt-[20px] sm:mt-0">
                                     <div className="flex flex-row items-center justify-end content-center">
-                                        <Text className="text-[14px] text-slate-600 font-semibold mr-[30px]">Add Video link here: <span className="text-teal-500"></span></Text>
+                                        <Text dangerouslySetInnerHTML={{ __html: section.headers?.title?.content?.elements[0]?.dataType === 'media' ? he.decode(section.headers?.title?.content?.elements[0]?.link) : 'Add Video link here:' }} className="text-[14px] text-slate-600 font-semibold mr-[30px]"></Text>
                                         <div>
                                             <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
                                             <MdClose className="text-red-600 text-[16px] cursor-pointer" />
