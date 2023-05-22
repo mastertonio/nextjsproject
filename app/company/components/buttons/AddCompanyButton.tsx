@@ -51,7 +51,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log("file", file)
+    console.log("file handle submit", file)
     try {
       showNotification({
         id: "edit-comp",
@@ -82,6 +82,8 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
           Authorization: `Bearer ${user.tokens.access.token}`,
         },
       });
+
+      console.log('create company', response)
       if (response) {
         refetch();
         updateNotification({
@@ -98,6 +100,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         setEndDate(null);
       }
     } catch (error) {
+      console.log('create company error', error)
       updateNotification({
         id: "edit-comp",
         color: "red",

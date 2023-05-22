@@ -183,6 +183,7 @@ const CompanyList: React.FC<any> = (login) => {
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = sortedData?.slice(indexOfFirstPost, indexOfLastPost);
+  console.log('create company', currentPosts)
 
   const setSorting = (field: keyof ICompanyProps) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
