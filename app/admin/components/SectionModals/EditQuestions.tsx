@@ -49,7 +49,7 @@ const EditQuestions: React.FC<any> = ({ items, setOpened, open, setOpenChoice })
         },
     })
 
-    console.log('edit', items)
+    // console.log('edit', items)
 
     useEffect(() => {
         form.setValues({
