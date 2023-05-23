@@ -134,13 +134,20 @@ const AdminNavbar: React.FC<AdminDataProp> = ({ user, tokens, templateID, id }) 
             )}
             <Group position="right" className={`${opened === true ? 'flex' : 'hidden'} ml-[unset] sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
                 {/* <AdminList tokens={tokens} user={user} /> */}
-                <Button
-                    type="button"
-                    className="mr-auto bg-blue-600">
-                    <Link href={`/enterprise/${router.query.id}?temp_ver=${router.query.ver_id}`} passHref replace>
-                        <a target="_blank" onClick={handleLinkClick}>Preview</a>
-                    </Link>
-                </Button>
+                <Link href={`/enterprise/${router.query.id}?temp_ver=${router.query.ver_id}`} passHref replace>
+                    <a style={{
+                        display: 'inline-block',
+                        padding: '6px 20px',
+                        border: 'none',
+                        borderRadius: '4px',
+                        backgroundColor: 'blue',
+                        color: '#fff',
+                        fontSize: '16px',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.3s ease',
+                    }} target="_blank" onClick={handleLinkClick}>Preview</a>
+                </Link>
                 {/* <Button
                     type="button"
                     className="mr-auto bg-blue-600"
