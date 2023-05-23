@@ -138,7 +138,11 @@ th {
 }
 
 .appended-btn {
-  border-radius: 0 4px 4px 0 !important;
+  border-radius: 0 0 0 0 !important;
+}
+
+.enterprise-richtext .mantine-RichTextEditor-root {
+  border-radius: 0 !important;
 }
 
 @media (max-width: 740px) {

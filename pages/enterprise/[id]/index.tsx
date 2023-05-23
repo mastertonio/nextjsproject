@@ -37,6 +37,7 @@ import InputVariable, { iElemsProp, iElementProp } from "@app/enterprise/compone
 import MainLoader from '@app/core/components/loader/MainLoader';
 import { useTargetRefStore } from "@app/store/builderStore"
 import { IconCheck, IconQuestionCircle } from '@tabler/icons';
+import { AiFillQuestionCircle } from 'react-icons/ai'
 import { useCalculatorStore } from '@app/store/builder/calculatorStore';
 import {
   IconQuestionMark,
@@ -295,18 +296,18 @@ const Enterprise: React.FC<any> = (login) => {
           ? data?.data.data.content.sections.map((section: any) => {
             console.log('enterprise section', section, data)
             return (
-              <div className="w-full text-[#676a6c]" key={section.id} ref={targetRef}>
+              <div className="w-full text-[#676a6c] rounded-none" key={section.id} ref={targetRef}>
                 <Projection
                   title={section.sectionTitle}
-                  description={section.headers.description}
+                  description={section.headers?.title.description}
                   // subTitle={section.headers.title.subTitle.text}
-                  // content={section.headers.title.content}
+                  content={section.headers?.title?.content}
                   // length={section.headers.title.content.elements.length}
                   // quotes={section.headers.title.quotes}
                   key={section.order}
                 />
 
-                {section.headers?.title.content.elements[0] ? (
+                {/* {section.headers?.title.content.elements[0] ? (
                   <div style={{ height: 300, margin: 30 }}>
                     <ReactPlayer
                       controls
@@ -318,15 +319,15 @@ const Enterprise: React.FC<any> = (login) => {
                       height="100%"
                     />
                   </div>
-                ) : null}
+                ) : null} */}
 
                 <Grid className="mt-[10px] mb-[10px] p-[10px] w-full">
-                  <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-[12px] w-[96%] sm:w-[100%] pb-[40px] sm:pb-30px]">
+                  <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-none shadow w-[96%] sm:w-[100%] pb-[40px] sm:pb-30px]">
                     <form>
                       {section.grayContent.elements.length !== 0 ? (
                         <div className="mb-[30px]">
                           <Grid className="flex items-center">
-                            <Text ml={30} dangerouslySetInnerHTML={{ __html: section.headers.title.description ? he.decode(section.headers.title.description) : "" }} color="dark" fz="xl" fw={700} />
+                            {/* <Text ml={30} dangerouslySetInnerHTML={{ __html: section.headers.title.description ? he.decode(section.headers.title.description) : "" }} color="dark" fz="xl" fw={700} /> */}
                             <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
                               {value == "red" ? "Exclude" : "Include"}
                             </Button>
@@ -340,7 +341,7 @@ const Enterprise: React.FC<any> = (login) => {
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
                               <Grid
-                                className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                               >
                                 <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0" ></Text>
                                 <div className='w-1/2 flex items-center'>
@@ -351,7 +352,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     key={elem._id}
                                     hideControls
                                     defaultValue={elem.value}
-
+                                    radius={0}
                                     icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                     // id={elem.id}
                                     // {...register(`input${elem._id}`)}
@@ -360,7 +361,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       elem.tooltip ?
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                           <div className="flex flex-row items-center">
-                                            <IconQuestionCircle size="20" />
+                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
                                         </Tooltip> : ""
                                     }
@@ -419,10 +420,10 @@ const Enterprise: React.FC<any> = (login) => {
                               ? (
                                 <Grid
                                   key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                                 >
                                   <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                  <div className="w-1/2 ml-auto">
+                                  <div className="w-1/2 ml-auto enterprise-richtext">
                                     {/* <Textarea
                                     className="w-full"
                                     withAsterisk
@@ -433,7 +434,7 @@ const Enterprise: React.FC<any> = (login) => {
                               ) : elem.dataType == "Ratings" ? (
                                 <Grid
                                   key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                                 >
                                   <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                   <div className="w-1/2 flex flex-row justify-center">
@@ -465,23 +466,24 @@ const Enterprise: React.FC<any> = (login) => {
                                 : elem.dataType == "Dropdown" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className="flex flex-col ml-auto w-1/2">
                                       <Select
                                         data={elem.choices ? elem.choices : ""}
                                         placeholder="Pick one"
+                                        radius={0}
                                       />
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Radio" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px] items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className="flex flex-col ml-auto w-1/2">
+                                    <div className="flex flex-row ml-auto w-1/2 mr-[15px]">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
                                     </div>
@@ -489,14 +491,15 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Checkbox" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px] items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className="flex flex-col ml-auto w-1/2">
+                                    <div className="flex flex-row ml-auto w-1/2">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <Checkbox
                                           key={elem._id}
                                           label={elem.label}
+                                          className="mr-[15px]"
                                         />
                                       ))
                                       }
@@ -504,34 +507,34 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Output" ? (
                                   <Grid
-                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className='w-1/2 flex items-center' 
-                                    onBlur={async (event: BaseSyntheticEvent) => {
-                                      console.log(event, "venti", elem)
-                                      update({
-                                        ...elem,
-                                        value: elem.value
-                                      })
-                                      await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
-                                        grayContent: {
+                                    <div className='w-1/2 flex items-center'
+                                      onBlur={async (event: BaseSyntheticEvent) => {
+                                        console.log(event, "venti", elem)
+                                        update({
+                                          ...elem,
                                           value: elem.value
-                                        }
-                                      }, {
-                                        headers: {
-                                          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                        },
-                                      })
-                                      // console.log(cells, "from Inputtest")
-                                    }}>
+                                        })
+                                        await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                          grayContent: {
+                                            value: elem.value
+                                          }
+                                        }, {
+                                          headers: {
+                                            Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                          },
+                                        })
+                                        // console.log(cells, "from Inputtest")
+                                      }}>
                                       <Input
-                                        className="w-full appended-radius"
+                                        className="w-full"
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
                                         value={elem.value}
-
+                                        radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                         disabled
                                         placeholder={elem.prefilled && "Add Input here"}
@@ -539,20 +542,20 @@ const Enterprise: React.FC<any> = (login) => {
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                               <div className="flex flex-row items-center">
-                                                <IconQuestionCircle size="20" />
+                                                <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                               </div>
                                             </Tooltip> : ""
                                         }
-                                        
+
 
                                       // defaultValue={myCompany.name}
                                       />
-                                      <Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                      <Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Input" && elem.appendedText ? (
                                   <Grid
-                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex'>
@@ -564,6 +567,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         hideControls
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                         defaultValue={elem.value}
+                                        radius={0}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -573,7 +577,7 @@ const Enterprise: React.FC<any> = (login) => {
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                               <div className="flex flex-row items-center">
-                                                <IconQuestionCircle size="20" />
+                                                <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                               </div>
                                             </Tooltip> : ""
                                         }
@@ -596,12 +600,12 @@ const Enterprise: React.FC<any> = (login) => {
                                         }}
                                       // defaultValue={myCompany.name}
                                       />
-                                      <Button className="appended-btn w-auto" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>
+                                      <Button className="appended-btn w-auto" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Input" ? (
                                   <Grid
-                                    className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'>
@@ -612,6 +616,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         key={elem._id}
                                         hideControls
                                         defaultValue={elem.value}
+                                        radius={0}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -621,7 +626,7 @@ const Enterprise: React.FC<any> = (login) => {
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                               <div className="flex flex-row items-center">
-                                                <IconQuestionCircle size="20" />
+                                                <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                               </div>
                                             </Tooltip> : ""
                                         }
@@ -646,7 +651,7 @@ const Enterprise: React.FC<any> = (login) => {
 
                                       // defaultValue={myCompany.name}
                                       />
-                                      {elem.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius="xs" disabled>{elem.appendedText}</Button>) : ""}
+                                      {elem.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
                                     </div>
                                   </Grid>
                                 ) : ""}
