@@ -54,7 +54,7 @@ type formProps = {
   section: string,
 }
 
-const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSectionData, sectionData, setOpened, open, setOpenChoice, user, id }) => {
+const ModalUpdateEntry: React.FC<IModalEntryProps> = ({ adminId, showModal, setSectionData, sectionData, setOpened, open, setOpenChoice, user, id }) => {
   const addQuestions = useQuestionPropsStore((state) => state.addQuestions);
   const initialValue =
     "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
@@ -100,6 +100,7 @@ const ModalUpdateEntry: React.FC<IModalEntryProps> = ({adminId, showModal, setSe
     { value: 'Header', label: 'Header' },
     { value: 'HTML', label: 'HTML' },
     { value: 'Ratings', label: 'Ratings' },
+    { value: 'Header', label: 'Header' },
   ];
 
   const format = [

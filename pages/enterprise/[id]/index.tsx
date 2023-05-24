@@ -326,14 +326,14 @@ const Enterprise: React.FC<any> = (login) => {
                     <form>
                       {section.grayContent.elements.length !== 0 ? (
                         <div className="mb-[30px]">
-                          <Grid className="flex items-center mt-[20px] mb-[20px] sm:mt-[20px] sm:mb-[20px]">
+                          <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
                             {/* <Text ml={30} dangerouslySetInnerHTML={{ __html: section.headers.title.description ? he.decode(section.headers.title.description) : "" }} color="dark" fz="xl" fw={700} /> */}
-                            <Text ml={30} dangerouslySetInnerHTML={{ __html: "Please tell us a little about your sales organization" }} color="dark" fz="xl" fw={700} />
+                            <Text ml={30} dangerouslySetInnerHTML={{ __html: "Please tell us a little about your sales organization" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c]" />
                             {/* <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
                               {value == "red" ? "Exclude" : "Include"}
                             </Button> */}
                           </Grid>
-                          <Divider my="sm" color="gray" size="sm" variant="dashed" />
+                          <Divider my="sm" color="gray" size="sm" variant="dashed" className="ml-[22px] mr-[22px]" />
                         </div>
                       ) : ""}
 
@@ -342,7 +342,7 @@ const Enterprise: React.FC<any> = (login) => {
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
                               <Grid
-                                className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
+                                className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                               >
                                 <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0" ></Text>
                                 <div className='w-1/2 flex items-center'>
@@ -421,7 +421,7 @@ const Enterprise: React.FC<any> = (login) => {
                               ? (
                                 <Grid
                                   key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-0 mb-[20px]"
+                                  className="ml-[22px] mr-[22px] mt-0 mb-[20px]"
                                 >
                                   <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                   <div className="w-1/2 ml-auto enterprise-richtext">
@@ -436,7 +436,7 @@ const Enterprise: React.FC<any> = (login) => {
                               ) : elem.dataType == "Ratings" ? (
                                 <Grid
                                   key={elem._id}
-                                  className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
+                                  className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                 >
                                   <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                   <div className="w-1/2 flex flex-row justify-center">
@@ -468,7 +468,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 : elem.dataType == "Dropdown" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className="flex flex-col ml-auto w-1/2">
@@ -482,7 +482,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Radio" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className="flex flex-row ml-auto w-1/2 mr-[15px]">
@@ -493,7 +493,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Checkbox" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className="flex flex-row ml-auto w-1/2">
@@ -509,7 +509,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Output" ? (
                                   <Grid
-                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'
@@ -557,7 +557,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Input" && elem.appendedText ? (
                                   <Grid
-                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex'>
@@ -607,7 +607,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Input" ? (
                                   <Grid
-                                    className="ml-[30px] mr-[30px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'>
