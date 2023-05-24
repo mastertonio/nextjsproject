@@ -51,6 +51,9 @@ import { showNotification, updateNotification } from '@mantine/notifications';
 import he from 'he';
 import RadioToggle from '@app/admin/components/RadioToggle';
 import ReactPlayer from 'react-player';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001');
 
 interface CardSection {
   id: string;
@@ -144,6 +147,19 @@ const Enterprise: React.FC<any> = (login) => {
     HTMLDivElement
   >({ offset: 30, isList: true });
   const queryClient = useQueryClient()
+  const [receivedMessage, setReceivedMessage] = useState('');
+
+  useEffect(() => {
+    // Event listener for receiving messages from the server
+    socket.on('message', (message) => {
+      setReceivedMessage(message);
+    });
+
+    // Clean up the event listener on component unmount
+    return () => {
+      socket.off('message');
+    };
+  }, []);
 
   useEffect(() => {
     console.log("cells", cells)
@@ -241,6 +257,10 @@ const Enterprise: React.FC<any> = (login) => {
     >
       <>
         <div className="w-full text-[#676a6c]">
+          <div>
+            <h1>Second Screen</h1>
+            <h2>Received Message: {receivedMessage}</h2>
+          </div>
           <div className="ml-[22px] mr-[22px]">
             <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">{data?.data?.templateBuilderInfo?.name} | {data?.data?.templateBuilderInfo?.projection} Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
           </div>
