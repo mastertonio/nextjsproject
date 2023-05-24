@@ -73,6 +73,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const initialValue =
     "<div></div>";
   const [value, setValue] = useState<string>(initialValue)
+  const [errorMsg, setErrorMessage] = useState<string>('');
   // const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
@@ -143,7 +144,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     { value: 'Radio', label: 'Radio' },
     { value: 'Checkbox', label: 'Checkbox' },
     // { value: 'Slider', label: 'Slider' },
-    // { value: 'Header', label: 'Header' },
+    { value: 'Header', label: 'Header' },
     // { value: 'HTML', label: 'HTML' },
     { value: 'Ratings', label: 'Ratings' },
   ];
@@ -226,6 +227,9 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
           // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
         ]
       )
+      form.reset();
+      setValue('<div></div>');
+      setErrorMessage('')
       updateNotification({
         id: "adding-entry",
         color: "teal",
@@ -290,19 +294,27 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         withCloseButton={false}
         size="920px" title="Add Entry" padding={0} className="section-wrapper"
       >
-        <form onSubmit={form.onSubmit((values) => addEntry.mutateAsync({
-          address: values.address,
-          appendedText: values.appendedText,
-          choices: values.choices,
-          title: value,
-          currency: values.currency,
-          decimalPlace: values.decimalPlace,
-          format: values.format,
-          formula: values.formula,
-          prefilled: values.prefilled,
-          tooltip: values.tooltip,
-          type: values.type
-        }))}>
+        <form onSubmit={form.onSubmit((values) => {
+          if (value == '<div></div>' || value == '<p></p>') {
+            setErrorMessage('Entry Name is required');
+            return;
+          } else {
+            addEntry.mutateAsync({
+              address: values.address,
+              appendedText: values.appendedText,
+              choices: values.choices,
+              title: value,
+              currency: values.currency,
+              decimalPlace: values.decimalPlace,
+              format: values.format,
+              formula: values.formula,
+              prefilled: values.prefilled,
+              tooltip: values.tooltip,
+              type: values.type
+            })
+          }
+        }
+        )}>
           <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
             {/* {value} */}
             {/* <Grid className="p-[10px]">
@@ -322,7 +334,16 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 
               /> */}
               <div className="w-[100%] sm:w-[75%] ml-auto">
-                <RichTextSection content={value} onChange={setValue} type={form.values.type} />
+                <RichTextSection
+                  content={value}
+                  onChange={(values) => {
+                    console.log('richt', values);
+                    setValue(values)
+                    setErrorMessage('')
+                  }}
+                  type={form.values.type}
+                />
+                {errorMsg && <Text className="text-[14px] text-red-700 mt-[5px]">{errorMsg}</Text>}
               </div>
             </Grid>
 
@@ -358,7 +379,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
               </div>
             ) : null}
 
-            {form.values.type == "Dropdown" || form.values.type == 'Radio' || form.values.type == 'Checkbox' || form.values.type == "Textarea" || form.values.type == "Ratings" ? (
+            {form.values.type == "Dropdown" || form.values.type == 'Radio' || form.values.type == 'Checkbox' || form.values.type == "Textarea" || form.values.type == "Ratings" || form.values.type == "Header" ? (
               null
             ) : (
               <div>
@@ -375,12 +396,13 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                   </Grid>
                 ) : null}
 
-                {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" && !(form.values.type=="Dropdown" || form.values.type=="Radio" || form.values.type=="Checkbox")  ? (
+                {form.values.format === "Number" || form.values.format === "Percent" || form.values.format === "Currency" && !(form.values.type == "Dropdown" || form.values.type == "Radio" || form.values.type == "Checkbox") ? (
                   <Grid className="p-[10px] mt-[10px] sm:mt-[20px]">
                     <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Decimal Place: </Text>
                     <TextInput
                       className="w-[100%] sm:w-[75%] ml-auto"
                       {...form.getInputProps("decimalPlace")}
+                      value={form.values.type === "Input" || form.values.type === "Output" ? 0 : ""}
                     />
                   </Grid>
                 ) : null}
@@ -500,7 +522,10 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 size="sm"
                 color="gray"
                 className="mr-0 sm:mr-[10px]"
-                onClick={() => setOpened(false)}
+                onClick={() => {
+                  setOpened(false)
+                  setErrorMessage('')
+                }}
               >
                 Cancel
               </Button>

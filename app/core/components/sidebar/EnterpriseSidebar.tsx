@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import {
   IconBellRinging,
+  IconFileAnalytics,
   // IconFingerprint,
   // IconKey,
   IconSettings,
@@ -56,8 +57,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
     },
 
     links: {
-      marginLeft: -theme.spacing.md,
-      marginRight: -theme.spacing.md,
+      marginLeft: '-10px',
+      marginRight: '-10px',
+      // marginLeft: -theme.spacing.md,
+      // marginRight: -theme.spacing.md,
     },
 
     linksInner: {
@@ -75,7 +78,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
     },
     control: {
       fontWeight: 500,
-      display: "block",
+      // display: "flex",
       width: "100%",
       padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
       color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
@@ -195,7 +198,7 @@ const NavbarSimple = ({ sidebarData, sectionEmpty, scroll }: any) => {
 
 
   return (
-    <Navbar width={{ sm: 220 }} p="md" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
+    <Navbar width={{ sm: 220 }} p="xs" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
       <Group position="apart" className="mb-[30px]">
         <div className="ml-auto flex sm:hidden">
           <IconX className="w-[30px] h-[30px]" onClick={() => hide()} />
@@ -222,6 +225,7 @@ const NavbarSimple = ({ sidebarData, sectionEmpty, scroll }: any) => {
         >
           <Group position="apart" spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconFileAnalytics size={18} color={'white'} />
               <Box ml="md" onClick={() => {
                 router.push('/dashboard')
               }}>

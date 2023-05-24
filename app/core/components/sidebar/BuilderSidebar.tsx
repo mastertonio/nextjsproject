@@ -21,6 +21,7 @@ import {
   TablerIcon,
   IconChevronRight,
   IconChevronLeft,
+  IconCalculator
 } from "@tabler/icons";
 import { useState } from "react";
 // import { UserButton } from '../UserButton/UserButton';
@@ -78,7 +79,7 @@ const useStyles = createStyles((theme) => ({
 
   control: {
     fontWeight: 500,
-    display: "block",
+    // display: "block",
     width: "100%",
     padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
@@ -120,7 +121,7 @@ const useStyles = createStyles((theme) => ({
 
   chevron: {
     transition: "transform 200ms ease",
-    color: 'white'
+    color: 'white',
   },
 }));
 
@@ -163,9 +164,16 @@ export function LinksGroup({
         onClick={() => setOpened((o) => !o)}
         className={classes.control}
       >
-        <Group position="apart" spacing={0}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Icon size={18} color={'white'} />
+        <Group position="apart" spacing={0} className="flex flex-row justify-between w-full">
+          <Box sx={{ display: "flex" }}>
+            {title === 'ROI Sections' ? (
+              <IconCalculator size={18} color={'white'} />
+            ) : title === 'My ROIs' ? (
+              <IconGauge size={18} color={'white'} />
+            ) : (
+              <IconNotes size={18} color={'white'} />
+            )}
+
             <Box ml="md">
               <Text color={"white"}>{title}</Text>
             </Box>
@@ -197,7 +205,7 @@ const NavbarNested = () => {
   ));
 
   return (
-    <Navbar width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar width={{ sm: 220 }} p="xs" className={classes.navbar}>
       <Navbar.Section className={classes.header}>
         <Group position="apart">
           {/* <Logo width={120} /> */}

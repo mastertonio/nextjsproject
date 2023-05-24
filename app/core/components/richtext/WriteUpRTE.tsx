@@ -28,7 +28,13 @@ const WriteUpRTE: React.FC<CustomRichTextEditorProps> = ({ content, onChange }) 
         extensions: [
             StarterKit,
             Underline,
-            Link,
+            Link.configure({
+                openOnClick: true,
+                autolink: true,
+                HTMLAttributes: {
+                    class: '!decoration-solid !text-blue-700 write-up-link'
+                }
+            }),
             Superscript,
             SubScript,
             Highlight,

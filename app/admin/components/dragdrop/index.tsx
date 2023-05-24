@@ -122,10 +122,10 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         }))
     };
 
-    const items = data?.map((item, index) => {
+    const items = state?.map((item, index) => {
         console.log('item drag', item)
         return (
-            <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`} isDragDisabled={true}>
+            <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`}>
                 {(provided, snapshot) => (
                     <div>
                         <div
@@ -145,7 +145,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                             <div>
                                 <Grid className="h-[20px]">
                                     <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} type={item.dataType} />
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(item.title)}} className="text-[14px] ml-[5px] flex items-center h-5"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(item.title) }} className="text-[14px] ml-[5px] flex items-center h-5"></Text>
                                     {/* <p style={{ display: 'flex', alignItems: 'center', margin: '0' }}><span>What</span></p> */}
                                 </Grid>
                             </div>

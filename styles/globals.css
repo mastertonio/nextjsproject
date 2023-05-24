@@ -145,6 +145,12 @@ th {
   border-radius: 0 !important;
 }
 
+.write-up-link > *,
+.write-up-link {
+  color: rgb(29 78 216) !important;
+  text-decoration: underline !important;
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;

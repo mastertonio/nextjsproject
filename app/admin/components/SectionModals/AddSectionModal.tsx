@@ -66,7 +66,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 }
             ).then((response) => response.data),
         onMutate: () => {
-            console.log("on mutate",router.query.temp_id, router.query.ver_id)
+            console.log("on mutate", router.query.temp_id, router.query.ver_id)
             setOpened(false)
             showNotification({
                 id: "adding-section",
@@ -75,11 +75,12 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 message: "Please wait ...",
                 autoClose: false,
                 disallowClose: true,
-              });
+            });
         },
         onSuccess: (newRoi) => {
 
             setOpened(false)
+            form.reset()
             Promise.all(
                 [
                     queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
@@ -94,27 +95,27 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 message: "",
                 icon: <IconCheck size={16} />,
                 autoClose: 3000,
-              });
+            });
 
         },
         onError: (error) => {
             if (error instanceof Error) {
                 updateNotification({
-                  id: "adding-section",
-                  color: "red",
-                  title: `Adding section failed`,
-                  message: error.message,
-                  autoClose: false,
+                    id: "adding-section",
+                    color: "red",
+                    title: `Adding section failed`,
+                    message: error.message,
+                    autoClose: false,
                 });
-              }
-        
-              updateNotification({
+            }
+
+            updateNotification({
                 id: "adding-section",
                 color: "red",
                 title: `Adding section failed`,
                 message: "Something went wrong, Please try again",
                 autoClose: false,
-              });
+            });
         }
     })
 
