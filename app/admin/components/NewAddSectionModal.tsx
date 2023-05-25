@@ -100,7 +100,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
 
   const form = useForm({
     initialValues: {
-      type: "",
+      type: "Input",
       choices: [],
       format: "",
       decimalPlace: "",
