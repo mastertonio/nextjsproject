@@ -32,7 +32,7 @@ const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress }) => {
       <Card.Section withBorder className="h-[48px] mb-0 pt-[14px] pl-[15px] pr-[15px] pb-[6px] "
       >
         <Group position="apart">
-          <Text className="text-[20px] sm:text-[18px] text-[#428bca]" weight={700}>{label}</Text>
+          <Text className="text-[20px] sm:text-[18px] text-[#428bca] hover:text-[#2a6496] cursor-pointer" weight={600}>{label}</Text>
           <Badge variant="filled" className="rounded-[0.25em] text-[10px] leading-[15px] pt-[3px] pb-[3px] pl-[8px] pr-[8px]">2 Year</Badge>
         </Group>
       </Card.Section>

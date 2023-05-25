@@ -57,7 +57,7 @@ const EditSectionModal: React.FC<IModalEntryProps> = ({ id, user, secName, admin
     const editSection = useMutation({
         mutationFn: (sect: string) => axios.patch(`/v1/company/admintool/${adminId}/section/${id}`, {
             sectionTitle: sect
-        } ,{
+        }, {
             headers: {
                 Authorization: `Bearer ${user.tokens.access.token}`,
             },
@@ -123,8 +123,8 @@ const EditSectionModal: React.FC<IModalEntryProps> = ({ id, user, secName, admin
                                 required
                                 className="w-[100%] sm:w-[75%] ml-auto"
                                 {...form.getInputProps("sectioName")}
-                                // onChange={(event) => setNewCardName(event.target.value)}
-                                // value={newCardName}
+                            // onChange={(event) => setNewCardName(event.target.value)}
+                            // value={newCardName}
                             />
                         </Grid>
 
@@ -154,7 +154,7 @@ const EditSectionModal: React.FC<IModalEntryProps> = ({ id, user, secName, admin
                     </div>
                 </form>
             </Modal>
-            <MdModeEdit onClick={() => setOpened(true)} className="text-blue-600 text-[25px] mr-[10px] cursor-pointer" />
+            <MdModeEdit onClick={() => setOpened(true)} className="!text-blue-600 text-[25px] mr-[10px] !cursor-pointer" />
         </>
     )
 }
