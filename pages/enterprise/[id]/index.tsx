@@ -585,14 +585,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         }}
                                       />
                                       {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
-                                      
-                                      <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                      {elem.tooltip ? ( <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                           <div className="flex flex-row items-center">
                                             <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
                                         </Tooltip>
-                                      </Button>
+                                      </Button>) : ""}
+                                     
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Input" && elem.appendedText ? (
