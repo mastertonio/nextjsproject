@@ -622,14 +622,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
                                         placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
-                                        rightSection={
-                                          elem.tooltip ?
-                                            <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                              <div className="flex flex-row items-center">
-                                                <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                              </div>
-                                            </Tooltip> : ""
-                                        }
+                                        // rightSection={
+                                        //   elem.tooltip ?
+                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                        //       <div className="flex flex-row items-center">
+                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                        //       </div>
+                                        //     </Tooltip> : ""
+                                        // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log(event, "venti", elem)
                                           update({
@@ -679,14 +679,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
                                         placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
-                                        rightSection={
-                                          elem.tooltip ?
-                                            <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                              <div className="flex flex-row items-center">
-                                                <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                              </div>
-                                            </Tooltip> : ""
-                                        }
+                                        // rightSection={
+                                        //   elem.tooltip ?
+                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                        //       <div className="flex flex-row items-center">
+                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                        //       </div>
+                                        //     </Tooltip> : ""
+                                        // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log(event, "venti", elem)
                                           update({
