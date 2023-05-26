@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon } from "@mantine/core";
+import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon, ScrollArea } from "@mantine/core";
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { useForm, zodResolver } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -15,6 +15,7 @@ import { SectionStateAdminTool, iSectionData } from "@app/store/adminToolSection
 import shortUUID from "short-uuid";
 import { z } from 'zod';
 import { useCalculatorStore } from "@app/store/builder/calculatorStore";
+import { HiOutlineDocumentText } from 'react-icons/hi'
 
 export interface IButtonRoiNameProps {
   id?: string;
@@ -79,7 +80,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const p = router.query;
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
-  
+
 
   // function findLast<T>(array: T[], predicate: (value: T, index: number, array: T[]) => boolean): T | undefined {
   //   for (let i = array.length - 1; i >= 0; i--) {
@@ -101,9 +102,9 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const currentColumn = currentAddress.charCodeAt(0);
   const nextColumn = String.fromCharCode(currentColumn + 1);
 
-  useEffect(()=>{
+  useEffect(() => {
     setCurrentAddress(lv)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lv])
 
   // Generate the next address
@@ -148,6 +149,13 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       </ActionIcon>
     </Grid>
   ))
+
+  const ModalTitle = (title: string) => (
+    <div className="flex flex-row items-center">
+      <HiOutlineDocumentText className="mr-[10px] text-[36px] sm:text-[26px]" />
+      <Text className="text-[18px] sm:text-[22px] mb-0 mt-[3px] font-semibold">{title}</Text>
+    </div>
+  )
 
   const dataSelect = [
     { value: 'Input', label: 'Input' },
@@ -297,7 +305,11 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         opened={opened}
         onClose={() => setOpened(false)}
         withCloseButton={false}
-        size="920px" title="Add Entry" padding={0} className="section-wrapper"
+        size="920px"
+        title={ModalTitle('Add Entry')}
+        padding={0}
+        className="section-wrapper"
+      // scrollAreaComponent={ScrollArea.Autosize}
       >
         {/* <div>{currentAddress}{nextAddress}</div> */}
         <form onSubmit={form.onSubmit((values) => {
@@ -408,7 +420,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                     <TextInput
                       className="w-[100%] sm:w-[75%] ml-auto"
                       {...form.getInputProps("decimalPlace")}
-                      // value={form.values.type === "Input" || form.values.type === "Output" ? 0 : ""}
+                    // value={form.values.type === "Input" || form.values.type === "Output" ? 0 : ""}
                     />
                   </Grid>
                 ) : null}
