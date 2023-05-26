@@ -114,7 +114,7 @@ const EditSectionModal: React.FC<IModalEntryProps> = ({ id, user, secName, admin
 
     return (
         <>
-            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${secName} section`)} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%] mx-auto">
+            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${secName} section`)} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%]">
                 <form onSubmit={form.onSubmit((values) => editSection.mutate(values.sectioName))}>
                     <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                         <Grid className="p-[10px]">

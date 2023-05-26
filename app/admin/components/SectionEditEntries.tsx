@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea, ActionIcon } from '@mantine/core';
+import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea, ActionIcon, ScrollArea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
@@ -218,7 +218,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
     return (
         <>
             { }
-            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${convertHtmlToPlainText(he.decode(secName))} section`)} padding={0} className="section-wrapper w-[100%] sm:w-[70%] mx-auto">
+            <Modal centered opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle(`Rename ${convertHtmlToPlainText(he.decode(secName))} section`)} padding={0} className="section-wrapper w-[100%] sm:w-[70%]" scrollAreaComponent={ScrollArea.Autosize}>
                 <form onSubmit={form.onSubmit((values) => editSectionEntry.mutate({
                     address: values.address,
                     appendedText: values.appendedText,

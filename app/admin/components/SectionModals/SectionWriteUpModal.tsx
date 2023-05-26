@@ -150,7 +150,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ cardID, user, adminId
 
     return (
         <>
-            <Modal opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px] mx-auto" id={cardID} key={cardID} >
+            <Modal centered opened={opened} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Change New Section Writeup')} padding={0} className="section-wrapper w-[100%] sm:w-[800px]" id={cardID} key={cardID} >
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
                         <Text className="text-[18px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Section Writeup: </Text>
@@ -179,7 +179,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ cardID, user, adminId
                                 sectionWriteUp.mutateAsync(value)
                             }}
                         >
-                            Create Section
+                            Create Section Write Up
                         </Button>
                         <Button
                             type="button"

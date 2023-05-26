@@ -229,7 +229,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                             setClose(cardID)
                         }}
                     >
-                        Create Section
+                        Add Media
                     </Button>
                     <Button
                         type="button"

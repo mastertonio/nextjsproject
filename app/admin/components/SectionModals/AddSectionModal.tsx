@@ -219,7 +219,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
     }
 
     return (
-        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Section')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%] mx-auto">
+        <Modal opened={open} onClose={() => setOpened(false)} size="920px" title={ModalTitle('Add a New Section')} padding={0} className="section-wrapper section-modal w-[100%] sm:w-[70%]">
             <form onSubmit={form.onSubmit((values) => createSection.mutate(values.sectioName))}>
                 <div className="bg-[#ECEFF1] p-[20px] sm:p-[40px] mt-0">
                     <Grid className="p-[10px]">
