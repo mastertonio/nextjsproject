@@ -24,10 +24,11 @@ const useStyles = createStyles((theme) => ({
         border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
             }`,
         padding: `${theme.spacing.sm}px ${theme.spacing.xl}px`,
-        paddingLeft: theme.spacing.sm, // to offset drag handle
+        paddingLeft: theme.spacing.md, // to offset drag handle
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white,
         marginBottom: theme.spacing.sm,
         boxShadow: theme.shadows.md,
+        height: 40
     },
 
     itemDragging: {
@@ -103,34 +104,25 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
     const [getID, setGetID] = useState(0);
     const queryClient = useQueryClient()
 
-    
+
 
     const equalsCheck = (a: IBuilderSubState[], b: IBuilderSubState[]) => a.length === b.length && a.every((v, i) => v === b[i])
 
     const remove = useBuilderStore((state) => state.remove)
     const [state, handlers] = useListState(data);
 
-    
+
 
     const editSection = useMutation({
-        mutationFn: (sect: any) => axios.patch(`/v1/company/admintool/${adminId}/section/${id}`, {
-            grayContent: {
-                elements: state
-            }
-        } ,{
+        mutationFn: (sect: any) => axios.put(`/v1/company/admintool/${adminId}/section/${id}`, {
+            grayContentElement: sect
+        }, {
             headers: {
                 Authorization: `Bearer ${user.tokens.access.token}`,
             },
         }).then((response) => response.data),
         onMutate: (roi) => {
             setOpened(false)
-            showNotification({
-                id: "update-section",
-                loading: true,
-                title: `Updating section`,
-                message: "Please wait ...",
-                autoClose: false,
-            });
         },
         onSuccess: (newRoi) => {
             console.log(newRoi, "roiroi")
@@ -141,33 +133,10 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                     // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
                 ]
             )
-            updateNotification({
-                id: "update-section",
-                color: "teal",
-                title: `Section updated!`,
-                message: "",
-                icon: <IconCheck size={16} />,
-                autoClose: 3000,
-            });
         },
         onError: (error) => {
             if (error instanceof Error) {
-                updateNotification({
-                    id: "update-section",
-                    color: "red",
-                    title: `Update failed`,
-                    message: error.message,
-                    autoClose: false,
-                });
             }
-
-            updateNotification({
-                id: "update-section",
-                color: "red",
-                title: `Update failed`,
-                message: "Something went wrong, Please try again",
-                autoClose: false,
-            });
         }
     })
 
@@ -176,6 +145,14 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         // editSection.mutate(state)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
+
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         // Make API call here
+    //         editSection.mutate(state)
+    //     }, 4000);
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // })
 
     useEffect(() => {
         if (data) {
@@ -216,7 +193,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                                     {/* <p style={{ display: 'flex', alignItems: 'center', margin: '0' }}><span>What</span></p> */}
                                 </Grid>
                             </div>
-                            <div className="ml-auto button-section">
+                            <div className="ml-auto button-section mr-2">
                                 <Button
                                     type="button"
                                     radius="sm"
@@ -263,7 +240,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         <DragDropContext
             onDragEnd={({ destination, source }) => {
                 handlers.reorder({ from: source.index, to: destination?.index || 0 })
-                }
+            }
             }
         >
             <Droppable droppableId="dnd-list" direction="vertical">

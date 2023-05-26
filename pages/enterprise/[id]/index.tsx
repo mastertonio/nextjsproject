@@ -27,7 +27,7 @@ import {
   Select,
   Radio,
 } from "@mantine/core";
-import { useScrollIntoView, useToggle } from '@mantine/hooks';
+import { useLocalStorage, useScrollIntoView, useToggle } from '@mantine/hooks';
 import { contentData, finalData } from "@app/enterprise/constants/content";
 import SliderCard from "@app/core/components/card";
 import CheckboxChoices, { iChoicesTypeProps, iOtherTypeProps } from "@app/enterprise/components/CheckboxChoices";
@@ -131,6 +131,7 @@ const Enterprise: React.FC<any> = (login) => {
   const [show, setShow] = useState<boolean>(false)
   const [value, toggle] = useToggle(['teal', 'red']);
   const cells = useCalculatorStore((state) => (state.cells))
+  const [localCells, setLC] = useLocalStorage({ key: 'local_cells', defaultValue: cells || "" });
   const addItems = useCalculatorStore((state) => state.addItems)
   const update = useCalculatorStore((state) => state.update)
   const { setState } = useCalculatorStore
@@ -181,7 +182,7 @@ const Enterprise: React.FC<any> = (login) => {
     "enterpriseData",
     getEnterpriseData,
     {
-      refetchInterval: 1500
+      refetchInterval: 4000,
     }
   );
 
@@ -201,7 +202,9 @@ const Enterprise: React.FC<any> = (login) => {
 
   useEffect(() => {
     if (data?.data) {
-      setState(data?.data.data.content.sections[0].grayContent.elements)
+      if (data?.data.data.content.sections.length > 0) {
+        setState(data?.data.data.content.sections[0].grayContent.elements)
+      }
     }
     console.log("cellsis", cells)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -225,6 +228,50 @@ const Enterprise: React.FC<any> = (login) => {
   }, [])
 
   let previousState = useCalculatorStore?.getState();
+  const numberInputRef = useRef<HTMLInputElement>(null);
+  const focusRef = useRef<HTMLButtonElement>(null);
+
+  const handleBlur = () => {
+    if (numberInputRef.current) {
+      numberInputRef.current.blur();
+    }
+  };
+
+//   const editSection = useMutation({
+//     mutationFn: (sect: any) => axios.put(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}`, {
+//         grayContentElement: sect
+//     }, {
+//         headers: {
+//             Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+//         },
+//     }).then((response) => response.data),
+//     onMutate: (roi) => {
+//         setOpened(false)
+//     },
+//     onSuccess: (newRoi) => {
+//         console.log(newRoi, "roiroi")
+//         Promise.all(
+//             [
+//                 queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+//                 queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+//                 // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+//             ]
+//         )
+//     },
+//     onError: (error) => {
+//         if (error instanceof Error) {
+//         }
+//     }
+// })
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      // Make API call here
+      setLC(cells)
+    }, 5000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localCells]);
   // useCalculatorStore.subscribe(
   //   (state) => {
   //     // Ensure data array exists
@@ -232,15 +279,15 @@ const Enterprise: React.FC<any> = (login) => {
   //       console.log('Data array is undefined.');
   //       return;
   //     }
-  
+
   //     // Compare previous state with current state to identify updated elements
   //     const updatedElements = state.cells.filter(
   //       (element, index) => element !== previousState.cells[index]
   //     );
-  
+
   //     // Handle the updated elements
   //     console.log('Updated elements:', updatedElements);
-  
+
   //     // Update the previous state
   //     previousState = state;
   //   },// Specify the selector to listen for changes in the data array
@@ -309,7 +356,9 @@ const Enterprise: React.FC<any> = (login) => {
         </div>
         {data?.data
           ? data?.data.data.content.sections.map((section: any) => {
+
             console.log('enterprise section', section, data)
+
             return (
               <div className="w-full text-[#676a6c] rounded-none" key={section.id} ref={targetRef}>
                 <Projection
@@ -377,8 +426,13 @@ const Enterprise: React.FC<any> = (login) => {
                                     // icon={state.icon ? state.icon : ""}
                                     thousandsSeparator=','
                                     precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
-                                    type="number"
                                     key={elem._id}
+                                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                    formatter={(value) =>
+                                      !Number.isNaN(parseFloat(value))
+                                        ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                        : ""
+                                    }
                                     hideControls
                                     defaultValue={elem.value !== 0 ? elem.value : ""}
                                     radius={0}
@@ -396,13 +450,14 @@ const Enterprise: React.FC<any> = (login) => {
                                     }
                                     onBlur={async (event: BaseSyntheticEvent) => {
                                       console.log(event, "venti", elem)
+                                      handleBlur()
                                       update({
                                         ...elem,
-                                        value: +event.target.value
+                                        value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                       })
                                       await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                         grayContent: {
-                                          value: +event.target.value
+                                          value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                         }
                                       }, {
                                         headers: {
@@ -543,15 +598,17 @@ const Enterprise: React.FC<any> = (login) => {
                                     <div className='w-1/2 flex items-center'>
                                       <NumberInput
                                         className="w-full"
+                                        ref={numberInputRef}
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
+                                        disabled
                                         thousandsSeparator=','
                                         decimalSeparator='.'
-                                        value={elem.value !== 0 ? elem.value : ""}
+                                        value={elem.value}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        disabled
+                                        hideControls
                                         placeholder={elem.prefilled}
                                         // rightSection={
                                         //   elem.tooltip ?
@@ -561,31 +618,27 @@ const Enterprise: React.FC<any> = (login) => {
                                         //       </div>
                                         //     </Tooltip> : ""
                                         // }
-                                        onChange={(value) => {
-                                          const updatedValue = value
+                                        onChange={(event) => console.log("EVENNTT", event)}
+                                        onBlur={async (event: BaseSyntheticEvent) => {
+                                          console.log("BLURRED LINES")
                                           update({
                                             ...elem,
-                                            value: updatedValue,
-                                          });
-                                      
-                                          // Save the updated value
-                                          axios.patch(
-                                            `/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`,
-                                            {
-                                              grayContent: {
-                                                value: updatedValue,
-                                              },
-                                            },
-                                            {
-                                              headers: {
-                                                Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                              },
+                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                          })
+                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                            grayContent: {
+                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                             }
-                                          );
+                                          }, {
+                                            headers: {
+                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                            },
+                                          })
+                                          // console.log(cells, "from Inputtest")
                                         }}
                                       />
                                       {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
-                                      
+
                                       <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                           <div className="flex flex-row items-center">
@@ -607,6 +660,12 @@ const Enterprise: React.FC<any> = (login) => {
                                         thousandsSeparator=','
                                         precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
+                                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                        formatter={(value) =>
+                                          !Number.isNaN(parseFloat(value))
+                                            ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                            : ""
+                                        }
                                         key={elem._id}
                                         hideControls
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
@@ -627,13 +686,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log(event, "venti", elem)
+                                          handleBlur()
                                           update({
                                             ...elem,
-                                            value: +event.target.value
+                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                           })
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
-                                              value: +event.target.value
+                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                             }
                                           }, {
                                             headers: {
@@ -665,7 +725,13 @@ const Enterprise: React.FC<any> = (login) => {
                                         // icon={state.icon ? state.icon : ""}
                                         thousandsSeparator=','
                                         precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
-                                        type="number"
+
+                                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                        formatter={(value) =>
+                                          !Number.isNaN(parseFloat(value))
+                                            ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                            : ""
+                                        }
                                         key={elem._id}
                                         hideControls
                                         defaultValue={elem.value !== 0 ? elem.value : ""}
@@ -685,13 +751,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log(event, "venti", elem)
+                                          handleBlur()
                                           update({
                                             ...elem,
-                                            value: +event.target.value
+                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                           })
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
-                                              value: +event.target.value
+                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                             }
                                           }, {
                                             headers: {

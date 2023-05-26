@@ -26,6 +26,7 @@ const RadioToggle: React.FC<RadioProps> = ({ color, label }) => {
             checked={checked}
             onChange={(event) => setChecked(event.currentTarget.checked)}
             onClick={() => setChecked(false)}
+            className="mt-[5px] mb-[5px]"
         />
     )
 }

@@ -408,7 +408,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                     <TextInput
                       className="w-[100%] sm:w-[75%] ml-auto"
                       {...form.getInputProps("decimalPlace")}
-                      value={form.values.type === "Input" || form.values.type === "Output" ? 0 : ""}
+                      // value={form.values.type === "Input" || form.values.type === "Output" ? 0 : ""}
                     />
                   </Grid>
                 ) : null}
