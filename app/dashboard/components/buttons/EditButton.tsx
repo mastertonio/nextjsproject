@@ -68,7 +68,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) 
         title: `Editing ${roi.title}`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
+         
       });
     },
     onSuccess: (newRoi) => {

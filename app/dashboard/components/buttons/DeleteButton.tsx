@@ -44,7 +44,7 @@ const DeleteButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }
         title: `Deleting row`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
+         
       });
     },
     onSuccess: (newRoi) => {

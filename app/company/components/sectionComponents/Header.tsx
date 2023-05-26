@@ -27,7 +27,7 @@ type iSectionHeaderProps = {
 
 const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
   const [titleValue, setTitle] = useState(title);
-  const [priceValue, setPrice] = useState<number | undefined>(price);
+  const [priceValue, setPrice] = useState(price);
   const [changeTitle, setTitleChange] = useState(false);
   const [changePrice, setPriceChange] = useState(false);
 
@@ -100,7 +100,7 @@ const SectionHeader: React.FC<iSectionHeaderProps> = ({ id, title, price }) => {
       {changePrice ? (
         <NumberInput
           value={priceValue}
-          onChange={(val) => setPrice(val)}
+          onChange={(val) => setPrice(+val)}
           onBlur={() => setPriceChange(false)}
           hideControls
           parser={(value) => value?.replace(/\$\s?|(,*)/g, "")}

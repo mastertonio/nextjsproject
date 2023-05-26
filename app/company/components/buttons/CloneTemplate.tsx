@@ -69,7 +69,7 @@ const CloneTemplate: React.FC<IButtonTemplateProps> = ({
                 title: `Cloning ...`,
                 message: "Please wait, cloning row",
                 autoClose: false,
-                disallowClose: true,
+                 
                 color: "teal",
             });
 

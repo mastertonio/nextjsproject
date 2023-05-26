@@ -3,7 +3,7 @@ import '../styles/slick.css';
 import '../styles/slick-theme.css';
 import type { AppProps } from "next/app";
 import { MantineProvider } from "@mantine/core";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
 import DashboardContextProvider from "app/context/dashboard.context";
@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         }}
       >
         <SessionProvider session={pageProps.session}>
-          <NotificationsProvider position="bottom-right" zIndex={2077}>
+          <Notifications>
 
             <UserContextProvider>
               <DashboardContextProvider>
@@ -76,7 +76,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                 </BuilderContextProvider>
               </DashboardContextProvider>
             </UserContextProvider>
-          </NotificationsProvider>
+          </Notifications>
         </SessionProvider>
       </MantineProvider>
     </>

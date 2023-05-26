@@ -220,7 +220,6 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         title: `Adding entries`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
       });
     },
     onSuccess: (newRoi) => {

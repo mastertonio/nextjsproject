@@ -54,7 +54,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const response = await axios.patch(

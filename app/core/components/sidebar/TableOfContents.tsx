@@ -65,7 +65,6 @@ const TableOfContentsFloating = ({ links }: TableOfContentsFloatingProps) => {
       }}
       key={item.label}
       className={cx(classes.link, { [classes.linkActive]: active === index })}
-      sx={(theme) => ({ paddingLeft: item.order * theme.spacing.lg })}
     >
       {item.label}
     </Box>

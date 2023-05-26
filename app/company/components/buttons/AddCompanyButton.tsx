@@ -59,7 +59,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         title: `Updating`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const response = await axios.post(
@@ -261,7 +261,6 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               <DatePicker
                 value={startDate}
                 onChange={setStartDate}
-                clearable
                 className="w-[250px]"
               />
               {/* onChange={dat => dat && setDate(dat)} */}
@@ -271,7 +270,6 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               <DatePicker
                 value={endDate}
                 onChange={setEndDate}
-                clearable
                 className="w-[250px]"
                 minDate={startDate || new Date()}
               />

@@ -67,7 +67,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const response = await axios.post(

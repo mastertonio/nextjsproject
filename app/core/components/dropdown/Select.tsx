@@ -56,7 +56,7 @@ const SelectDropdown: React.FC<IStarProps> = ({
         title: `Updating status`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const res = await axios.patch(

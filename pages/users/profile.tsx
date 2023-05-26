@@ -77,7 +77,7 @@ const UserProfile: React.FC<any> = (login) => {
         title: 'Updating your data',
         message: 'Data will be loaded within seconds',
         autoClose: false,
-        disallowClose: true,
+         
         color: 'teal'
       })
       const res = await axios.patch(
@@ -120,7 +120,7 @@ const UserProfile: React.FC<any> = (login) => {
         title: 'Error in Saving Data',
         message: 'Please reload the page or try again later',
         autoClose: 1000,
-        disallowClose: true,
+         
         color: 'red'
       })
       return error;

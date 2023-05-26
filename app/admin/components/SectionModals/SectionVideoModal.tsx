@@ -76,7 +76,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                 title: `Adding Video`,
                 message: "Please wait ...",
                 autoClose: false,
-                disallowClose: true,
+                 
             });
         },
         onSuccess: (newRoi) => {

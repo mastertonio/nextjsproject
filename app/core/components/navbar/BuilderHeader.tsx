@@ -89,7 +89,7 @@ const useStyles = createStyles((theme) => ({
         : theme.colors.gray[0],
     margin: -theme.spacing.md,
     marginTop: theme.spacing.sm,
-    padding: `${theme.spacing.md}px ${theme.spacing.md * 2}px`,
+    padding: `${theme.spacing.md}px`,
     paddingBottom: theme.spacing.xl,
     borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
       }`,

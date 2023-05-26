@@ -51,7 +51,7 @@ const TransferUser: React.FC<any> = ({ item, manager, id, company, user, refetch
                 title: `Updating ...`,
                 message: "Please wait, updating edited row",
                 autoClose: false,
-                disallowClose: true,
+                 
                 color: "teal",
             });
             const response = await axios.patch(`/v1/company/${company}/user/${id}`,

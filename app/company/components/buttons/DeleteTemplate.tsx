@@ -56,7 +56,7 @@ const DeleteTemplate: React.FC<RemoveSectionModalProps> = ({ id,
                 title: `Deleting ...`,
                 message: "Please wait, deleting row",
                 autoClose: false,
-                disallowClose: true,
+                 
                 color: "teal",
             });
 

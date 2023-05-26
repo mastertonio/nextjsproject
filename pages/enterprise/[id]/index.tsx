@@ -253,16 +253,6 @@ const Enterprise: React.FC<any> = (login) => {
       padding={0}
       navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} sectionEmpty={sectionEmpty} scroll={handleScroll} />}
       header={<EnterpriseNavbar />}
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-          // width: '100%',
-        },
-      })}
-      className="m-0 p-0"
     >
       <>
         <div className="w-full text-[#676a6c]">
@@ -385,6 +375,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   <NumberInput
                                     className="w-full"
                                     // icon={state.icon ? state.icon : ""}
+                                    thousandsSeparator=','
                                     precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                     type="number"
                                     key={elem._id}
@@ -555,6 +546,8 @@ const Enterprise: React.FC<any> = (login) => {
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
+                                        thousandsSeparator=','
+                                        decimalSeparator='.'
                                         value={elem.value !== 0 ? elem.value : null}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
@@ -610,6 +603,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       <NumberInput
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
+                                        thousandsSeparator=','
                                         precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
@@ -668,6 +662,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       <NumberInput
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}
+                                        thousandsSeparator=','
                                         precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}

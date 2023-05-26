@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { createStyles, getStylesRef } from "@mantine/core";
 
 export const useStyles = createStyles((theme, _params, getRef) => ({
   wrapper: {
@@ -12,7 +12,7 @@ export const useStyles = createStyles((theme, _params, getRef) => ({
     // Dynamic media queries, define breakpoints in theme, use anywhere
     [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
       // Type safe child reference in nested selectors via ref
-      [`& .${getRef("child")}`]: {
+      [`& .${getStylesRef("child")}`]: {
         fontSize: theme.fontSizes.xs,
       },
     },

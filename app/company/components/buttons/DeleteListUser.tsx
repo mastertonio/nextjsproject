@@ -44,7 +44,7 @@ const DeleteListUser: React.FC<any> = ({ item, manager, user, company, id, refet
                 title: `Updating ...`,
                 message: "Please wait, updating edited row",
                 autoClose: false,
-                disallowClose: true,
+                 
                 color: "teal",
             });
 

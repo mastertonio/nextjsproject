@@ -79,18 +79,8 @@ const AdminBuilder: React.FC<any> = (login) => {
     // console.log('admintool', flatData)
     return (
       <AppShell
-        styles={{
-          main: {
-            background: "#d5dbe0"
-            // background:
-            //   theme.colorScheme === "dark"
-            //     ? theme.colors.dark[8]
-            //     : theme.colors.gray[0],
-          },
-        }}
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
-        className="p-0 m-0 "
         fixed
         header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >

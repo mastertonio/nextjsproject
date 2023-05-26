@@ -74,7 +74,7 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                 title: `Adding section!`,
                 message: "Please wait ...",
                 autoClose: false,
-                disallowClose: true,
+                 
             });
         },
         onSuccess: (newRoi) => {

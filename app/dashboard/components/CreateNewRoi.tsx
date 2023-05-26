@@ -71,7 +71,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
         title: `Creating ${roi.name}`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
+         
       });
     },
     onSuccess: (newRoi) => {

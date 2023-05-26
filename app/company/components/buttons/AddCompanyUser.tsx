@@ -174,7 +174,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
         title: `Updating`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const response = await axios.post(

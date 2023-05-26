@@ -10,7 +10,6 @@ import {
   
   const Option2 = () => {
     const theme = useMantineTheme();
-    const SECONDARY_COL_HEIGHT = PRIMARY_COL_HEIGHT / 2 - theme.spacing.md / 2;
   
     return (
       <Container my="md">
@@ -23,14 +22,12 @@ import {
           <Grid gutter="md">
             <Grid.Col>
               <Skeleton
-                height={SECONDARY_COL_HEIGHT}
                 radius="md"
                 animate={false}
               />
             </Grid.Col>
             <Grid.Col>
               <Skeleton
-                height={SECONDARY_COL_HEIGHT}
                 radius="md"
                 animate={false}
               />

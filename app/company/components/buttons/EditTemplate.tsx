@@ -61,7 +61,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
 

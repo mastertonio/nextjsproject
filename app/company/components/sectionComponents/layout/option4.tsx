@@ -10,7 +10,6 @@ const PRIMARY_COL_HEIGHT = 70;
 
 const Option4 = () => {
   const theme = useMantineTheme();
-  const SECONDARY_COL_HEIGHT = PRIMARY_COL_HEIGHT / 2 - theme.spacing.md / 2;
 
   return (
     <Container my="md">

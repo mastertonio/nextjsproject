@@ -59,7 +59,7 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
         title: `Updating ...`,
         message: "Please wait, Openning company info",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const response = await axios.patch(
@@ -218,7 +218,6 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
               <DatePicker
                 value={startDate}
                 onChange={setStartDate}
-                clearable
                 className="w-[250px]"
               />
               {/* onChange={dat => dat && setDate(dat)} */}
@@ -228,7 +227,6 @@ const OpenCompanyButton: React.FC<IButtonCompanyProps> = ({
               <DatePicker
                 value={endDate}
                 onChange={setEndDate}
-                clearable
                 className="w-[250px]"
                 minDate={startDate || new Date()}
               />

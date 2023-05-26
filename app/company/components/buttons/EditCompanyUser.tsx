@@ -102,7 +102,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
 

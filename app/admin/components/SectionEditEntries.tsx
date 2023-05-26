@@ -123,7 +123,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                 title: `Updating section`,
                 message: "Please wait ...",
                 autoClose: false,
-                disallowClose: true,
+                 
             });
         },
         onSuccess: (newRoi) => {

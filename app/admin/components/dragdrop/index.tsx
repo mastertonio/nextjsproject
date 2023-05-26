@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
         border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
             }`,
         padding: `${theme.spacing.sm}px ${theme.spacing.xl}px`,
-        paddingLeft: theme.spacing.xl - theme.spacing.md, // to offset drag handle
+        paddingLeft: theme.spacing.sm, // to offset drag handle
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.white,
         marginBottom: theme.spacing.sm,
         boxShadow: theme.shadows.md,
@@ -130,7 +130,6 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
                 title: `Updating section`,
                 message: "Please wait ...",
                 autoClose: false,
-                disallowClose: true,
             });
         },
         onSuccess: (newRoi) => {

@@ -40,7 +40,7 @@ const CloneButton: React.FC<IButtonRoiNameProps> = ({ id, name, refetch, user })
         title: `Cloning ${roi.title}`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
+         
       });
     },
     onSuccess: (newRoi) => {

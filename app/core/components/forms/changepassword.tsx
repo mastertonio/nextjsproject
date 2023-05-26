@@ -104,7 +104,7 @@ const ChangePass: React.FC = () => {
         title: "Updating your password...",
         message: "Data will be loaded within seconds",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const res = await axios.patch(

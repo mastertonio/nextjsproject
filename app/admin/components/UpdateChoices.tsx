@@ -119,7 +119,7 @@ const UpdateChoices: React.FC<IModalEntryProps> = ({ id, user, secName, adminId,
                 title: `Updating section`,
                 message: "Please wait ...",
                 autoClose: false,
-                disallowClose: true,
+                 
             });
         },
         onSuccess: (newRoi) => {

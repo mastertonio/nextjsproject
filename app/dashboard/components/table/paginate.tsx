@@ -66,7 +66,7 @@ const Paginate: React.FC<IPaginateProps> = ({
         className="ml-[unset] sm:ml-auto mt-[20px] sm:mt-0"
         total={page}
         color="teal"
-        page={activePage}
+        value={activePage}
         onChange={setPage}
       />
     </div >

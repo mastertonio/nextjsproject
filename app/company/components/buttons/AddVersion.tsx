@@ -71,7 +71,7 @@ const AddVersion: React.FC<IButtonAddVersion> = ({
         title: `Updating`,
         message: "Please wait, updating edited row",
         autoClose: false,
-        disallowClose: true,
+         
         color: "teal",
       });
       const response = await axios.post(

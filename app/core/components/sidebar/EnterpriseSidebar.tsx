@@ -29,7 +29,7 @@ import LogoPlaceHolder from "@public/logo-placeholder.png"
 import router from "next/router";
 
 const useStyles = createStyles((theme, _params, getRef) => {
-  const icon = getRef("icon");
+  // const icon = getRef("icon");
   return {
     navbar: {
       backgroundColor: "#2f4050",

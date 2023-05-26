@@ -43,7 +43,6 @@ const AddNewEntry: React.FC<any> = ({ id, refetch, name, user }) => {
         title: `Deleting row`,
         message: "Please wait ...",
         autoClose: false,
-        disallowClose: true,
       });
     },
     onSuccess: (newRoi) => {

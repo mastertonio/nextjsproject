@@ -58,7 +58,7 @@ const DefaultSection: React.FC<iDefaultSectionProps> = ({
   author,
 }) => {
   const theme = useMantineTheme();
-  const SECONDARY_COL_HEIGHT = PRIMARY_COL_HEIGHT / 2 - theme.spacing.md / 2;
+  // const SECONDARY_COL_HEIGHT = PRIMARY_COL_HEIGHT / 2 - theme.spacing.md / 2;
   const [mediaType, setMediaType] = useState("");
   const [scroll, scrollTo] = useWindowScroll();
   const [desc, showDesc] = useState<boolean>(false);
