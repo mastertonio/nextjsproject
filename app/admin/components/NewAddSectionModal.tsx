@@ -79,7 +79,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const p = router.query;
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
-  const cells = useCalculatorStore((state) => state.cells)
+  
 
   // function findLast<T>(array: T[], predicate: (value: T, index: number, array: T[]) => boolean): T | undefined {
   //   for (let i = array.length - 1; i >= 0; i--) {
@@ -93,10 +93,23 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
 
   // const lastItem = findLast(cells, () => true)
   // console.log("lastttt", lastItem)
-
-  const [currentAddress, setCurrentAddress] = useState("A1");
+  const getLastCellAdress = useCalculatorStore((state) => state.getLastCellAddress)
+  const lv = getLastCellAdress()
+  console.log("last air bender", lv)
+  const [currentAddress, setCurrentAddress] = useState(lv);
   const [realFormula, setRF] = useState("")
+  const currentColumn = currentAddress.charCodeAt(0);
+  const nextColumn = String.fromCharCode(currentColumn + 1);
 
+  useEffect(()=>{
+    setCurrentAddress(lv)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lv])
+
+  // Generate the next address
+  const nextAddress = `${nextColumn}1`;
+  console.log("currentAddress", currentAddress)
+  console.log("nextAddress", nextAddress)
 
   const form = useForm({
     initialValues: {
@@ -187,7 +200,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 appendedText: roi.appendedText,
                 prefilled: roi.prefilled,
                 formula: roi.formula,
-                address: currentAddress
+                address: lv == "NULL" ? "A1" : nextAddress
               }
             ]
           }
@@ -211,15 +224,8 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       });
     },
     onSuccess: (newRoi) => {
-      // Generate the next address
-      const currentColumn = currentAddress.charCodeAt(0);
-      const nextColumn = String.fromCharCode(currentColumn + 1);
-      const nextAddress = `${nextColumn}1`;
-      setCurrentAddress(nextAddress);
-      console.log(nextColumn)
-      console.log(nextAddress)
-      console.log(currentAddress)
 
+      setCurrentAddress(nextAddress);
       Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
@@ -294,6 +300,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
         withCloseButton={false}
         size="920px" title="Add Entry" padding={0} className="section-wrapper"
       >
+        {/* <div>{currentAddress}{nextAddress}</div> */}
         <form onSubmit={form.onSubmit((values) => {
           if (value == '<div></div>' || value == '<p></p>') {
             setErrorMessage('Entry Name is required');

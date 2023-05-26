@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { createStyles, Text, Button, Grid } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
-import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react-beautiful-dnd';
-import { IconGripVertical, IconEdit, IconX } from '@tabler/icons';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { IconGripVertical, IconEdit, IconX, IconCheck } from '@tabler/icons';
 import CollapseSection from '@app/admin/components/CollapseSection';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { IBuilderSubState, useBuilderStore, useNewStore } from '@app/store/builder/builderState';
@@ -11,8 +11,9 @@ import EditQuestions from '@app/admin/components/SectionModals/EditQuestions';
 import axios from 'axios';
 import { UserDataProp } from '@app/context/user.context';
 import EditSectionEntryModal from '../SectionEditEntries';
-import { useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import he from 'he';
+import { showNotification, updateNotification } from '@mantine/notifications';
 
 const useStyles = createStyles((theme) => ({
     item: {
@@ -95,7 +96,6 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
     const show = useModalEntryStore((state) => state.show);
     const setUpdateChoice = useNewStore((state) => state.setUpdateChoice)
     const [hideShow, setHideShow] = useState<any>({});
-    resetServerContext();
     const [display, setDisplay] = useState<any>(false)
     const [sectData, setSectData] = useState<iSectionData[]>([])
     const [opened, setOpened] = useState(false);
@@ -103,10 +103,80 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
     const [getID, setGetID] = useState(0);
     const queryClient = useQueryClient()
 
+    
+
     const equalsCheck = (a: IBuilderSubState[], b: IBuilderSubState[]) => a.length === b.length && a.every((v, i) => v === b[i])
 
     const remove = useBuilderStore((state) => state.remove)
     const [state, handlers] = useListState(data);
+
+    
+
+    const editSection = useMutation({
+        mutationFn: (sect: any) => axios.patch(`/v1/company/admintool/${adminId}/section/${id}`, {
+            grayContent: {
+                elements: state
+            }
+        } ,{
+            headers: {
+                Authorization: `Bearer ${user.tokens.access.token}`,
+            },
+        }).then((response) => response.data),
+        onMutate: (roi) => {
+            setOpened(false)
+            showNotification({
+                id: "update-section",
+                loading: true,
+                title: `Updating section`,
+                message: "Please wait ...",
+                autoClose: false,
+                disallowClose: true,
+            });
+        },
+        onSuccess: (newRoi) => {
+            console.log(newRoi, "roiroi")
+            Promise.all(
+                [
+                    queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+                    queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+                    // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+                ]
+            )
+            updateNotification({
+                id: "update-section",
+                color: "teal",
+                title: `Section updated!`,
+                message: "",
+                icon: <IconCheck size={16} />,
+                autoClose: 3000,
+            });
+        },
+        onError: (error) => {
+            if (error instanceof Error) {
+                updateNotification({
+                    id: "update-section",
+                    color: "red",
+                    title: `Update failed`,
+                    message: error.message,
+                    autoClose: false,
+                });
+            }
+
+            updateNotification({
+                id: "update-section",
+                color: "red",
+                title: `Update failed`,
+                message: "Something went wrong, Please try again",
+                autoClose: false,
+            });
+        }
+    })
+
+    useEffect(() => {
+        console.log("item drag state", state)
+        // editSection.mutate(state)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state]);
 
     useEffect(() => {
         if (data) {
@@ -114,7 +184,6 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
-
     const handleShow = (id: number) => {
         setHideShow((state: any[]) => ({
             ...state,
@@ -123,9 +192,8 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
     };
 
     const items = state?.map((item, index) => {
-        console.log('item drag', item)
         return (
-            <Draggable key={item._id} index={index} draggableId={`${item._id}-sectionName`}>
+            <Draggable key={item._id} index={index} draggableId={item._id}>
                 {(provided, snapshot) => (
                     <div>
                         <div
@@ -196,7 +264,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         <DragDropContext
             onDragEnd={({ destination, source }) => {
                 handlers.reorder({ from: source.index, to: destination?.index || 0 })
-            }
+                }
             }
         >
             <Droppable droppableId="dnd-list" direction="vertical">

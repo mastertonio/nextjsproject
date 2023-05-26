@@ -82,6 +82,7 @@ export type Cell = {
   dependencies?: NewCellProps[];
   update: (cells: NewCellProps) => void;
   addItems: (cells: NewCellProps[]) => void
+  getLastCellAddress: () => string
 };
 
 export type CalculatorStore = {
@@ -116,11 +117,29 @@ export type CalculatorStore = {
 //   done(fragment);
 // }
 
-export const useCalculatorStore = create<Cell>((set) => ({
+export const useCalculatorStore = create<Cell>((set, get) => ({
   cells: [],
   addItems: (newCells: NewCellProps[]) =>{ 
     console.log("newCells", newCells)
     set({ cells: newCells })
+  },
+  getLastCellAddress: ()=> {
+    const cells = get().cells
+    if(cells?.length > 0) {
+      const lastValue = cells.reduce((acc, curr) => {
+        if (!acc || !acc.address || (curr.address && curr.address > acc.address)) {
+          return curr;
+        }
+        return acc;
+      })?.address;
+      if(lastValue){
+        return lastValue
+      } else {
+        return "NULL"
+      }
+    } else {
+      return "NULL"
+    }
   },
   update: (cells: NewCellProps) => {
     set((state) => {

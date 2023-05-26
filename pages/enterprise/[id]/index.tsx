@@ -179,7 +179,10 @@ const Enterprise: React.FC<any> = (login) => {
 
   const { isLoading, data, refetch, isSuccess } = useQuery(
     "enterpriseData",
-    getEnterpriseData
+    getEnterpriseData,
+    {
+      refetchInterval: 1500
+    }
   );
 
   useEffect(() => {
@@ -220,6 +223,28 @@ const Enterprise: React.FC<any> = (login) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  let previousState = useCalculatorStore?.getState();
+  // useCalculatorStore.subscribe(
+  //   (state) => {
+  //     // Ensure data array exists
+  //     if (state.cells === undefined) {
+  //       console.log('Data array is undefined.');
+  //       return;
+  //     }
+  
+  //     // Compare previous state with current state to identify updated elements
+  //     const updatedElements = state.cells.filter(
+  //       (element, index) => element !== previousState.cells[index]
+  //     );
+  
+  //     // Handle the updated elements
+  //     console.log('Updated elements:', updatedElements);
+  
+  //     // Update the previous state
+  //     previousState = state;
+  //   },// Specify the selector to listen for changes in the data array
+  // );
 
   if (isLoading) return <MainLoader />;
 
@@ -349,6 +374,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   <NumberInput
                                     className="w-full"
                                     // icon={state.icon ? state.icon : ""}
+                                    precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                     type="number"
                                     key={elem._id}
                                     hideControls
@@ -384,7 +410,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       // console.log(cells, "from Inputtest")
                                     }}
                                     // disabled={state.disabled ? true : false}
-                                    placeholder={elem.prefilled}
+                                    placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
                                   // defaultValue={myCompany.name}
                                   />
                                 </div>
@@ -512,34 +538,17 @@ const Enterprise: React.FC<any> = (login) => {
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className='w-1/2 flex items-center'
-                                      onBlur={async (event: BaseSyntheticEvent) => {
-                                        console.log(event, "venti", elem)
-                                        update({
-                                          ...elem,
-                                          value: elem.value
-                                        })
-                                        await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
-                                          grayContent: {
-                                            value: elem.value
-                                          }
-                                        }, {
-                                          headers: {
-                                            Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                          },
-                                        })
-                                        // console.log(cells, "from Inputtest")
-                                      }}>
-                                      <Input
+                                    <div className='w-1/2 flex items-center'>
+                                      <NumberInput
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
-                                        value={elem.value}
+                                        value={elem.value !== 0 ? elem.value : null}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                         disabled
-                                        placeholder={elem.prefilled && "Add Input here"}
+                                        placeholder={elem.prefilled}
                                         rightSection={
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
@@ -548,9 +557,28 @@ const Enterprise: React.FC<any> = (login) => {
                                               </div>
                                             </Tooltip> : ""
                                         }
-
-
-                                      // defaultValue={myCompany.name}
+                                        onChange={(value) => {
+                                          const updatedValue = value
+                                          update({
+                                            ...elem,
+                                            value: updatedValue,
+                                          });
+                                      
+                                          // Save the updated value
+                                          axios.patch(
+                                            `/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`,
+                                            {
+                                              grayContent: {
+                                                value: updatedValue,
+                                              },
+                                            },
+                                            {
+                                              headers: {
+                                                Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                              },
+                                            }
+                                          );
+                                        }}
                                       />
                                       <Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>
                                     </div>
@@ -564,17 +592,18 @@ const Enterprise: React.FC<any> = (login) => {
                                       <NumberInput
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
+                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
                                         hideControls
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        defaultValue={elem.value}
+                                        defaultValue={elem.value !== 0 ? elem.value : null}
                                         radius={0}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
-                                        placeholder={elem.prefilled}
+                                        placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
                                         rightSection={
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
@@ -614,16 +643,17 @@ const Enterprise: React.FC<any> = (login) => {
                                       <NumberInput
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}
+                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
                                         hideControls
-                                        defaultValue={elem.value}
+                                        defaultValue={elem.value !== 0 ? elem.value : null}
                                         radius={0}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
-                                        placeholder={elem.prefilled}
+                                        placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
                                         rightSection={
                                           elem.tooltip ?
                                             <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
