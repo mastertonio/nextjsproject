@@ -376,7 +376,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     className="w-full"
                                     // icon={state.icon ? state.icon : ""}
                                     thousandsSeparator=','
-                                    precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                    // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                     type="number"
                                     key={elem._id}
                                     hideControls
@@ -604,7 +604,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
                                         thousandsSeparator=','
-                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
                                         hideControls
@@ -663,7 +663,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}
                                         thousandsSeparator=','
-                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
                                         hideControls

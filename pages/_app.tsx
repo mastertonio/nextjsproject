@@ -39,8 +39,8 @@ const queryClient = new QueryClient(
   });
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  
-  
+
+
 
   return (
     <>
@@ -63,20 +63,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         }}
       >
         <SessionProvider session={pageProps.session}>
-          <Notifications>
+          <Notifications />
 
-            <UserContextProvider>
-              <DashboardContextProvider>
-                <BuilderContextProvider>
-                  <QueryClientProvider client={queryClient}>
-                    <Hydrate state={pageProps.dehydratedState}>
-                      <Component {...pageProps} />
-                    </Hydrate>
-                  </QueryClientProvider>
-                </BuilderContextProvider>
-              </DashboardContextProvider>
-            </UserContextProvider>
-          </Notifications>
+          <UserContextProvider>
+            <DashboardContextProvider>
+              <BuilderContextProvider>
+                <QueryClientProvider client={queryClient}>
+                  <Hydrate state={pageProps.dehydratedState}>
+                    <Component {...pageProps} />
+                  </Hydrate>
+                </QueryClientProvider>
+              </BuilderContextProvider>
+            </DashboardContextProvider>
+          </UserContextProvider>
         </SessionProvider>
       </MantineProvider>
     </>
