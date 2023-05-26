@@ -353,7 +353,18 @@ const Enterprise: React.FC<any> = (login) => {
                         <div className="mb-[30px]">
                           <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
                             {/* <Text ml={30} dangerouslySetInnerHTML={{ __html: section.headers.title.description ? he.decode(section.headers.title.description) : "" }} color="dark" fz="xl" fw={700} /> */}
-                            <Text ml={30} dangerouslySetInnerHTML={{ __html: "Please tell us a little about your sales organization" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c]" />
+                            {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
+                              console.log('elem heaedr', elem)
+                              return (
+                                <>
+                                  {elem.dataType == "Header" ? (
+                                    <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.title ? he.decode(elem.title) : "" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c] parentNode" />
+                                  ) : null}
+                                </>
+
+                              )
+                            })}
+                            {/* <Text ml={30} dangerouslySetInnerHTML={{ __html: "Please tell us a little about your sales organization" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c]" /> */}
                             {/* <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
                               {value == "red" ? "Exclude" : "Include"}
                             </Button> */}
@@ -369,7 +380,7 @@ const Enterprise: React.FC<any> = (login) => {
                               <Grid
                                 className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                               >
-                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0" ></Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0" ></Text>
                                 <div className='w-1/2 flex items-center'>
                                   <NumberInput
                                     className="w-full"
@@ -447,9 +458,9 @@ const Enterprise: React.FC<any> = (login) => {
                               ? (
                                 <Grid
                                   key={elem._id}
-                                  className="ml-[22px] mr-[22px] mt-0 mb-[20px]"
+                                  className="ml-[22px] mr-[22px] mt-[7px] mb-[15px]"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                   <div className="w-1/2 ml-auto enterprise-richtext">
                                     <Textarea
                                       className="w-full"
@@ -464,7 +475,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   key={elem._id}
                                   className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                   <div className="w-1/2 flex flex-row justify-center">
                                     <Rating
                                       defaultValue={5}
@@ -494,9 +505,9 @@ const Enterprise: React.FC<any> = (login) => {
                                 : elem.dataType == "Dropdown" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className="flex flex-col ml-auto w-1/2">
                                       <Select
                                         data={elem.choices ? elem.choices : ""}
@@ -510,8 +521,8 @@ const Enterprise: React.FC<any> = (login) => {
                                     key={elem._id}
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className="flex flex-row ml-auto w-1/2 mr-[15px]">
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className="flex flex-col ml-auto w-1/2 mt-[5px] mb-[5px]">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
                                     </div>
@@ -519,15 +530,15 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Checkbox" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[5px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                    <div className="flex flex-row ml-auto w-1/2">
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <div className="flex flex-col ml-auto w-1/2">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <Checkbox
                                           key={elem._id}
                                           label={elem.label}
-                                          className="mr-[15px]"
+                                          className="mt-[5px] mb-[5px]"
                                         />
                                       ))
                                       }
@@ -535,7 +546,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Output" ? (
                                   <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'>
@@ -580,14 +591,21 @@ const Enterprise: React.FC<any> = (login) => {
                                           );
                                         }}
                                       />
-                                      <Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>
+                                      <Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>
+                                      <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                        <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                          <div className="flex flex-row items-center">
+                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                          </div>
+                                        </Tooltip>
+                                      </Button>
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Input" && elem.appendedText ? (
                                   <Grid
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex'>
                                       <NumberInput
                                         className="w-full appended-radius"
@@ -631,14 +649,21 @@ const Enterprise: React.FC<any> = (login) => {
                                         }}
                                       // defaultValue={myCompany.name}
                                       />
-                                      <Button className="appended-btn w-auto" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>
+                                      <Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled>{elem.appendedText}</Button>
+                                      <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                        <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                          <div className="flex flex-row items-center">
+                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                          </div>
+                                        </Tooltip>
+                                      </Button>
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Input" ? (
                                   <Grid
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'>
                                       <NumberInput
                                         className="w-full"

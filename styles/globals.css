@@ -138,17 +138,45 @@ th {
 }
 
 .appended-btn {
+  border-right-width: 1px !important;
+  border-color: #ced4da !important;
   border-radius: 0 0 0 0 !important;
+}
+
+.appended-text {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(246, 246, 246, 1) 50%,
+    rgba(238, 238, 238, 1) 52%,
+    rgba(244, 244, 244, 1) 100%
+  );
+  background-color: unset !important;
+  border: 1px solid rgb(197, 198, 199) !important;
 }
 
 .enterprise-richtext .mantine-RichTextEditor-root {
   border-radius: 0 !important;
 }
 
+.enterprise-richtext textarea {
+  resize: both !important;
+}
+
 .write-up-link > *,
 .write-up-link {
   color: rgb(29 78 216) !important;
   text-decoration: underline !important;
+}
+
+.parentNode > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.tabler-edit-view .icon-tabler-edit {
+  cursor: pointer !important;
 }
 
 @media (max-width: 740px) {

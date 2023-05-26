@@ -8,6 +8,8 @@ import { useCardStore, useTokenStore } from '@app/store/builder/builderState';
 import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 import { UserDataProp } from '@app/context/user.context';
+import { showNotification, updateNotification } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons';
 
 interface IModalEntryProps {
     showModal: boolean
@@ -68,10 +70,19 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
             ).then((response) => response.data),
         onMutate: (roi) => {
             console.log("Section Write Up", roi)
+            showNotification({
+                id: "add-video",
+                loading: true,
+                title: `Adding Video`,
+                message: "Please wait ...",
+                autoClose: false,
+                disallowClose: true,
+            });
         },
         onSuccess: (newRoi) => {
             console.log('link success', newRoi)
             setOpened(false)
+            setClose(cardID)
             Promise.all(
                 [
                     queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
@@ -79,11 +90,36 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                     // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
                 ]
             )
+            updateNotification({
+                id: "add-video",
+                color: "teal",
+                title: `Video Added!`,
+                message: "",
+                icon: <IconCheck size={16} />,
+                autoClose: 3000,
+            });
         },
         onError: (error) => {
             console.log("link error", error)
+            setOpened(false)
+            setClose(cardID)
             if (error instanceof Error) {
+                updateNotification({
+                    id: "add-video",
+                    color: "red",
+                    title: `Video Add failed`,
+                    message: error.message,
+                    autoClose: false,
+                });
             }
+
+            updateNotification({
+                id: "add-video",
+                color: "red",
+                title: `Video Add failed`,
+                message: "Something went wrong, Please try again",
+                autoClose: false,
+            });
         }
     })
 
