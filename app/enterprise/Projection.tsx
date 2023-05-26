@@ -107,7 +107,7 @@ const Projection = ({
           span="auto"
           className="ml-[30px] mr-[30px] mt-[30px] max-w-[100%] sm:max-w-[50%]"
         >
-          <Text ml={30} dangerouslySetInnerHTML={{ __html: description ? he.decode(description) : "" }} color="dark" fz="xl" fw={700} />
+          <Text ml={30} dangerouslySetInnerHTML={{ __html: description ? he.decode(description) : "" }} color="dark"  />
           <Divider my="sm" color="#eee" size={1} />
         </Grid.Col>
         <Suspense fallback={`Loading...`}>

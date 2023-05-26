@@ -39,7 +39,7 @@ type ChoicesTypes = {
 export type NewCellProps = {
   address?: string
   appendedText?: string
-  choices: any 
+  choices: any
   classes: string
   currency: string
   dataType: string
@@ -119,20 +119,20 @@ export type CalculatorStore = {
 
 export const useCalculatorStore = create<Cell>((set, get) => ({
   cells: [],
-  addItems: (newCells: NewCellProps[]) =>{ 
+  addItems: (newCells: NewCellProps[]) => {
     console.log("newCells", newCells)
     set({ cells: newCells })
   },
-  getLastCellAddress: ()=> {
+  getLastCellAddress: () => {
     const cells = get().cells
-    if(cells?.length > 0) {
+    if (cells?.length > 0) {
       const lastValue = cells.reduce((acc, curr) => {
         if (!acc || !acc.address || (curr.address && curr.address > acc.address)) {
           return curr;
         }
         return acc;
       })?.address;
-      if(lastValue){
+      if (lastValue) {
         return lastValue
       } else {
         return "NULL"
@@ -442,10 +442,10 @@ function calculateFormula(
         if (dependentCell) {
           console.log(
             "from dependentcell check",
-            dependentCell.value.toString(),
+            dependentCell.value,
             dependentCell.formula
           );
-          return dependentCell.value.toString();
+          return dependentCell.value + "";
         } else {
           return "0";
         }
@@ -549,6 +549,20 @@ useCalculatorStore.subscribe((state) => {
 
   console.log(parser.parse('VLOOKUP("B2", "A2:C6", 7, "false")').result, "vlook that reads inputs");
 });
+
+let previousState = useCalculatorStore.getState();
+// useCalculatorStore.subscribe((state) => {
+//   const updatedElements = state.cells.filter(
+//     (element, index) => element !== previousState.cells[index]
+//   );
+
+//   // Handle the updated elements
+//   console.log('Updated elements:', updatedElements);
+
+//   // Update the previous state
+//   previousState = state;
+
+// });
 // useCalculatorStore.subscribe((state) => {
 //   const sheetStore = useCalculatorSheetStore.getState();
 //   const regex = /\(|\)/
