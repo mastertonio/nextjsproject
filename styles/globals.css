@@ -179,6 +179,10 @@ th {
   cursor: pointer !important;
 }
 
+.mantine-AppShell-main {
+  background-color: rgb(248, 249, 250) !important;
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;
