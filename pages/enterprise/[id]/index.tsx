@@ -376,11 +376,11 @@ const Enterprise: React.FC<any> = (login) => {
                                     className="w-full"
                                     // icon={state.icon ? state.icon : ""}
                                     thousandsSeparator=','
-                                    // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                    precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                     type="number"
                                     key={elem._id}
                                     hideControls
-                                    defaultValue={elem.value}
+                                    defaultValue={elem.value !== 0 ? elem.value : ""}
                                     radius={0}
                                     icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                     // id={elem.id}
@@ -548,19 +548,19 @@ const Enterprise: React.FC<any> = (login) => {
                                         key={elem._id}
                                         thousandsSeparator=','
                                         decimalSeparator='.'
-                                        value={elem.value !== 0 ? elem.value : null}
+                                        value={elem.value !== 0 ? elem.value : ""}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
                                         disabled
                                         placeholder={elem.prefilled}
-                                        rightSection={
-                                          elem.tooltip ?
-                                            <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                              <div className="flex flex-row items-center">
-                                                <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                              </div>
-                                            </Tooltip> : ""
-                                        }
+                                        // rightSection={
+                                        //   elem.tooltip ?
+                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                        //       <div className="flex flex-row items-center">
+                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                        //       </div>
+                                        //     </Tooltip> : ""
+                                        // }
                                         onChange={(value) => {
                                           const updatedValue = value
                                           update({
@@ -584,7 +584,8 @@ const Enterprise: React.FC<any> = (login) => {
                                           );
                                         }}
                                       />
-                                      <Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>
+                                      {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
+                                      
                                       <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                           <div className="flex flex-row items-center">
@@ -604,12 +605,12 @@ const Enterprise: React.FC<any> = (login) => {
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
                                         thousandsSeparator=','
-                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
                                         hideControls
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        defaultValue={elem.value !== 0 ? elem.value : null}
+                                        defaultValue={elem.value !== 0 ? elem.value : ""}
                                         radius={0}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}
@@ -663,11 +664,11 @@ const Enterprise: React.FC<any> = (login) => {
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}
                                         thousandsSeparator=','
-                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         type="number"
                                         key={elem._id}
                                         hideControls
-                                        defaultValue={elem.value !== 0 ? elem.value : null}
+                                        defaultValue={elem.value !== 0 ? elem.value : ""}
                                         radius={0}
                                         // id={elem.id}
                                         // {...register(`input${elem._id}`)}

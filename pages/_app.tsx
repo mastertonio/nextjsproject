@@ -63,19 +63,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         }}
       >
         <SessionProvider session={pageProps.session}>
-          <Notifications />
+          <Notifications position="bottom-right" zIndex={2077} />
 
-          <UserContextProvider>
-            <DashboardContextProvider>
-              <BuilderContextProvider>
-                <QueryClientProvider client={queryClient}>
-                  <Hydrate state={pageProps.dehydratedState}>
-                    <Component {...pageProps} />
-                  </Hydrate>
-                </QueryClientProvider>
-              </BuilderContextProvider>
-            </DashboardContextProvider>
-          </UserContextProvider>
+            <UserContextProvider>
+              <DashboardContextProvider>
+                <BuilderContextProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <Hydrate state={pageProps.dehydratedState}>
+                      <Component {...pageProps} />
+                    </Hydrate>
+                  </QueryClientProvider>
+                </BuilderContextProvider>
+              </DashboardContextProvider>
+            </UserContextProvider>
         </SessionProvider>
       </MantineProvider>
     </>
