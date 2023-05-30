@@ -102,16 +102,16 @@ const Projection = ({
         {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
         {/* <div dangerouslySetInnerHTML={{ __html: description }} /> */}
       </div>
-      <Grid className="sm:flex block mb-[40px]">
+      <Grid className="sm:flex block mb-[40px]" columns={24}>
         <Grid.Col
-          span="auto"
+          span={14}
           className="ml-[30px] mr-[30px] mt-[30px] max-w-[100%] sm:max-w-[50%]"
         >
-          <Text ml={30} dangerouslySetInnerHTML={{ __html: description ? he.decode(description) : "" }} color="dark"  />
+          <Text ml={30} dangerouslySetInnerHTML={{ __html: description ? he.decode(description) : "" }} color="dark" />
           <Divider my="sm" color="#eee" size={1} />
         </Grid.Col>
         <Suspense fallback={`Loading...`}>
-          <Grid.Col span="auto" className="sm:w-[40%] w-[100%]">
+          <Grid.Col span={10} className="sm:w-[40%] w-[100%]">
             {content.elements[0] ? (
               <div className="h-[300px] m-[30px]">
                 <ReactPlayer

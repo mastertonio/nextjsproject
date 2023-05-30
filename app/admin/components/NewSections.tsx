@@ -134,7 +134,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                             {/* <DragNDrop data={[]} type="collapse" /> */}
                         </div>
 
-                        <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px]">
+                        <Grid justify="flex-end" className="mt-[20px] mb-[20px] flex flex-col sm:flex-row m-0 sm:m-[unset] pt-0 sm:pt-[20px] entry-modal">
                             {/* {section.grayContent?.elements.map((elem)=> console.log(elem)) : ""} */}
                             <NewAddSectionModal id={section._id} user={user} adminId={data.id} sectionData={section} setOpenChoice={setUpdateChoice} setSectionData={setSectData} choices={choices} fullData={fullData} />
                             {/* <ModalUpdateEntry setClose={handleCloseEntryModal} id={section._id} adminId={data.id} showModal={entry} sectionData={section} setSectionData={setSectData} setOpened={setUpdateEntry} open={updateEntry} setOpenChoice={setUpdateChoice} user={user} /> */}

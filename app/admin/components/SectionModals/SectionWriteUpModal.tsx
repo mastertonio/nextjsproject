@@ -24,7 +24,7 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ cardID, user, adminId
     const hideModal = useModalEntryStore((state) => state.hide);
     const setWriteup = useCardStore((state) => state.updateSectionWriteUp)
     const initialValue =
-        "<p>Your initial <b>html value</b> or an empty string to init editor without value</p>";
+        "<p></p>";
     const [value, setValue] = useState<string>(defData ? defData : initialValue)
     const queryClient = useQueryClient()
     const [opened, setOpened] = useState(false);

@@ -80,7 +80,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       fontWeight: 500,
       // display: "flex",
       width: "100%",
-      padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+      padding: '10px 16px',
       color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
       fontSize: theme.fontSizes.sm,
 
@@ -221,7 +221,7 @@ const NavbarSimple = ({ sidebarData, sectionEmpty, scroll }: any) => {
 
       <Navbar.Section grow className={classes.links} component={ScrollArea}>
         <UnstyledButton
-          className={classes.control}
+          className='!font-[500] !w-full !py-[10px] !px-[16px] !text-[#000] !text-[14px] hover:bg-teal-700'
         >
           <Group position="apart" spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>

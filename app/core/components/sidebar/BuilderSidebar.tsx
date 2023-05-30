@@ -162,7 +162,7 @@ export function LinksGroup({
     <>
       <UnstyledButton
         onClick={() => setOpened((o) => !o)}
-        className={classes.control}
+        className='!font-[500] !w-full !py-[10px] !px-[16px] !text-[#000] !text-[14px] hover:bg-teal-700'
       >
         <Group position="apart" spacing={0} className="flex flex-row justify-between w-full">
           <Box sx={{ display: "flex" }}>

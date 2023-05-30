@@ -237,32 +237,32 @@ const Enterprise: React.FC<any> = (login) => {
     }
   };
 
-//   const editSection = useMutation({
-//     mutationFn: (sect: any) => axios.put(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}`, {
-//         grayContentElement: sect
-//     }, {
-//         headers: {
-//             Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-//         },
-//     }).then((response) => response.data),
-//     onMutate: (roi) => {
-//         setOpened(false)
-//     },
-//     onSuccess: (newRoi) => {
-//         console.log(newRoi, "roiroi")
-//         Promise.all(
-//             [
-//                 queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
-//                 queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
-//                 // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
-//             ]
-//         )
-//     },
-//     onError: (error) => {
-//         if (error instanceof Error) {
-//         }
-//     }
-// })
+  //   const editSection = useMutation({
+  //     mutationFn: (sect: any) => axios.put(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}`, {
+  //         grayContentElement: sect
+  //     }, {
+  //         headers: {
+  //             Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+  //         },
+  //     }).then((response) => response.data),
+  //     onMutate: (roi) => {
+  //         setOpened(false)
+  //     },
+  //     onSuccess: (newRoi) => {
+  //         console.log(newRoi, "roiroi")
+  //         Promise.all(
+  //             [
+  //                 queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+  //                 queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+  //                 // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+  //             ]
+  //         )
+  //     },
+  //     onError: (error) => {
+  //         if (error instanceof Error) {
+  //         }
+  //     }
+  // })
 
 
   useEffect(() => {
@@ -270,7 +270,7 @@ const Enterprise: React.FC<any> = (login) => {
       // Make API call here
       setLC(cells)
     }, 5000);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localCells]);
   // useCalculatorStore.subscribe(
   //   (state) => {
@@ -387,11 +387,10 @@ const Enterprise: React.FC<any> = (login) => {
 
                 <Grid className="mt-[10px] mb-[10px] p-[10px] w-full">
                   <Stack pb={20} className="bg-[white] p-[10px] ml-[15px] rounded-none shadow w-[96%] sm:w-[100%] pb-[40px] sm:pb-30px]">
-                    <form>
-                      {section.grayContent.elements.length !== 0 ? (
+                    <form className="mt-[20px] mb-[20px]">
+                      {/* {section.grayContent.elements.length !== 0 ? (
                         <div className="mb-[30px]">
                           <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
-                            {/* <Text ml={30} dangerouslySetInnerHTML={{ __html: section.headers.title.description ? he.decode(section.headers.title.description) : "" }} color="dark" fz="xl" fw={700} /> */}
                             {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
                               console.log('elem heaedr', elem)
                               return (
@@ -403,14 +402,13 @@ const Enterprise: React.FC<any> = (login) => {
 
                               )
                             })}
-                            {/* <Text ml={30} dangerouslySetInnerHTML={{ __html: "Please tell us a little about your sales organization" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c]" /> */}
-                            {/* <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
+                            <Button type="button" className="sm:ml-auto w-[100%] sm:w-[30%] m-[20px] sm:m-[20px]" color={value} onClick={() => toggle()} radius="md" size="md">
                               {value == "red" ? "Exclude" : "Include"}
-                            </Button> */}
+                            </Button>
                           </Grid>
                           <Divider my="sm" color="gray" size="sm" variant="dashed" className="ml-[22px] mr-[22px]" />
                         </div>
-                      ) : ""}
+                      ) : ""} */}
 
                       {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
                         return (
@@ -638,14 +636,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         }}
                                       />
                                       {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
-                                      {elem.tooltip ? ( <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                      {elem.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
                                           <div className="flex flex-row items-center">
                                             <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
                                         </Tooltip>
                                       </Button>) : ""}
-                                     
+
                                     </div>
                                   </Grid>
                                 ) : elem.dataType == "Input" && elem.appendedText ? (
@@ -774,6 +772,13 @@ const Enterprise: React.FC<any> = (login) => {
                                       {elem.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
                                     </div>
                                   </Grid>
+                                ) : elem.dataType == "Header" ? (
+                                  <div className="mb-[10px]">
+                                    <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
+                                      <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.title ? he.decode(elem.title) : "" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c] parentNode" />
+                                    </Grid>
+                                    <Divider my="sm" color="gray" size="sm" variant="dashed" className="ml-[22px] mr-[22px]" />
+                                  </div>
                                 ) : ""}
                           </Stack>
                         )
