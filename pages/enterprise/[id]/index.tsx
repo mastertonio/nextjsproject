@@ -467,7 +467,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       // console.log(cells, "from Inputtest")
                                     }}
                                     // disabled={state.disabled ? true : false}
-                                    placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
+                                    placeholder={elem.prefilled ? elem.prefilled : ""}
                                   // defaultValue={myCompany.name}
                                   />
                                 </div>
@@ -675,7 +675,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
-                                        placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
+                                        placeholder={elem.prefilled ? elem.prefilled : ""}
                                         // rightSection={
                                         //   elem.tooltip ?
                                         //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
@@ -740,7 +740,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         // {...register(`input${elem._id}`)}
                                         // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
                                         // disabled={state.disabled ? true : false}
-                                        placeholder={elem.prefilled ? elem.prefilled : "Add Input here"}
+                                        placeholder={elem.prefilled ? elem.prefilled : ""}
                                         // rightSection={
                                         //   elem.tooltip ?
                                         //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>

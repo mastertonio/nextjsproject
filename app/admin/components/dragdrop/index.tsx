@@ -147,12 +147,9 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
     }, [state]);
 
     // useEffect(() => {
-    //     setTimeout(() => {
-    //         // Make API call here
-    //         editSection.mutate(state)
-    //     }, 4000);
+    //     editSection.mutate(state)
     // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // })
+    // },[state])
 
     useEffect(() => {
         if (data) {
@@ -240,6 +237,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         <DragDropContext
             onDragEnd={({ destination, source }) => {
                 handlers.reorder({ from: source.index, to: destination?.index || 0 })
+                editSection.mutate(state)
             }
             }
         >
