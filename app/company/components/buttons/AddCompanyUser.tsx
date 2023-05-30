@@ -114,37 +114,47 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
   );
 
   const templates = useQuery(["templates"], getTemplates);
+  console.log("templates.data", templates.data)
+  // const templateList = templates?.data?.data
+  //   ?.map((a: { name: string; build: any }) => {
+  //     return a?.build?.map(
+  //       (b: { _id: string; name: string }) => ({
+  //         key: b._id,
+  //         value: b._id,
+  //         label: b.name
+  //       })
+  //     );
+  //   })
+  //   .flat();
 
   const templateList = templates?.data?.data
-    ?.map((a: { name: string; build: any }) => {
-      return a?.build?.map(
-        (b: { _id: string; name: string; group: string }) => ({
-          key: b._id,
-          value: b._id,
-          label: b.name,
-          group: a.name,
-        })
-      );
-    })
-    .flat();
+    ?.map((a: { _id: string; name: string }) => {
+      return {
+        key: a._id,
+        value: a._id,
+        label: a.name
+      }
+    }
+    )
 
+  console.log("templateList", templateList)
 
-  const templateList2 = templates?.data?.data
-    ?.map((a: { name: string; build: any }) => {
-      return a?.build?.map(
-        (b: { _id: string; name: string; group: string }) => ({
-          key: b._id,
-          value: b._id,
-          label: b.name,
-          group: a.name,
-        })
-      );
-    })
-    .flat();
+  // const templateList2 = templates?.data?.data
+  //   ?.map((a: { name: string; build: any }) => {
+  //     return a?.build?.map(
+  //       (b: { _id: string; name: string; group: string }) => ({
+  //         key: b._id,
+  //         value: b._id,
+  //         label: b.name,
+  //         group: a.name,
+  //       })
+  //     );
+  //   })
+  //   .flat();
 
-  const defaultTemps = templateList?.map((a: { value: any }) => {
-    return a.value;
-  });
+  // const defaultTemps = templateList?.map((a: { value: any }) => {
+  //   return a.value;
+  // });
 
   const [filter, setFilter] = useState<string[]>([""]);
 
@@ -174,7 +184,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
         title: `Updating`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
       const response = await axios.post(
