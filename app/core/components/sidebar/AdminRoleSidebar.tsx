@@ -82,15 +82,15 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
             p="md"
             hiddenBreakpoint="sm"
             //   hidden={!opened}
-            width={{ sm: 200, lg: 200 }}
+            width={{ sm: 230, lg: 230 }}
             height="100vh"
             className={`bg-[#2f4050] text-[lightgray] mt-[-70px] flex-col items-start ${navShow === false ? 'hidden' : ''} sm:flex`}
         >
             <div className="mt-[35px]">
                 <Image src="/logo.png" alt="random" height={55} width={190} />
             </div>
-            <Text className="mb-[80px] ml-[35px] w-full text-[12px]">
-                Welcome {user.first_name} {user.last_name}
+            <Text className={`flex flex-row mb-[80px] w-full text-[12px] ${user.first_name && user.last_name ? 'ml-[35px]' : 'ml-[0px] text-center'}`}>
+                Welcome {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : `${user.email}`}
             </Text>
 
             {user.role === 'admin' ? (

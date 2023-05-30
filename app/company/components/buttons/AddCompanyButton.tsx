@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Modal,
   Button,
@@ -22,6 +22,7 @@ import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethod
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { UserDataProp } from "@app/context/user.context";
+import ResetUpload from "./ResetUpload";
 
 export interface IButtonAddCompanyProps {
   refetch: () => void;
@@ -29,7 +30,9 @@ export interface IButtonAddCompanyProps {
 }
 
 const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) => {
+  const resetRef = useRef<() => void>(null);
   const [opened, setOpened] = useState(false);
+  const [openReset, setOpenReset] = useState(false);
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
@@ -50,6 +53,12 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
     },
   });
 
+  const resetUpload = () => {
+    setFile(null)
+    resetRef.current?.();
+    setOpenReset(false);
+  }
+
   const handleSubmit = async (values: typeof form.values) => {
     console.log("file handle submit", file)
     try {
@@ -59,7 +68,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         title: `Updating`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
       const response = await axios.post(
@@ -133,13 +142,14 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack
             justify="flex-start"
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-              height: 680,
-            })}
+            h={900}
+          // sx={(theme) => ({
+          //   backgroundColor:
+          //     theme.colorScheme === "dark"
+          //       ? theme.colors.dark[8]
+          //       : theme.colors.gray[0],
+          //   height: 680,
+          // })}
           >
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
@@ -246,6 +256,10 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                       </Button>
                     )}
                   </FileButton>
+                  <ResetUpload file={file} openReset={openReset} setOpenReset={setOpenReset} reset={resetUpload} />
+                  {/* <Button disabled={!file} color="red" onClick={resetUpload} size="xs">
+                    Reset
+                  </Button> */}
                 </Group>
               </div>
               <div className="ml-[20px]">
@@ -256,25 +270,26 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 )}
               </div>
             </Grid>
-            <Grid className="ml-[30px] mr-[30px]">
-              <Text className="mr-[20px]">Contract Start: </Text>
-              <DatePicker
-                value={startDate}
-                onChange={setStartDate}
-                className="w-[250px]"
-              />
-              {/* onChange={dat => dat && setDate(dat)} */}
+            <Grid className="ml-[30px] mr-[30px] mt-[10px] company-date">
+              <div className="flex flex-col w-[50%]">
+                <Text className="mr-[20px] mb-[20px]">Contract Start: </Text>
+                <DatePicker
+                  value={startDate}
+                  onChange={setStartDate}
+                  className="w-[350px]"
+                />
+              </div>
+              <div className="flex flex-col w-[50%]">
+                <Text className="mr-[26px] ml-[14px] mb-[20px]">Contract End: </Text>
+                <DatePicker
+                  value={endDate}
+                  onChange={setEndDate}
+                  className="w-[350px]"
+                  minDate={startDate || new Date()}
+                />
+              </div>
             </Grid>
-            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
-              <Text className="mr-[26px]">Contract End: </Text>
-              <DatePicker
-                value={endDate}
-                onChange={setEndDate}
-                className="w-[250px]"
-                minDate={startDate || new Date()}
-              />
-            </Grid>
-            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
+            <Grid className="ml-[30px] mr-[30px] mt-[30px]">
               <Text>Notes: </Text>
               <Textarea
                 className="w-[600px] ml-auto"

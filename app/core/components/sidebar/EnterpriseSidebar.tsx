@@ -198,7 +198,7 @@ const NavbarSimple = ({ sidebarData, sectionEmpty, scroll }: any) => {
 
 
   return (
-    <Navbar width={{ sm: 220 }} p="xs" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
+    <Navbar width={{ sm: 230, lg: 230 }} p="xs" className={`${classes.navbar} ${navShow === false ? 'hidden' : ''} sm:flex`}>
       <Group position="apart" className="mb-[30px]">
         <div className="ml-auto flex sm:hidden">
           <IconX className="w-[30px] h-[30px]" onClick={() => hide()} />

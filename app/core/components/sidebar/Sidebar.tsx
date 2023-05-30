@@ -82,7 +82,7 @@ const Sidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
       p="md"
       hiddenBreakpoint="sm"
       //   hidden={!opened}
-      width={{ sm: 200, lg: 250 }}
+      width={{ sm: 230, lg: 230 }}
       height="100vh"
       className={`bg-[#2f4050] text-[lightgray] mt-[-70px] flex-col items-start ${navShow === false ? 'hidden' : ''} sm:flex`}
     >
