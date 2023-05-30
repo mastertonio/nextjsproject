@@ -250,7 +250,7 @@ const CompanyList: React.FC<any> = (login) => {
           size="xs"
           color="indigo"
           onClick={() => {
-            router.push(`/company/templates/${item._id}`);
+            router.push({ pathname: `/company/templates/${item._id}`, query: { comp_id: item._id } })
           }}
         >
           Templates
@@ -261,7 +261,7 @@ const CompanyList: React.FC<any> = (login) => {
           size="xs"
           color="cyan"
           onClick={() => {
-            router.push(`/company/users/${item._id}`);
+            router.push({ pathname: `/company/users/${item._id}`, query: { comp_id: item._id } })
           }}
         >
           Users

@@ -90,7 +90,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${user?.company_id}/manager`, {
+      `/v1/company/${router.query.comp_id}/manager`, {
       headers: {
         Authorization: `Bearer ${tokens?.access.token}`,
       },
@@ -100,10 +100,10 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
 
   const getTemplates = async () => {
     return await axios.get(
-      `/v1/dashboard/template/list`, {
+      `/v1/company/${router.query.comp_id}/template`, {
       headers: {
         Authorization: `Bearer ${tokens?.access.token}`,
-      },
+      }
     }
     );
   };
