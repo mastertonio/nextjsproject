@@ -205,7 +205,7 @@ const NavbarNested = () => {
   ));
 
   return (
-    <Navbar width={{ sm: 220 }} p="xs" className={classes.navbar}>
+    <Navbar width={{ sm: 230, lg: 230 }} p="xs" className={classes.navbar}>
       <Navbar.Section className={classes.header}>
         <Group position="apart">
           {/* <Logo width={120} /> */}

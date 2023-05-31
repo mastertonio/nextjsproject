@@ -54,7 +54,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
       const response = await axios.patch(
@@ -68,10 +68,10 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
           contact_email: values.email,
           contact_phone: values.phone,
         }, {
-          headers: {
-            Authorization: `Bearer ${user.tokens.access.token}`,
-          },
-        }
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
       if (response) {
         refetch();

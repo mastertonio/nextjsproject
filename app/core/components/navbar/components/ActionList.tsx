@@ -93,7 +93,9 @@ const ActionList: React.FC<Partial<UserDataProp>> = ({ user }: any) => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Label>{user?.first_name} {user?.last_name}</Menu.Label>
+        <Menu.Label>
+          {user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : `${user?.email}`}
+        </Menu.Label>
         <Menu.Label>User Actions</Menu.Label>
         <Menu.Item
           icon={<ImProfile />}
