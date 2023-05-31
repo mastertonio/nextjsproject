@@ -239,7 +239,7 @@ const CompanyList: React.FC<any> = (login) => {
     alias: item.alias,
     licenses: item.licenses,
     templates: item.templates,
-    active: <Segmented val={item.active} key={item._id} refetch={refetch} name={item.name} id={item._id} />,
+    active: <Segmented val={item.active} key={item._id} refetch={refetch} name={item.name} id={item._id} user={login.data.user} />,
     actions: (
       <div
         className="flex justify-end items-center gap-2"

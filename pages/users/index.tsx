@@ -249,7 +249,7 @@ const UsersDashboard: React.FC<any> = (login) => {
       header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
       navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
     >
-      <div className="m-[20px] bg-white p-[10px] sm:p-[20px]">
+      <div className="bg-white p-[10px] sm:p-[20px]">
         {login.data.user.user.role === 'company-admin' ? (
           <Grid className="m-[10px] pt-[20px]">
             <Alert color="teal" className="pt-[10px] pb-[10px] w-full">
@@ -279,7 +279,7 @@ const UsersDashboard: React.FC<any> = (login) => {
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
         >
           <Table
-            className={`${classes.table} w-[1300px] sm:w-full`}
+            className={`min-w-full divide-y`}
             highlightOnHover
             verticalSpacing="xs"
             horizontalSpacing="xl"
@@ -292,7 +292,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("email")}
-                  style="w-[300px] !p-[10px] !border-white !border-0"
+                  style="!px-6 !py-3 text-left tracking-wider !border-white !border-0"
                 >
                   User Name
                 </Th>
@@ -300,7 +300,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "created_rois"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("created_rois")}
-                  style="w-[200px] sm:w-[260px] !p-[10px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                  style="!px-6 !py-3 text-left tracking-wider !border-white !border-0"
                 >
                   Created Rois
                 </Th>
@@ -308,7 +308,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "role"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("role")}
-                  style="w-[200px] sm:w-[200px] !p-[10px] whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                  style="px-6 py-3 text-left tracking-wider !border-white !border-0"
                 >
                   Role
                 </Th>
@@ -316,7 +316,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "manager_email"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("manager_email")}
-                  style="w-[250px] !p-[10px] !border-white !border-0"
+                  style="px-6 py-3 text-left tracking-wider !border-white !border-0"
                 >
                   Manager
                 </Th>
@@ -324,7 +324,7 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "currency"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("currency")}
-                  style="w-[200px] sm:w-[240px] !p-[10px] !whitespace-nowrap sm:whitespace-normal !border-white !border-0"
+                  style="px-6 py-3 text-left tracking-wider !border-white !border-0"
                 >
                   Currency
                 </Th>
@@ -332,40 +332,40 @@ const UsersDashboard: React.FC<any> = (login) => {
                   sorted={sortBy === "status"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
-                  style="w-[130px] !p-[10px] !border-white !border-0"
+                  style="px-6 py-3 text-left tracking-wider !border-white !border-0"
                 >
                   Status
                 </Th>
-                <th className="!border-white !border-0 !p-[10px]"></th>
+                <th className="px-6 py-3 text-left tracking-wider !border-white !border-0 !p-[10px]"></th>
               </tr>
             </thead>
             {isLoading ? (
               <SkeletonLoader />
             ) : (
-              <tbody>
+              <tbody className="divide-y">
                 {companies?.map((element: ICompanyUsersElements) => (
                   <tr key={element.id} className="h-[20px]">
-                    <td style={{ width: 10 }} className="!p-[10px]">{element.username}</td>
+                    <td style={{ width: 10 }} className="px-6 py-4 whitespace-nowrap">{element.username}</td>
                     <td
-                      className="cursor-pointer w-[140px] pl-[30px] !p-[10px]"
+                      className="cursor-pointer px-6 py-4 whitespace-nowrap"
                     >
                       {element.created_rois}
                     </td>
-                    <td className="!p-[10px]">{element.role}</td>
-                    <td className="!p-[10px]">
+                    <td className="px-6 py-4 whitespace-nowrap">{element.role}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       {!!element.manager_email ? element.manager_email : "Unassigned"}
                     </td>
-                    <td className="w-[145px] pl-[30px] !p-[10px]">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       {element.currency}
                     </td>
                     <td
-                      className="w-[110px] !p-[10px]"
+                      className="px-6 py-4 whitespace-nowrap"
                     >
                       <Badge color="green" variant="outline">
                         {element.status}
                       </Badge>
                     </td>
-                    <td className="!p-[10px]">{element.actions}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{element.actions}</td>
                   </tr>
                 ))}
               </tbody>

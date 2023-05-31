@@ -2,15 +2,17 @@ import { useState } from "react";
 import { Button, Grid, Modal, SegmentedControl, Text } from "@mantine/core";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
+import { UserDataProp } from "@app/context/user.context";
 
 interface ISegmentedProps {
   val: string;
   refetch: () => void;
   name: string
   id: string
+  user: UserDataProp
 }
 
-const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id }) => {
+const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id, user }) => {
   const [value, setValue] = useState(val);
   const [opened, setOpened] = useState(false);
 
@@ -54,8 +56,13 @@ const Segmented: React.FC<ISegmentedProps> = ({ val, refetch, name, id }) => {
                 `/v1/company/${id}`,
                 {
                   active: value == "active" ? 0 : 1
+                }, {
+                headers: {
+                  Authorization: `Bearer ${user?.tokens?.access?.token}`,
                 }
+              }
               );
+
               if (response) {
                 refetch()
               }
