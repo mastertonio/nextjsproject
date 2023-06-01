@@ -89,6 +89,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         }, {
         headers: {
           Authorization: `Bearer ${user.tokens.access.token}`,
+          "Content-Type": "multipart/form-data"
         },
       });
 
