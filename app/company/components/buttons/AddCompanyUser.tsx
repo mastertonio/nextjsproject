@@ -188,7 +188,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${user?.company_id}/user`,
+        `/v1/company/${router.query.comp_id}/user`,
         {
           first_name: values.first_name,
           last_name: values.last_name,
@@ -209,6 +209,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             queryClient.invalidateQueries({ queryKey: ['get_all_company_users'] }),
             queryClient.invalidateQueries({ queryKey: ['license'] }),
             queryClient.invalidateQueries({ queryKey: ['get_all_company_users_with_templates'] }),
+            queryClient.invalidateQueries({ queryKey: ['get_specific_company_users'] }),
           ]
         )
         updateNotification({
