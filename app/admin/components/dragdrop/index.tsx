@@ -110,7 +110,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
 
     const remove = useBuilderStore((state) => state.remove)
     const [state, handlers] = useListState(data);
-
+    const [dragEndOccurred, setDragEndOccurred] = useState(false);
 
 
     const editSection = useMutation({
@@ -146,10 +146,13 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
 
-    // useEffect(() => {
-    //     editSection.mutate(state)
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // },[state])
+    useEffect(() => {
+        if (dragEndOccurred) {
+            editSection.mutate(state);
+            setDragEndOccurred(false); // Reset the flag for the next drag end
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dragEndOccurred, state]);
 
     useEffect(() => {
         if (data) {
@@ -237,9 +240,11 @@ export function DragNDrop({ data, type, user, adminId, id, choices }: DragNDropP
         <DragDropContext
             onDragEnd={({ destination, source }) => {
                 handlers.reorder({ from: source.index, to: destination?.index || 0 })
-                editSection.mutate(state)
+                setDragEndOccurred(true);
+                // editSection.mutate(state)
             }
             }
+
         >
             <Droppable droppableId="dnd-list" direction="vertical">
                 {(provided) => (

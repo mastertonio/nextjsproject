@@ -145,10 +145,43 @@ const Enterprise: React.FC<any> = (login) => {
     HTMLDivElement
   >({ offset: 30, isList: true });
   const queryClient = useQueryClient()
+  const [blurred, setBlurred] = useState(false)
+  const [sectID, setSectID] = useState("")
+
+  const editSection = useMutation({
+    mutationFn: (sect: any) => axios.put(`/v1/company/admintool/${data?.data.data.content.id}/section/${sectID}`, {
+      grayContentElement: sect
+    }, {
+      headers: {
+        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+      },
+    }).then((response) => response.data),
+    onMutate: (roi) => {
+      setOpened(false)
+    },
+    onSuccess: (newRoi) => {
+      console.log(newRoi, "roiroi")
+      Promise.all(
+        [
+          queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+          queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+          // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+        ]
+      )
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+      }
+    }
+  })
 
   useEffect(() => {
-    console.log("cells", cells)
-  }, [cells])
+    if (blurred) {
+      editSection.mutate(cells)
+      // Reset the flag for the next drag end
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blurred, cells, sectID]);
 
   const getEnterpriseData = async () => {
     return await axios.get(`/v1/templateBuilder/${router.query.temp_ver}`, {
@@ -182,7 +215,8 @@ const Enterprise: React.FC<any> = (login) => {
     "enterpriseData",
     getEnterpriseData,
     {
-      refetchInterval: 4000,
+      // refetchInterval: 4000,
+      refetchOnWindowFocus: true
     }
   );
 
@@ -265,13 +299,13 @@ const Enterprise: React.FC<any> = (login) => {
   // })
 
 
-  useEffect(() => {
-    setTimeout(() => {
-      // Make API call here
-      setLC(cells)
-    }, 5000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localCells]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     // Make API call here
+  //     setLC(cells)
+  //   }, 5000);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [localCells]);
   // useCalculatorStore.subscribe(
   //   (state) => {
   //     // Ensure data array exists
@@ -449,10 +483,13 @@ const Enterprise: React.FC<any> = (login) => {
                                     onBlur={async (event: BaseSyntheticEvent) => {
                                       console.log(event, "venti", elem)
                                       handleBlur()
+                                      setBlurred(true)
                                       update({
                                         ...elem,
                                         value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                       })
+                                      console.log("cells at work", cells)
+                                      setSectID(section._id)
                                       await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                         grayContent: {
                                           value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
@@ -619,10 +656,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         onChange={(event) => console.log("EVENNTT", event)}
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log("BLURRED LINES")
+
+                                          setBlurred(true)
                                           update({
                                             ...elem,
                                             value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                           })
+
+                                          setSectID(section._id)
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
                                               value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
@@ -684,11 +725,15 @@ const Enterprise: React.FC<any> = (login) => {
                                         // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log(event, "venti", elem)
+
+                                          setBlurred(true)
                                           handleBlur()
                                           update({
                                             ...elem,
                                             value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                           })
+
+                                          setSectID(section._id)
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
                                               value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
@@ -749,11 +794,16 @@ const Enterprise: React.FC<any> = (login) => {
                                         // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
                                           console.log(event, "venti", elem)
+
+                                          setBlurred(true)
                                           handleBlur()
                                           update({
                                             ...elem,
                                             value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                           })
+
+                                          setSectID(section._id)
+                                          console.log("cells at work", cells)
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
                                               value: parseInt(event.target.value.replace(/[^0-9]/g, ""))

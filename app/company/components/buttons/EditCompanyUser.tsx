@@ -63,7 +63,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const userZ = useUserStore((state) => (state.user))
 
   const getManagers = async () => {
-    return await axios.get(`/v1/company/${user.user.company_id}/manager`, {
+    return await axios.get(`/v1/company/${router.query.comp_id}/manager`, {
       headers: {
         Authorization: `Bearer ${user.tokens.access.token}`,
       },
@@ -283,7 +283,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                   placeholder="New Title Name"
                   className="w-[350px] ml-auto"
                   defaultValue={myCompany.manager_email}
-                  data={transferlist?.length > 0 ? transferlist : []}
+                  data={transferlist?.length > 0 ? transferlist.filter((el: { value: string; }) => id !== el.value) : []}
                   {...form.getInputProps("manager")}
                 />
               </div>
