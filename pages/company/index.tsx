@@ -236,7 +236,7 @@ const CompanyList: React.FC<any> = (login) => {
       />
     ),
     roiname: item.name,
-    alias: item.alias,
+    alias: item.alias == "NULL" || item.alias == "" ? "No Data" : item.alias,
     licenses: item.licenses,
     templates: item.templates,
     active: <Segmented val={item.active} key={item._id} refetch={refetch} name={item.name} id={item._id} user={login.data.user} />,
