@@ -61,7 +61,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
 
   const getCompanyTemplate = async (_id: string) => {
     return await axios.get(
-      `/v1/company/${login.data.user.user.company_id}/template`, {
+      `/v1/company/${_id}/template`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       }
