@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
 import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethods";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, DateInput } from "@mantine/dates";
 import dayjs from "dayjs";
 import { UserDataProp } from "@app/context/user.context";
 import ResetUpload from "./ResetUpload";
@@ -143,7 +143,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack
             justify="flex-start"
-            h={900}
+            h={700}
           // sx={(theme) => ({
           //   backgroundColor:
           //     theme.colorScheme === "dark"
@@ -155,10 +155,10 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text>Company Name: </Text>
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Company Name: </Text>
               <TextInput
                 required
-                style={{ width: 550, marginLeft: "auto" }}
+                className="w-full md:w-full lg:w-[550px] ml-auto"
                 // defaultValue={myCompany.name}
                 placeholder="New Title Name"
                 {...form.getInputProps("name")}
@@ -167,20 +167,20 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Company Alias: </Text>
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Company Alias: </Text>
               <TextInput
                 required
-                className="w-[550px] ml-auto"
+                className="w-full md:w-full lg:w-[550px] ml-auto"
                 // defaultValue={myCompany.name}
                 placeholder="New Title Name"
                 {...form.getInputProps("alias")}
               />
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30 }} className="ml-[30px] mr-[30px]">
-              <Text>Licenses: </Text>
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Licenses: </Text>
               <NumberInput
                 defaultValue={0}
-                className="w-[550px] ml-auto"
+                className="w-full md:w-full lg:w-[550px] ml-auto"
                 min={0}
                 {...form.getInputProps("licenses")}
                 required
@@ -190,21 +190,21 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               Account Contact
             </Text>
             <Grid className="ml-[30px] mr-[30px] mb-[10px]">
-              <div>
-                <Text>First Name: </Text>
+              <div className="w-full md:w-full lg:w-[350px]">
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">First Name: </Text>
                 <TextInput
                   required
-                  className="w-[350px] ml-auto"
+                  className="w-full md:w-full lg:w-[350px] ml-auto"
                   // defaultValue="Jason"
                   placeholder="First Name"
                   {...form.getInputProps("contact_fname")}
                 />
               </div>
-              <div className="ml-auto">
-                <Text>Last Name: </Text>
+              <div className="w-full md:w-full lg:w-[350px] ml-auto mt-[20px] md:mt-[20px] lg:mt-0">
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Last Name: </Text>
                 <TextInput
                   required
-                  className="w-[350px] ml-auto"
+                  className="w-full md:w-full lg:w-[350px] ml-auto"
                   // defaultValue="Ronda"
                   placeholder="Last Name"
                   {...form.getInputProps("contact_lname")}
@@ -212,21 +212,21 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               </div>
             </Grid>
             <Grid className="ml-[30px] mr-[30px] mb-[10px]">
-              <div>
-                <Text>Email: </Text>
+              <div className="w-full md:w-full lg:w-[350px]">
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Email: </Text>
                 <TextInput
                   required
-                  className="w-[350px] ml-auto"
+                  className="w-full md:w-full lg:w-[350px] ml-auto"
                   placeholder="Email Address"
                   // defaultValue="jason.ronda003@gmail.com"
                   {...form.getInputProps("contact_email")}
                 />
               </div>
-              <div style={{ marginLeft: "auto" }}>
-                <Text>Contact Number: </Text>
+              <div className="w-full md:w-full lg:w-[350px] ml-auto mt-[20px] md:mt-[20px] lg:mt-0">
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contact Number: </Text>
                 <TextInput
                   required
-                  className="w-[350px] ml-auto"
+                  className="w-full md:w-full lg:w-[350px] ml-auto"
                   // defaultValue="09269666992"
                   placeholder="Phone Number"
                   {...form.getInputProps("contact_phone")}
@@ -271,27 +271,42 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 )}
               </div>
             </Grid>
-            <Grid className="ml-[30px] mr-[30px] mt-[10px] company-date">
-              <div className="flex flex-col w-[50%]">
-                <Text className="mr-[20px] mb-[20px]">Contract Start: </Text>
-                <DatePicker
+            <Grid className="ml-[30px] mr-[30px] mt-[10px]">
+              <div className="w-full md:w-[50%] lg:w-[50%]">
+                <div className="w-full md:w-full lg:w-[350px] pr-0 md:pr-[10px] lg:pr-[10px]">
+                  <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contract Start: </Text>
+                  <DateInput
+                    value={startDate}
+                    onChange={setStartDate}
+                    className="w-full md:w-full lg:w-[350px]"
+                  />
+                  {/* <DatePicker
                   value={startDate}
                   onChange={setStartDate}
                   className="w-[350px]"
-                />
+                /> */}
+                </div>
               </div>
-              <div className="flex flex-col w-[50%]">
-                <Text className="mr-[26px] ml-[14px] mb-[20px]">Contract End: </Text>
-                <DatePicker
+              <div className="w-full md:w-[50%] lg:w-[50%] pl-0 md:pl-[10px] lg:pl-[10px] mt-[20px] md:mt-0 lg:mt-0">
+                <div className="w-full md:w-full lg:w-[350px]">
+                  <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contract End: </Text>
+                  <DateInput
+                    value={endDate}
+                    onChange={setEndDate}
+                    className="w-full md:w-full lg:w-[350px]"
+                    minDate={startDate || new Date()}
+                  />
+                </div>
+                {/* <DatePicker
                   value={endDate}
                   onChange={setEndDate}
                   className="w-[350px]"
                   minDate={startDate || new Date()}
-                />
+                /> */}
               </div>
             </Grid>
-            <Grid className="ml-[30px] mr-[30px] mt-[30px]">
-              <Text>Notes: </Text>
+            <Grid className="ml-[30px] mr-[30px] mt-[10px] md:mt-[20px] lg:mt-[30px]">
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Notes: </Text>
               <Textarea
                 className="w-[600px] ml-auto"
                 autosize
@@ -300,29 +315,29 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 {...form.getInputProps("notes")}
               />
             </Grid>
-          </Stack>
 
-          <Grid justify="flex-end" className="m-[20px]">
-            <Button
-              type="submit"
-              radius="sm"
-              size="sm"
-              color="teal"
-              className="mr-[10px]"
-              onClick={() => setOpened(false)}
-            >
-              Save Company
-            </Button>
-            <Button
-              type="button"
-              radius="sm"
-              size="sm"
-              onClick={() => setOpened(false)}
-              className="bg-white text-black border-gray-500"
-            >
-              Close
-            </Button>
-          </Grid>
+            <Grid justify="flex-end" className="m-[20px] pb-[30px]">
+              <Button
+                type="submit"
+                radius="sm"
+                size="sm"
+                color="teal"
+                className="mr-[10px]"
+                onClick={() => setOpened(false)}
+              >
+                Save Company
+              </Button>
+              <Button
+                type="button"
+                radius="sm"
+                size="sm"
+                onClick={() => setOpened(false)}
+                className="bg-white text-black border-gray-500"
+              >
+                Close
+              </Button>
+            </Grid>
+          </Stack>
         </form>
       </Modal>
 
