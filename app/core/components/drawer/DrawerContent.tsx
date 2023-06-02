@@ -20,13 +20,15 @@ const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
   const [openCompany, setOpenCompany] = useState(false);
   const [openTemplate, setOpenTemplate] = useState(false);
 
+  console.log('user', user)
+
   return (
     <>
       <div>
         <div className="mt-[35px]">
           <Image src="/logo.png" alt="random" height={60} width={200} />
         </div>
-        {user?.role == "admin" || user?.role == "company-admin" ? (
+        {user?.role == "company-admin" ? (
           <div>
             <Button
               type="button"
@@ -40,22 +42,24 @@ const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
               Dashboard
             </Button>
           </div>
-        ) : (
+        ) : null}
+
+        {user?.role == "admin" ? (
           <div>
             <Button
               type="button"
               variant="subtle"
               fullWidth
               className="mt-[100px] text-[lightgray] flex items-start"
-              onClick={() => router.push(`/dashboard`)}
+              onClick={() => router.push(`/company`)}
               leftIcon={<MdSpaceDashboard />}
               size="md"
             >
               Dashboard
             </Button>
           </div>
-        )}
-        {user?.role == "admin" ? (<div>
+        ) : null}
+        {/* {user?.role == "admin" ? (<div>
           <Button
             variant="subtle"
             color="blue"
@@ -71,7 +75,7 @@ const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
           >
             Create Company
           </Button>
-          {/* <Collapse in={openCompany}>
+          <Collapse in={openCompany}>
             {user?.role == "admin" ? (
               <Button
                 type="button"
@@ -99,8 +103,8 @@ const DashboardDrawer = ({ user, tokens }: UserDataProp) => {
             >
               Company Users
             </Button>
-          </Collapse> */}
-        </div>) : ""}
+          </Collapse>
+        </div>) : ""} */}
 
         <div>
           <Button
