@@ -28,7 +28,9 @@ import Paginate from "@app/dashboard/components/table/paginate";
 import {
   sortCompanyTemplatesData,
   ICompanyTemplatesProps,
+  ITemplatesProps
 } from "@app/dashboard/components/table/utils/tableMethods";
+import { IconPlus } from '@tabler/icons';
 import Th from "@app/dashboard/components/table/Thead";
 import SkeletonLoader from "@app/core/components/loader/SkeletonLoader";
 import { ICompanyElement } from "pages/company";
@@ -59,7 +61,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
 
   const getCompanyTemplate = async (_id: string) => {
     return await axios.get(
-      `/v1/company/${_id}/template`, {
+      `/v1/company/${login.data.user.user.company_id}/template`, {
       headers: {
         Authorization: `Bearer ${login.data.user.tokens.access.token}`,
       }
@@ -130,17 +132,18 @@ const TemplateDashboard: React.FC<any> = (login) => {
 
   const [temp_id, setTemp] = useState<string>("");
   const [comp_id, setComp] = useState<string>("");
-  const templates = currentPosts?.map((item: ICompanyTemplatesProps) => ({
+  const templates = currentPosts?.map((item: ITemplatesProps) => ({
     id: item._id,
     name: (
       <span
-        style={{ cursor: "pointer", width: 10 }}
+        className="cursor-pointer w-[10px]"
         onClick={() => {
           setTemp(item._id);
           setComp(item.company_id);
           setName(item.name);
-          scrollIntoView({ alignment: 'center' })
-          refetch;
+          // scrollIntoView({ alignment: 'center' })
+          // refetch;
+          router.push({ pathname: `/admin/builder/${item._id}`, query: { comp_id: item.company_id, temp_id: item._id, ver_id: item.version_id } })
         }}
       >
         {item.name}
@@ -313,22 +316,12 @@ const TemplateDashboard: React.FC<any> = (login) => {
                       | null
                       | undefined;
                     }) => (
-                      <tr key={element._id} style={{ height: 20 }}>
-                        <td>{element.name}</td>
-                        <td
-                          style={{
-                            cursor: "pointer",
-                            width: 140,
-                            paddingLeft: 30,
-                          }}
-                        >
+                      <tr key={element._id} className="h-[20px]">
+                        <td className="w-[100px]"><IconPlus size={20} stroke={3} className="pt-[7px] pr-[5px]" /> {element.name}</td>
+                        <td className="cursor-pointer w-[140px] pl-[30px]">
                           {element.notes}
                         </td>
-                        <td
-                          style={{
-                            width: 110,
-                          }}
-                        >
+                        <td className="w-[110px]">
                           <Badge color="green" variant="outline">
                             {element.status}
                           </Badge>
@@ -355,7 +348,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
             />
           </div>
 
-          {temp_id !== "" ? (
+          {/* {temp_id !== "" ? (
             <>
               <Divider my="lg" size="xl" style={{ marginTop: 70 }} />
               <TemplateVersion
@@ -370,7 +363,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
             </>
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </AppShell>
     );
