@@ -69,7 +69,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
         color: "teal",
       });
       const response = await axios.post(
-        `/v1/company/${user.user.company_id}/template`,
+        `/v1/company/${router.query.id}/template`,
         {
           name: values.name,
           status: "1",
