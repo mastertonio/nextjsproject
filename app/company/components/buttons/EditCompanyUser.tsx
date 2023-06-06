@@ -38,6 +38,7 @@ type ICompanyUserTypes = {
   manager_id: string;
   role: string;
   template?: string[];
+  status: string;
 };
 
 export interface IButtonCompanyUserProps {
@@ -61,6 +62,8 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const [state, setState] = useState<string | null>(null);
   const [password, setPass] = useInputState("");
   const userZ = useUserStore((state) => (state.user))
+
+  console.log('myCompany', myCompany.status)
 
   const getManagers = async () => {
     return await axios.get(`/v1/company/${router.query.comp_id}/manager`, {
@@ -91,6 +94,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       currency: myCompany.currency,
       manager: myCompany.manager_id,
       role: myCompany.role,
+      status: myCompany.status
     },
   });
 
@@ -102,7 +106,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
         color: "teal",
       });
 
@@ -116,6 +119,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           currency: values.currency,
           manager: values.manager,
           role: values.role,
+          status: values.status
         }, {
         headers: {
           Authorization: `Bearer ${user.tokens.access.token}`,
@@ -207,13 +211,14 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack
             justify="flex-start"
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-              height: 350,
-            })}
+            // sx={(theme) => ({
+            //   backgroundColor:
+            //     theme.colorScheme === "dark"
+            //       ? theme.colors.dark[8]
+            //       : theme.colors.gray[0],
+            //   height: 350,
+            // })}
+            h={400}
           >
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
@@ -285,6 +290,21 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                   defaultValue={myCompany.manager_email}
                   data={transferlist?.length > 0 ? transferlist.filter((el: { value: string; }) => id !== el.value) : []}
                   {...form.getInputProps("manager")}
+                />
+              </div>
+            </Grid>
+            <Grid className="ml-[30px] mr-[30px] mt-[30px]">
+              <div>
+                <Text>Status : </Text>
+                <Select
+                  data={[
+                    { label: "Active", value: "1" },
+                    { label: "Inactive", value: "0" },
+                  ]}
+                  placeholder="Set Status"
+                  {...form.getInputProps("status")}
+                  className="w-[350px] ml-auto"
+                  defaultValue={myCompany.status}
                 />
               </div>
             </Grid>
