@@ -63,7 +63,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const [password, setPass] = useInputState("");
   const userZ = useUserStore((state) => (state.user))
 
-  console.log('myCompany', myCompany.status)
+  console.log('myCompany', myCompany.role)
 
   const getManagers = async () => {
     return await axios.get(`/v1/company/${router.query.comp_id}/manager`, {
@@ -190,6 +190,12 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
     },
   ];
 
+  const rolesData = [
+    { label: 'Manager/Director', value: '3' },
+    { label: 'End User', value: '4' },
+    { label: 'Admin', value: '2' },
+  ]
+
   return (
     <>
       <Modal
@@ -218,7 +224,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
             //       : theme.colors.gray[0],
             //   height: 350,
             // })}
-            h={400}
+            h={430}
           >
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
@@ -304,7 +310,15 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                   placeholder="Set Status"
                   {...form.getInputProps("status")}
                   className="w-[350px] ml-auto"
-                  defaultValue={myCompany.status}
+                />
+              </div>
+              <div className="ml-auto">
+                <Text>Role : </Text>
+                <Select
+                  data={rolesData}
+                  placeholder="Choose Role"
+                  {...form.getInputProps("role")}
+                  className="w-[350px] ml-auto"
                 />
               </div>
             </Grid>

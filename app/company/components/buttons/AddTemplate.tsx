@@ -65,7 +65,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
         title: `Updating`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
       const response = await axios.post(
@@ -158,7 +158,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Name: </Text>
+              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Name: <span className="text-[#fa5252]">*</span></Text>
               <TextInput
                 required
                 className="w-[550px] ml-auto"
@@ -177,14 +177,14 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
               />
             </Grid>
             <Grid className="ml-[30px] mr-[30px] mb-[20px]">
-              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Projection</Text>
+              <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Projection: <span className="text-[#fa5252]">*</span></Text>
               <div className="w-full sm:w-[450px] ml-auto flex flex-col sm:flex-row items-center">
                 {/* <div className="flex flex-row items-center mr-0 sm:mr-[30px] mt-[20px] sm:mt-0">
                   <Text className="text-[14px] mr-[10px] text-slate-700 font-semibold w-[50px]">Month</Text>
                   <NumberInput defaultValue={0}  {...form.getInputProps("month")} hideControls className="w-[150px]" />
                 </div> */}
                 <div className="flex flex-row ml-auto items-center mt-[20px] sm:mt-0">
-                  <Text className="text-[14px] mr-[22px] sm:mr-[10px] text-slate-700 font-semibold w-[50px]">Year</Text>
+                  <Text className="text-[14px] mr-[22px] sm:mr-[10px] text-slate-700 font-semibold w-[50px]">Year: <span className="text-[#fa5252]">*</span></Text>
                   <NumberInput defaultValue={0}  {...form.getInputProps("year")} hideControls className="w-[150px]" />
                 </div>
               </div>

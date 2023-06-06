@@ -192,6 +192,10 @@ th {
   max-width: 350px !important;
 }
 
+.select-roi .mantine-Select-input {
+  cursor: pointer !important;
+}
+
 @media (max-width: 740px) {
   .mantine-Modal-modal {
     width: 100%;
