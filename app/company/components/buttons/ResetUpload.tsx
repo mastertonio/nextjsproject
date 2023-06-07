@@ -22,7 +22,7 @@ import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
 
 const ResetUpload: React.FC<any> = ({ file, reset, openReset, setOpenReset }) => {
-    console.log('file', file?.name);
+    console.log('file', file);
     return (
         <>
             <Modal
