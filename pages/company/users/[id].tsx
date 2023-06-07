@@ -173,6 +173,8 @@ const Dashboard: React.FC<any> = (login) => {
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = sortedData?.slice(indexOfFirstPost, indexOfLastPost);
+  console.log('company', currentPosts)
+
 
   const setSorting = (field: keyof ICompanyUsersProps) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;

@@ -36,7 +36,8 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
   const [value] = useLocalStorage({ key: "auth-token" });
   const router = useRouter();
   const p = router.query;
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<any | null>(null);
+  const [fileError, setFileError] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(new Date());
 
@@ -49,7 +50,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
       contact_lname: "",
       contact_email: "",
       contact_phone: "",
-      notes: ""
+      notes: " "
     },
   });
 
@@ -60,7 +61,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
   }
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log("file handle submit", file)
+    console.log("file handle submit", values)
     try {
       showNotification({
         id: "edit-comp",
@@ -79,7 +80,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
           contract_file: file,
           contract_start_date: startDate,
           contract_end_date: endDate,
-          notes: values.notes,
+          notes: values.notes == "" ? " " : values.notes,
           name: values.name,
           contact_fname: values.contact_fname,
           contact_lname: values.contact_lname,
@@ -243,7 +244,19 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                   Contract and Agreements:{" "}<span className="text-[#fa5252]">*</span>
                 </Text>
                 <Group>
-                  <FileButton onChange={setFile}>
+                  <FileButton
+                    onChange={(value: any) => {
+                      console.log('file values', value)
+                      if (value?.size > 20000000) {
+                        setFile(null)
+                        setFileError(true)
+                        resetRef.current?.();
+                      } else {
+                        setFile(value)
+                        setFileError(false)
+                      }
+                    }}
+                  >
                     {(props) => (
                       <Button
                         type="button"
@@ -269,14 +282,20 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                     <Text size="sm" align="center" className="text-[14px]">
                       {file.name}
                     </Text>
-                    <Text size="sm" className="text-[14px]">
-                      Size: {file.size.toLocaleString(undefined, {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                      })} {'MB'}
-                    </Text>
                   </>
                 )}
+
+                {fileError ? (
+                  <Text size="sm" className="text-[14px] text-red-700 mt-[3px]">
+                    File Size Limit is 20MB only
+                    {/* Size: {file.size.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                      })} {'KB'} */}
+                  </Text>
+                ) : null}
+
+                {/* {file?.size <= 20000} */}
               </div>
             </Grid>
             <Grid className="ml-[30px] mr-[30px] mt-[10px]">
