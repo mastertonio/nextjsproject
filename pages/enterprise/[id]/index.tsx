@@ -160,7 +160,6 @@ const Enterprise: React.FC<any> = (login) => {
       setOpened(false)
     },
     onSuccess: (newRoi) => {
-      console.log(newRoi, "roiroi")
       Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
@@ -196,13 +195,11 @@ const Enterprise: React.FC<any> = (login) => {
   }
 
   const handleScroll = () => {
-    console.log('scroll', targetRef)
     scrollIntoView({
       alignment: 'center',
     })
   }
 
-  console.log('temp version', router.query.temp_ver)
   // const getEnterpriseData = async () => {
   //   return await axios.get(`/v1/templateBuilder/${login.data.user.user.company_id}/${id}`, {
   //     headers: {
@@ -214,21 +211,15 @@ const Enterprise: React.FC<any> = (login) => {
   const { isLoading, data, refetch, isSuccess } = useQuery(
     "enterpriseData",
     getEnterpriseData,
-    {
-      // refetchInterval: 4000,
-      refetchOnWindowFocus: true
-    }
   );
 
   useEffect(() => {
-    console.log("data?.data", data?.data?.templateBuilderInfo);
     if (data?.data.data.content.sections.length === 0) {
       setSectionEmpty(true)
     } else {
       setSectionEmpty(false)
     }
 
-    console.log("is section empty", sectionEmpty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
@@ -240,23 +231,27 @@ const Enterprise: React.FC<any> = (login) => {
         setState(data?.data.data.content.sections[0].grayContent.elements)
       }
     }
-    console.log("cellsis", cells)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cells, data])
+
+  const [dataChanged, setDC] = useState(false)
 
   const flatData = data?.data.data.content.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
 
   useEffect(() => {
-    addItems(flatData)
-    // console.log("triggered",flatData, cells)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+    if (!dataChanged && data) {
+      addItems(flatData);
+      setDC(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, dataChanged]);
+
+
 
 
   useEffect(() => {
     const formValue = JSON.parse(localStorage.getItem("valueBucket") ?? '[]') as CardSection[];
     setValueBucketState(formValue)
-    console.log('storage value bucket', valueBucketState)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -391,8 +386,6 @@ const Enterprise: React.FC<any> = (login) => {
         {data?.data
           ? data?.data.data.content.sections.map((section: any) => {
 
-            console.log('enterprise section', section, data)
-
             return (
               <div className="w-full text-[#676a6c] rounded-none" key={section.id} ref={targetRef}>
                 <Projection
@@ -481,14 +474,12 @@ const Enterprise: React.FC<any> = (login) => {
                                         </Tooltip> : ""
                                     }
                                     onBlur={async (event: BaseSyntheticEvent) => {
-                                      console.log(event, "venti", elem)
                                       handleBlur()
                                       setBlurred(true)
                                       update({
                                         ...elem,
                                         value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
                                       })
-                                      console.log("cells at work", cells)
                                       setSectID(section._id)
                                       await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                         grayContent: {
@@ -631,7 +622,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
                                     <div className='w-1/2 flex items-center'>
-                                      <NumberInput
+                                      <Input
                                         className="w-full"
                                         ref={numberInputRef}
                                         // icon={state.icon ? state.icon : ""}
@@ -645,12 +636,10 @@ const Enterprise: React.FC<any> = (login) => {
                                         }}
                                         readOnly
                                         // disabled
-                                        thousandsSeparator=','
-                                        decimalSeparator='.'
                                         value={elem.value}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        hideControls
+                                        
                                         placeholder={elem.prefilled}
                                         // rightSection={
                                         //   elem.tooltip ?
@@ -660,9 +649,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         //       </div>
                                         //     </Tooltip> : ""
                                         // }
-                                        onChange={(event) => console.log("EVENNTT", event)}
                                         onBlur={async (event: BaseSyntheticEvent) => {
-                                          console.log("BLURRED LINES")
 
                                           setBlurred(true)
                                           update({
@@ -731,7 +718,6 @@ const Enterprise: React.FC<any> = (login) => {
                                         //     </Tooltip> : ""
                                         // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
-                                          console.log(event, "venti", elem)
 
                                           setBlurred(true)
                                           handleBlur()
@@ -800,7 +786,6 @@ const Enterprise: React.FC<any> = (login) => {
                                         //     </Tooltip> : ""
                                         // }
                                         onBlur={async (event: BaseSyntheticEvent) => {
-                                          console.log(event, "venti", elem)
 
                                           setBlurred(true)
                                           handleBlur()
@@ -810,7 +795,6 @@ const Enterprise: React.FC<any> = (login) => {
                                           })
 
                                           setSectID(section._id)
-                                          console.log("cells at work", cells)
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
                                               value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
