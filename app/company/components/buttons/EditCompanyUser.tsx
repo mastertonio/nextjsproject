@@ -20,6 +20,7 @@ import { ICompanyProps } from "@app/dashboard/components/table/utils/tableMethod
 import { useQuery } from "react-query";
 import { useUserStore } from "@app/store/userState";
 import { UserDataProp } from "@app/context/user.context";
+import { format } from "path";
 
 type IManagerTypes = {
   _id: string;
@@ -60,10 +61,23 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const router = useRouter();
   const p = router.query;
   const [state, setState] = useState<string | null>(null);
+  const [valueRole, setValueRole] = useState(null);
+  const [valueStatus, setValueStatus] = useState(null);
   const [password, setPass] = useInputState("");
   const userZ = useUserStore((state) => (state.user))
 
-  console.log('myCompany', myCompany.role)
+  const form = useForm({
+    initialValues: {
+      first_name: myCompany.first_name,
+      last_name: myCompany.last_name,
+      email: myCompany.email,
+      password: "",
+      currency: myCompany.currency,
+      manager: myCompany.manager_id,
+      role: myCompany?.role,
+      status: myCompany?.status
+    },
+  });
 
   const getManagers = async () => {
     return await axios.get(`/v1/company/${router.query.comp_id}/manager`, {
@@ -83,20 +97,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
     value: item.id,
     label: item.email,
   }));
-
-
-  const form = useForm({
-    initialValues: {
-      first_name: myCompany.first_name,
-      last_name: myCompany.last_name,
-      email: myCompany.email,
-      password: "",
-      currency: myCompany.currency,
-      manager: myCompany.manager_id,
-      role: myCompany.role,
-      status: myCompany.status
-    },
-  });
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
@@ -150,6 +150,11 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       return error;
     }
   };
+
+  const statusList = [
+    { label: "Active", value: "1" },
+    { label: "Inactive", value: "0" },
+  ]
 
   const curData = [
     {
@@ -243,7 +248,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                 <Text>Password: </Text>
                 <PasswordInput
                   className="w-[350px] ml-auto"
-                  defaultValue={password}
+                  // defaultValue={password}
                   placeholder="Enter User Password"
                   {...form.getInputProps("password")}
                 />
@@ -301,19 +306,17 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
             </Grid>
             <Grid className="ml-[30px] mr-[30px] mt-[30px]">
               <div>
-                <Text>Status : </Text>
+                <Text>Status:</Text>
                 <Select
-                  data={[
-                    { label: "Active", value: "1" },
-                    { label: "Inactive", value: "0" },
-                  ]}
+                  data={statusList}
                   placeholder="Set Status"
                   {...form.getInputProps("status")}
                   className="w-[350px] ml-auto"
+                  defaultValue="Active"
                 />
               </div>
               <div className="ml-auto">
-                <Text>Role : </Text>
+                <Text>Role: </Text>
                 <Select
                   data={rolesData}
                   placeholder="Choose Role"
