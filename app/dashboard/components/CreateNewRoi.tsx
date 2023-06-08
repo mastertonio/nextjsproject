@@ -23,7 +23,7 @@ import UserContext, { UserDataProp } from "@app/context/user.context";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useUserStore } from "@app/store/userState";
 
-const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
+const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
   const router = useRouter();
@@ -32,11 +32,11 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
 
   const getTemplateButtonList = async () => {
     return await axios.get(
-      `/v1/dashboard/template/list`,{
-        headers: {
-          Authorization: `Bearer ${tokens?.access.token}`,
-        },
-      }
+      `/v1/dashboard/template/list`, {
+      headers: {
+        Authorization: `Bearer ${tokens?.access.token}`,
+      },
+    }
     );
   };
 
@@ -59,7 +59,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
 
   const createRoi = useMutation({
     mutationFn: (roi: iCreateTemplateProp) =>
-      axios.post(`/v1/dashboard/${user?.id}`, roi ,{
+      axios.post(`/v1/dashboard/${user?.id}`, roi, {
         headers: {
           Authorization: `Bearer ${tokens?.access.token}`,
         },
@@ -71,7 +71,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
         title: `Creating ${roi.name}`,
         message: "Please wait ...",
         autoClose: false,
-         
+
       });
     },
     onSuccess: (newRoi) => {
@@ -93,7 +93,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });
-        router.push({ pathname: `/enterprise/${newRoi.template_version_id}`, query: { temp_ver: newRoi.template_version_id} });
+        router.push({ pathname: `/enterprise/${newRoi.template_version_id}`, query: { temp_ver: newRoi.template_version_id } });
         // router.push(`/enterprise/${newRoi.template_version_id}`);
       }
       updateNotification({
@@ -137,6 +137,8 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
       }))
     }).flat();
 
+    console.log('actionlist', actionList[0])
+
     return (
       <>
         <Modal
@@ -165,11 +167,12 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
               />
             </Grid>
 
-            <Grid className="m-[20px] mb-[20px]">
+            <Grid className="m-[20px] mb-[20px] select-roi">
               <Text>Choose a Template</Text>
               <Select
                 className="w-full ml-auto"
-                rightSection={<AiOutlineDown />}
+                rightSection={<AiOutlineDown size="1rem" />}
+                rightSectionWidth={40}
                 placeholder="Template"
                 searchable
                 clearable
@@ -184,7 +187,11 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user}) => {
                       },
                     ]
                 }
+                styles={{ rightSection: { pointerEvents: 'none' } }}
                 {...form.getInputProps("template")}
+                value={
+                  actionList?.length === 1 ? actionList[0] : actionList
+                }
               />
             </Grid>
             <Grid

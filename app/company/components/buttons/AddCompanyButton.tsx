@@ -155,7 +155,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Company Name: </Text>
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Company Name: <span className="text-[#fa5252]">*</span></Text>
               <TextInput
                 required
                 className="w-full md:w-full lg:w-[550px] ml-auto"
@@ -167,7 +167,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Company Alias: </Text>
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Company Alias: <span className="text-[#fa5252]">*</span></Text>
               <TextInput
                 required
                 className="w-full md:w-full lg:w-[550px] ml-auto"
@@ -177,7 +177,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               />
             </Grid>
             <Grid style={{ marginLeft: 30, marginRight: 30 }} className="ml-[30px] mr-[30px]">
-              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Licenses: </Text>
+              <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Licenses: <span className="text-[#fa5252]">*</span></Text>
               <NumberInput
                 defaultValue={0}
                 className="w-full md:w-full lg:w-[550px] ml-auto"
@@ -191,7 +191,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
             </Text>
             <Grid className="ml-[30px] mr-[30px] mb-[10px]">
               <div className="w-full md:w-full lg:w-[350px]">
-                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">First Name: </Text>
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">First Name: <span className="text-[#fa5252]">*</span></Text>
                 <TextInput
                   required
                   className="w-full md:w-full lg:w-[350px] ml-auto"
@@ -201,7 +201,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 />
               </div>
               <div className="w-full md:w-full lg:w-[350px] ml-auto mt-[20px] md:mt-[20px] lg:mt-0">
-                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Last Name: </Text>
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Last Name: <span className="text-[#fa5252]">*</span></Text>
                 <TextInput
                   required
                   className="w-full md:w-full lg:w-[350px] ml-auto"
@@ -211,9 +211,9 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 />
               </div>
             </Grid>
-            <Grid className="ml-[30px] mr-[30px] mb-[10px]">
+            <Grid className="ml-[30px] mr-[30px] mb-[15px]">
               <div className="w-full md:w-full lg:w-[350px]">
-                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Email: </Text>
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Email: <span className="text-[#fa5252]">*</span></Text>
                 <TextInput
                   required
                   className="w-full md:w-full lg:w-[350px] ml-auto"
@@ -223,7 +223,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 />
               </div>
               <div className="w-full md:w-full lg:w-[350px] ml-auto mt-[20px] md:mt-[20px] lg:mt-0">
-                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contact Number: </Text>
+                <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contact Number: <span className="text-[#fa5252]">*</span></Text>
                 <TextInput
                   required
                   className="w-full md:w-full lg:w-[350px] ml-auto"
@@ -240,7 +240,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 className="flex justify-between items-center"
               >
                 <Text className="mr-[20px]">
-                  Contract and Agreements:{" "}
+                  Contract and Agreements:{" "}<span className="text-[#fa5252]">*</span>
                 </Text>
                 <Group>
                   <FileButton onChange={setFile}>
@@ -265,16 +265,24 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               </div>
               <div className="ml-[20px]">
                 {file && (
-                  <Text size="sm" align="center" mt="xs">
-                    Picked file: {file.name}
-                  </Text>
+                  <>
+                    <Text size="sm" align="center" className="text-[14px]">
+                      {file.name}
+                    </Text>
+                    <Text size="sm" className="text-[14px]">
+                      Size: {file.size.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                      })} {'MB'}
+                    </Text>
+                  </>
                 )}
               </div>
             </Grid>
             <Grid className="ml-[30px] mr-[30px] mt-[10px]">
               <div className="w-full md:w-[50%] lg:w-[50%]">
                 <div className="w-full md:w-full lg:w-[350px] pr-0 md:pr-[10px] lg:pr-[10px]">
-                  <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contract Start: </Text>
+                  <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contract Start: <span className="text-[#fa5252]">*</span></Text>
                   <DateInput
                     value={startDate}
                     onChange={setStartDate}
@@ -289,7 +297,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
               </div>
               <div className="w-full md:w-[50%] lg:w-[50%] pl-0 md:pl-[10px] lg:pl-[10px] mt-[20px] md:mt-0 lg:mt-0">
                 <div className="w-full md:w-full lg:w-[350px]">
-                  <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contract End: </Text>
+                  <Text className="mb-[5px] md:mb-[5px] lg:mb-0">Contract End: <span className="text-[#fa5252]">*</span></Text>
                   <DateInput
                     value={endDate}
                     onChange={setEndDate}
@@ -313,6 +321,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 minRows={3}
                 maxRows={4}
                 {...form.getInputProps("notes")}
+                required={false}
               />
             </Grid>
 

@@ -153,6 +153,7 @@ const Dashboard: React.FC<any> = (login) => {
       }
     );
 
+  console.log('company add user', data)
 
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);

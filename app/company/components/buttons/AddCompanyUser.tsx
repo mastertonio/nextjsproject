@@ -242,12 +242,12 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
         setValue('')
       }
     } catch (error: any) {
-      console.log('submitted error', error?.response?.data)
+      console.log('submitted error', error?.response)
       updateNotification({
         id: "edit-comp",
         color: "red",
         title: "Updating a table row failed",
-        message: "Something went wrong, Please try again",
+        message: `${error?.response?.data?.code == 422 ? 'Email is already exist' : 'Something went wrong, Please try again'}`,
         autoClose: false,
       });
       return error;
@@ -331,8 +331,9 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text>Email: </Text>
+              <Text>Email: <span className="text-[#fa5252]">*</span> </Text>
               <TextInput
+                withAsterisk
                 required
                 className="w-[550px] ml-auto"
                 placeholder=""
@@ -342,7 +343,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Password: </Text>
+              <Text>Password: <span className="text-[#fa5252]">*</span> </Text>
               <div className="w-[550px] ml-auto">
                 <Popover opened={popoverOpened} position="bottom" width="target">
                   <Popover.Target>
@@ -352,6 +353,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                     >
                       <PasswordInput
                         required
+                        withAsterisk
                         placeholder=""
                         description="Password must include at least one letter, number and special character"
                         {...form.getInputProps("password")}
@@ -371,8 +373,9 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>First Name: </Text>
+              <Text>First Name: <span className="text-[#fa5252]">*</span> </Text>
               <TextInput
+                withAsterisk
                 required
                 className="w-[550px] ml-auto"
                 placeholder=""
@@ -382,8 +385,9 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Last Name: </Text>
+              <Text>Last Name: <span className="text-[#fa5252]">*</span></Text>
               <TextInput
+                withAsterisk
                 required
                 className="w-[550px] ml-auto"
                 placeholder=""
@@ -395,6 +399,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             >
               <Text>Currency: </Text>
               <Select
+                withAsterisk
                 defaultValue={currency}
                 data={curData}
                 placeholder="Choose Currency"
@@ -405,8 +410,9 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Role: </Text>
+              <Text>Role: <span className="text-[#fa5252]">*</span></Text>
               <Select
+                withAsterisk
                 data={rolesData}
                 placeholder="Choose Role"
                 {...form.getInputProps("role")}
@@ -422,8 +428,9 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Select Manager: </Text>
+              <Text>Select Manager: <span className="text-[#fa5252]">*</span></Text>
               <Select
+                withAsterisk
                 placeholder=""
                 className="w-[550px] ml-auto"
                 defaultValue={state}
@@ -433,8 +440,9 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             </Grid>
 
             <Grid className="ml-[30px] mr-[30px] mt-[10px]">
-              <Text>Templates: </Text>
+              <Text>Templates: <span className="text-[#fa5252]">*</span></Text>
               <MultiSelect
+                withAsterisk
                 className="w-[550px] ml-auto"
                 placeholder="Choose Templates"
                 searchable
