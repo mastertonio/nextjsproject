@@ -286,7 +286,7 @@ const UserProfile: React.FC<any> = (login) => {
           </Stack>
         </div>
       </form>
-      <ChangePass />
+      <ChangePass user={login.data.user} />
       {/* {login.data.user.user.role === 'company-admin' ? (
         <ListUser user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} manager={manager} />
       ) : null} */}

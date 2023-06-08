@@ -637,7 +637,14 @@ const Enterprise: React.FC<any> = (login) => {
                                         // icon={state.icon ? state.icon : ""}
                                         type="number"
                                         key={elem._id}
-                                        disabled
+                                        styles={{
+                                          input: {
+                                            backgroundColor: '#f2f2f2',
+                                            border: '1px solid #cccccc',
+                                          },
+                                        }}
+                                        readOnly
+                                        // disabled
                                         thousandsSeparator=','
                                         decimalSeparator='.'
                                         value={elem.value}

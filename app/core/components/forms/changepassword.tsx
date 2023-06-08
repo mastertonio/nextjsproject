@@ -16,6 +16,7 @@ import { useState } from "react";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons";
 import { useInputState } from "@mantine/hooks";
+import { UserDataProp } from "@app/context/user.context";
 
 function PasswordRequirement({
   meets,
@@ -57,7 +58,11 @@ function getStrength(password: string) {
   return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 0);
 }
 
-const ChangePass: React.FC = () => {
+type ChangePassProps = {
+  user: UserDataProp
+}
+
+const ChangePass: React.FC<ChangePassProps> = ({ user }) => {
   const [value] = useLocalStorage({ key: "auth-token" });
   const [current, setCurrent] = useLocalStorage({ key: "current-user" });
   const [confirm, setConfirm] = useState("");
@@ -98,18 +103,23 @@ const ChangePass: React.FC = () => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
+      console.log(values, "inside try")
       showNotification({
         id: "load-pass",
         loading: true,
         title: "Updating your password...",
         message: "Data will be loaded within seconds",
         autoClose: false,
-         
+
         color: "teal",
       });
       const res = await axios.patch(
-        `/v1/users/${current}`,
-        { password: values.confirmPassword }
+        `/v1/users/${user.user.id}`,
+        { password: values.confirmPassword }, {
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
 
       if (res) {
@@ -138,6 +148,9 @@ const ChangePass: React.FC = () => {
         message: "Something went wrong, Please try again",
         autoClose: false,
       });
+
+      
+      console.log(error, "inside try")
     }
     return error;
   };
