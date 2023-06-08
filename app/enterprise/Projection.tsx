@@ -94,26 +94,26 @@ const Projection = ({
   //     : null;
 
   return (
-    <div className="overflow-hidden bg-white shadow">
+    <div className="overflow-hidden bg-white shadow p-[20px]">
       <div className="ml-[22px] mr-[22px]">
-        <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium mb-0">{title} <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
-        <Divider my="sm" color="#eee" size={1} />
+        <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium mb-[20px]">{title} <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
+        <Divider my="sm" color="#eee" size={1} className="mt-[20px] mb-[20px]" />
         {/* <div dangerouslySetInnerHTML={{ __html: title }} /> */}
         {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
         {/* <div dangerouslySetInnerHTML={{ __html: description }} /> */}
       </div>
-      <Grid className="sm:flex block mb-[40px]" columns={24}>
+      <Grid className="sm:flex justify-between block mb-[40px] ml-[22px] mr-[22px]" columns={24}>
         <Grid.Col
           span={14}
-          className="ml-[30px] mr-[30px] mt-[30px] max-w-[100%] sm:max-w-[50%]"
+          className="lg:ml-0 md:ml-0 md:mr-0 lg:mr-0 mt-0 max-w-[100%] md:max-w-[50%] lg:max-w-[50%]"
         >
           <Text ml={30} dangerouslySetInnerHTML={{ __html: description ? he.decode(description) : "" }} color="dark" />
           <Divider my="sm" color="#eee" size={1} />
         </Grid.Col>
         <Suspense fallback={`Loading...`}>
-          <Grid.Col span={10} className="sm:w-[40%] w-[100%]">
+          <Grid.Col span={10} className="md:w-[40%] lg:w-[40%] w-[100%] md:ml-[30px] lg:ml-[30px]">
             {content.elements[0] ? (
-              <div className="h-[300px] m-[30px]">
+              <div className="h-[260px] mb-[30px]">
                 <ReactPlayer
                   controls
                   playing

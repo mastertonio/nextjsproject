@@ -26,6 +26,7 @@ import { useUserStore } from "@app/store/userState";
 const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
+  const [tempName, setTempName] = useState<any>([])
   const router = useRouter();
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
@@ -45,12 +46,28 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
     getTemplateButtonList
   );
 
+  console.log('temp name', tempName)
+
   const form = useForm({
     initialValues: {
       name: "",
-      template: "",
+      template: tempName?.length === 1 ? tempName[0].label : "",
     },
   });
+
+  useEffect(() => {
+    const tempList = data?.data.map((a: { name: string; build: any }) => {
+      return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
+        key: b._id,
+        value: b._id,
+        label: b.name,
+        group: a.name
+      }))
+    }).flat();
+
+    setTempName(tempList)
+  }, [data])
+
 
   type iCreateTemplateProp = {
     name: string
@@ -137,7 +154,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
       }))
     }).flat();
 
-    console.log('actionlist', actionList[0])
+    console.log('actionlist', actionList[0].label)
 
     return (
       <>
@@ -189,9 +206,10 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
                 }
                 styles={{ rightSection: { pointerEvents: 'none' } }}
                 {...form.getInputProps("template")}
-                value={
-                  actionList?.length === 1 ? actionList[0] : actionList
-                }
+                defaultValue={`${actionList[0].label}`}
+              // value={
+              //   actionList?.length === 1 ? actionList[0].label : actionList.label
+              // }
               />
             </Grid>
             <Grid
