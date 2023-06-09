@@ -331,9 +331,16 @@ const Enterprise: React.FC<any> = (login) => {
       header={<EnterpriseNavbar />}
     >
       <>
-        <div className="w-full text-[#676a6c]">
+        <div className="w-full text-[#676a6c] p-[20px]">
           <div className="ml-[22px] mr-[22px]">
-            <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium">{data?.data?.templateBuilderInfo?.name} | {data?.data?.templateBuilderInfo?.projection} Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
+            <h1 className="text-left text-[#676a6c] text-[26px] sm:text-[30px] font-medium mb-[20px]">{data?.data?.templateBuilderInfo?.name} | {data?.data?.templateBuilderInfo?.projection} Year Projection <span className="float-right text-[#216C2A] font-bold">$0</span></h1>
+
+            <div className="pl-[15px] pr-[20px]">
+              <Divider className='mt-[30px] mb-[20px] border-t-[1px] border-[#eee]' />
+
+              <h3 className="text-[18px] text-[#676A6C] font-bold mt-[5px] mb-[10px]">Select a section below to review your ROI</h3>
+              <p className="text-[16px] text-[#676A6C] mb-[10px] mt-0">To calculate your return on investment, begin with the first section below. The information entered therein will automatically populate corresponding fields in the other sections. You will be able to move from section to section to add and/or adjust values to best reflect your organization and process. To return to this screen, click the ROI Dashboard button to the left.</p>
+            </div>
           </div>
         </div>
         <div className="overflow-hidden">
@@ -348,7 +355,7 @@ const Enterprise: React.FC<any> = (login) => {
             cols={3}
             p={10}
             pr={20}
-            className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[20px] pl-[10px] sm:pl-[20px] pt-[20px] sm:pt-[20px]"
+            className="bg-[#f3f3f4] sm:grid block pr-[10px] sm:pr-[35px] pl-[10px] sm:pl-[35px] pt-[20px] sm:pt-[20px]"
           >
             {data?.data.data.content.sections.map((element: any) => (
               <SliderCard
@@ -444,7 +451,7 @@ const Enterprise: React.FC<any> = (login) => {
                               <Grid
                                 className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                               >
-                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0" ></Text>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal" ></Text>
                                 <div className='w-1/2 flex items-center'>
                                   <NumberInput
                                     className="w-full"
@@ -532,7 +539,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   key={elem._id}
                                   className="ml-[22px] mr-[22px] mt-[7px] mb-[15px]"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                   <div className="w-1/2 ml-auto enterprise-richtext">
                                     <Textarea
                                       className="w-full"
@@ -547,7 +554,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   key={elem._id}
                                   className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                   <div className="w-1/2 flex flex-row justify-center">
                                     <Rating
                                       defaultValue={5}
@@ -579,7 +586,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     key={elem._id}
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className="flex flex-col ml-auto w-1/2">
                                       <Select
                                         data={elem.choices ? elem.choices : ""}
@@ -593,7 +600,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     key={elem._id}
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className="flex flex-col ml-auto w-1/2 mt-[5px] mb-[5px]">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
@@ -604,7 +611,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     key={elem._id}
                                     className="ml-[22px] mr-[22px] mt-0 mb-[5px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className="flex flex-col ml-auto w-1/2">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <Checkbox
@@ -620,7 +627,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   <Grid
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className='w-1/2 flex items-center'>
                                       <Input
                                         className="w-full"
@@ -685,7 +692,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   <Grid
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className='w-1/2 flex'>
                                       <NumberInput
                                         className="w-full appended-radius"
@@ -754,7 +761,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   <Grid
                                     className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className='w-1/2 flex items-center'>
                                       <NumberInput
                                         className="w-full"
@@ -816,7 +823,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Header" ? (
                                   <div className="mb-[10px]">
                                     <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
-                                      <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.title ? he.decode(elem.title) : "" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676a6c] parentNode" />
+                                      <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.title ? he.decode(elem.title) : "" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676A6C] font-normal parentNode" />
                                     </Grid>
                                     <Divider my="sm" color="gray" size="sm" variant="dashed" className="ml-[22px] mr-[22px]" />
                                   </div>
