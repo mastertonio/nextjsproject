@@ -394,7 +394,7 @@ const Enterprise: React.FC<any> = (login) => {
           ? data?.data.data.content.sections.map((section: any) => {
 
             return (
-              <div className="w-full text-[#676a6c] rounded-none" key={section.id} ref={targetRef}>
+              <div className="w-full text-[#676a6c] rounded-none bg-[#f3f3f4]" key={section.id} ref={targetRef}>
                 <Projection
                   title={section.sectionTitle}
                   description={section.headers?.title.description}
