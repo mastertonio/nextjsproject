@@ -61,10 +61,12 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const router = useRouter();
   const p = router.query;
   const [state, setState] = useState<string | null>(null);
-  const [valueRole, setValueRole] = useState(null);
-  const [valueStatus, setValueStatus] = useState(null);
+  const [valueRole, setValueRole] = useState("");
+  const [valueStatus, setValueStatus] = useState("");
   const [password, setPass] = useInputState("");
   const userZ = useUserStore((state) => (state.user))
+
+  console.log('status', valueRole)
 
   const form = useForm({
     initialValues: {
@@ -78,6 +80,8 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       status: myCompany?.status
     },
   });
+
+  console.log('myCompany', myCompany)
 
   const getManagers = async () => {
     return await axios.get(`/v1/company/${router.query.comp_id}/manager`, {
@@ -118,8 +122,8 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           password: !!values.password ? values.password : "$3rVerus1..a",
           currency: values.currency,
           manager: values.manager,
-          role: values.role,
-          status: values.status
+          role: valueRole,
+          status: valueStatus
         }, {
         headers: {
           Authorization: `Bearer ${user.tokens.access.token}`,
@@ -140,6 +144,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       }
 
     } catch (error) {
+      console.log('error update', error);
       updateNotification({
         id: "edit-comp",
         color: "red",
@@ -152,8 +157,8 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   };
 
   const statusList = [
-    { label: "Active", value: "1" },
-    { label: "Inactive", value: "0" },
+    { key: "1", label: "Active", value: "1" },
+    { key: "0", label: "Inactive", value: "0" },
   ]
 
   const curData = [
@@ -196,10 +201,14 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   ];
 
   const rolesData = [
-    { label: 'Manager/Director', value: '3' },
-    { label: 'End User', value: '4' },
-    { label: 'Admin', value: '2' },
+    { key: "3", label: 'Manager/Director', value: '3' },
+    { key: "4", label: 'End User', value: '4' },
+    { key: "2", label: 'Admin', value: '2' },
   ]
+
+  const statusData = statusList.map((item: { value: string }) => item.value)
+  const rolesList = rolesData.map((item: { value: string }) => item.value)
+  console.log('rolesList:', rolesList[2])
 
   return (
     <>
@@ -309,10 +318,11 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                 <Text>Status:</Text>
                 <Select
                   data={statusList}
+                  defaultValue={myCompany.status == 'active' ? statusData[0].toString() : statusData[1].toString()}
                   placeholder="Set Status"
-                  {...form.getInputProps("status")}
+                  // {...form.getInputProps("status")}
                   className="w-[350px] ml-auto"
-                  defaultValue="Active"
+                  onChange={(value: string) => setValueStatus(value)}
                 />
               </div>
               <div className="ml-auto">
@@ -320,8 +330,10 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
                 <Select
                   data={rolesData}
                   placeholder="Choose Role"
-                  {...form.getInputProps("role")}
+                  defaultValue={myCompany.role == 'company-manager' ? rolesList[0].toString() : myCompany.role == 'company-agent' ? rolesList[1].toString() : rolesList[2].toString()}
+                  // {...form.getInputProps("role")}
                   className="w-[350px] ml-auto"
+                  onChange={(value: string) => setValueRole(value)}
                 />
               </div>
             </Grid>
