@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon, ScrollArea } from "@mantine/core";
+import { Modal, Button, Text, TextInput, Grid, Textarea, Select, Divider, ActionIcon, ScrollArea, MultiSelect } from "@mantine/core";
 import RichTextSection from '@app/core/components/richtext/RichTextSection';
 import { useForm, zodResolver } from "@mantine/form";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -131,6 +131,23 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     }),
   })
 
+
+  const data = [
+    { value: 'react', label: 'React' },
+    { value: 'ng', label: 'Angular' },
+    { value: 'svelte', label: 'Svelte' },
+    { value: 'vue', label: 'Vue' },
+    { value: 'riot', label: 'Riot' },
+    { value: 'next', label: 'Next.js' },
+    { value: 'blitz', label: 'Blitz.js' },
+  ];
+
+  const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
+    value: item.value,
+    label: item.label,
+    fakeValue: item.label
+  })) : []
+
   const choicesFields = form.values.choices.map((item, index) => (
     <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
       <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
@@ -147,6 +164,17 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
         <IconTrash size="1rem" />
       </ActionIcon>
+      <div className="w-full">
+        <MultiSelect
+          data={zchoice}
+          label="Entries to show"
+          placeholder="Pick all that you like"
+          searchable
+          nothingFound="Nothing found"
+          clearButtonProps={{ 'aria-label': 'Clear selection' }}
+          clearable
+        />
+      </div>
     </Grid>
   ))
 
@@ -292,12 +320,6 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     setOpenChoice(true)
     setOpened(false)
   }
-
-  const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
-    value: item.value,
-    label: item.label,
-    fakeValue: item.label
-  })) : []
 
   return (
     <>
