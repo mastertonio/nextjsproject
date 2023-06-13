@@ -28,19 +28,19 @@ const SliderCard: React.FC<iSliderCardProps> = ({ label, money, progress }) => {
   )
 
   return (
-    <Card className="h-[230px] mb-4 rounded-none !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card ml-[5px] mr-[5px]" shadow="sm" p="md" withBorder>
-      <Card.Section withBorder className="h-[48px] mb-0 pt-[10px] pl-[15px] pr-[15px] pb-[7px] "
+    <Card className="h-[210px] mb-4 rounded-none !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card ml-[5px] mr-[5px]" shadow="sm" p="md" withBorder>
+      <Card.Section withBorder className="h-[42px] mb-0 pt-[10px] pl-[15px] pr-[15px] pb-[7px] "
       >
         <Group position="apart">
           <Text className="text-[18px] sm:text-[18px] text-[#428bca] hover:text-[#2a6496] cursor-pointer" weight={600}>{label}</Text>
           {/* <Badge variant="filled" className="rounded-[0.25em] text-[10px] leading-[15px] pt-[3px] pb-[3px] pl-[8px] pr-[8px]">2 Year</Badge> */}
         </Group>
       </Card.Section>
-      <div className="pt-[15px] pb-[15px] pl-[10px] pr-[10px] h-[161px]">
-        <Text className="text-[30px] text-[#216C2A] mt-[5px] mb-[10px]" weight={600} align='end'>
+      <div className="pt-[15px] pb-[15px] pl-[10px] pr-[10px] h-[auto]">
+        <Text className="text-[30px] text-[#216C2A] mt-0 mb-[5px]" weight={600} align='end'>
           ${money}
         </Text>
-        <Divider className="mt-[20px] mb-[20px]" />
+        <Divider className="mt-[10px] mb-[15px]" />
         <div>
           {label !== "Summary" ? (<RoiSlider addLabel={label == "Summary" ? false : true} progress={progressValue} setProgressValue={setProgressValue} />) : (<Summary />)}
         </div>

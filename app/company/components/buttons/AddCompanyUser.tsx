@@ -164,6 +164,8 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
     label: item.email,
   }));
 
+  console.log('transfer list', data)
+
   const form = useForm({
     initialValues: {
       first_name: "",

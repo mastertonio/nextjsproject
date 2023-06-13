@@ -243,7 +243,7 @@ const Enterprise: React.FC<any> = (login) => {
       addItems(flatData);
       setDC(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, dataChanged]);
 
 
@@ -449,10 +449,10 @@ const Enterprise: React.FC<any> = (login) => {
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
                               <Grid
-                                className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
+                                className="ml-[22px] mr-[22px] mt-0 mb-0"
                               >
-                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal" ></Text>
-                                <div className='w-1/2 flex items-center'>
+                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal" ></Text>
+                                <div className='w-1/3 flex items-center'>
                                   <NumberInput
                                     className="w-full"
                                     // icon={state.icon ? state.icon : ""}
@@ -475,7 +475,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     rightSection={
                                       elem.tooltip ?
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                          <div className="flex flex-row items-center">
+                                          <div className="flex flex-row items-center pr-[5px]">
                                             <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
                                         </Tooltip> : ""
@@ -539,8 +539,8 @@ const Enterprise: React.FC<any> = (login) => {
                                   key={elem._id}
                                   className="ml-[22px] mr-[22px] mt-[7px] mb-[15px]"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                  <div className="w-1/2 ml-auto enterprise-richtext">
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                  <div className="w-1/3 ml-auto enterprise-richtext">
                                     <Textarea
                                       className="w-full"
                                       withAsterisk
@@ -552,10 +552,10 @@ const Enterprise: React.FC<any> = (login) => {
                               ) : elem.dataType == "Ratings" ? (
                                 <Grid
                                   key={elem._id}
-                                  className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
+                                  className="ml-[22px] mr-[22px] mt-0 mb-0"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                  <div className="w-1/2 flex flex-row justify-center">
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                  <div className="w-1/3 flex flex-row justify-center">
                                     <Rating
                                       defaultValue={5}
                                       fractions={2}
@@ -584,10 +584,10 @@ const Enterprise: React.FC<any> = (login) => {
                                 : elem.dataType == "Dropdown" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className="flex flex-col ml-auto w-1/2">
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className="flex flex-col ml-auto w-1/3">
                                       <Select
                                         data={elem.choices ? elem.choices : ""}
                                         placeholder="Pick one"
@@ -598,10 +598,10 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Radio" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className="flex flex-col ml-auto w-1/2 mt-[5px] mb-[5px]">
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className="flex flex-col ml-auto w-1/3 mt-[5px] mb-[5px]">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
                                     </div>
@@ -609,10 +609,10 @@ const Enterprise: React.FC<any> = (login) => {
                                 ) : elem.dataType == "Checkbox" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[5px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className="flex flex-col ml-auto w-1/2">
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className="flex flex-col ml-auto w-1/3">
                                       {elem.choices.map((elem: { label: string, _id: string }) => (
                                         <Checkbox
                                           key={elem._id}
@@ -625,10 +625,10 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Output" ? (
                                   <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px] items-center"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className='w-1/2 flex items-center'>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className='w-1/3 flex items-center'>
                                       <Input
                                         className="w-full"
                                         ref={numberInputRef}
@@ -646,7 +646,7 @@ const Enterprise: React.FC<any> = (login) => {
                                         value={elem.value}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        
+
                                         placeholder={elem.prefilled}
                                         // rightSection={
                                         //   elem.tooltip ?
@@ -680,7 +680,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
                                       {elem.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                          <div className="flex flex-row items-center">
+                                          <div className="flex flex-row items-center pr-[5px]">
                                             <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
                                         </Tooltip>
@@ -690,10 +690,10 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Input" && elem.appendedText ? (
                                   <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className='w-1/2 flex'>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className='w-1/3 flex'>
                                       <NumberInput
                                         className="w-full appended-radius"
                                         // icon={state.icon ? state.icon : ""}
@@ -750,7 +750,7 @@ const Enterprise: React.FC<any> = (login) => {
                                       <Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled>{elem.appendedText}</Button>
                                       <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
                                         <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                          <div className="flex flex-row items-center">
+                                          <div className="flex flex-row items-center pr-[5px]">
                                             <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
                                         </Tooltip>
@@ -759,10 +759,10 @@ const Enterprise: React.FC<any> = (login) => {
                                   </Grid>
                                 ) : elem.dataType == "Input" ? (
                                   <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-[3px]"
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0"
                                   >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-1/2 mb-[10px] sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className='w-1/2 flex items-center'>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className='w-1/3 flex items-center'>
                                       <NumberInput
                                         className="w-full"
                                         // icon={state.icon ? state.icon : ""}

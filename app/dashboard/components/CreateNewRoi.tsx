@@ -27,6 +27,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
   const [tempName, setTempName] = useState<any>([])
+  const [tempID, setTempID] = useState("")
   const router = useRouter();
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
@@ -51,7 +52,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const form = useForm({
     initialValues: {
       name: "",
-      template: tempName?.length === 1 ? tempName[0].label : "",
+      template: "",
     },
   });
 
@@ -154,7 +155,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
       }))
     }).flat();
 
-    console.log('actionlist', actionList[0].label)
+    console.log('actionlist', actionList)
 
     return (
       <>
@@ -165,7 +166,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
           withCloseButton={false}
           size="50%"
         >
-          <form onSubmit={form.onSubmit((values) => createRoi.mutate({ name: values.name, template_id: values.template }))} className="m-[10px] sm:m-[30px]">
+          <form onSubmit={form.onSubmit((values) => createRoi.mutate({ name: values.name, template_id: tempID }))} className="m-[10px] sm:m-[30px]">
             <Text
               weight={700}
               color="gray"
@@ -205,8 +206,9 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
                     ]
                 }
                 styles={{ rightSection: { pointerEvents: 'none' } }}
-                {...form.getInputProps("template")}
-                defaultValue={`${actionList[0].label}`}
+                // {...form.getInputProps("template")}
+                defaultValue={actionList?.length <= 1 ? actionList[0].value : ""}
+                onChange={(value: string) => setTempID(value)}
               // value={
               //   actionList?.length === 1 ? actionList[0].label : actionList.label
               // }

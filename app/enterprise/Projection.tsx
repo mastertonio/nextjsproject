@@ -102,7 +102,7 @@ const Projection = ({
         {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
         {/* <div dangerouslySetInnerHTML={{ __html: description }} /> */}
       </div>
-      <Grid className="sm:flex justify-between block mb-[40px] ml-[22px] mr-[22px]" columns={24}>
+      <Grid className="sm:flex justify-between block ml-[22px] mr-[22px]" columns={24}>
         <Grid.Col
           span={14}
           className="lg:ml-0 md:ml-0 md:mr-0 lg:mr-0 mt-0 max-w-[100%] md:max-w-[50%] lg:max-w-[50%]"
@@ -113,7 +113,7 @@ const Projection = ({
         <Suspense fallback={`Loading...`}>
           <Grid.Col span={10} className="md:w-[40%] lg:w-[40%] w-[100%] md:ml-[30px] lg:ml-[30px]">
             {content.elements[0] ? (
-              <div className="h-[260px] mb-[30px]">
+              <div className="h-[270px] mb-[30px]">
                 <ReactPlayer
                   controls
                   playing
