@@ -430,7 +430,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Select Manager: <span className="text-[#fa5252]">*</span></Text>
+              <Text>Select Manager: </Text>
               <Select
                 withAsterisk
                 placeholder=""
@@ -442,7 +442,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             </Grid>
 
             <Grid className="ml-[30px] mr-[30px] mt-[10px]">
-              <Text>Templates: <span className="text-[#fa5252]">*</span></Text>
+              <Text>Templates: </Text>
               <MultiSelect
                 withAsterisk
                 className="w-[550px] ml-auto"
