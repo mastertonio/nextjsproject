@@ -450,7 +450,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                 searchable
                 // clearable
                 data={templateList ?? []}
-                defaultValue={templateList?.map((a: { value: string; }) => a.value)}
+                // defaultValue={templateList?.map((a: { value: string; }) => a.value)}
                 // value={filter}
                 styles={{ input: { overflow: 'auto', maxHeight: 120 } }}
                 onChange={setFilter}

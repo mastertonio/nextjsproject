@@ -347,7 +347,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               className="mr-[10px]"
               onClick={() => setOpened(false)}
             >
-              Edit User
+              Update User
             </Button>
             <Button
               type="button"

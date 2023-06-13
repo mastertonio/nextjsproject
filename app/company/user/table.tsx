@@ -164,8 +164,8 @@ const CompanyUserTable: React.FC<ICompanyUserTableProps> = ({
 
   if (isSuccess) {
     return (
-      <div>
-        <div className="m-[20px] bg-white p-[20px] sm:p-[30px]">
+      <div className="mt-[20px]">
+        <div className="bg-white p-[10px] sm:p-[20px]">
           <Grid className="m-[20px]">
             <Text weight={700}> The ROI Shop User Calculators</Text>
             <Input
