@@ -6,6 +6,7 @@ import { getSession } from 'next-auth/react';
 import EnterpriseNavbar from "@app/core/components/sidebar/EnterpriseNav";
 import NavbarSimple from "@app/core/components/sidebar/EnterpriseSidebar";
 import Projection from "@app/enterprise/Projection";
+import numeral from "numeral"
 import {
   AppShell,
   Group,
@@ -642,8 +643,9 @@ const Enterprise: React.FC<any> = (login) => {
                                           },
                                         }}
                                         readOnly
+                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         // disabled
-                                        value={elem.value}
+                                        value={numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
 
