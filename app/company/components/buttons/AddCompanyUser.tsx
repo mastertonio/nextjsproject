@@ -17,7 +17,8 @@ import {
   Popover,
   Box
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import * as Yup from "yup";
+import { useForm, yupResolver } from "@mantine/form";
 import { AiFillPlusCircle, AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
@@ -87,6 +88,15 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
   const color = strength === 100 ? 'teal' : strength > 50 ? 'yellow' : 'red';
 
   const userZ = useUserStore((state) => (state.user))
+
+  const schema = Yup.object({
+    first_name: Yup.string().required('This field is required'),
+    last_name: Yup.string().required('This field is required'),
+    password: value === "" ? Yup.string().required('This field is required') : Yup.string().nullable(),
+    email: Yup.string().email("Invalid Email").required('This field is required'),
+    currency: Yup.string().required('This field is required'),
+    role: Yup.string().required('This field is required'),
+  })
 
   const getManagers = async () => {
     return await axios.get(
@@ -175,7 +185,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
       currency: "",
       manager: "",
       role: "",
-    },
+    }, validate: yupResolver(schema)
   });
 
   const handleSubmit = async (values: typeof form.values) => {
@@ -327,7 +337,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                 theme.colorScheme === "dark"
                   ? theme.colors.dark[8]
                   : theme.colors.gray[0],
-              height: 600,
+              height: 640,
             })}
           >
             <Grid
@@ -336,7 +346,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
               <Text>Email: <span className="text-[#fa5252]">*</span> </Text>
               <TextInput
                 withAsterisk
-                required
+                // required
                 className="w-[550px] ml-auto"
                 placeholder=""
                 {...form.getInputProps("email")}
@@ -354,12 +364,13 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                       onBlurCapture={() => setPopoverOpened(false)}
                     >
                       <PasswordInput
-                        required
+                        // required
                         withAsterisk
                         placeholder=""
                         description="Password must include at least one letter, number and special character"
                         {...form.getInputProps("password")}
                         value={value}
+                        // error={value === "" ? "This field is required" : null}
                         onChange={(event) => setValue(event.currentTarget.value)}
                       />
                     </div>
@@ -378,7 +389,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
               <Text>First Name: <span className="text-[#fa5252]">*</span> </Text>
               <TextInput
                 withAsterisk
-                required
+                // required
                 className="w-[550px] ml-auto"
                 placeholder=""
                 {...form.getInputProps("first_name")}
@@ -390,7 +401,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
               <Text>Last Name: <span className="text-[#fa5252]">*</span></Text>
               <TextInput
                 withAsterisk
-                required
+                // required
                 className="w-[550px] ml-auto"
                 placeholder=""
                 {...form.getInputProps("last_name")}
@@ -399,7 +410,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Currency: </Text>
+              <Text>Currency: <span className="text-[#fa5252]">*</span></Text>
               <Select
                 withAsterisk
                 defaultValue={currency}
@@ -407,6 +418,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                 placeholder="Choose Currency"
                 {...form.getInputProps("currency")}
                 className="w-[550px] ml-auto"
+              // required
               />
             </Grid>
             <Grid
@@ -419,6 +431,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                 placeholder="Choose Role"
                 {...form.getInputProps("role")}
                 className="w-[550px] ml-auto"
+              // required
               />
               {/* <TextInput
                 required
@@ -432,7 +445,6 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             >
               <Text>Select Manager: </Text>
               <Select
-                withAsterisk
                 placeholder=""
                 className="w-[550px] ml-auto"
                 defaultValue={state}
@@ -444,7 +456,6 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid className="ml-[30px] mr-[30px] mt-[10px]">
               <Text>Templates: </Text>
               <MultiSelect
-                withAsterisk
                 className="w-[550px] ml-auto"
                 placeholder="Choose Templates"
                 searchable
@@ -477,7 +488,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
               size="sm"
               color="teal"
               className="mr-[10px]"
-              onClick={() => setOpened(false)}
+            // onClick={() => setOpened(false)}
             >
               Save User
             </Button>

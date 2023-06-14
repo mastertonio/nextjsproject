@@ -203,7 +203,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
         header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         navbar={<Sidebar tokens={login.data.user.tokens} user={login.data.user.user} />}
       >
-        <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
+        <div style={{ margin: 10, backgroundColor: "white", padding: 20 }}>
           <Grid style={{ margin: 20 }}>
             {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
             <AddTemplateButton user={login.data.user} refetch={refetch} />
