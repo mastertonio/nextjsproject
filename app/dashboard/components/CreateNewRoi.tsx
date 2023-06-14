@@ -176,7 +176,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
             </Text>
 
             <Grid className="m-[20px]">
-              <Text>Name</Text>
+              <Text>Name <span className="text-[#fa5252]">*</span></Text>
               <TextInput
                 required
                 className="w-full ml-auto"
@@ -186,7 +186,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
             </Grid>
 
             <Grid className="m-[20px] mb-[20px] select-roi">
-              <Text>Choose a Template</Text>
+              <Text>Choose a Template <span className="text-[#fa5252]">*</span></Text>
               <Select
                 className="w-full ml-auto"
                 rightSection={<AiOutlineDown size="1rem" />}

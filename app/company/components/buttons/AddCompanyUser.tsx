@@ -430,7 +430,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             <Grid
               className="ml-[30px] mr-[30px] mb-[15px]"
             >
-              <Text>Select Manager: <span className="text-[#fa5252]">*</span></Text>
+              <Text>Select Manager: </Text>
               <Select
                 withAsterisk
                 placeholder=""
@@ -442,7 +442,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
             </Grid>
 
             <Grid className="ml-[30px] mr-[30px] mt-[10px]">
-              <Text>Templates: <span className="text-[#fa5252]">*</span></Text>
+              <Text>Templates: </Text>
               <MultiSelect
                 withAsterisk
                 className="w-[550px] ml-auto"
@@ -450,7 +450,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
                 searchable
                 // clearable
                 data={templateList ?? []}
-                defaultValue={templateList?.map((a: { value: string; }) => a.value)}
+                // defaultValue={templateList?.map((a: { value: string; }) => a.value)}
                 // value={filter}
                 styles={{ input: { overflow: 'auto', maxHeight: 120 } }}
                 onChange={setFilter}

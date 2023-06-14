@@ -13,10 +13,11 @@ import {
   Table,
   Center,
   Badge,
+  Alert
 } from "@mantine/core";
 import { useStyles } from "@styles/dashboardStyle";
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQuery, useQueries } from "react-query";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -155,6 +156,22 @@ const Dashboard: React.FC<any> = (login) => {
 
   console.log('company add user', data)
 
+  const queries = [
+    {
+      queryKey: ['license'],
+      queryFn: async () => {
+        const res = await axios.get(`/v1/company/${login.data.user.user.company_id}/license`, {
+          headers: {
+            Authorization: `Bearer ${login.data.user.tokens.access.token}`
+          },
+        });
+        return res.data;
+      },
+    },
+  ];
+
+  const results = useQueries(queries);
+
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);
   const [allRoi, setAllRoi] = useState<any>();
@@ -258,8 +275,15 @@ const Dashboard: React.FC<any> = (login) => {
         header={<RoiNavbar user={login.data.user.user} tokens={login.data.user.tokens} />}
         navbar={<Sidebar user={login.data.user.user} tokens={login.data.user.tokens} />}
       >
-        <div style={{ margin: 10, backgroundColor: "white", padding: 50 }}>
-          <Grid style={{ margin: 20 }}>
+        <div className="bg-white p-[10px] sm:p-[20px]">
+          {login.data.user.user.role === 'admin' ? (
+            <Grid className="m-[10px] pt-[20px]">
+              <Alert color="teal" className="pt-[10px] pb-[10px] w-full">
+                <span className="text-[14px] text-slate-500 font-medium"><span className="text-slate-700 font-semibold">{results[0]?.data?.company_name}</span> has <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.company_license : 0}</span> licenses and <span className="text-slate-700 font-semibold">{results[0]?.data ? results[0]?.data?.user_count : 0}</span> users.</span>
+              </Alert>
+            </Grid>
+          ) : null}
+          <Grid className="m-[10px] pt-[20px] pb-[20px]">
             {/* <TempList filter={filter} handleFilter={handleFilterChange} /> */}
             <AddCompanyUserButton user={login.data.user.user} tokens={login.data.user.tokens} />
             <Input
@@ -274,7 +298,7 @@ const Dashboard: React.FC<any> = (login) => {
             />
           </Grid>
           <ScrollArea
-            style={{ height: 590 }}
+            className="h-[590px]"
             onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
           >
             <Table
