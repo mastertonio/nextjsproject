@@ -253,6 +253,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
         form.reset();
         setValue('')
       }
+      setOpened(false)
     } catch (error: any) {
       console.log('submitted error', error?.response)
       updateNotification({

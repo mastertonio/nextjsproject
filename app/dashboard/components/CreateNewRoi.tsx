@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { FaPlusSquare } from "react-icons/fa";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient, useQueries } from "react-query";
 import UserContext, { UserDataProp } from "@app/context/user.context";
 import MainLoader from "@app/core/components/loader/MainLoader";
 import { useUserStore } from "@app/store/userState";
@@ -28,7 +28,8 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
   const [tempName, setTempName] = useState<any>([])
-  const [tempID, setTempID] = useState<any>("")
+  const [verID, setVerID] = useState<any>("")
+  const [templateID, setTemplateID] = useState<string>("")
   const router = useRouter();
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
@@ -53,7 +54,22 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
     getTemplateButtonList
   );
 
-  console.log('temp name', tempName)
+  // test
+  // const queries = [
+  //   {
+  //     queryKey: ['templates'],
+  //     queryFn: async () => {
+  //       const res = await axios.get(`/v1/company/${user?.company_id}/template`, {
+  //         headers: {
+  //           Authorization: `Bearer ${tokens?.access.token}`
+  //         },
+  //       });
+  //       return res.data;
+  //     },
+  //   },
+  // ];
+
+  // const results = useQueries(queries);
 
   const form = useForm({
     initialValues: {
@@ -63,20 +79,6 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
     // validate: yupResolver(schema)
   });
 
-  useEffect(() => {
-    const tempList = data?.data.map((a: { name: string; build: any }) => {
-      return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-        key: b._id,
-        value: b._id,
-        label: b.name,
-        group: a.name
-      }))
-    }).flat();
-
-    setTempName(tempList)
-  }, [data])
-
-
   type iCreateTemplateProp = {
     name: string
     template_id: string
@@ -84,11 +86,23 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
 
   const createRoi = useMutation({
     mutationFn: (roi: iCreateTemplateProp) =>
-      axios.post(`/v1/dashboard/${user?.id}`, roi, {
-        headers: {
-          Authorization: `Bearer ${tokens?.access.token}`,
-        },
-      }).then((response) => response.data),
+      axios.post(`/v1/company/${user?.company_id}/template/${templateID}/version/${verID}/clone`,
+        {
+          name: roi.name,
+          notes: " ",
+          status: 1,
+          projection: 0
+        }
+        , {
+          headers: {
+            Authorization: `Bearer ${tokens?.access.token}`,
+          },
+        }).then((response) => response.data),
+    // axios.post(`/v1/dashboard/${user?.id}`, roi, {
+    //   headers: {
+    //     Authorization: `Bearer ${tokens?.access.token}`,
+    //   },
+    // }).then((response) => response.data),
     onMutate: (roi: iCreateTemplateProp) => {
       showNotification({
         id: "create-row",
@@ -118,19 +132,22 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
           icon: <IconCheck size={16} />,
           autoClose: 2500,
         });
-        router.push({ pathname: `/enterprise/${newRoi.template_version_id}`, query: { temp_ver: newRoi.template_version_id } });
+        router.push({ pathname: `/enterprise/${newRoi.templateVersion.id}`, query: { temp_ver: newRoi.templateVersion.id } });
         // router.push(`/enterprise/${newRoi.template_version_id}`);
       }
       updateNotification({
         id: "create-row",
         color: "teal",
-        title: `${newRoi.title} created`,
+        title: `${newRoi.name} created`,
         message: "Successfully created a new ROI",
         icon: <IconCheck size={16} />,
         autoClose: 2500,
       })
+
+      setOpened(false)
     },
     onError: (error) => {
+      console.log('error create roi', error);
       if (error instanceof Error) {
         updateNotification({
           id: "create-row",
@@ -154,15 +171,13 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
 
   if (isSuccess) {
     const actionList = data?.data.map((a: { name: string; build: any }) => {
-      return a?.build?.map((b: { _id: string; name: string; group: string }) => ({
-        key: b._id,
+      return a?.build?.map((b: { template_id: string; _id: string; name: string; group: string }) => ({
+        key: b.template_id,
         value: b._id,
         label: b.name,
         group: a.name
       }))
     }).flat();
-
-    console.log('actionlist', actionList)
 
     return (
       <>
@@ -173,7 +188,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
           withCloseButton={false}
           size="50%"
         >
-          <form onSubmit={form.onSubmit((values) => createRoi.mutate({ name: values.name, template_id: tempID }))} className="m-[10px] sm:m-[30px]">
+          <form onSubmit={form.onSubmit((values) => createRoi.mutate({ name: values.name, template_id: verID }))} className="m-[10px] sm:m-[30px]">
             <Text
               weight={700}
               color="gray"
@@ -215,7 +230,11 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
                 styles={{ rightSection: { pointerEvents: 'none' } }}
                 // {...form.getInputProps("template")}
                 defaultValue={actionList?.length <= 1 ? actionList[0].value : ""}
-                onChange={(value: string) => setTempID(value)}
+                onChange={(value: string) => {
+                  const selected = actionList.find((a: any) => a.value === value)
+                  setTemplateID(selected.key)
+                  setVerID(value)
+                }}
                 required
               // error={tempID === "" ? true : false}
               // value={

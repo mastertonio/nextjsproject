@@ -214,6 +214,8 @@ const Enterprise: React.FC<any> = (login) => {
     getEnterpriseData,
   );
 
+  console.log("Enterprise", data);
+
   useEffect(() => {
     if (data?.data.data.content.sections.length === 0) {
       setSectionEmpty(true)

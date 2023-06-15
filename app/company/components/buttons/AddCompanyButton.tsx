@@ -110,6 +110,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
         setStartDate(null);
         setEndDate(null);
       }
+      setOpened(false)
     } catch (error) {
       console.log('create company error', error)
       updateNotification({
@@ -351,7 +352,7 @@ const AddCompanyButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) =
                 size="sm"
                 color="teal"
                 className="mr-[10px]"
-                onClick={() => setOpened(false)}
+              // onClick={() => setOpened(false)}
               >
                 Save Company
               </Button>
