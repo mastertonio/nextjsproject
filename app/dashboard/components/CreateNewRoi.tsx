@@ -9,7 +9,8 @@ import {
   Grid,
   Checkbox,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, yupResolver } from "@mantine/form";
+import * as Yup from "yup";
 import { AiOutlineDown } from "react-icons/ai";
 import { IAdminListProps } from "@core/components/navbar/components/AdminList";
 import axios from "axios";
@@ -27,10 +28,15 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
   const [opened, setOpened] = useState(false);
   const [checked, setChecked] = useState(true);
   const [tempName, setTempName] = useState<any>([])
-  const [tempID, setTempID] = useState("")
+  const [tempID, setTempID] = useState<any>("")
   const router = useRouter();
   const userZ = useUserStore((state) => (state.user))
   const queryClient = useQueryClient()
+
+  // const schema = Yup.object().shape({
+  //   name: Yup.string().required('This field is required'),
+  //   template: tempID === "" ? Yup.string().required('This field is required') : Yup.string().nullable()
+  // })
 
   const getTemplateButtonList = async () => {
     return await axios.get(
@@ -54,6 +60,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
       name: "",
       template: "",
     },
+    // validate: yupResolver(schema)
   });
 
   useEffect(() => {
@@ -209,10 +216,16 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
                 // {...form.getInputProps("template")}
                 defaultValue={actionList?.length <= 1 ? actionList[0].value : ""}
                 onChange={(value: string) => setTempID(value)}
+                required
+              // error={tempID === "" ? true : false}
               // value={
               //   actionList?.length === 1 ? actionList[0].label : actionList.label
               // }
               />
+              {/* {tempID === "" ? (
+                <p className="text-[#fa5252] text-[12px] mt-[5px]">This field is required</p>
+              ) : null} */}
+
             </Grid>
             <Grid
               justify="flex-end"
@@ -230,7 +243,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
                 radius="sm"
                 size="md"
                 className="mr-[10px]"
-                onClick={() => setOpened(false)}
+              // onClick={() => setOpened(false)}
               >
                 Create ROI
               </Button>

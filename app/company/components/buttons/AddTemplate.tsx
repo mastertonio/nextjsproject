@@ -14,7 +14,8 @@ import {
   Select,
   MultiSelect,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import * as Yup from "yup";
+import { useForm, yupResolver } from "@mantine/form";
 import { AiFillPlusCircle, AiOutlineEdit } from "react-icons/ai";
 import axios from "axios";
 import { useLocalStorage } from "@mantine/hooks";
@@ -44,6 +45,11 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
   const [filter, setFilter] = useState<string[]>([""]);
   const userZ = useUserStore((state) => (state.user))
 
+  const schema = Yup.object({
+    name: Yup.string().required('This field is required'),
+    year: Yup.number().min(1, 'This field is required'),
+  })
+
   const form = useForm({
     initialValues: {
       name: "",
@@ -52,6 +58,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
       month: 0,
       year: 0
     },
+    validate: yupResolver(schema)
   });
 
   const handleSubmit = async (values: typeof form.values) => {
@@ -160,7 +167,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
             >
               <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Name: <span className="text-[#fa5252]">*</span></Text>
               <TextInput
-                required
+                // required
                 className="w-[550px] ml-auto"
                 placeholder="Enter Template Name"
                 {...form.getInputProps("name")}
@@ -176,16 +183,16 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
                 {...form.getInputProps("notes")}
               />
             </Grid>
-            <Grid className="ml-[30px] mr-[30px] mb-[20px]">
+            <Grid className="ml-[30px] mr-[30px] mb-[20px] items-center">
               <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Projection: <span className="text-[#fa5252]">*</span></Text>
-              <div className="w-full sm:w-[450px] ml-auto flex flex-col sm:flex-row items-center">
+              <div className="w-full sm:w-[550px] flex flex-col sm:flex-row items-center ml-auto">
                 {/* <div className="flex flex-row items-center mr-0 sm:mr-[30px] mt-[20px] sm:mt-0">
                   <Text className="text-[14px] mr-[10px] text-slate-700 font-semibold w-[50px]">Month</Text>
                   <NumberInput defaultValue={0}  {...form.getInputProps("month")} hideControls className="w-[150px]" />
                 </div> */}
-                <div className="flex flex-row ml-auto items-center mt-[20px] sm:mt-0">
+                <div className="flex flex-row items-center mt-[20px] sm:mt-0">
                   <Text className="text-[14px] mr-[22px] sm:mr-[10px] text-slate-700 font-semibold w-[50px]">Year: <span className="text-[#fa5252]">*</span></Text>
-                  <NumberInput defaultValue={0}  {...form.getInputProps("year")} hideControls className="w-[150px]" />
+                  <NumberInput  {...form.getInputProps("year")} hideControls className="w-[490px]" />
                 </div>
               </div>
             </Grid>
@@ -197,7 +204,7 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
                 size="sm"
                 color="teal"
                 className="mr-[10px]"
-                onClick={() => setOpened(false)}
+              // onClick={() => setOpened(false)}
               >
                 Build Template
               </Button>

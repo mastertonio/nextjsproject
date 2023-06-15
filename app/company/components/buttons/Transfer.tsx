@@ -37,10 +37,10 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
   const getManagers = async () => {
     return await axios.get(
       `/v1/company/${user.user.company_id}/user`, {
-        headers: {
-          Authorization: `Bearer ${user.tokens.access.token}`,
-        },
-      }
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }
     );
   };
 
@@ -67,7 +67,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
       const response = await axios.post(
@@ -76,10 +76,10 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
           roi_source_uid: id,
           roi_new_uid: values.new_source,
         }, {
-          headers: {
-            Authorization: `Bearer ${user.tokens.access.token}`,
-          },
-        }
+        headers: {
+          Authorization: `Bearer ${user.tokens.access.token}`,
+        },
+      }
       );
       if (response) {
         refetch();
@@ -138,7 +138,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
             >
               <Text>Email: </Text>
               <Select
-                placeholder="New Title Name"
+                placeholder="Please Choose"
                 className="w-[550px] ml-auto"
                 defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}

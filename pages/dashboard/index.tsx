@@ -106,6 +106,8 @@ const Dashboard: React.FC<any> = (
     getDashboardData
   );
 
+  console.log('DATA ROI', data);
+
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {
