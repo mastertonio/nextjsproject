@@ -92,6 +92,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
           autoClose: 2500,
         });
       }
+      setOpened(false)
     } catch (error) {
       updateNotification({
         id: "edit-comp",
@@ -153,7 +154,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
               size="sm"
               color="teal"
               className="mr-[10px]"
-              onClick={() => setOpened(false)}
+            // onClick={() => setOpened(false)}
             >
               Transfer Templates
             </Button>

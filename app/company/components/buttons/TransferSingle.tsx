@@ -71,7 +71,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
       const response = await axios.post(
@@ -98,6 +98,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
           autoClose: 2500,
         });
       }
+      setOpened(false)
     } catch (error) {
       updateNotification({
         id: "edit-comp",
@@ -159,7 +160,7 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
               size="sm"
               color="teal"
               className="mr-[10px]"
-              onClick={() => setOpened(false)}
+            // onClick={() => setOpened(false)}
             >
               Transfer Templates
             </Button>

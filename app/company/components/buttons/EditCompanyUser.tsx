@@ -61,12 +61,25 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const router = useRouter();
   const p = router.query;
   const [state, setState] = useState<string | null>(null);
-  const [valueRole, setValueRole] = useState("");
-  const [valueStatus, setValueStatus] = useState("");
   const [password, setPass] = useInputState("");
   const userZ = useUserStore((state) => (state.user))
 
-  console.log('status', valueRole)
+  const rolesData = [
+    { key: "3", label: 'Manager/Director', value: '3' },
+    { key: "4", label: 'End User', value: '4' },
+    { key: "2", label: 'Admin', value: '2' },
+  ]
+
+  const statusList = [
+    { key: "1", label: "Active", value: "1" },
+    { key: "0", label: "Inactive", value: "0" },
+  ]
+
+  const statusData = statusList.map((item: { value: string }) => item.value)
+  const rolesList = rolesData.map((item: { value: string }) => item.value)
+  const [valueRole, setValueRole] = useState(myCompany.role == 'company-manager' ? rolesList[0].toString() : myCompany.role == 'company-agent' ? rolesList[1].toString() : rolesList[2].toString());
+  const [valueStatus, setValueStatus] = useState(myCompany.status == 'active' ? statusData[0].toString() : statusData[1].toString());
+  console.log('rolesList:', statusData)
 
   const form = useForm({
     initialValues: {
@@ -76,8 +89,8 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       password: "",
       currency: myCompany.currency,
       manager: myCompany.manager_id,
-      role: myCompany?.role,
-      status: myCompany?.status
+      role: myCompany.role == 'company-manager' ? rolesList[0].toString() : myCompany.role == 'company-agent' ? rolesList[1].toString() : rolesList[2].toString(),
+      status: myCompany.status == 'active' ? statusData[0].toString() : statusData[1].toString()
     },
   });
 
@@ -123,7 +136,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           currency: values.currency,
           manager: values.manager,
           role: valueRole,
-          status: valueStatus
+          status: valueStatus,
         }, {
         headers: {
           Authorization: `Bearer ${user.tokens.access.token}`,
@@ -142,7 +155,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
           autoClose: 2500,
         });
       }
-
+      setOpened(false)
     } catch (error) {
       console.log('error update', error);
       updateNotification({
@@ -155,11 +168,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       return error;
     }
   };
-
-  const statusList = [
-    { key: "1", label: "Active", value: "1" },
-    { key: "0", label: "Inactive", value: "0" },
-  ]
 
   const curData = [
     {
@@ -199,16 +207,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
       value: "CNY",
     },
   ];
-
-  const rolesData = [
-    { key: "3", label: 'Manager/Director', value: '3' },
-    { key: "4", label: 'End User', value: '4' },
-    { key: "2", label: 'Admin', value: '2' },
-  ]
-
-  const statusData = statusList.map((item: { value: string }) => item.value)
-  const rolesList = rolesData.map((item: { value: string }) => item.value)
-  console.log('rolesList:', rolesList[2])
 
   return (
     <>
@@ -345,7 +343,7 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
               size="sm"
               color="teal"
               className="mr-[10px]"
-              onClick={() => setOpened(false)}
+            // onClick={() => setOpened(false)}
             >
               Update User
             </Button>

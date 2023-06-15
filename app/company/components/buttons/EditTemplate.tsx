@@ -48,7 +48,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
   const form = useForm({
     initialValues: {
       name,
-      notes,
+      notes: " ",
       status: status.toString(),
     },
   });
@@ -61,7 +61,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
         title: `Updating ...`,
         message: "Please wait, updating edited row",
         autoClose: false,
-         
+
         color: "teal",
       });
 
@@ -89,7 +89,9 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
           autoClose: 2500,
         });
       }
+      setOpened(false)
     } catch (error) {
+      console.log('edit template error', error);
       updateNotification({
         id: "edit-comp",
         color: "red",
@@ -143,7 +145,6 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
             <Grid className="ml-[30px] mr-[30px] mt-[40px]">
               <Text>Notes : </Text>
               <Textarea
-                required
                 className="w-[550px] ml-auto"
                 // defaultValue={myCompany.licenses}
                 placeholder="Template Notes"
@@ -170,7 +171,7 @@ const EditTemplateButton: React.FC<IButtonTemplateProps> = ({
               size="sm"
               color="teal"
               className="mr-[10px]"
-              onClick={() => setOpened(false)}
+            // onClick={() => setOpened(false)}
             >
               Edit Template
             </Button>
