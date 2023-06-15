@@ -41,22 +41,22 @@ const RoiRanking: React.FC<UserDataProp> = ({ tokens, user }) => {
 
 
   const me = data?.data.find((elem: { _id: string }) => elem._id === user.id);
-  const others = data?.data.filter((elem: { _id: string }) => elem._id !== user.id);
-  const elements = others
-    ?.slice(0, 4)
   // .concat(others.slice(3, 4))
   // const rank4 = elements.slice(0,4)
   // const me = elements.filter((elem: { _id: string; }) => user.id == elem._id)
   // const newRanking = rank4.push(me)
   // console.log(newRanking)
   const [rank, setRank] = useState()
-  const rows = elements?.map((element: { _id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; totalROIS: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }, index: number) => (
+  const rows = data?.data?.sort((a: { totalROIS: number; }, b: { totalROIS: number; }) => b.totalROIS - a.totalROIS).map((element: { _id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; totalROIS: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }, index: number) => (
     <tr key={element._id}>
       <td><span className="bg-[#1ab394] pt-[3px] pb-[3px] pl-[8px] pr-[8px] m-[15px] text-white rounded-[4px]">{index + 1}</span></td>
       <td>{element.name}</td>
       <td>{element.totalROIS}</td>
     </tr>
-  ));
+  )).slice(0,4);
+
+  
+  const indexMe = rows?.indexOf(me)+1
 
   // useEffect(()=> {
   //   setRank(rows)
@@ -75,7 +75,7 @@ const RoiRanking: React.FC<UserDataProp> = ({ tokens, user }) => {
         <tbody>
           {rows}
           {me?.totalROIS > 0 ? (<tr>
-            <td><span className="bg-[#1ab394] pt-[3px] pb-[3px] pl-[8px] pr-[8px] m-[15px] text-white rounded-[4px]">{5}</span></td>
+            <td><span className="bg-yellow-500 pt-[3px] pb-[3px] pl-[8px] pr-[8px] m-[15px] text-white rounded-[4px]">{indexMe+1}</span></td>
             <td>{me?.name}</td>
             <td>{me?.totalROIS}</td>
           </tr>) : ""}
