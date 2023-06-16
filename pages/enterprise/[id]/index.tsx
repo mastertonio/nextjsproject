@@ -322,6 +322,7 @@ const Enterprise: React.FC<any> = (login) => {
   //     previousState = state;
   //   },// Specify the selector to listen for changes in the data array
   // );
+  const [dropVal, setDropValue] = useState<string | null>(null);
 
   if (isLoading) return <MainLoader />;
 
@@ -446,6 +447,7 @@ const Enterprise: React.FC<any> = (login) => {
                       ) : ""} */}
 
                       {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
+                        console.log("elem", elem)
                         return (
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
@@ -592,9 +594,47 @@ const Enterprise: React.FC<any> = (login) => {
                                       <Select
                                         data={elem.choices ? elem.choices : ""}
                                         placeholder="Pick one"
+                                        onChange={setDropValue}
                                         radius={0}
                                       />
                                     </div>
+                                    {dropVal == "1" ? (
+                                      <div>
+                                        {elem?.choices?.find((choice: { value: any }) => choice.value == dropVal).childElement.map((childEl: any) => (
+                                          <div key={childEl._id}>
+                                            {childEl.dataType == "Input" ? (
+                                              <Grid
+                                                className="ml-[22px] mr-[22px] mt-0 mb-0"
+                                              >
+                                                <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                                <div className='w-1/3 flex items-center'>
+                                                  <NumberInput
+                                                    className="w-full"
+                                                    thousandsSeparator=','
+                                                    precision={childEl.decimalPlace !== "0" ? +childEl.decimalPlace : 0}
+
+                                                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                                    formatter={(value) =>
+                                                      !Number.isNaN(parseFloat(value))
+                                                        ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                                        : ""
+                                                    }
+                                                    key={childEl.address}
+                                                    hideControls
+                                                    defaultValue={childEl.value !== 0 ? childEl.value : ""}
+                                                    radius={0}
+                                                    placeholder={childEl.prefilled ? childEl.prefilled : ""}
+                                                    icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+                                                  />
+                                                  {childEl.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
+                                                </div>
+                                              </Grid>
+                                            ) : childEl.dataType == "Output" ? (<Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>) : ""}
+                                          </div>
+                                        ))
+                                        }
+                                      </div>
+                                    ) : ""}
                                   </Grid>
                                 ) : elem.dataType == "Radio" ? (
                                   <Grid

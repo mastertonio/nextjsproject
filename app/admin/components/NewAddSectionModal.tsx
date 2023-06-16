@@ -109,13 +109,16 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
 
   // Generate the next address
   const nextAddress = `${nextColumn}1`;
-  console.log("currentAddress", currentAddress)
-  console.log("nextAddress", nextAddress)
 
   const form = useForm({
     initialValues: {
       type: "Input",
-      choices: [],
+      choices: [{
+        label: "",
+        value: "",
+        childElement: [],
+        selectedOptions: []
+      }],
       format: "",
       decimalPlace: "",
       currency: user.user.currency,
@@ -145,38 +148,84 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
     value: item.value,
     label: item.label,
-    fakeValue: item.label
   })) : []
 
-  const choicesFields = form.values.choices.map((item, index) => (
-    <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
-      <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
-      <TextInput
-        className="w-[100%] sm:w-[40%] ml-auto"
-        placeholder="Text"
-        {...form.getInputProps(`choices.${index}.label`)}
-      />
-      <TextInput
-        className="w-[100%] sm:w-[20%] ml-auto"
-        placeholder="Value"
-        {...form.getInputProps(`choices.${index}.value`)}
-      />
-      <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
-        <IconTrash size="1rem" />
-      </ActionIcon>
-      <div className="w-full">
-        <MultiSelect
-          data={zchoice}
-          label="Entries to show"
-          placeholder="Pick all that you like"
-          searchable
-          nothingFound="Nothing found"
-          clearButtonProps={{ 'aria-label': 'Clear selection' }}
-          clearable
+  console.log(fullData)
+
+  const choicesFields = form.values.choices.map((item, index) => {
+    let allArr: any = []
+    const handleChildElementChange = (selectedOptions: any) => {
+      console.log("selected options", selectedOptions)
+      const matches = selectedOptions.map((targetItem: any) => {
+        const matchingItem: any = fullData.find((item: { address: string }) => item.address === targetItem);
+        return allArr.push({
+          value: matchingItem.value,
+          label: matchingItem.title,
+          dataType: matchingItem.dataType,
+          classes: "col-lg-4",
+          title: matchingItem.title,
+          sliderType: "stacked",
+          address: matchingItem.address
+        })
+      })
+      form.setFieldValue(`choices.${index}.selectedOptions`, selectedOptions)//2nd argument should be the array of objects
+      form.setFieldValue(`choices.${index}.childElement`, allArr)
+    };
+
+    return (
+      <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
+        <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
+        <TextInput
+          className="w-[100%] sm:w-[40%] ml-auto"
+          placeholder="Text"
+          {...form.getInputProps(`choices.${index}.label`)}
         />
-      </div>
-    </Grid>
-  ))
+        <TextInput
+          className="w-[100%] sm:w-[20%] ml-auto"
+          placeholder="Value"
+          {...form.getInputProps(`choices.${index}.value`)}
+        />
+        <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
+          <IconTrash size="1rem" />
+        </ActionIcon>
+        <div className="w-full">
+          <MultiSelect
+            data={zchoice}
+            label="Entries to show"
+            value={form.values.choices[index].selectedOptions}
+            onChange={handleChildElementChange}
+            placeholder="Pick all that you like"
+            searchable
+            nothingFound="Nothing found"
+            clearButtonProps={{ 'aria-label': 'Clear selection' }}
+            clearable
+          />
+        </div>
+      </Grid>
+    )
+  })
+
+
+  // onChange={(value) => {
+  //   value.forEach((targetItem) => {
+  //     const matchingItem: any = fullData.find((item: { address: string}) => item.address === targetItem);
+  //     if (matchingItem) {
+  //       const index = form.values.choices.findIndex(
+  //         (choice: { value: any}) => choice.value === targetItem
+  //       );
+  //       form.insertListItem(`choices.${index}.childElement`, {
+  //         dataType: matchingItem.dataType,
+  //         label: matchingItem.title,
+  //         classes: "col-lg-4",
+  //         title: matchingItem.title,
+  //         sliderType: "stacked",
+  //         value: matchingItem.value,
+  //         address: matchingItem.address
+  //       });
+  //       console.log('form', form.values);
+  //     }
+  //   });
+  // }}
 
   const ModalTitle = (title: string) => (
     <div className="flex flex-row items-center">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea, ActionIcon, ScrollArea } from '@mantine/core';
+import { Modal, Button, Divider, Text, TextInput, Grid, Select, Textarea, ActionIcon, ScrollArea, MultiSelect } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useModalEntryStore } from '@app/store/builderStore';
 import { HiOutlineDocumentText } from 'react-icons/hi'
@@ -22,6 +22,7 @@ interface IModalEntryProps {
     adminId: string
     data: any
     choices: []
+    fullData: []
     itemId: string
     type: string
 }
@@ -59,7 +60,7 @@ type formProps = {
 
 
 
-const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId, type }) => {
+const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId, type, fullData }) => {
     const [opened, setOpened] = useState(false);
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
@@ -123,7 +124,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
                 title: `Updating section`,
                 message: "Please wait ...",
                 autoClose: false,
-                 
+
             });
         },
         onSuccess: (newRoi) => {
@@ -189,26 +190,65 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         { value: "USD", label: "USD" },
     ]
 
-    const choicesFields = form.values.choices.map((item: {value: string, label: string}, index: number) => (
-        <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
-          <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
-          <TextInput
-            className="w-[100%] sm:w-[40%] ml-auto"
-            defaultValue={item.label}
-            placeholder="Text"
-            {...form.getInputProps(`choices.${index}.label`)}
-          />
-          <TextInput
-            className="w-[100%] sm:w-[20%] ml-auto"
-            placeholder="Value"
-            defaultValue={item.value}
-            {...form.getInputProps(`choices.${index}.value`)}
-          />
-          <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
-            <IconTrash size="1rem" />
-          </ActionIcon>
-        </Grid>
-      ))
+    const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
+        value: item.value,
+        label: item.label,
+    })) : []
+
+    const choicesFields = form.values.choices.map((item: { value: string, label: string }, index: number) => {
+        let allArr: any = []
+        const handleChildElementChange = (selectedOptions: any) => {
+            console.log("selected options", selectedOptions)
+            const matches = selectedOptions.map((targetItem: any) => {
+                const matchingItem: any = fullData.find((item: { address: string }) => item.address === targetItem);
+                return allArr.push({
+                    value: matchingItem.value,
+                    label: matchingItem.title,
+                    dataType: matchingItem.dataType,
+                    classes: "col-lg-4",
+                    title: matchingItem.title,
+                    sliderType: "stacked",
+                    address: matchingItem.address
+                })
+            })
+            form.setFieldValue(`choices.${index}.selectedOptions`, selectedOptions)//2nd argument should be the array of objects
+            form.setFieldValue(`choices.${index}.childElement`, allArr)
+        };
+
+        return (
+            <Grid className="p-[10px] mt-[20px] sm:mt-[10px] mb-[20px]" key={index}>
+                <Text className="text-[16px] text-[#676a6c] font-light w-[100%] md:w-[300px] 2xl:w-[25%]">Option {index + 1}: </Text>
+                <TextInput
+                    className="w-[100%] sm:w-[40%] ml-auto"
+                    defaultValue={item.label}
+                    placeholder="Text"
+                    {...form.getInputProps(`choices.${index}.label`)}
+                />
+                <TextInput
+                    className="w-[100%] sm:w-[20%] ml-auto"
+                    placeholder="Value"
+                    defaultValue={item.value}
+                    {...form.getInputProps(`choices.${index}.value`)}
+                />
+                <ActionIcon color="red" onClick={() => form.removeListItem('choices', index)}>
+                    <IconTrash size="1rem" />
+                </ActionIcon>
+                <div className="w-full">
+                    <MultiSelect
+                        data={zchoice}
+                        label="Entries to show"
+                        value={form.values.choices[index].selectedOptions}
+                        onChange={handleChildElementChange}
+                        placeholder="Pick all that you like"
+                        searchable
+                        nothingFound="Nothing found"
+                        clearButtonProps={{ 'aria-label': 'Clear selection' }}
+                        clearable
+                    />
+                </div>
+            </Grid>
+        )
+    })
 
     useEffect(() => {
         console.log("TYPE", data.choices)
