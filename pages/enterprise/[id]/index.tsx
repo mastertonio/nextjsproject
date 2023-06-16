@@ -324,6 +324,7 @@ const Enterprise: React.FC<any> = (login) => {
   //     previousState = state;
   //   },// Specify the selector to listen for changes in the data array
   // );
+  const [dropVal, setDropValue] = useState<string | null>(null);
 
   if (isLoading) return <MainLoader />;
 
@@ -448,6 +449,7 @@ const Enterprise: React.FC<any> = (login) => {
                       ) : ""} */}
 
                       {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
+                        console.log("elem", elem)
                         return (
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
@@ -587,16 +589,92 @@ const Enterprise: React.FC<any> = (login) => {
                                 : elem.dataType == "Dropdown" ? (
                                   <Grid
                                     key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                    className={`ml-[22px] mr-[22px] ${dropVal=="1" ? "mt-8" : "mt-2"} mb-0 items-center`}
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className="flex flex-col ml-auto w-1/3">
                                       <Select
                                         data={elem.choices ? elem.choices : ""}
                                         placeholder="Pick one"
+                                        onChange={setDropValue}
                                         radius={0}
                                       />
                                     </div>
+                                    {dropVal == "1" ? (
+                                      <Grid.Col span={'auto'} mx={40}>
+                                        {elem?.choices?.find((choice: { value: any }) => choice.value == dropVal).childElement.map((childEl: any) => (
+                                          <div key={childEl._id}>
+                                            {childEl.dataType == "Input" ? (
+                                              <Grid
+                                                className="ml-[25px] mt-0 mb-0"
+                                              >
+                                                <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                                <div className='w-1/3 flex items-center'>
+                                                  <NumberInput
+                                                    className="w-full"
+                                                    thousandsSeparator=','
+                                                    precision={childEl.decimalPlace !== "0" ? +childEl.decimalPlace : 0}
+
+                                                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                                    formatter={(value) =>
+                                                      !Number.isNaN(parseFloat(value))
+                                                        ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                                        : ""
+                                                    }
+                                                    key={childEl.address}
+                                                    hideControls
+                                                    defaultValue={childEl.value !== 0 ? childEl.value : ""}
+                                                    radius={0}
+                                                    placeholder={childEl.prefilled ? childEl.prefilled : ""}
+                                                    icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+                                                  />
+                                                  {childEl.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
+                                                </div>
+                                              </Grid>
+                                            ) : childEl.dataType == "Output" ? (
+                                              <Grid
+                                                className="ml-[25px]  mt-0 mb-0 items-center"
+                                              >
+                                                <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                            
+                                                <div className='w-1/3 flex items-center'>
+                                                  <NumberInput
+                                                    className="w-full"
+                                                    ref={numberInputRef}
+                                                    // icon={state.icon ? state.icon : ""}
+                                                    type="number"
+                                                    key={childEl._id}
+                                                    styles={{
+                                                      input: {
+                                                        backgroundColor: '#f2f2f2',
+                                                        border: '1px solid #cccccc',
+                                                      },
+                                                    }}
+                                                    readOnly
+                                                    value={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                                    radius={0}
+                                                    icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+            
+                                                    placeholder={childEl.prefilled}
+                                                  />
+                                                  {childEl.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
+                                                  {childEl.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                                    <Tooltip label={childEl.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                      <div className="flex flex-row items-center pr-[5px]">
+                                                        <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                      </div>
+                                                    </Tooltip>
+                                                  </Button>) : ""}
+            
+                                                </div>
+                                              </Grid>
+                                            ) : ""}
+                                          </div>
+                                        ))
+                                        }
+                                      </Grid.Col>
+                                    ) : ""}
                                   </Grid>
                                 ) : elem.dataType == "Radio" ? (
                                   <Grid
@@ -631,8 +709,9 @@ const Enterprise: React.FC<any> = (login) => {
                                     className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                
                                     <div className='w-1/3 flex items-center'>
-                                      <Input
+                                      <NumberInput
                                         className="w-full"
                                         ref={numberInputRef}
                                         // icon={state.icon ? state.icon : ""}
@@ -647,7 +726,8 @@ const Enterprise: React.FC<any> = (login) => {
                                         readOnly
                                         // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         // disabled
-                                        value={numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
+                                        // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
+                                        value={parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/[^0-9]/g, ""))}
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
 
@@ -765,7 +845,9 @@ const Enterprise: React.FC<any> = (login) => {
                                   <Grid
                                     className="ml-[22px] mr-[22px] mt-0 mb-0"
                                   >
+
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                               
                                     <div className='w-1/3 flex items-center'>
                                       <NumberInput
                                         className="w-full"
