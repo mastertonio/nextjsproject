@@ -84,6 +84,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
           autoClose: 2500,
         });
       }
+      setOpened(false)
     } catch (error) {
       updateNotification({
         id: "edit-comp",
@@ -216,7 +217,7 @@ const EditCompanyButton: React.FC<IButtonCompanyProps> = ({
               size="sm"
               color="teal"
               className="mr-[10px]"
-              onClick={() => setOpened(false)}
+            // onClick={() => setOpened(false)}
             >
               Edit Company
             </Button>
