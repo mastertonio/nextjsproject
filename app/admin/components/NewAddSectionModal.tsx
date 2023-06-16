@@ -114,9 +114,6 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     initialValues: {
       type: "Input",
       choices: [{
-        label: "",
-        value: "",
-        childElement: [],
         selectedOptions: []
       }],
       format: "",
