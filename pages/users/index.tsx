@@ -207,7 +207,7 @@ const UsersDashboard: React.FC<any> = (login) => {
     created_rois: item.created_rois,
     currency: item.currency,
     status: item.status,
-    role: item.role,
+    role: item.role === 'admin' ? 'Admin' : item.role === 'company-admin' ? 'Company Admin' : item.role === 'company-manager' ? 'Manager/Director' : 'End User',
     manager_email: item.manager_email,
     manager_id: item.manager_id,
     actions: (

@@ -137,6 +137,9 @@ const Dashboard: React.FC<any> = (login) => {
   const companyID = typeof router.query?.id === "string" ? router.query.id : "";
   const p = router.query;
 
+  console.log('companyID', p)
+  console.log('company id', login.data.user.user.company_id)
+
   const getCompanyUsers = async (id: string) => {
     return await axios.get(`/v1/company/${id}/user`, {
       headers: {
@@ -160,7 +163,7 @@ const Dashboard: React.FC<any> = (login) => {
     {
       queryKey: ['license'],
       queryFn: async () => {
-        const res = await axios.get(`/v1/company/${login.data.user.user.company_id}/license`, {
+        const res = await axios.get(`/v1/company/${router.query.comp_id}/license`, {
           headers: {
             Authorization: `Bearer ${login.data.user.tokens.access.token}`
           },
@@ -171,6 +174,7 @@ const Dashboard: React.FC<any> = (login) => {
   ];
 
   const results = useQueries(queries);
+  console.log('results: ', results)
 
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);
@@ -232,7 +236,7 @@ const Dashboard: React.FC<any> = (login) => {
     created_rois: item.created_rois,
     currency: item.currency,
     status: item.status,
-    role: item.role,
+    role: item.role === 'admin' ? 'Admin' : item.role === 'company-admin' ? 'Company Admin' : item.role === 'company-manager' ? 'Manager/Director' : 'End User',
     manager_email: item.manager_email,
     manager_id: item.manager_id,
     actions: (
