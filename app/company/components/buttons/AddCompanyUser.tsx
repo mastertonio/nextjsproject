@@ -100,7 +100,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${router.query.comp_id}/manager`, {
+      `/v1/company/${router.query.company_id}/manager`, {
       headers: {
         Authorization: `Bearer ${tokens?.access.token}`,
       },
@@ -110,7 +110,7 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
 
   const getTemplates = async () => {
     return await axios.get(
-      `/v1/company/${router.query.comp_id}/template`, {
+      `/v1/company/${router.query.company_id}/template`, {
       headers: {
         Authorization: `Bearer ${tokens?.access.token}`,
       }
@@ -124,7 +124,6 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
   );
 
   const templates = useQuery(["templates"], getTemplates);
-  console.log("templates.data", templates.data)
   // const templateList = templates?.data?.data
   //   ?.map((a: { name: string; build: any }) => {
   //     return a?.build?.map(
@@ -146,8 +145,6 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
       }
     }
     )
-
-  console.log("templateList", templateList)
 
   // const templateList2 = templates?.data?.data
   //   ?.map((a: { name: string; build: any }) => {
@@ -173,8 +170,6 @@ const AddCompanyUserButton: React.FC<Partial<UserAddComp>> = ({ tokens, user, my
     value: item.id,
     label: item.email,
   }));
-
-  console.log('transfer list', data)
 
   const form = useForm({
     initialValues: {

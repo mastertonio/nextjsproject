@@ -61,6 +61,8 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
     validate: yupResolver(schema)
   });
 
+  console.log('router', router)
+
   const handleSubmit = async (values: typeof form.values) => {
     const month = values.month;
     const year = Math.floor(values.year);
@@ -87,8 +89,6 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
           Authorization: `Bearer ${user.tokens.access.token}`,
         },
       });
-
-      console.log('add template: template ID', response)
 
       // const responseVersion = await axios.post(
       //   `/v1/company/${user.user.company_id}/template/${response.data._id}/version`,
@@ -185,15 +185,16 @@ const AddTemplateButton: React.FC<IButtonAddCompanyProps> = ({ refetch, user }) 
             </Grid>
             <Grid className="ml-[30px] mr-[30px] mb-[20px] items-center">
               <Text className="text-[16px] text-slate-700 font-semibold mb-[10px] sm:mb-0">Projection: <span className="text-[#fa5252]">*</span></Text>
+              <NumberInput  {...form.getInputProps("year")} hideControls className="w-[550px] ml-auto" placeholder="Enter number of years" description="Enter number of years" />
               <div className="w-full sm:w-[550px] flex flex-col sm:flex-row items-center ml-auto">
                 {/* <div className="flex flex-row items-center mr-0 sm:mr-[30px] mt-[20px] sm:mt-0">
                   <Text className="text-[14px] mr-[10px] text-slate-700 font-semibold w-[50px]">Month</Text>
                   <NumberInput defaultValue={0}  {...form.getInputProps("month")} hideControls className="w-[150px]" />
                 </div> */}
-                <div className="flex flex-row items-center mt-[20px] sm:mt-0">
+                {/* <div className="flex flex-row items-center mt-[20px] sm:mt-0">
                   <Text className="text-[14px] mr-[22px] sm:mr-[10px] text-slate-700 font-semibold w-[50px]">Year: <span className="text-[#fa5252]">*</span></Text>
                   <NumberInput  {...form.getInputProps("year")} hideControls className="w-[490px]" />
-                </div>
+                </div> */}
               </div>
             </Grid>
 

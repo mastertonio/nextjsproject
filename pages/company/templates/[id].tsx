@@ -44,6 +44,7 @@ import MainLoader from "@app/core/components/loader/MainLoader";
 import shortUUID from "short-uuid";
 import AddTemplateButton from "@app/company/components/buttons/AddTemplate";
 import EditTemplateButton from "@app/company/components/buttons/EditTemplate";
+import DeleteTemplate from "@app/company/components/buttons/DeleteTemplate";
 import TemplateVersion from "@app/company/components/TemplateVersion";
 import FourOhFour from "pages/404";
 import { getSession } from "next-auth/react";
@@ -56,8 +57,7 @@ const TemplateDashboard: React.FC<any> = (login) => {
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
   const templatesID =
-    typeof router.query?.id === "string" ? router.query.id : "";
-
+    typeof router.query?.comp_id === "string" ? router.query.comp_id : "";
 
   const getCompanyTemplate = async (_id: string) => {
     return await axios.get(
@@ -170,9 +170,18 @@ const TemplateDashboard: React.FC<any> = (login) => {
           key={shortUUID.generate()}
           user={login.data.user}
         />
-        <Button type="button" radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
+        <DeleteTemplate
+          id={item._id}
+          notes={item.notes}
+          status={item.active}
+          refetch={refetch}
+          name={item.name}
+          key={shortUUID.generate()}
+          user={login.data.user}
+        />
+        {/* <Button type="button" radius="sm" size="xs" color="red" style={{ marginLeft: 1 }}>
           Delete
-        </Button>
+        </Button> */}
       </div>
     ),
   }));
@@ -315,8 +324,8 @@ const TemplateDashboard: React.FC<any> = (login) => {
                       | React.ReactPortal
                       | null
                       | undefined;
-                    }) => (
-                      <tr key={element._id} className="h-[20px]">
+                    }, index: any) => (
+                      <tr key={index} className="h-[20px]">
                         <td className="w-[100px]"><IconPlus size={20} stroke={3} className="pt-[7px] pr-[5px]" /> {element.name}</td>
                         <td className="cursor-pointer w-[140px] pl-[30px]">
                           {element.notes}

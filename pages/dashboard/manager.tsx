@@ -192,7 +192,7 @@ const ManagerDashboard: React.FC<any> = (login) => {
           name={item.email}
           user={login.data.user}
         />
-        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} />
+        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} comp_id={login.data.user.user.company_id} />
       </div>
     ),
   }));

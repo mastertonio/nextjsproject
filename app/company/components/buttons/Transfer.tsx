@@ -25,9 +25,10 @@ export interface ITransferButton {
   refetch: () => void;
   name: string;
   user: UserDataProp
+  comp_id: string;
 }
 
-const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) => {
+const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user, comp_id }) => {
   const [opened, setOpened] = useState(false);
   const router = useRouter();
   const p = router.query;
@@ -36,7 +37,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
 
   const getManagers = async () => {
     return await axios.get(
-      `/v1/company/${user.user.company_id}/user`, {
+      `/v1/company/${user?.user.role === 'admin' ? comp_id : user?.user.company_id}/user`, {
       headers: {
         Authorization: `Bearer ${user.tokens.access.token}`,
       },
@@ -50,8 +51,6 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user }) 
   );
 
   const transferlist = data?.data.map((item: { _id: string; email: string; }) => ({ key: item._id, value: item._id, label: item.email }))
-
-
 
   const form = useForm({
     initialValues: {
