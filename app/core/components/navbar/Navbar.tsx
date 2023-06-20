@@ -33,8 +33,6 @@ const RoiNavbar: React.FC<UserDataProp> = ({ user, tokens }) => {
     setIsOpen((prevState) => !prevState)
   }
 
-  console.log("user role navbar", user?.role)
-
   return (
     <Header height={opened === true ? 220 : 70} p="md" className={`${classes.header} flex-col sm:flex-row`}>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>

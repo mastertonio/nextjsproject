@@ -79,7 +79,6 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
   const rolesList = rolesData.map((item: { value: string }) => item.value)
   const [valueRole, setValueRole] = useState(myCompany.role == 'company-manager' ? rolesList[0].toString() : myCompany.role == 'company-agent' ? rolesList[1].toString() : rolesList[2].toString());
   const [valueStatus, setValueStatus] = useState(myCompany.status == 'active' ? statusData[0].toString() : statusData[1].toString());
-  console.log('user role:', user?.user)
 
   const form = useForm({
     initialValues: {
@@ -94,10 +93,9 @@ const EditCompanyUserButton: React.FC<IButtonCompanyUserProps> = ({
     },
   });
 
-  console.log('myCompany', myCompany)
 
   const getManagers = async () => {
-    return await axios.get(`/v1/company/${user?.user.role === 'admin' ? router.query.comp_id : user?.user.company_id}/manager`, {
+    return await axios.get(`/v1/company/${user?.user.role === 'admin' ? router.query.company_id : user?.user.company_id}/manager`, {
       headers: {
         Authorization: `Bearer ${user.tokens.access.token}`,
       },

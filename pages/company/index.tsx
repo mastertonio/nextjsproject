@@ -183,7 +183,6 @@ const CompanyList: React.FC<any> = (login) => {
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = sortedData?.slice(indexOfFirstPost, indexOfLastPost);
-  console.log('create company', currentPosts)
 
   const setSorting = (field: keyof ICompanyProps) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -261,7 +260,7 @@ const CompanyList: React.FC<any> = (login) => {
           size="xs"
           color="cyan"
           onClick={() => {
-            router.push({ pathname: `/company/users/${item._id}`, query: { comp_id: item._id } })
+            router.push({ pathname: `/company/users/${item._id}`, query: { company_id: item._id } })
           }}
         >
           Users

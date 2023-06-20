@@ -134,16 +134,15 @@ const Dashboard: React.FC<any> = (login) => {
   const router = useRouter();
   const theme = useMantineTheme();
   const { classes, cx } = useStyles();
-  const companyID = typeof router.query?.id === "string" ? router.query.id : "";
+  const companyID = typeof router.query?.company_id === "string" ? router.query.company_id : "";
   const p = router.query;
 
-  console.log('companyID', p)
-  console.log('company id', login.data.user.user.company_id)
+  console.log('router', login)
 
   const getCompanyUsers = async (id: string) => {
     return await axios.get(`/v1/company/${id}/user`, {
       headers: {
-        Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+        Authorization: `Bearer ${login?.data?.user?.tokens?.access?.token}`,
       }
     });
   };
@@ -157,15 +156,13 @@ const Dashboard: React.FC<any> = (login) => {
       }
     );
 
-  console.log('company add user', data)
-
   const queries = [
     {
       queryKey: ['license'],
       queryFn: async () => {
-        const res = await axios.get(`/v1/company/${router.query.comp_id}/license`, {
+        const res = await axios.get(`/v1/company/${companyID}/license`, {
           headers: {
-            Authorization: `Bearer ${login.data.user.tokens.access.token}`
+            Authorization: `Bearer ${login?.data?.user?.tokens?.access?.token}`
           },
         });
         return res.data;
@@ -194,8 +191,6 @@ const Dashboard: React.FC<any> = (login) => {
   const indexOfLastPost = activePage * limit;
   const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = sortedData?.slice(indexOfFirstPost, indexOfLastPost);
-  console.log('company', currentPosts)
-
 
   const setSorting = (field: keyof ICompanyUsersProps) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -248,7 +243,7 @@ const Dashboard: React.FC<any> = (login) => {
           name={item.email}
           user={login.data.user}
         />
-        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} />
+        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} comp_id={companyID} />
       </>
     ),
   }));

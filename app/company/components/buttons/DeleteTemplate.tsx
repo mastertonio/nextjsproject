@@ -56,12 +56,12 @@ const DeleteTemplate: React.FC<RemoveSectionModalProps> = ({ id,
                 title: `Deleting ...`,
                 message: "Please wait, deleting row",
                 autoClose: false,
-                 
+
                 color: "teal",
             });
 
             const response = await axios.patch(
-                `/v1/company/${user.user.company_id}/template/${id}`,
+                `/v1/company/${router.query.comp_id ? router.query.comp_id : user.user.company_id}/template/${id}`,
                 {
                     name: name,
                     notes: 'For Delete',

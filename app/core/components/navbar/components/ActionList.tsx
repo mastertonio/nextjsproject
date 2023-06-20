@@ -45,8 +45,6 @@ const ActionList: React.FC<Partial<UserDataProp>> = ({ user }: any) => {
 
   const userCtx = useContext(UserContext);
 
-  console.log('list user', user)
-
   const handleChange = (event: any) => {
     setValues(event);
   };

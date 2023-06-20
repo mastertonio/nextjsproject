@@ -160,7 +160,6 @@ const UsersDashboard: React.FC<any> = (login) => {
 
   useEffect(() => {
     setSortedData(data?.data);
-    console.log('results query', login.data.user.user.role)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
@@ -219,7 +218,7 @@ const UsersDashboard: React.FC<any> = (login) => {
         }}
       >
         <EditCompanyUserButton user={login.data.user} id={item._id} myCompany={item} refetch={refetch} name={item.email} />
-        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} />
+        <TransferButton user={login.data.user} id={item._id} name={item.email} refetch={refetch} comp_id={login.data.user.user.company_id} />
       </div>
     ),
   }));
