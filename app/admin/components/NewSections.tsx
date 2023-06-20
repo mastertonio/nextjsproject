@@ -15,6 +15,7 @@ import SectionWriteUpModal from './SectionModals/SectionWriteUpModal';
 import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
+import DeleteVideoModal from './SectionModals/DeleteVideoModal';
 import { UserDataProp } from '@app/context/user.context';
 import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
 import NewAddSectionModal from './NewAddSectionModal';
@@ -56,6 +57,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
     const [updateVideo, setUpdateVideo] = useState<any>({})
     const [openQuestion, setOpenQuestion] = useState(false);
     const [updateQuestion, setUpdateQuestion] = useState(false);
+    const [deleteVideo, setDeleteVideo] = useState<any>(false);
     const [sectData, setSectData] = useState<iSectionData[]>([])
     const [entry, setEntry] = useState(false)
     const [updateEntry, setUpdateEntry] = useState<any>({})
@@ -76,6 +78,14 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
 
     const handleOpenVideoModal = (id: any) => {
         setUpdateVideo((prev: any) => ({ ...prev, [id]: true }))
+    }
+
+    const handleOpenDeleteVideo = (id: any) => {
+        setDeleteVideo((prev: any) => ({ ...prev, [id]: true }))
+    }
+
+    const handleCloseDeleteVideo = (id: any) => {
+        setDeleteVideo((prev: any) => ({ ...prev, [id]: false }))
     }
 
     const handleCloseVideoModal = (id: any) => {
@@ -121,7 +131,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                                         <Text dangerouslySetInnerHTML={{ __html: section.headers?.title?.content?.elements[0]?.dataType === 'media' ? he.decode(section.headers?.title?.content?.elements[0]?.link) : 'Add Video link here:' }} className="text-[14px] text-slate-600 font-semibold mr-[30px]"></Text>
                                         <div>
                                             <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
-                                            <MdClose className="text-red-600 text-[16px] cursor-pointer" />
+                                            <MdClose className="text-red-600 text-[16px] cursor-pointer" onClick={() => handleOpenDeleteVideo(index)} />
                                         </div>
                                     </div>
                                 </div>
@@ -144,6 +154,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
 
 
                 <SectionVideoModal id={section._id} adminId={data.id} showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
+                <DeleteVideoModal id={section._id} adminId={data.id} user={user} setOpened={() => handleOpenDeleteVideo(index)} setClose={() => { handleCloseDeleteVideo(index) }} cardID={index} open={deleteVideo[index]} />
                 <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                 <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
             </div>
