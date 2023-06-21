@@ -36,6 +36,8 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
     const [userData, setUser] = useState<any>({});
     const userZ = useUserStore((state) => (state.user))
 
+    console.log('user data', user)
+
     const getCurrentUser = async () => {
         return await axios.get(`/v1/users/${user.id}`, {
             headers: {
@@ -137,6 +139,24 @@ const AdminRoleSidebar: React.FC<UserDataProp> = ({ tokens, user }) => {
                         className="mt-[5px] text-[lightgray] text-[13px]"
                         onClick={() => {
                             router.push(`/dashboard/manager`)
+                        }}
+                        leftIcon={<MdSpaceDashboard />}
+                        size="md"
+                    >
+                        Dashboard
+                    </Button>
+                </Navbar.Section>
+            ) : null}
+
+            {user.role === 'company-agent' ? (
+                <Navbar.Section>
+                    <Button
+                        type="button"
+                        variant="subtle"
+                        fullWidth
+                        className="mt-[5px] text-[lightgray] text-[13px]"
+                        onClick={() => {
+                            router.push(`/dashboard`)
                         }}
                         leftIcon={<MdSpaceDashboard />}
                         size="md"

@@ -136,7 +136,7 @@ const TransferButton: React.FC<ITransferButton> = ({ id, refetch, name, user, co
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text>Email: </Text>
+              <Text>Email Address: </Text>
               <Select
                 placeholder="Please Choose"
                 className="w-[550px] ml-auto"

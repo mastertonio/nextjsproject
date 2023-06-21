@@ -143,9 +143,9 @@ const TransferSingleButton: React.FC<ITransferSingleButton> = ({ id, refetch, na
             <Grid
               className="ml-[30px] mr-[30px] mt-[30px] mb-[15px]"
             >
-              <Text>Email: </Text>
+              <Text>Email Address: </Text>
               <Select
-                placeholder="New Title Name"
+                placeholder="Please Choose"
                 className="w-[550px] ml-auto"
                 defaultValue={state}
                 data={transferlist?.length > 0 ? transferlist : []}

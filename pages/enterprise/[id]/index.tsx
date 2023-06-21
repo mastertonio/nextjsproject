@@ -589,7 +589,7 @@ const Enterprise: React.FC<any> = (login) => {
                                 : elem.dataType == "Dropdown" ? (
                                   <Grid
                                     key={elem._id}
-                                    className={`ml-[22px] mr-[22px] ${dropVal=="1" ? "mt-8" : "mt-2"} mb-0 items-center`}
+                                    className={`ml-[22px] mr-[22px] ${dropVal == "1" ? "mt-8" : "mt-2"} mb-0 items-center`}
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
                                     <div className="flex flex-col ml-auto w-1/3">
@@ -637,7 +637,7 @@ const Enterprise: React.FC<any> = (login) => {
                                                 className="ml-[25px]  mt-0 mb-0 items-center"
                                               >
                                                 <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                            
+
                                                 <div className='w-1/3 flex items-center'>
                                                   <NumberInput
                                                     className="w-full"
@@ -655,7 +655,7 @@ const Enterprise: React.FC<any> = (login) => {
                                                     value={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
                                                     radius={0}
                                                     icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
-            
+
                                                     placeholder={childEl.prefilled}
                                                   />
                                                   {childEl.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
@@ -666,7 +666,7 @@ const Enterprise: React.FC<any> = (login) => {
                                                       </div>
                                                     </Tooltip>
                                                   </Button>) : ""}
-            
+
                                                 </div>
                                               </Grid>
                                             ) : ""}
@@ -709,7 +709,7 @@ const Enterprise: React.FC<any> = (login) => {
                                     className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                
+
                                     <div className='w-1/3 flex items-center'>
                                       <NumberInput
                                         className="w-full"
@@ -724,13 +724,16 @@ const Enterprise: React.FC<any> = (login) => {
                                           },
                                         }}
                                         readOnly
+                                        thousandsSeparator=','
+                                        decimalSeparator="."
                                         // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                         // disabled
                                         // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
-                                        value={parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                        value={
+                                          parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/\$\s?|(,*)/g, ""))
+                                        }
                                         radius={0}
                                         icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-
                                         placeholder={elem.prefilled}
                                         // rightSection={
                                         //   elem.tooltip ?
@@ -745,13 +748,13 @@ const Enterprise: React.FC<any> = (login) => {
                                           setBlurred(true)
                                           update({
                                             ...elem,
-                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                            value: parseInt(event.target.value.replace(/\$\s?|(,*)/g, ""))
                                           })
 
                                           setSectID(section._id)
                                           await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
                                             grayContent: {
-                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                              value: parseInt(event.target.value.replace(/\$\s?|(,*)/g, ""))
                                             }
                                           }, {
                                             headers: {
@@ -847,7 +850,7 @@ const Enterprise: React.FC<any> = (login) => {
                                   >
 
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                               
+
                                     <div className='w-1/3 flex items-center'>
                                       <NumberInput
                                         className="w-full"

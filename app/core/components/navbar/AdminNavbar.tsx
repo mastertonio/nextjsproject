@@ -163,7 +163,7 @@ const AdminNavbar: React.FC<AdminDataProp> = ({ user, tokens, templateID, id }) 
                     Enterprise
                 </Button> */}
                 <PoweredByRoi />
-                <ActionList />
+                <ActionList user={user} />
             </Group>
         </Header>
     );
