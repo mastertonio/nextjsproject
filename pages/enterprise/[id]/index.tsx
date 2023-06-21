@@ -332,7 +332,7 @@ const Enterprise: React.FC<any> = (login) => {
     <AppShell
       padding={0}
       navbar={<NavbarSimple sidebarData={data?.data.data.sidebar} sectionEmpty={sectionEmpty} scroll={handleScroll} />}
-      header={<EnterpriseNavbar />}
+      header={<EnterpriseNavbar user={login.data.user.user} />}
     >
       <>
         <div className="w-full text-[#676a6c] p-[20px]">
@@ -473,7 +473,8 @@ const Enterprise: React.FC<any> = (login) => {
                                     hideControls
                                     defaultValue={elem.value !== 0 ? elem.value : ""}
                                     radius={0}
-                                    icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                    // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                    icon={elem.format == "Currency" ? <>$</> : ""}
                                     // id={elem.id}
                                     // {...register(`input${elem._id}`)}
                                     // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -483,7 +484,7 @@ const Enterprise: React.FC<any> = (login) => {
                                           <div className="flex flex-row items-center pr-[5px]">
                                             <AiFillQuestionCircle size="18" className="text-[#428bca]" />
                                           </div>
-                                        </Tooltip> : ""
+                                        </Tooltip> : elem.format == "Percent" ? <>%</> : ""
                                     }
                                     onBlur={async (event: BaseSyntheticEvent) => {
                                       handleBlur()
@@ -733,7 +734,9 @@ const Enterprise: React.FC<any> = (login) => {
                                           parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/\$\s?|(,*)/g, ""))
                                         }
                                         radius={0}
-                                        icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        icon={elem.format == "Currency" ? <>$</> : ""}
+                                        rightSection={elem.format == "Percent" ? <>%</> : ""}
                                         placeholder={elem.prefilled}
                                         // rightSection={
                                         //   elem.tooltip ?
@@ -795,7 +798,9 @@ const Enterprise: React.FC<any> = (login) => {
                                         }
                                         key={elem._id}
                                         hideControls
-                                        icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        icon={elem.format == "Currency" ? <>$</> : ""}
+                                        rightSection={elem.format == "Percent" ? <>%</> : ""}
                                         defaultValue={elem.value !== 0 ? elem.value : ""}
                                         radius={0}
                                         // id={elem.id}
@@ -902,7 +907,9 @@ const Enterprise: React.FC<any> = (login) => {
                                           })
                                           // console.log(cells, "from Inputtest")
                                         }}
-                                        icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                        icon={elem.format == "Currency" ? <>$</> : ""}
+                                        rightSection={elem.format == "Percent" ? <>%</> : ""}
 
                                       // defaultValue={myCompany.name}
                                       />

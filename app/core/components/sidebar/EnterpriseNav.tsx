@@ -17,7 +17,7 @@ import AdminList, { IAdminListProps } from "../navbar/components/AdminList";
 import PoweredByRoi from "../navbar/components/PoweredByRoi";
 import ActionList from "../navbar/components/ActionList";
 
-const EnterpriseNavbar: React.FC = () => {
+const EnterpriseNavbar: React.FC<any> = ({ user }) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { classes } = useStyles();
@@ -51,7 +51,7 @@ const EnterpriseNavbar: React.FC = () => {
       </div>
       <Group position="right" className={`${opened === true ? 'flex' : 'hidden'}  sm:ml-auto sm:flex flex-col sm:flex-row justify-start sm:justify-center z-10 sm:z-0 pt-[30px] sm:pt-0 pb-[5px] sm:pb-0`}>
         <PoweredByRoi />
-        <ActionList />
+        <ActionList user={user} />
       </Group>
 
     </Header>
