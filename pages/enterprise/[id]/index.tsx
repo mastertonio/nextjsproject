@@ -39,7 +39,7 @@ import MainLoader from '@app/core/components/loader/MainLoader';
 import { useTargetRefStore } from "@app/store/builderStore"
 import { IconCheck, IconQuestionCircle } from '@tabler/icons';
 import { AiFillQuestionCircle } from 'react-icons/ai'
-import { useCalculatorStore } from '@app/store/builder/calculatorStore';
+import { NewCellProps, useCalculatorStore } from '@app/store/builder/calculatorStore';
 import {
   IconQuestionMark,
   IconZoomQuestion,
@@ -446,8 +446,11 @@ const Enterprise: React.FC<any> = (login) => {
                         </div>
                       ) : ""} */}
 
-                      {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
-                        console.log("elem", elem)
+                      {cells?.filter((item) => section.grayContent.elements
+                      .some((elem: { _id: any, choices: any }) => elem._id == item._id  ))
+                      // .filter((elms) => console.log("3rd level" , elms._id, elms?.choices.some((choice: any)=>  choice.selectedOptions.includes(elms.address))))
+                      .map((elem: any) => {
+                        console.log("elem", elem, elem.choices)
                         return (
                           <Stack key={elem._id}>
                             {elem.dataType == "Input" && elem.tooltip ? (
