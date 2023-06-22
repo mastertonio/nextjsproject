@@ -102,23 +102,24 @@ const Projection = ({
         {/* <div dangerouslySetInnerHTML={{ __html: subTitle }} /> */}
         {/* <div dangerouslySetInnerHTML={{ __html: description }} /> */}
       </div>
-      <Grid className="sm:flex justify-between block ml-[22px] mr-[22px]" columns={24}>
+      <Grid className="ml-[22px] mr-[22px]" columns={24}>
         <Grid.Col
-          span={14}
-          className="lg:ml-0 md:ml-0 md:mr-0 lg:mr-0 mt-0 max-w-[100%] md:max-w-[50%] lg:max-w-[50%]"
+          md={14}
+          lg={14}
+          className="lg:ml-0 md:ml-0 md:mr-0 lg:mr-0 mt-0"
         >
           <Text ml={30} dangerouslySetInnerHTML={{ __html: description ? he.decode(description) : "" }} color="dark" />
           <Divider my="sm" color="#eee" size={1} />
         </Grid.Col>
         <Suspense fallback={`Loading...`}>
-          <Grid.Col span={10} className="md:w-[40%] lg:w-[40%] w-[100%] md:ml-[30px] lg:ml-[30px]">
+          <Grid.Col md={10} lg={10}>
             {content.elements[0] ? (
-              <div className="h-[270px] mb-[30px]">
+              <div className="relative pt-[56.2353%]">
                 <ReactPlayer
                   controls
                   playing
                   light={true}
-                  className=""
+                  className="absolute top-0 left-0"
                   url={content.elements[0]?.link ?? ''}
                   width="100%"
                   height="100%"

@@ -168,14 +168,18 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
     }
   })
 
+  console.log('data template', data)
 
   if (isSuccess) {
     const actionList = data?.data.map((a: { name: string; build: any }) => {
+      console.log('a buuild', a.build)
+      console.log('template', templateID)
       return a?.build?.map((b: { template_id: string; _id: string; name: string; group: string }) => ({
-        key: b.template_id,
+        key: b._id,
         value: b._id,
         label: b.name,
-        group: a.name
+        group: a.name,
+        template_id: b.template_id
       }))
     }).flat();
 
@@ -232,7 +236,7 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
                 defaultValue={actionList?.length <= 1 ? actionList[0].value : ""}
                 onChange={(value: string) => {
                   const selected = actionList.find((a: any) => a.value === value)
-                  setTemplateID(selected.key)
+                  setTemplateID(selected.template_id)
                   setVerID(value)
                 }}
                 required
