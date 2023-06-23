@@ -168,12 +168,8 @@ const CreateNewRoi: React.FC<Partial<UserDataProp>> = ({ tokens, user }) => {
     }
   })
 
-  console.log('data template', data)
-
   if (isSuccess) {
     const actionList = data?.data.map((a: { name: string; build: any }) => {
-      console.log('a buuild', a.build)
-      console.log('template', templateID)
       return a?.build?.map((b: { template_id: string; _id: string; name: string; group: string }) => ({
         key: b._id,
         value: b._id,
