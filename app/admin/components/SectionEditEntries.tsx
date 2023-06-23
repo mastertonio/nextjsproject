@@ -25,6 +25,7 @@ interface IModalEntryProps {
     fullData: []
     itemId: string
     type: string
+    allChoices: []
 }
 
 interface CardSection {
@@ -60,7 +61,7 @@ type formProps = {
 
 
 
-const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId, type, fullData }) => {
+const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, adminId, data, choices, itemId, type, fullData, allChoices }) => {
     const [opened, setOpened] = useState(false);
     const hideModal = useModalEntryStore((state) => state.hide);
     const cards = useCardStore((state) => state.cards);
@@ -190,7 +191,7 @@ const EditSectionEntryModal: React.FC<IModalEntryProps> = ({ id, user, secName, 
         { value: "USD", label: "USD" },
     ]
 
-    const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
+    const zchoice = allChoices ? allChoices.map((item: { label: string, value: string }) => ({
         value: item.value,
         label: item.label,
     })) : []

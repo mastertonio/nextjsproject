@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Modal, Button, Divider, Text, Textarea, Grid, Radio } from '@mantine/core';
+import React, { BaseSyntheticEvent, useState } from 'react'
+import { Modal, Button, Divider, Text, Textarea, Grid, Radio, NumberInput, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
 import { useModalEntryStore } from '@app/store/builderStore';
@@ -10,24 +10,35 @@ import { useRouter } from 'next/router';
 import { useMutation, useQueryClient } from 'react-query';
 import { UserDataProp } from '@app/context/user.context';
 import { MdModeEdit } from 'react-icons/md';
+import { useCalculatorStore } from '@app/store/builder/calculatorStore';
+import he from 'he';
+import numeral from 'numeral';
+import { AiFillQuestionCircle } from 'react-icons/ai';
 
 interface RadioProps {
     label: string
     color: string
-
+    radVal: any
+    setRadVal: any
+    elem: any
+    setBlurred: any
+    update: any
+    handleBlur: any
+    setSectID: any
+    section: any
+    data: any
+    login: any
 }
 
-const RadioToggle: React.FC<RadioProps> = ({ color, label }) => {
+const RadioToggle: React.FC<RadioProps> = ({ color, label, elem, radVal, setRadVal, handleBlur, setBlurred, update, setSectID, data, login, section }) => {
     const [checked, setChecked] = useState(false);
+    const cells = useCalculatorStore((state) => (state.cells))
     return (
-        <Radio
-            label={label}
-            color={color}
-            checked={checked}
-            onChange={(event) => setChecked(event.currentTarget.checked)}
-            onClick={() => setChecked(false)}
-            className="mt-[5px] mb-[5px]"
-        />
+        <div>
+
+            
+            
+        </div>
     )
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, BaseSyntheticEvent } from 'react';
+import React, { useEffect, useState, useRef, BaseSyntheticEvent, useCallback } from 'react';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRouter } from 'next/router';
@@ -27,6 +27,7 @@ import {
   Checkbox,
   Select,
   Radio,
+  Transition,
 } from "@mantine/core";
 import { useLocalStorage, useScrollIntoView, useToggle } from '@mantine/hooks';
 import { contentData, finalData } from "@app/enterprise/constants/content";
@@ -39,7 +40,7 @@ import MainLoader from '@app/core/components/loader/MainLoader';
 import { useTargetRefStore } from "@app/store/builderStore"
 import { IconCheck, IconQuestionCircle } from '@tabler/icons';
 import { AiFillQuestionCircle } from 'react-icons/ai'
-import { useCalculatorStore } from '@app/store/builder/calculatorStore';
+import { NewCellProps, useCalculatorStore } from '@app/store/builder/calculatorStore';
 import {
   IconQuestionMark,
   IconZoomQuestion,
@@ -324,7 +325,65 @@ const Enterprise: React.FC<any> = (login) => {
   //     previousState = state;
   //   },// Specify the selector to listen for changes in the data array
   // );
-  const [dropVal, setDropValue] = useState<string | null>(null);
+  const [dropVal, setDropValue] = useState<{ [key: string]: string | null }>({});
+  const [radVal, setRadValue] = useState<{ [key: string]: boolean }>({});
+  const [checkVal, setCheckValue] = useState<{ [key: string]: boolean }>({});
+  const [firstRender, setFirstRender] = useState(false);
+
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
+
+  const handleDropValChange = (identifier: string, value: string | null) => {
+    setDropValue((prevDropVal) => {
+      return {
+        ...prevDropVal,
+        [identifier]: value,
+      };
+    });
+  };
+
+
+  const handleCheckboxChange = (identifier: string, isChecked: boolean) => {
+    setCheckValue((prevValues) => ({
+      ...prevValues,
+      [identifier]: isChecked,
+    }));
+  };
+
+  const handleRadboxChange = (identifier: string, isChecked: boolean) => {
+    setRadValue((prevValues) => ({
+      ...prevValues,
+      [identifier]: isChecked,
+    }));
+  };
+
+  const handleDropNo = useCallback((elem: any) => {
+    const test = cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+
+    test.forEach((item)=> { console.log("each item", item)})
+    // console.log("DROP", elem.address, test, elem, dropVal);
+    // Your function logic here
+    return <></>
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dropVal]);
+
+  const handleRadNo = useCallback((elem: any) => {
+    const test = cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+
+    console.log("RAD", elem.address, test, elem, radVal);
+    // Your function logic here
+    return <></>
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [radVal]);
+
+  const handleCheckNo = useCallback((elem: any) => {
+    const test = cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+
+    console.log(elem.address, test, elem, checkVal);
+    // Your function logic here
+    return <></>
+  }, [cells, checkVal]);
 
   if (isLoading) return <MainLoader />;
 
@@ -448,485 +507,853 @@ const Enterprise: React.FC<any> = (login) => {
                         </div>
                       ) : ""} */}
 
-                      {cells?.filter((item) => section.grayContent.elements.some((elem: { _id: any; }) => elem._id == item._id)).map((elem: any) => {
-                        console.log("elem", elem)
-                        return (
-                          <Stack key={elem._id}>
-                            {elem.dataType == "Input" && elem.tooltip ? (
-                              <Grid
-                                className="ml-[22px] mr-[22px] mt-0 mb-0"
-                              >
-                                <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal" ></Text>
-                                <div className='w-1/3 flex items-center'>
-                                  <NumberInput
-                                    className="w-full"
-                                    // icon={state.icon ? state.icon : ""}
-                                    thousandsSeparator=','
-                                    precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
-                                    key={elem._id}
-                                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                                    formatter={(value) =>
-                                      !Number.isNaN(parseFloat(value))
-                                        ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-                                        : ""
-                                    }
-                                    hideControls
-                                    defaultValue={elem.value !== 0 ? elem.value : ""}
-                                    radius={0}
-                                    // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                    icon={elem.format == "Currency" ? <>$</> : ""}
-                                    // id={elem.id}
-                                    // {...register(`input${elem._id}`)}
-                                    // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                    rightSection={
-                                      elem.tooltip ?
-                                        <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                          <div className="flex flex-row items-center pr-[5px]">
-                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                          </div>
-                                        </Tooltip> : elem.format == "Percent" ? <>%</> : ""
-                                    }
-                                    onBlur={async (event: BaseSyntheticEvent) => {
-                                      handleBlur()
-                                      setBlurred(true)
-                                      update({
-                                        ...elem,
-                                        value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
-                                      })
-                                      setSectID(section._id)
-                                      await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
-                                        grayContent: {
-                                          value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
-                                        }
-                                      }, {
-                                        headers: {
-                                          Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                        },
-                                      })
-                                      // console.log(cells, "from Inputtest")
-                                    }}
-                                    // disabled={state.disabled ? true : false}
-                                    placeholder={elem.prefilled ? elem.prefilled : ""}
-                                  // defaultValue={myCompany.name}
-                                  />
-                                </div>
-                              </Grid>
-                              // <div className="flex items-center ml-auto remove-radius">
-                              //   <Text className='mx-6'>{elem.title}</Text>
-                              //   <NumberInput
-                              //     className="w-[100px] md:w-[255px] 2xl:w-[255px]"
-                              //     // icon={state.icon ? state.icon : ""}
-                              //     hideControls
-                              //   // rightSectionProps={{
-                              //   //   onClick: showModalCalculate
-                              //   // }}
-                              //   // disabled
-                              //   // value={result}
-                              //   />
-                              //   <Button
-                              //     type="submit"
-                              //     radius="xs"
-                              //     size="sm"
-                              //     className="w-[150px] sm:w-[unset] text-[12px] sm:text-[unset] rounded-l-none"
-                              //     disabled
-                              //   >
-                              //     {elem.appendedText}
-                              //   </Button>
-                              //   {elem.tooltip ?
-                              //     <Tooltip label={elem.tooltip} >
-                              //       <IconQuestionCircle />
-                              //     </Tooltip> : ""
-                              //   }
-                              // </div>
-                            ) : elem.dataType == "Textarea"
-                              // && elem.appendedText 
-                              ? (
+                      {cells?.filter((item) => section.grayContent.elements
+                        .some((elem: { _id: any, choices: any }) => elem._id == item._id))
+                        .filter((elms) => elms.isDisabled !== true)
+                        .map((elem: any) => {
+                          console.log("elem", elem, elem.choices)
+                          return (
+                            <Stack key={elem._id}>
+                              {elem.dataType == "Input" && elem.tooltip ? (
                                 <Grid
-                                  key={elem._id}
-                                  className="ml-[22px] mr-[22px] mt-[7px] mb-[15px]"
-                                >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                  <div className="w-1/3 ml-auto enterprise-richtext">
-                                    <Textarea
-                                      className="w-full"
-                                      withAsterisk
-                                      radius={0}
-                                    />
-                                    {/* <RichTextSection content={rteValue} onChange={setRTEValue} /> */}
-                                  </div>
-                                </Grid>
-                              ) : elem.dataType == "Ratings" ? (
-                                <Grid
-                                  key={elem._id}
                                   className="ml-[22px] mr-[22px] mt-0 mb-0"
                                 >
-                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                  <div className="w-1/3 flex flex-row justify-center">
-                                    <Rating
-                                      defaultValue={5}
-                                      fractions={2}
-                                      className="mt-[10px] sm:mt-0"
-                                      color="indigo" size="xl"
+                                  <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal" ></Text>
+                                  <div className='w-1/3 flex items-center'>
+                                    <NumberInput
+                                      className="w-full"
+                                      // icon={state.icon ? state.icon : ""}
+                                      thousandsSeparator=','
+                                      precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                      key={elem._id}
+                                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                      formatter={(value) =>
+                                        !Number.isNaN(parseFloat(value))
+                                          ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                          : ""
+                                      }
+                                      hideControls
+                                      defaultValue={elem.value !== 0 ? elem.value : ""}
+                                      radius={0}
+                                      icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                      // id={elem.id}
+                                      // {...register(`input${elem._id}`)}
+                                      // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                      rightSection={
+                                        elem.tooltip ?
+                                          <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                            <div className="flex flex-row items-center pr-[5px]">
+                                              <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                            </div>
+                                          </Tooltip> : ""
+                                      }
+                                      onBlur={async (event: BaseSyntheticEvent) => {
+                                        handleBlur()
+                                        setBlurred(true)
+                                        update({
+                                          ...elem,
+                                          value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                        })
+                                        setSectID(section._id)
+                                        await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                          grayContent: {
+                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                          }
+                                        }, {
+                                          headers: {
+                                            Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                          },
+                                        })
+                                        // console.log(cells, "from Inputtest")
+                                      }}
+                                      // disabled={state.disabled ? true : false}
+                                      placeholder={elem.prefilled ? elem.prefilled : ""}
+                                    // defaultValue={myCompany.name}
                                     />
                                   </div>
                                 </Grid>
-                              )
-                                // : elem.dataType == "Checkbox" ? (
-                                //   <Grid
-                                //     key={elem._id}
-                                //     className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                // <div className="flex items-center ml-auto remove-radius">
+                                //   <Text className='mx-6'>{elem.title}</Text>
+                                //   <NumberInput
+                                //     className="w-[100px] md:w-[255px] 2xl:w-[255px]"
+                                //     // icon={state.icon ? state.icon : ""}
+                                //     hideControls
+                                //   // rightSectionProps={{
+                                //   //   onClick: showModalCalculate
+                                //   // }}
+                                //   // disabled
+                                //   // value={result}
+                                //   />
+                                //   <Button
+                                //     type="submit"
+                                //     radius="xs"
+                                //     size="sm"
+                                //     className="w-[150px] sm:w-[unset] text-[12px] sm:text-[unset] rounded-l-none"
+                                //     disabled
                                 //   >
-                                //     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
-                                //     <div className="flex w-1/2 items-center">
-                                //       <Checkbox
-                                //         label={elem.title}
-                                //         color="dark"
-                                //         radius="xl"
-                                //         key={elem._id}
-                                //       />
-                                //     </div>
-                                //   </Grid>
-                                // ) 
-                                : elem.dataType == "Dropdown" ? (
+                                //     {elem.appendedText}
+                                //   </Button>
+                                //   {elem.tooltip ?
+                                //     <Tooltip label={elem.tooltip} >
+                                //       <IconQuestionCircle />
+                                //     </Tooltip> : ""
+                                //   }
+                                // </div>
+                              ) : elem.dataType == "Textarea"
+                                // && elem.appendedText 
+                                ? (
                                   <Grid
                                     key={elem._id}
-                                    className={`ml-[22px] mr-[22px] ${dropVal == "1" ? "mt-8" : "mt-2"} mb-0 items-center`}
+                                    className="ml-[22px] mr-[22px] mt-[7px] mb-[15px]"
                                   >
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className="flex flex-col ml-auto w-1/3">
-                                      <Select
-                                        data={elem.choices ? elem.choices : ""}
-                                        placeholder="Pick one"
-                                        onChange={setDropValue}
+                                    <div className="w-1/3 ml-auto enterprise-richtext">
+                                      <Textarea
+                                        className="w-full"
+                                        withAsterisk
                                         radius={0}
                                       />
+                                      {/* <RichTextSection content={rteValue} onChange={setRTEValue} /> */}
                                     </div>
-                                    {dropVal == "1" ? (
-                                      <Grid.Col span={'auto'} mx={40}>
-                                        {elem?.choices?.find((choice: { value: any }) => choice.value == dropVal).childElement.map((childEl: any) => (
-                                          <div key={childEl._id}>
-                                            {childEl.dataType == "Input" ? (
-                                              <Grid
-                                                className="ml-[25px] mt-0 mb-0"
-                                              >
-                                                <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                  </Grid>
+                                ) : elem.dataType == "Ratings" ? (
+                                  <Grid
+                                    key={elem._id}
+                                    className="ml-[22px] mr-[22px] mt-0 mb-0"
+                                  >
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                    <div className="w-1/3 flex flex-row justify-center">
+                                      <Rating
+                                        defaultValue={5}
+                                        fractions={2}
+                                        className="mt-[10px] sm:mt-0"
+                                        color="indigo" size="xl"
+                                      />
+                                    </div>
+                                  </Grid>
+                                )
+                                  // : elem.dataType == "Checkbox" ? (
+                                  //   <Grid
+                                  //     key={elem._id}
+                                  //     className="ml-[30px] mr-[30px] mt-[20px] mb-[3px]"
+                                  //   >
+                                  //     <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-1/2 mb-[10px] sm:mb-0"></Text>
+                                  //     <div className="flex w-1/2 items-center">
+                                  //       <Checkbox
+                                  //         label={elem.title}
+                                  //         color="dark"
+                                  //         radius="xl"
+                                  //         key={elem._id}
+                                  //       />
+                                  //     </div>
+                                  //   </Grid>
+                                  // ) 
+                                  : elem.dataType == "Dropdown" ? (
+                                    <Grid
+                                      key={elem._id}
+                                      className={`ml-[22px] mr-[22px] ${dropVal[elem.address] == "1" ? "mt-8" : "mt-2"} mb-0 items-center`}
+                                    >
+                                      <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                      <div className="flex flex-col ml-auto w-1/3">
+                                        <Select
+                                          data={elem.choices ? elem.choices : ""}
+                                          placeholder="Pick one"
+                                          onChange={(value) => handleDropValChange(`${elem.address}`, value)}
+                                          radius={0}
+                                        />
+                                      </div>
+                                      {dropVal[elem.address] == "1" ? (
+                                        <Grid.Col span={'auto'} mx={40}>
+                                          {cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+                                            .map((childEl: any) => (
+                                              <div key={childEl._id}>
+                                                {childEl.dataType == "Input" ? (
+                                                  <Grid
+                                                    className="ml-[25px] mt-0 mb-0"
+                                                  >
+                                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
 
-                                                <div className='w-1/3 flex items-center'>
-                                                  <NumberInput
-                                                    className="w-full"
-                                                    thousandsSeparator=','
-                                                    precision={childEl.decimalPlace !== "0" ? +childEl.decimalPlace : 0}
+                                                    <div className='w-1/3 flex items-center'>
+                                                      <NumberInput
+                                                        className="w-full"
+                                                        // icon={state.icon ? state.icon : ""}
+                                                        thousandsSeparator=','
+                                                        precision={childEl.decimalPlace !== "0" ? +childEl.decimalPlace : 0}
 
-                                                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                                                    formatter={(value) =>
-                                                      !Number.isNaN(parseFloat(value))
-                                                        ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-                                                        : ""
-                                                    }
-                                                    key={childEl.address}
-                                                    hideControls
-                                                    defaultValue={childEl.value !== 0 ? childEl.value : ""}
-                                                    radius={0}
-                                                    placeholder={childEl.prefilled ? childEl.prefilled : ""}
-                                                    icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
-                                                  />
-                                                  {childEl.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
-                                                </div>
-                                              </Grid>
-                                            ) : childEl.dataType == "Output" ? (
-                                              <Grid
-                                                className="ml-[25px]  mt-0 mb-0 items-center"
-                                              >
-                                                <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                                        formatter={(value) =>
+                                                          !Number.isNaN(parseFloat(value))
+                                                            ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                                            : ""
+                                                        }
+                                                        key={childEl._id}
+                                                        hideControls
+                                                        defaultValue={childEl.value !== 0 ? childEl.value : ""}
+                                                        value={dropVal[elem.address] == "1" ? childEl.value : 0}
+                                                        radius={0}
+                                                        // id={elem.id}
+                                                        // {...register(`input${elem._id}`)}
+                                                        // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                                        // disabled={state.disabled ? true : false}
+                                                        placeholder={childEl.prefilled ? childEl.prefilled : ""}
+                                                        // rightSection={
+                                                        //   elem.tooltip ?
+                                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                        //       <div className="flex flex-row items-center">
+                                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                        //       </div>
+                                                        //     </Tooltip> : ""
+                                                        // }
+                                                        onBlur={async (event: BaseSyntheticEvent) => {
 
-                                                <div className='w-1/3 flex items-center'>
-                                                  <NumberInput
-                                                    className="w-full"
-                                                    ref={numberInputRef}
-                                                    // icon={state.icon ? state.icon : ""}
-                                                    type="number"
-                                                    key={childEl._id}
-                                                    styles={{
-                                                      input: {
-                                                        backgroundColor: '#f2f2f2',
-                                                        border: '1px solid #cccccc',
-                                                      },
-                                                    }}
-                                                    readOnly
-                                                    value={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
-                                                    radius={0}
-                                                    icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+                                                          setBlurred(true)
+                                                          handleBlur()
+                                                          update({
+                                                            ...childEl,
+                                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                          })
 
-                                                    placeholder={childEl.prefilled}
-                                                  />
-                                                  {childEl.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
-                                                  {childEl.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
-                                                    <Tooltip label={childEl.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                                      <div className="flex flex-row items-center pr-[5px]">
-                                                        <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                                      </div>
-                                                    </Tooltip>
-                                                  </Button>) : ""}
+                                                          setSectID(section._id)
+                                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${childEl._id}`, {
+                                                            grayContent: {
+                                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                            }
+                                                          }, {
+                                                            headers: {
+                                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                                            },
+                                                          })
+                                                          // console.log(cells, "from Inputtest")
+                                                        }}
+                                                        icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
 
-                                                </div>
-                                              </Grid>
+                                                      // defaultValue={myCompany.name}
+                                                      />
+                                                      {childEl.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
+                                                    </div>
+                                                  </Grid>
+                                                ) : childEl.dataType == "Output" ? (
+                                                  <Grid
+                                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                                  >
+                                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                                    <div className='w-1/3 flex items-center'>
+                                                      <NumberInput
+                                                        className="w-full"
+                                                        ref={numberInputRef}
+                                                        // icon={state.icon ? state.icon : ""}
+                                                        type="number"
+                                                        key={childEl._id}
+                                                        styles={{
+                                                          input: {
+                                                            backgroundColor: '#f2f2f2',
+                                                            border: '1px solid #cccccc',
+                                                          },
+                                                        }}
+                                                        readOnly
+                                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                                        // disabled
+                                                        // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
+                                                        defaultValue={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                                        value={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                                        radius={0}
+                                                        icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+
+                                                        placeholder={childEl.prefilled}
+                                                        // rightSection={
+                                                        //   elem.tooltip ?
+                                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                        //       <div className="flex flex-row items-center">
+                                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                        //       </div>
+                                                        //     </Tooltip> : ""
+                                                        // }
+                                                        onBlur={async (event: BaseSyntheticEvent) => {
+
+                                                          setBlurred(true)
+                                                          update({
+                                                            ...childEl,
+                                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                          })
+
+                                                          setSectID(section._id)
+                                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${childEl._id}`, {
+                                                            grayContent: {
+                                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                            }
+                                                          }, {
+                                                            headers: {
+                                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                                            },
+                                                          })
+                                                          // console.log(cells, "from Inputtest")
+                                                        }}
+                                                      />
+                                                      {childEl.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
+                                                      {childEl.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                                        <Tooltip label={childEl.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                          <div className="flex flex-row items-center pr-[5px]">
+                                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                          </div>
+                                                        </Tooltip>
+                                                      </Button>) : ""}
+
+                                                    </div>
+                                                  </Grid>
+                                                ) : ""}
+                                              </div>
+                                            ))
+                                          }
+                                        </Grid.Col>
+                                      ) : dropVal[elem.address] == "0" ? (handleDropNo(elem)) : ""}
+                                    </Grid>
+                                  ) : elem.dataType == "Radio" ? (
+                                    <Grid
+                                      key={elem._id}
+                                      className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                    >
+                                      <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                      <div className="flex flex-col ml-auto w-1/3 mt-[5px] mb-[5px]">
+                                        {elem.choices.map((elms: { label: string, _id: string }) => (
+                                          <div
+                                            key={elms._id}>
+                                            <Radio
+                                              label={elms.label}
+                                              color="gray"
+                                              checked={radVal[elms.label] || false}
+                                              onChange={(e) => {
+                                                handleRadboxChange(`${elms.label}`, e.target.checked)
+                                              }}
+                                              onClick={() => handleRadboxChange(`${elms.label}`, false)}
+                                              className="mt-[5px] mb-[5px]"
+                                            />
+                                            {radVal[elms.label] == true && elms.label == "yes" ? (
+                                              <Grid.Col>
+                                                {cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+                                                  .map((childEl: any) => (
+                                                    <div key={childEl._id}>
+                                                      {childEl.dataType == "Input" ? (
+                                                        <Grid
+                                                          className="ml-[25px] mt-0 mb-0"
+                                                        >
+                                                          <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                                          <div className='w-1/3 flex items-center'>
+                                                            <NumberInput
+                                                              className="w-full"
+                                                              // icon={state.icon ? state.icon : ""}
+                                                              thousandsSeparator=','
+                                                              precision={childEl.decimalPlace !== "0" ? +childEl.decimalPlace : 0}
+
+                                                              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                                              formatter={(value) =>
+                                                                !Number.isNaN(parseFloat(value))
+                                                                  ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                                                  : ""
+                                                              }
+                                                              key={childEl._id}
+                                                              hideControls
+                                                              defaultValue={childEl.value !== 0 ? childEl.value : ""}
+                                                              radius={0}
+                                                              // id={elem.id}
+                                                              // {...register(`input${elem._id}`)}
+                                                              // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                                              // disabled={state.disabled ? true : false}
+                                                              placeholder={childEl.prefilled ? childEl.prefilled : ""}
+                                                              // rightSection={
+                                                              //   elem.tooltip ?
+                                                              //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                              //       <div className="flex flex-row items-center">
+                                                              //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                              //       </div>
+                                                              //     </Tooltip> : ""
+                                                              // }
+                                                              onBlur={async (event: BaseSyntheticEvent) => {
+
+                                                                setBlurred(true)
+                                                                handleBlur()
+                                                                update({
+                                                                  ...childEl,
+                                                                  value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                })
+
+                                                                setSectID(section._id)
+                                                                await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${childEl._id}`, {
+                                                                  grayContent: {
+                                                                    value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                  }
+                                                                }, {
+                                                                  headers: {
+                                                                    Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                                                  },
+                                                                })
+                                                                // console.log(cells, "from Inputtest")
+                                                              }}
+                                                              icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+
+                                                            // defaultValue={myCompany.name}
+                                                            />
+                                                            {childEl.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
+                                                          </div>
+                                                        </Grid>
+                                                      ) : childEl.dataType == "Output" ? (
+                                                        <Grid
+                                                          className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                                        >
+                                                          <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                                          <div className='w-1/3 flex items-center'>
+                                                            <NumberInput
+                                                              className="w-full"
+                                                              // icon={state.icon ? state.icon : ""}
+                                                              type="number"
+                                                              key={childEl._id}
+                                                              styles={{
+                                                                input: {
+                                                                  backgroundColor: '#f2f2f2',
+                                                                  border: '1px solid #cccccc',
+                                                                },
+                                                              }}
+                                                              readOnly
+                                                              // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                                              // disabled
+                                                              // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
+                                                              value={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                                              radius={0}
+                                                              icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+
+                                                              placeholder={childEl.prefilled}
+                                                              // rightSection={
+                                                              //   elem.tooltip ?
+                                                              //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                              //       <div className="flex flex-row items-center">
+                                                              //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                              //       </div>
+                                                              //     </Tooltip> : ""
+                                                              // }
+                                                              onBlur={async (event: BaseSyntheticEvent) => {
+
+                                                                setBlurred(true)
+                                                                update({
+                                                                  ...childEl,
+                                                                  value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                })
+
+                                                                setSectID(section._id)
+                                                                await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${childEl._id}`, {
+                                                                  grayContent: {
+                                                                    value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                  }
+                                                                }, {
+                                                                  headers: {
+                                                                    Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                                                  },
+                                                                })
+                                                                // console.log(cells, "from Inputtest")
+                                                              }}
+                                                            />
+                                                            {childEl.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
+                                                            {childEl.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                                              <Tooltip label={childEl.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                                <div className="flex flex-row items-center pr-[5px]">
+                                                                  <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                                </div>
+                                                              </Tooltip>
+                                                            </Button>) : ""}
+
+                                                          </div>
+                                                        </Grid>
+                                                      ) : ""}
+                                                    </div>
+                                                  ))
+                                                }
+                                              </Grid.Col>
+                                            ) : (handleRadNo(elem))}
+                                          </div>
+                                        ))}
+
+                                      </div>
+                                    </Grid>
+                                  ) : elem.dataType == "Checkbox" ? (
+                                    <Grid
+                                      key={elem._id}
+                                      className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                    >
+                                      <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                      <div className="flex flex-col ml-auto w-1/3">
+                                        {elem.choices.map((elms: { label: string, _id: string }) => (
+                                          <div
+                                            key={elms._id}>
+                                            <Checkbox
+                                              label={elms.label}
+                                              checked={checkVal[elms.label] || false}
+                                              onChange={(e) => {
+                                                handleCheckboxChange(`${elms.label}`, e.target.checked)
+                                              }}
+                                              className="mt-[5px] mb-[5px]"
+                                            />
+                                            {checkVal[elms.label] == true && elms.label == "yes" ? (
+                                              <Grid.Col>
+                                                {cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+                                                  .map((childEl: any) => (
+                                                    <div key={childEl._id}>
+                                                      {childEl.dataType == "Input" ? (
+                                                        <Grid
+                                                          className="ml-[25px] mt-0 mb-0"
+                                                        >
+                                                          <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                                          <div className='w-1/3 flex items-center'>
+                                                            <NumberInput
+                                                              className="w-full"
+                                                              // icon={state.icon ? state.icon : ""}
+                                                              thousandsSeparator=','
+                                                              precision={childEl.decimalPlace !== "0" ? +childEl.decimalPlace : 0}
+
+                                                              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                                              formatter={(value) =>
+                                                                !Number.isNaN(parseFloat(value))
+                                                                  ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                                                  : ""
+                                                              }
+                                                              key={childEl._id}
+                                                              hideControls
+                                                              defaultValue={childEl.value !== 0 ? childEl.value : ""}
+                                                              radius={0}
+                                                              // id={elem.id}
+                                                              // {...register(`input${elem._id}`)}
+                                                              // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                                              // disabled={state.disabled ? true : false}
+                                                              placeholder={childEl.prefilled ? childEl.prefilled : ""}
+                                                              // rightSection={
+                                                              //   elem.tooltip ?
+                                                              //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                              //       <div className="flex flex-row items-center">
+                                                              //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                              //       </div>
+                                                              //     </Tooltip> : ""
+                                                              // }
+                                                              onBlur={async (event: BaseSyntheticEvent) => {
+
+                                                                setBlurred(true)
+                                                                handleBlur()
+                                                                update({
+                                                                  ...childEl,
+                                                                  value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                })
+
+                                                                setSectID(section._id)
+                                                                await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${childEl._id}`, {
+                                                                  grayContent: {
+                                                                    value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                  }
+                                                                }, {
+                                                                  headers: {
+                                                                    Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                                                  },
+                                                                })
+                                                                // console.log(cells, "from Inputtest")
+                                                              }}
+                                                              icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+
+                                                            // defaultValue={myCompany.name}
+                                                            />
+                                                            {childEl.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
+                                                          </div>
+                                                        </Grid>
+                                                      ) : childEl.dataType == "Output" ? (
+                                                        <Grid
+                                                          className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                                        >
+                                                          <Text dangerouslySetInnerHTML={{ __html: he.decode(childEl.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                                          <div className='w-1/3 flex items-center'>
+                                                            <NumberInput
+                                                              className="w-full"
+                                                              // icon={state.icon ? state.icon : ""}
+                                                              type="number"
+                                                              key={childEl._id}
+                                                              styles={{
+                                                                input: {
+                                                                  backgroundColor: '#f2f2f2',
+                                                                  border: '1px solid #cccccc',
+                                                                },
+                                                              }}
+                                                              readOnly
+                                                              // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                                              // disabled
+                                                              // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
+                                                              value={parseInt(numeral(+childEl.value).format(`0,0.${'0'.repeat(+childEl.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                                              radius={0}
+                                                              icon={childEl.format == "Currency" ? <>$</> : childEl.format == "Percent" ? <>%</> : ""}
+
+                                                              placeholder={childEl.prefilled}
+                                                              // rightSection={
+                                                              //   elem.tooltip ?
+                                                              //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                              //       <div className="flex flex-row items-center">
+                                                              //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                              //       </div>
+                                                              //     </Tooltip> : ""
+                                                              // }
+                                                              onBlur={async (event: BaseSyntheticEvent) => {
+
+                                                                setBlurred(true)
+                                                                update({
+                                                                  ...childEl,
+                                                                  value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                })
+
+                                                                setSectID(section._id)
+                                                                await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${childEl._id}`, {
+                                                                  grayContent: {
+                                                                    value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                                                  }
+                                                                }, {
+                                                                  headers: {
+                                                                    Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                                                  },
+                                                                })
+                                                                // console.log(cells, "from Inputtest")
+                                                              }}
+                                                            />
+                                                            {childEl.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
+                                                            {childEl.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                                              <Tooltip label={childEl.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                                                <div className="flex flex-row items-center pr-[5px]">
+                                                                  <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                                                </div>
+                                                              </Tooltip>
+                                                            </Button>) : ""}
+
+                                                          </div>
+                                                        </Grid>
+                                                      ) : ""}
+                                                    </div>
+                                                  ))
+                                                }
+                                              </Grid.Col>
                                             ) : ""}
                                           </div>
+
                                         ))
                                         }
-                                      </Grid.Col>
-                                    ) : ""}
-                                  </Grid>
-                                ) : elem.dataType == "Radio" ? (
-                                  <Grid
-                                    key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
-                                  >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className="flex flex-col ml-auto w-1/3 mt-[5px] mb-[5px]">
-                                      {elem.choices.map((elem: { label: string, _id: string }) => (
-                                        <RadioToggle key={elem._id} color='gray' label={elem.label} />))}
-                                    </div>
-                                  </Grid>
-                                ) : elem.dataType == "Checkbox" ? (
-                                  <Grid
-                                    key={elem._id}
-                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
-                                  >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className="flex flex-col ml-auto w-1/3">
-                                      {elem.choices.map((elem: { label: string, _id: string }) => (
-                                        <Checkbox
-                                          key={elem._id}
-                                          label={elem.label}
-                                          className="mt-[5px] mb-[5px]"
-                                        />
-                                      ))
-                                      }
-                                    </div>
-                                  </Grid>
-                                ) : elem.dataType == "Output" ? (
-                                  <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
-                                  >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-
-                                    <div className='w-1/3 flex items-center'>
-                                      <NumberInput
-                                        className="w-full"
-                                        ref={numberInputRef}
-                                        // icon={state.icon ? state.icon : ""}
-                                        type="number"
-                                        key={elem._id}
-                                        styles={{
-                                          input: {
-                                            backgroundColor: '#f2f2f2',
-                                            border: '1px solid #cccccc',
-                                          },
-                                        }}
-                                        readOnly
-                                        thousandsSeparator=','
-                                        decimalSeparator="."
-                                        // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
-                                        // disabled
-                                        // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
-                                        value={
-                                          parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/\$\s?|(,*)/g, ""))
-                                        }
-                                        radius={0}
-                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        icon={elem.format == "Currency" ? <>$</> : ""}
-                                        rightSection={elem.format == "Percent" ? <>%</> : ""}
-                                        placeholder={elem.prefilled}
-                                        // rightSection={
-                                        //   elem.tooltip ?
-                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                        //       <div className="flex flex-row items-center">
-                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                        //       </div>
-                                        //     </Tooltip> : ""
-                                        // }
-                                        onBlur={async (event: BaseSyntheticEvent) => {
-
-                                          setBlurred(true)
-                                          update({
-                                            ...elem,
-                                            value: parseInt(event.target.value.replace(/\$\s?|(,*)/g, ""))
-                                          })
-
-                                          setSectID(section._id)
-                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
-                                            grayContent: {
-                                              value: parseInt(event.target.value.replace(/\$\s?|(,*)/g, ""))
-                                            }
-                                          }, {
-                                            headers: {
-                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                            },
-                                          })
-                                          // console.log(cells, "from Inputtest")
-                                        }}
-                                      />
-                                      {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
-                                      {elem.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
-                                        <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                          <div className="flex flex-row items-center pr-[5px]">
-                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                          </div>
-                                        </Tooltip>
-                                      </Button>) : ""}
-
-                                    </div>
-                                  </Grid>
-                                ) : elem.dataType == "Input" && elem.appendedText ? (
-                                  <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-0"
-                                  >
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-                                    <div className='w-1/3 flex'>
-                                      <NumberInput
-                                        className="w-full appended-radius"
-                                        // icon={state.icon ? state.icon : ""}
-                                        thousandsSeparator=','
-                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
-                                        type="number"
-                                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                                        formatter={(value) =>
-                                          !Number.isNaN(parseFloat(value))
-                                            ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-                                            : ""
-                                        }
-                                        key={elem._id}
-                                        hideControls
-                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        icon={elem.format == "Currency" ? <>$</> : ""}
-                                        rightSection={elem.format == "Percent" ? <>%</> : ""}
-                                        defaultValue={elem.value !== 0 ? elem.value : ""}
-                                        radius={0}
-                                        // id={elem.id}
-                                        // {...register(`input${elem._id}`)}
-                                        // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                        // disabled={state.disabled ? true : false}
-                                        placeholder={elem.prefilled ? elem.prefilled : ""}
-                                        // rightSection={
-                                        //   elem.tooltip ?
-                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                        //       <div className="flex flex-row items-center">
-                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                        //       </div>
-                                        //     </Tooltip> : ""
-                                        // }
-                                        onBlur={async (event: BaseSyntheticEvent) => {
-
-                                          setBlurred(true)
-                                          handleBlur()
-                                          update({
-                                            ...elem,
-                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
-                                          })
-
-                                          setSectID(section._id)
-                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
-                                            grayContent: {
-                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
-                                            }
-                                          }, {
-                                            headers: {
-                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                            },
-                                          })
-                                          // console.log(cells, "from Inputtest")
-                                        }}
-                                      // defaultValue={myCompany.name}
-                                      />
-                                      <Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled>{elem.appendedText}</Button>
-                                      <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
-                                        <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                          <div className="flex flex-row items-center pr-[5px]">
-                                            <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                          </div>
-                                        </Tooltip>
-                                      </Button>
-                                    </div>
-                                  </Grid>
-                                ) : elem.dataType == "Input" ? (
-                                  <Grid
-                                    className="ml-[22px] mr-[22px] mt-0 mb-0"
-                                  >
-
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
-
-                                    <div className='w-1/3 flex items-center'>
-                                      <NumberInput
-                                        className="w-full"
-                                        // icon={state.icon ? state.icon : ""}
-                                        thousandsSeparator=','
-                                        precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
-
-                                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                                        formatter={(value) =>
-                                          !Number.isNaN(parseFloat(value))
-                                            ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-                                            : ""
-                                        }
-                                        key={elem._id}
-                                        hideControls
-                                        defaultValue={elem.value !== 0 ? elem.value : ""}
-                                        radius={0}
-                                        // id={elem.id}
-                                        // {...register(`input${elem._id}`)}
-                                        // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
-                                        // disabled={state.disabled ? true : false}
-                                        placeholder={elem.prefilled ? elem.prefilled : ""}
-                                        // rightSection={
-                                        //   elem.tooltip ?
-                                        //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
-                                        //       <div className="flex flex-row items-center">
-                                        //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
-                                        //       </div>
-                                        //     </Tooltip> : ""
-                                        // }
-                                        onBlur={async (event: BaseSyntheticEvent) => {
-
-                                          setBlurred(true)
-                                          handleBlur()
-                                          update({
-                                            ...elem,
-                                            value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
-                                          })
-
-                                          setSectID(section._id)
-                                          await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
-                                            grayContent: {
-                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
-                                            }
-                                          }, {
-                                            headers: {
-                                              Authorization: `Bearer ${login.data.user.tokens.access.token}`,
-                                            },
-                                          })
-                                          // console.log(cells, "from Inputtest")
-                                        }}
-                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-                                        icon={elem.format == "Currency" ? <>$</> : ""}
-                                        rightSection={elem.format == "Percent" ? <>%</> : ""}
-
-                                      // defaultValue={myCompany.name}
-                                      />
-                                      {elem.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
-                                    </div>
-                                  </Grid>
-                                ) : elem.dataType == "Header" ? (
-                                  <div className="mb-[10px]">
-                                    <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
-                                      <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.title ? he.decode(elem.title) : "" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676A6C] font-normal parentNode" />
+                                      </div>
                                     </Grid>
-                                    <Divider my="sm" color="gray" size="sm" variant="dashed" className="ml-[22px] mr-[22px]" />
-                                  </div>
-                                ) : ""}
-                          </Stack>
-                        )
-                      })}
+                                  ) : elem.dataType == "Output" ? (
+                                    <Grid
+                                      className="ml-[22px] mr-[22px] mt-0 mb-0 items-center"
+                                    >
+                                      <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[14px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                      <div className='w-1/3 flex items-center'>
+                                        <NumberInput
+                                          className="w-full"
+                                          ref={numberInputRef}
+                                          // icon={state.icon ? state.icon : ""}
+                                          type="number"
+                                          key={elem._id}
+                                          styles={{
+                                            input: {
+                                              backgroundColor: '#f2f2f2',
+                                              border: '1px solid #cccccc',
+                                            },
+                                          }}
+                                          readOnly
+                                          // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                          // disabled
+                                          // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
+                                          value={parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                          radius={0}
+                                          icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+
+                                          placeholder={elem.prefilled}
+                                          // rightSection={
+                                          //   elem.tooltip ?
+                                          //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                          //       <div className="flex flex-row items-center">
+                                          //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                          //       </div>
+                                          //     </Tooltip> : ""
+                                          // }
+                                          onBlur={async (event: BaseSyntheticEvent) => {
+
+                                            setBlurred(true)
+                                            update({
+                                              ...elem,
+                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                            })
+
+                                            setSectID(section._id)
+                                            await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                              grayContent: {
+                                                value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                              }
+                                            }, {
+                                              headers: {
+                                                Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                              },
+                                            })
+                                            // console.log(cells, "from Inputtest")
+                                          }}
+                                        />
+                                        {elem.appendedText ? (<Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled><span className="text-[14px] font-normal">{elem.appendedText}</span></Button>) : ""}
+                                        {elem.tooltip ? (<Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                          <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                            <div className="flex flex-row items-center pr-[5px]">
+                                              <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                            </div>
+                                          </Tooltip>
+                                        </Button>) : ""}
+
+                                      </div>
+                                    </Grid>
+                                  ) : elem.dataType == "Input" && elem.appendedText ? (
+                                    <Grid
+                                      className="ml-[22px] mr-[22px] mt-0 mb-0"
+                                    >
+                                      <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+                                      <div className='w-1/3 flex'>
+                                        <NumberInput
+                                          className="w-full appended-radius"
+                                          // icon={state.icon ? state.icon : ""}
+                                          thousandsSeparator=','
+                                          precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+                                          type="number"
+                                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                          formatter={(value) =>
+                                            !Number.isNaN(parseFloat(value))
+                                              ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                              : ""
+                                          }
+                                          key={elem._id}
+                                          hideControls
+                                          icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                          defaultValue={elem.value !== 0 ? elem.value : ""}
+                                          radius={0}
+                                          // id={elem.id}
+                                          // {...register(`input${elem._id}`)}
+                                          // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                          // disabled={state.disabled ? true : false}
+                                          placeholder={elem.prefilled ? elem.prefilled : ""}
+                                          // rightSection={
+                                          //   elem.tooltip ?
+                                          //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                          //       <div className="flex flex-row items-center">
+                                          //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                          //       </div>
+                                          //     </Tooltip> : ""
+                                          // }
+                                          onBlur={async (event: BaseSyntheticEvent) => {
+
+                                            setBlurred(true)
+                                            handleBlur()
+                                            update({
+                                              ...elem,
+                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                            })
+
+                                            setSectID(section._id)
+                                            await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                              grayContent: {
+                                                value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                              }
+                                            }, {
+                                              headers: {
+                                                Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                              },
+                                            })
+                                            // console.log(cells, "from Inputtest")
+                                          }}
+                                        // defaultValue={myCompany.name}
+                                        />
+                                        <Button className="appended-btn appended-text" type="submit" variant="gradient" radius={0} disabled>{elem.appendedText}</Button>
+                                        <Button className="appended-btn !bg-[#f1f3f5]" type="submit" variant="filled" color="#909296" radius={0}>
+                                          <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                            <div className="flex flex-row items-center pr-[5px]">
+                                              <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                            </div>
+                                          </Tooltip>
+                                        </Button>
+                                      </div>
+                                    </Grid>
+                                  ) : elem.dataType == "Input" ? (
+                                    <Grid
+                                      className="ml-[22px] mr-[22px] mt-0 mb-0"
+                                    >
+
+                                      <Text dangerouslySetInnerHTML={{ __html: he.decode(elem.title) }} className="text-[15px] w-2/3 mb-0 sm:mb-0 text-[#676A6C] font-normal"></Text>
+
+                                      <div className='w-1/3 flex items-center'>
+                                        <NumberInput
+                                          className="w-full"
+                                          // icon={state.icon ? state.icon : ""}
+                                          thousandsSeparator=','
+                                          precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
+
+                                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                                          formatter={(value) =>
+                                            !Number.isNaN(parseFloat(value))
+                                              ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                              : ""
+                                          }
+                                          key={elem._id}
+                                          hideControls
+                                          defaultValue={elem.value !== 0 ? elem.value : ""}
+                                          radius={0}
+                                          // id={elem.id}
+                                          // {...register(`input${elem._id}`)}
+                                          // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
+                                          // disabled={state.disabled ? true : false}
+                                          placeholder={elem.prefilled ? elem.prefilled : ""}
+                                          // rightSection={
+                                          //   elem.tooltip ?
+                                          //     <Tooltip label={elem.tooltip} events={{ hover: true, focus: true, touch: false }}>
+                                          //       <div className="flex flex-row items-center">
+                                          //         <AiFillQuestionCircle size="18" className="text-[#428bca]" />
+                                          //       </div>
+                                          //     </Tooltip> : ""
+                                          // }
+                                          onBlur={async (event: BaseSyntheticEvent) => {
+
+                                            setBlurred(true)
+                                            handleBlur()
+                                            update({
+                                              ...elem,
+                                              value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                            })
+
+                                            setSectID(section._id)
+                                            await axios.patch(`/v1/company/admintool/${data?.data.data.content.id}/section/${section._id}/element/${elem._id}`, {
+                                              grayContent: {
+                                                value: parseInt(event.target.value.replace(/[^0-9]/g, ""))
+                                              }
+                                            }, {
+                                              headers: {
+                                                Authorization: `Bearer ${login.data.user.tokens.access.token}`,
+                                              },
+                                            })
+                                            // console.log(cells, "from Inputtest")
+                                          }}
+                                          icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+
+                                        // defaultValue={myCompany.name}
+                                        />
+                                        {elem.appendedText ? (<Button className="appended-btn" type="submit" variant="filled" color="gray" radius={0} disabled>{elem.appendedText}</Button>) : ""}
+                                      </div>
+                                    </Grid>
+                                  ) : elem.dataType == "Header" ? (
+                                    <div className="mb-[10px]">
+                                      <Grid className="flex items-center mt-[20px] mb-[10px] sm:mt-[20px] sm:mb-[10px]">
+                                        <Text ml={30} dangerouslySetInnerHTML={{ __html: elem.title ? he.decode(elem.title) : "" }} color="dark" fz="xl" fw={400} className="text-[26px] text-[#676A6C] font-normal parentNode" />
+                                      </Grid>
+                                      <Divider my="sm" color="gray" size="sm" variant="dashed" className="ml-[22px] mr-[22px]" />
+                                    </div>
+                                  ) : ""}
+                            </Stack>
+                          )
+                        })}
                     </form>
                   </Stack>
 
