@@ -217,7 +217,7 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
     source: item.source,
   }));
 
-  console.log('roi', myroi)
+  console.log('roi', currentPosts)
 
   return (
     <div>
