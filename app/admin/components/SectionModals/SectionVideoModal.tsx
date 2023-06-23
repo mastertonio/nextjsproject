@@ -67,7 +67,10 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                         Authorization: `Bearer ${user.tokens.access.token}`
                     }
                 }
-            ).then((response) => response.data),
+            ).then((response) => {
+                console.log('video link response', response);
+                response.data
+            }),
         onMutate: (roi) => {
             console.log("Section Write Up", roi)
             showNotification({
@@ -76,7 +79,7 @@ const SectionVideoModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, s
                 title: `Adding Video`,
                 message: "Please wait ...",
                 autoClose: false,
-                 
+
             });
         },
         onSuccess: (newRoi) => {

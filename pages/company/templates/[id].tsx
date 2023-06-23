@@ -78,6 +78,8 @@ const TemplateDashboard: React.FC<any> = (login) => {
       }
     );
 
+  console.log('templdate data', data);
+
   const [limit, setLimit] = useState<number>(10);
   const [activePage, setPage] = useState<number>(1);
   const [allRoi, setAllRoi] = useState<any>();

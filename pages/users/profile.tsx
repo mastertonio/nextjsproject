@@ -77,7 +77,7 @@ const UserProfile: React.FC<any> = (login) => {
         title: 'Updating your data',
         message: 'Data will be loaded within seconds',
         autoClose: false,
-         
+
         color: 'teal'
       })
       const res = await axios.patch(
@@ -120,7 +120,7 @@ const UserProfile: React.FC<any> = (login) => {
         title: 'Error in Saving Data',
         message: 'Please reload the page or try again later',
         autoClose: 1000,
-         
+
         color: 'red'
       })
       return error;
@@ -287,9 +287,9 @@ const UserProfile: React.FC<any> = (login) => {
         </div>
       </form>
       <ChangePass user={login.data.user} />
-      {/* {login.data.user.user.role === 'company-admin' ? (
+      {login.data.user.user.role === 'company-admin' ? (
         <ListUser user={login.data.user} company={login.data.user.user.company_id ? login.data.user.user.company_id : ''} update={refetch} manager={manager} />
-      ) : null} */}
+      ) : null}
     </AppShell>
   );
 };

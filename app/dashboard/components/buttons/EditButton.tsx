@@ -55,6 +55,8 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) 
 
   const transferlist = data?.data.map((item: { _id: string; email: string; }) => ({ key: item._id, value: item._id, label: item.email }))
 
+  console.log('transferlist', data)
+
   const editRoi = useMutation({
     mutationFn: (roi: iEditTempProp) => axios.patch(`/v1/dashboard/roi/${id}/${user.user.id}`, roi, {
       headers: {
@@ -68,7 +70,7 @@ const EditButton: React.FC<IButtonRoiNameProps> = ({ id, refetch, name, user }) 
         title: `Editing ${roi.title}`,
         message: "Please wait ...",
         autoClose: false,
-         
+
       });
     },
     onSuccess: (newRoi) => {
