@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Grid, Card, Text } from '@mantine/core';
 import { DragNDrop } from '@app/admin/components/dragdrop'
 import { FcTodoList } from 'react-icons/fc'
-import { MdModeEdit, MdClose } from 'react-icons/md'
+import { MdModeEdit, MdClose, MdAddBox } from 'react-icons/md'
 import ModalUpdateEntry from './ModalUpdateEntry';
 // import ModalAddEntry from './ModalAddEntry';
 import { useModalEntryStore, useModalAddEntryStore, } from '@app/store/builderStore';
@@ -16,6 +16,7 @@ import SectionVideoModal from './SectionModals/SectionVideoModal';
 import ModalAddQuestion from './SectionModals/ModalAddQuestion';
 import AddNewChoiceModal from './SectionModals/AddNewChoiceModal';
 import DeleteVideoModal from './SectionModals/DeleteVideoModal';
+import EditVideoModal from './SectionModals/EditVideoModal';
 import { UserDataProp } from '@app/context/user.context';
 import { SectionStateAdminTool, useAdminSectionStore } from '@app/store/adminToolSectionStore';
 import NewAddSectionModal from './NewAddSectionModal';
@@ -60,6 +61,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData, a
     const [openQuestion, setOpenQuestion] = useState(false);
     const [updateQuestion, setUpdateQuestion] = useState(false);
     const [deleteVideo, setDeleteVideo] = useState<any>(false);
+    const [editVideo, setEditVideo] = useState<any>(false);
     const [sectData, setSectData] = useState<iSectionData[]>([])
     const [entry, setEntry] = useState(false)
     const [updateEntry, setUpdateEntry] = useState<any>({})
@@ -88,6 +90,14 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData, a
 
     const handleCloseDeleteVideo = (id: any) => {
         setDeleteVideo((prev: any) => ({ ...prev, [id]: false }))
+    }
+
+    const handleOpenEditVideo = (id: any) => {
+        setEditVideo((prev: any) => ({ ...prev, [id]: true }))
+    }
+
+    const handleCloseEditVideo = (id: any) => {
+        setEditVideo((prev: any) => ({ ...prev, [id]: false }))
     }
 
     const handleCloseVideoModal = (id: any) => {
@@ -132,7 +142,11 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData, a
                                     <div className="flex flex-row items-center justify-end content-center">
                                         <Text dangerouslySetInnerHTML={{ __html: section.headers?.title?.content?.elements[0]?.dataType === 'media' ? he.decode(section.headers?.title?.content?.elements[0]?.link) : 'Add Video link here:' }} className="text-[14px] text-slate-600 font-semibold mr-[30px]"></Text>
                                         <div>
-                                            <MdModeEdit className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
+                                            {section.headers?.title?.content?.elements[0]?.link ? (
+                                                <MdModeEdit className="text-teal-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenEditVideo(index)} />
+                                            ) : (
+                                                <MdAddBox className="text-blue-600 text-[16px] mr-[10px] cursor-pointer" onClick={() => handleOpenVideoModal(index)} />
+                                            )}
                                             <MdClose className="text-red-600 text-[16px] cursor-pointer" onClick={() => handleOpenDeleteVideo(index)} />
                                         </div>
                                     </div>
@@ -156,7 +170,8 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData, a
 
 
                 <SectionVideoModal id={section._id} adminId={data.id} showModal={openVideo} setOpened={() => handleOpenVideoModal(index)} open={updateVideo[index]} cardID={index} user={user} setClose={() => { handleCloseVideoModal(index) }} />
-                <DeleteVideoModal id={section._id} adminId={data.id} user={user} setOpened={() => handleOpenDeleteVideo(index)} setClose={() => { handleCloseDeleteVideo(index) }} cardID={index} open={deleteVideo[index]} />
+                <DeleteVideoModal id={section._id} adminId={data.id} user={user} setOpened={() => handleOpenDeleteVideo(index)} setClose={() => { handleCloseDeleteVideo(index) }} cardID={index} open={deleteVideo[index]} contentElem={section?.headers?.title?.content?.elements[0]?._id} />
+                <EditVideoModal id={section._id} adminId={data.id} user={user} setOpened={() => handleOpenEditVideo(index)} setClose={() => { handleCloseEditVideo(index) }} cardID={index} open={editVideo[index]} contentElem={section?.headers?.title?.content?.elements[0]?._id} />
                 <ModalAddQuestion showModal={openQuestion} setOpened={setUpdateQuestion} open={updateQuestion} setUpdateEntry={setUpdateEntry} />
                 <AddNewChoiceModal showModal={newChoice} setOpened={setUpdateChoice} open={updateChoice} />
             </div>

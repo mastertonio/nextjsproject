@@ -96,7 +96,6 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   const getLastCellAdress = useCalculatorStore((state) => state.getLastCellAddress)
   const cells = useCalculatorStore((state) => state.cells)
   const lv = getLastCellAdress()
-  console.log("last air bender", lv)
   const [currentAddress, setCurrentAddress] = useState(lv);
   const [realFormula, setRF] = useState("")
   const currentColumn = currentAddress.charCodeAt(0);
@@ -141,18 +140,15 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     { value: 'next', label: 'Next.js' },
     { value: 'blitz', label: 'Blitz.js' },
   ];
-  console.log("choices", choices)
+
   const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
     value: item.value,
     label: item.label,
   })) : []
 
-  console.log(fullData)
-
   const choicesFields = form.values.choices.map((item, index) => {
     let allArr: any = []
     const handleChildElementChange = (selectedOptions: any) => {
-      console.log("selected options", selectedOptions)
       const matches = selectedOptions.map((targetItem: any) => {
         const matchingItem: any = fullData.find((item: { address: string }) => item.address === targetItem);
         return allArr.push({

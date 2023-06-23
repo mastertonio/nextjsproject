@@ -22,7 +22,7 @@ type RemoveSectionModalProps = {
     user: UserDataProp
 }
 
-const DeleteVideoModal: React.FC<any> = ({ id, adminId, user, cardID, setOpened, setClose, open }) => {
+const DeleteVideoModal: React.FC<any> = ({ id, adminId, user, cardID, setOpened, setClose, open, contentElem }) => {
     // const [opened, setOpened] = useState(false);
     const [value] = useLocalStorage({ key: "auth-token" });
     const router = useRouter();
@@ -44,11 +44,19 @@ const DeleteVideoModal: React.FC<any> = ({ id, adminId, user, cardID, setOpened,
 
     const handleDelete = useMutation({
         mutationFn: () =>
-            axios.patch(`v1/company/admintool/${adminId}/section/${id}`, {
+            axios.patch(`v1/company/admintool/${adminId}/section/${id}/element/${contentElem}`, {
                 headers: {
                     title: {
                         content: {
-                            elements: []
+                            elements: [
+                                {
+                                    dataType: "media",
+                                    class: "col-lg-5",
+                                    span: "auto",
+                                    mediaOrigin: "video",
+                                    link: ""
+                                }
+                            ]
                         }
                     }
                 }

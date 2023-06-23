@@ -41,8 +41,6 @@ const SectionWriteUpModal: React.FC<IModalEntryProps> = ({ cardID, user, adminId
         }
     })
 
-    console.log('card id: ', cardID)
-
     const ModalTitle = (title: string) => (
         <div className="flex flex-row items-center">
             <HiOutlineDocumentText className="mr-[10px] text-[36px] sm:text-[26px]" />
