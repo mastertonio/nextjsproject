@@ -358,6 +358,10 @@ const Enterprise: React.FC<any> = (login) => {
     }));
   };
 
+  useEffect(() => {
+    console.log(checkVal);
+  }, [checkVal]);
+
   const handleDropNo = useCallback((elem: any) => {
     const test = cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
 
@@ -993,9 +997,9 @@ const Enterprise: React.FC<any> = (login) => {
                                               }}
                                               className="mt-[5px] mb-[5px]"
                                             />
-                                            {checkVal[elms.label] == true && elms.label == "yes" ? (
+                                            {checkVal[elms.label] == true? (
                                               <Grid.Col>
-                                                {cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+                                                {cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any, label: string }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
                                                   .map((childEl: any) => (
                                                     <div key={childEl._id}>
                                                       {childEl.dataType == "Input" ? (
@@ -1134,7 +1138,7 @@ const Enterprise: React.FC<any> = (login) => {
                                                   ))
                                                 }
                                               </Grid.Col>
-                                            ) : ""}
+                                            ) : null}
                                           </div>
 
                                         ))

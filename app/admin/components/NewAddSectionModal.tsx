@@ -71,8 +71,7 @@ const schema = z.object({
 
 const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, setOpenChoice, setSectionData, user, id, choices, fullData }) => {
   const [opened, setOpened] = useState(false);
-  const initialValue =
-    "<div></div>";
+  const initialValue = "<div></div>";
   const [value, setValue] = useState<string>(initialValue)
   const [errorMsg, setErrorMessage] = useState<string>('');
   // const [value] = useLocalStorage({ key: "auth-token" });
