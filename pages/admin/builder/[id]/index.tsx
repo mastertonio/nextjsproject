@@ -72,11 +72,11 @@ const AdminBuilder: React.FC<any> = (login) => {
   if (isLoading) return <MainLoader />;
 
   if (isSuccess) {
+    const allChoices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().filter((item: { isDisabled: boolean, dataType: any}) => item.dataType!== "Dropdown" && item.dataType !== "Radio" && item.dataType!== "Checkbox").map((elem: { address: string; title: string; }) => ({ value: elem.address, label: convertHtmlToPlainText(he.decode(elem.title)) }))
     const flatData = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat()
-    const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map((elem: { address: string; title: string; }) => ({ value: elem.address, label: convertHtmlToPlainText(he.decode(elem.title)) }))
+    const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().filter((item: { isDisabled: boolean, dataType: any}) => item.isDisabled!==true && item.dataType!== "Dropdown" && item.dataType !== "Radio" && item.dataType!== "Checkbox"  ).map((elem: { address: string; title: string; }) => ({ value: elem.address, label: convertHtmlToPlainText(he.decode(elem.title)) }))
     // const choices = data?.data?.adminTool?.sections.map((section: { grayContent: { elements: any; }; }) => section.grayContent.elements).flat().map(() => )
     // useCalculationStore.
-    // console.log('admintool', flatData)
     return (
       <AppShell
         navbarOffsetBreakpoint="sm"
@@ -94,7 +94,7 @@ const AdminBuilder: React.FC<any> = (login) => {
             </div>
           {/* Template Specifics */}
           <TemplateSpecifics data={data?.data.adminTool} user={login.data.user} isFetching={isFetching} />
-          <Sections user={login.data.user} data={data?.data.adminTool} choices={choices} fullData={flatData} />
+          <Sections user={login.data.user} data={data?.data.adminTool} choices={choices} fullData={flatData} allChoices={allChoices} />
         </div>
       </AppShell>
     );

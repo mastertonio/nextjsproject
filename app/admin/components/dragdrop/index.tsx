@@ -61,6 +61,7 @@ export interface DragNDropProps {
     adminId: string,
     choices: []
     fullData: []
+    allChoices: []
 }
 
 // type iSectionNewProps = {
@@ -93,7 +94,7 @@ type iSectionProps = {
     address: string
 }
 
-export function DragNDrop({ data, type, user, adminId, id, choices, fullData }: DragNDropProps) {
+export function DragNDrop({ data, type, user, adminId, id, choices, fullData, allChoices }: DragNDropProps) {
     const { classes, cx } = useStyles();
     const show = useModalEntryStore((state) => state.show);
     const setUpdateChoice = useNewStore((state) => state.setUpdateChoice)
@@ -189,7 +190,7 @@ export function DragNDrop({ data, type, user, adminId, id, choices, fullData }: 
                             </div>
                             <div className="tabler-edit-view">
                                 <Grid className="h-[20px]">
-                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} type={item.dataType} fullData={fullData} />
+                                    <EditSectionEntryModal itemId={item._id} data={item} adminId={adminId} id={id} user={user} secName={item.title} choices={choices} type={item.dataType} fullData={fullData} allChoices={allChoices} />
                                     <Text dangerouslySetInnerHTML={{ __html: he.decode(item.title) }} className="text-[14px] ml-[5px] flex items-center h-5"></Text>
                                     {/* <p style={{ display: 'flex', alignItems: 'center', margin: '0' }}><span>What</span></p> */}
                                 </Grid>

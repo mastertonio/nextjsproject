@@ -26,6 +26,7 @@ type iSectionProps = {
     user: UserDataProp
     choices: []
     fullData: []
+    allChoices: []
 }
 
 export type iSectionData = {
@@ -39,7 +40,7 @@ export type iSectionData = {
     address: string
 }
 
-const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData }) => {
+const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData, allChoices }) => {
     const questions = useQuestionPropsStore((state) => state.questions)
     const writeup = useSectionWriteupStore((state) => state.sectionWriteUp)
     const cardSection = useCardStore((state) => state.cards)
@@ -130,7 +131,7 @@ const NewSections: React.FC<iSectionProps> = ({ data, user, choices, fullData })
                     </Card>
                     <Card className="mt-[15px] mb-[20px] !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" radius="sm" withBorder>
                         <div className="mt-[20px]">
-                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} choices={choices} fullData={fullData} />
+                            <DragNDrop user={user} id={section._id} adminId={data.id} data={section.grayContent?.elements} type={section.grayContent?.dataType} choices={choices} fullData={fullData} allChoices={allChoices} />
                             {/* <DragNDrop data={[]} type="collapse" /> */}
                         </div>
 

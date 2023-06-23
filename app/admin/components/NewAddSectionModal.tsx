@@ -95,6 +95,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
   // const lastItem = findLast(cells, () => true)
   // console.log("lastttt", lastItem)
   const getLastCellAdress = useCalculatorStore((state) => state.getLastCellAddress)
+  const cells = useCalculatorStore((state) => state.cells)
   const lv = getLastCellAdress()
   console.log("last air bender", lv)
   const [currentAddress, setCurrentAddress] = useState(lv);
@@ -141,7 +142,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     { value: 'next', label: 'Next.js' },
     { value: 'blitz', label: 'Blitz.js' },
   ];
-
+  console.log("choices", choices)
   const zchoice = choices ? choices.map((item: { label: string, value: string }) => ({
     value: item.value,
     label: item.label,
@@ -165,8 +166,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
           address: matchingItem.address
         })
       })
-      form.setFieldValue(`choices.${index}.selectedOptions`, selectedOptions)//2nd argument should be the array of objects
-      form.setFieldValue(`choices.${index}.childElement`, allArr)
+      form.setFieldValue(`choices.${index}.selectedOptions`, selectedOptions)
     };
 
     return (
@@ -264,6 +264,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
 
 
 
+
   const addEntry = useMutation({
     mutationFn: (roi: formProps) =>
       axios.patch(
@@ -347,6 +348,32 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
     }
   })
 
+  const editSection = useMutation({
+    mutationFn: (sect: any) => axios.put(`/v1/company/admintool/${adminId}/section/${id}`, {
+      grayContentElement: sect
+    }, {
+      headers: {
+        Authorization: `Bearer ${user.tokens.access.token}`,
+      },
+    }).then((response) => response.data),
+    onMutate: (roi) => {
+      setOpened(false)
+    },
+    onSuccess: (newRoi) => {
+      Promise.all(
+        [
+          queryClient.invalidateQueries({ queryKey: ['adminToolData'] }),
+          queryClient.invalidateQueries({ queryKey: ['enterpriseData'] }),
+          // queryClient.invalidateQueries({ queryKey: ['ranking_list'] })
+        ]
+      )
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+      }
+    }
+  })
+
   //must check previous address in database
   function generateExcelAddresses(numRows: number, numCols: number): string[] {
     const addresses: string[] = [];
@@ -380,10 +407,45 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
       // scrollAreaComponent={ScrollArea.Autosize}
       >
         {/* <div>{currentAddress}{nextAddress}</div> */}
-        <form onSubmit={form.onSubmit((values) => {
+        <form onSubmit={form.onSubmit(async (values) => {
+
+
           if (value == '<div></div>' || value == '<p></p>') {
             setErrorMessage('Entry Name is required');
             return;
+          } else if (values.type == "Dropdown" || values.type == "Radio" || values.type == "Checkbox") {
+            const newMeta = cells.filter((item) => values.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
+            // values.choices.map(item => console.log(newMeta, item.selectedOptions))
+            const updatedCells = cells.map((item) => {
+              const matchingElement = newMeta.find((elem) => elem.address === item.address);
+              if (matchingElement) {
+                return {
+                  ...matchingElement,
+                  isDisabled: true
+                };
+              }
+              return item;
+            });
+            try {
+              await editSection.mutateAsync(updatedCells);
+
+              await addEntry.mutateAsync({
+                address: values.address,
+                appendedText: values.appendedText,
+                choices: values.choices,
+                title: value,
+                currency: values.currency,
+                decimalPlace: values.decimalPlace,
+                format: values.format,
+                formula: values.formula,
+                prefilled: values.prefilled,
+                tooltip: values.tooltip,
+                type: values.type
+              });
+            } catch (error) {
+              // Handle errors
+              console.error(error);
+            }
           } else {
             addEntry.mutateAsync({
               address: values.address,
