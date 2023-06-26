@@ -25,8 +25,6 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
         }
     });
 
-    console.log("data specific", data)
-
     const handleSubmit = async (values: typeof form.values) => {
         try {
             console.log('Values: ', values)
@@ -37,7 +35,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
 
     return (
         <div className="w-full">
-            
+
 
             <div className="pl-[1rem] pr-[1rem] sm:pl-[2rem] sm:pr-[2rem] mt-[40px]">
                 <Card className="mt-[15px]" shadow="sm" radius="sm" withBorder>
@@ -47,7 +45,6 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
 
                 <div className="flex flex-col sm:grid grid-cols-3 gap-4 mt-[20px]">
                     {data?.sections.map((section: any) => {
-                        console.log('section tool', section)
                         // return (
                         //     <>
                         //         {section.grayContent.dataType === 'sliders' ? section.grayContent.elements.map((item: any, indexItem: any) => {
@@ -55,7 +52,7 @@ const NewTemplateSpecifics: React.FC<any> = ({ data, user, isFetching }) => {
                         return (
                             <Card key={section._id} className="mt-[15px] p-[40px] cursor-pointer !border-t-[4px] border-t-[#e7eaec] hover:border-t-[#2f4050] animate-card" shadow="sm" radius="sm" withBorder>
                                 <div className="flex flex-row items-center justify-between">
-                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(section.sectionTitle)}} className="text-[20px] text-blue-600 font-semibold"></Text>
+                                    <Text dangerouslySetInnerHTML={{ __html: he.decode(section.sectionTitle) }} className="text-[20px] text-blue-600 font-semibold"></Text>
                                     <div>
                                         <EditSectionModal adminId={data.id} id={section._id} user={user} secName={section.sectionTitle} />
                                         <RemoveSectionModal adminId={data.id} id={section._id} user={user} secName={section.sectionTitle} />

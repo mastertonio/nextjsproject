@@ -38,7 +38,7 @@ interface User {
 const Home: NextPage = (test) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const { data , status } = useSession()
+  const { data, status } = useSession()
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -223,43 +223,63 @@ const Home: NextPage = (test) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req }) as User;
-  
+
   if (!session) {
     return {
       props: { user: null }
     };
   }
 
-  if (session.user?.user?.role?.includes("manager")) {
+  if (session.user?.user?.role?.includes("company-manager")) {
     return {
+      props: { session },
       redirect: {
         destination: '/dashboard/manager',
         permanent: false,
       },
     };
-  } else if (session.user?.user?.role?.includes('company-admin')){
+  } else if (session.user?.user?.role?.includes('company-admin')) {
     return {
+      props: { session },
       redirect: {
         destination: '/users',
         permanent: false,
       },
     };
-  } else if (session.user?.user?.role?.includes('admin')){
+  } else if (session.user?.user?.role?.includes('admin')) {
     return {
+      props: { session },
       redirect: {
         destination: '/company',
         permanent: false,
       },
     };
+  } else if (session.user?.user?.role?.includes('company-agent')) {
+    return {
+      props: { session },
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      props: { session },
+      // redirect: {
+      //   destination: '/dashboard',
+      //   permanent: false,
+      // },
+    };
   }
 
-  return {
-    props: { session },
-    redirect: {
-      destination: '/dashboard',
-      permanent: false,
-    },
-  };
+
+  // return {
+  //   props: { session },
+  //   redirect: {
+  //     destination: '/dashboard',
+  //     permanent: false,
+  //   },
+  // };
 }
 
 export default Home;

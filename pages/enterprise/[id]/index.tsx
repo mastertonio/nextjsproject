@@ -365,7 +365,7 @@ const Enterprise: React.FC<any> = (login) => {
   const handleDropNo = useCallback((elem: any) => {
     const test = cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
 
-    test.forEach((item)=> { console.log("each item", item)})
+    test.forEach((item) => { console.log("each item", item) })
     // console.log("DROP", elem.address, test, elem, dropVal);
     // Your function logic here
     return <></>
@@ -533,13 +533,14 @@ const Enterprise: React.FC<any> = (login) => {
                                       parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                                       formatter={(value) =>
                                         !Number.isNaN(parseFloat(value))
-                                          ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                          ? `${value} ${elem.format == "Percent" ? "%" : ""}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
                                           : ""
                                       }
                                       hideControls
                                       defaultValue={elem.value !== 0 ? elem.value : ""}
                                       radius={0}
-                                      icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                      // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                      icon={elem.format == "Currency" ? <>$</> : ""}
                                       // id={elem.id}
                                       // {...register(`input${elem._id}`)}
                                       // onBlur={()=> this.refs.form.getDOMNode().dispatchEvent(new Event("submit"))}
@@ -997,7 +998,7 @@ const Enterprise: React.FC<any> = (login) => {
                                               }}
                                               className="mt-[5px] mb-[5px]"
                                             />
-                                            {checkVal[elms.label] == true? (
+                                            {checkVal[elms.label] == true ? (
                                               <Grid.Col>
                                                 {cells.filter((item) => elem?.choices.some((elem: { selectedOptions: any, label: string }) => elem?.selectedOptions?.some((ite: any) => ite == item.address)))
                                                   .map((childEl: any) => (
@@ -1168,10 +1169,15 @@ const Enterprise: React.FC<any> = (login) => {
                                           // precision={elem.decimalPlace !== "0" ? +elem.decimalPlace : 0}
                                           // disabled
                                           // value={+numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`)}
-                                          value={parseInt(numeral(+elem.value).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/[^0-9]/g, ""))}
+                                          value={parseInt(numeral(`${+elem.value} Test`).format(`0,0.${'0'.repeat(+elem.decimalPlace)}`).replace(/[^0-9]/g, ""))}
                                           radius={0}
-                                          icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
-
+                                          // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                          icon={elem.format == "Currency" ? <>$</> : ""}
+                                          // formatter={(value) =>
+                                          //   !Number.isNaN(parseFloat(value))
+                                          //     ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                          //     : ""
+                                          // }
                                           placeholder={elem.prefilled}
                                           // rightSection={
                                           //   elem.tooltip ?
@@ -1228,12 +1234,13 @@ const Enterprise: React.FC<any> = (login) => {
                                           parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                                           formatter={(value) =>
                                             !Number.isNaN(parseFloat(value))
-                                              ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                              ? `${value} ${elem.format == "Percent" ? "%" : ""}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
                                               : ""
                                           }
                                           key={elem._id}
                                           hideControls
-                                          icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                          // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                          icon={elem.format == "Currency" ? <>$</> : ""}
                                           defaultValue={elem.value !== 0 ? elem.value : ""}
                                           radius={0}
                                           // id={elem.id}
@@ -1299,7 +1306,7 @@ const Enterprise: React.FC<any> = (login) => {
                                           parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                                           formatter={(value) =>
                                             !Number.isNaN(parseFloat(value))
-                                              ? `${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                                              ? `${value} ${elem.format == "Percent" ? "%" : ""}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
                                               : ""
                                           }
                                           key={elem._id}
@@ -1340,7 +1347,8 @@ const Enterprise: React.FC<any> = (login) => {
                                             })
                                             // console.log(cells, "from Inputtest")
                                           }}
-                                          icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
+                                          icon={elem.format == "Currency" ? <>$</> : ""}
+                                        // icon={elem.format == "Currency" ? <>$</> : elem.format == "Percent" ? <>%</> : ""}
 
                                         // defaultValue={myCompany.name}
                                         />

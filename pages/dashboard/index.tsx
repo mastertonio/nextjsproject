@@ -183,21 +183,14 @@ export async function getServerSideProps(ctx: any) {
     };
   }
 
-  // if (session.user?.user?.role?.includes("manager")) {
-  //   return {
-  //     redirect: {
-  //       destination: '/dashboard/manager',
-  //       permanent: false,
-  //     },
-  //   };
-  // } else if (session.user?.user?.role?.includes('admin')){
-  //   return {
-  //     redirect: {
-  //       destination: '/users',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+  if (session.user?.user?.role?.includes('admin')) {
+    return {
+      redirect: {
+        destination: '/company',
+        permanent: false,
+      },
+    };
+  }
 
 
   // Pass data to the page via props
