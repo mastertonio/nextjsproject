@@ -172,6 +172,7 @@ const TemplatesDashboard: React.FC<any> = (login) => {
           id={item._id}
           notes={item.notes}
           status={item.active}
+          statusButton={item.status}
           refetch={refetch}
           name={item.name}
           key={shortUUID.generate()}

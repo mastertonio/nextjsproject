@@ -173,32 +173,44 @@ const Row: React.FC<iDashboardRowProps> = ({ my_roi, user }) => {
         user={user}
       />
     ),
-    importance:
-      item.importance != 0 ? (
-        <StarRating
-          importance={item.importance}
-          id={item.id}
-          cur_status={item.status}
-          refetch={refetch}
-          rating={rating}
-          setRating={setRating}
-          readOnly={false}
-          setStar={setStar}
-          user={user}
-        />
-      ) : (
-        <StarRating
-          importance={item.importance}
-          id={item.id}
-          cur_status={item.status}
-          refetch={refetch}
-          rating={rating}
-          setRating={setRating}
-          readOnly={true}
-          setStar={setStar}
-          user={user}
-        />
-      ),
+    importance: (
+      <StarRating
+        importance={item.importance}
+        id={item.id}
+        cur_status={item.status}
+        refetch={refetch}
+        rating={rating}
+        setRating={setRating}
+        readOnly={false}
+        setStar={setStar}
+        user={user}
+      />
+    ),
+    // item.importance != 0 ? (
+    //   <StarRating
+    //     importance={item.importance}
+    //     id={item.id}
+    //     cur_status={item.status}
+    //     refetch={refetch}
+    //     rating={rating}
+    //     setRating={setRating}
+    //     readOnly={false}
+    //     setStar={setStar}
+    //     user={user}
+    //   />
+    // ) : (
+    //   <StarRating
+    //     importance={item.importance}
+    //     id={item.id}
+    //     cur_status={item.status}
+    //     refetch={refetch}
+    //     rating={rating}
+    //     setRating={setRating}
+    //     readOnly={true}
+    //     setStar={setStar}
+    //     user={user}
+    //   />
+    // ),
     roiname: item.name,
     source_name: item.source_name,
     dates: item.dateCreated,

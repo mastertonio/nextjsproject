@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, Button, Text, TextInput, Grid } from "@mantine/core";
+import { Modal, Button, Text, Tooltip, Grid } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useLocalStorage } from "@mantine/hooks";
@@ -19,6 +19,7 @@ type RemoveSectionModalProps = {
     name: string;
     notes: string;
     status: string;
+    statusButton: string;
     user: UserDataProp
 }
 
@@ -27,6 +28,7 @@ const DeleteTemplate: React.FC<RemoveSectionModalProps> = ({ id,
     name,
     notes,
     status,
+    statusButton,
     user }) => {
     const [opened, setOpened] = useState(false);
     const [value] = useLocalStorage({ key: "auth-token" });
@@ -171,18 +173,39 @@ const DeleteTemplate: React.FC<RemoveSectionModalProps> = ({ id,
                     </Grid>
                 </form>
             </Modal>
-            <Button
-                type="button"
-                radius="sm"
-                size="xs"
-                onClick={() => {
-                    setOpened(true);
-                }}
-                className="mr-[5px"
-                color="red"
-            >
-                Delete
-            </Button>
+            {statusButton == 'active' ? (
+                <Tooltip label="To delete template, set to inactive">
+                    <Button
+                        type="button"
+                        radius="sm"
+                        size="xs"
+                        onClick={() => {
+                            setOpened(true);
+                        }}
+                        className="mr-[5px"
+                        color="red"
+                        data-disabled
+                        sx={{ '&[data-disabled]': { pointerEvents: 'all' } }}
+                    >
+                        Delete
+                    </Button>
+                </Tooltip>
+            ) : (
+                <Button
+                    type="button"
+                    radius="sm"
+                    size="xs"
+                    onClick={() => {
+                        setOpened(true);
+                    }}
+                    className="mr-[5px"
+                    color="red"
+                >
+                    Delete
+                </Button>
+            )}
+
+
         </>
     );
 };
