@@ -59,6 +59,7 @@ const StarRating: React.FC<IStarProps> = ({
       color="teal"
       readOnly={readOnly}
       defaultValue={importance}
+      value={importance}
       onChange={handleRate}
       size={size}
     />

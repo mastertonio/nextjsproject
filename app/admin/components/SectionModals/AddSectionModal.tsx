@@ -62,7 +62,10 @@ const AddSectionModal: React.FC<IModalEntryProps> = ({ showModal, setOpened, ope
                         Authorization: `Bearer ${user.tokens.access.token}`,
                     },
                 }
-            ).then((response) => response.data),
+            ).then((response) => {
+                console.log('create section', response);
+                response.data
+            }),
         onMutate: () => {
             console.log("on mutate", router.query.temp_id, router.query.ver_id)
             setOpened(false)

@@ -648,7 +648,7 @@ const NewAddSectionModal: React.FC<IModalEntryProps> = ({ adminId, sectionData, 
                 color="teal"
                 className="mr-0 sm:mr-[10px] mb-[10px]"
               >
-                Add Entry
+                Save Entry
               </Button>
               {/* <Button
               type="button"
